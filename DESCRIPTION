@@ -11,3 +11,9 @@ Description: The R package glottospace helps useRs to do geospatial analyses on 
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
+RoxygenNote: 7.1.1
+Imports: 
+    rgeos,
+    rnaturalearth,
+    rnaturalearthdata,
+    sf
