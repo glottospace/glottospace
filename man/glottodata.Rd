@@ -7,9 +7,9 @@
 glottodata(data = "glottodata_spatial")
 }
 \arguments{
-\item{data}{One of \code{"glottodata_raw"}, \code{"glottodata_tidy"}, or
-\code{"glottodata_spatial"}. By default, the downloaded glottolog data is
-converted into a geoglot object (sf).}
+\item{data}{One of \code{"glottodata_raw"}, \code{"glottodata_spatial"}, or
+\code{"glottodata_cldf"} or \code{"glottodata_cldf_spatial"}. By default, the downloaded glottolog data is
+converted into a geoglot object (languages without coordinates are removed).}
 }
 \value{
 Either a glot or geoglot object.

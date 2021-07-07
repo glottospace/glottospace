@@ -24,3 +24,4 @@ as.ordfact <- function(x = NULL, levels = NULL){ # alternatively, use: https://f
   df <- as.data.frame(dtot)
   return(df)
 }
+
