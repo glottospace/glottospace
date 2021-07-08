@@ -4,7 +4,7 @@
 \alias{glot_exists}
 \title{Check whether a glottocode, language, family, or dialect exists in glottolog. This is a wrapper around glotto_search (only exact matches are returned)}
 \usage{
-glot_exists(glottocode = NULL, language = NULL, family = NULL, dialect = NULL)
+glot_exists(find, columns = NULL)
 }
 \value{
 
