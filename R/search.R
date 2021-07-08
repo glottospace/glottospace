@@ -11,12 +11,16 @@
 #' @export
 #'
 #' @examples
-glotto_search <- function(glottodata = "glottolog", name = NULL, partial = TRUE, isocode = NULL, glottocode = NULL){
-  #' @importFrom data.table %like%
+glotto_search <- function(glottodata = "glottolog", find = NULL, partialmatch = TRUE){
+
  if(glottodata == "glottolog"){glottodata <- get_glottolog("glottolog")}
 
   if(partial == TRUE){
-  # glottodata$name %like%
+    rowid <- agrep("Yucuna",glottodata$name,ignore.case=T,value=FALSE,max.distance = 0.1)
+    glottodata[rowid, ]
+
+    found <- apply(glottodata, MARGIN = 2, simplify = FALSE, FUN = base::agrep, pattern = find, ignore.case = T, value = FALSE, max.distance = 0.1)
+    lapply(found, sjmisc::is_empty)
   }
 }
 

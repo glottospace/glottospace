@@ -35,7 +35,7 @@ get_glottolog <- function(data = "glottolog_spatial"){
   } else {
     stop("Could not get glottolog data")
   }
-  return(data)
+  return(glottodata)
 }
 
 glottolog_download <- function(){
