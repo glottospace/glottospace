@@ -791,15 +791,22 @@ gs_langsheetreader <- function(dataset = NULL, glottocodes = NULL, metasheet = N
   # cat("Excel file contains the following sheets: \n")
   # cat(paste(sheetnames, "\n"))
 
-  nindata <- glottocodes[!glottocodes %in% sheetnames]
-  if(length(nindata) !=0){
-    nindata <- paste(nindata, collapse = ", ")
-    message(paste0("No sheet found for the following glottocode(s): " , nindata, "\n"))
-    glottocodes <- glottocodes[glottocodes %in% sheetnames]
-  }
+  # while(n < 1 ){
+  #   n <- readline("Which sheets do you want to read? Either provide index or name: ")
+  #   n <- ifelse(grepl("\\D",n),-1,as.integer(n))
+  #   if(is.na(n)){break}  # breaks when hit enter
+  # }
+  #
+#
+#   nindata <- glottocodes[!glottocodes %in% sheetnames]
+#   if(length(nindata) !=0){
+#     nindata <- paste(nindata, collapse = ", ")
+#     message(paste0("No sheet found for the following glottocode(s): " , nindata, "\n"))
+#     glottocodes <- glottocodes[glottocodes %in% sheetnames]
+#   }
 
-  sheets <- c(glottocodes, metasheet)
-  lsls <- lapply(X = sheets, FUN = read_xlsx, path = dataset)
+  # sheets <- c(glottocodes, metasheet)
+  # lsls <- lapply(X = sheets, FUN = read_xlsx, path = dataset)
 
   # Check whether number of columns are identical across languages
   colcount <- lapply(X = lsls, FUN = function(x){length(colnames(x))})
@@ -809,9 +816,9 @@ gs_langsheetreader <- function(dataset = NULL, glottocodes = NULL, metasheet = N
     message(paste(glottocodes, ": ", colcount, "\n"))
   }
 
-  names(lsls) <- glottocodes
-  if(length(sheets) == 1){lsls <- lsls[[1]]}
-  return(lsls)
+  # names(lsls) <- glottocodes
+  # if(length(sheets) == 1){lsls <- lsls[[1]]}
+  # return(lsls)
 
 }
 
@@ -936,46 +943,46 @@ gs_langdatacleaner <- function(data = NULL, rm = NULL, sel = NULL, id = NULL, st
 
 }
 
-gs_langdatacheck <- function(data = NULL, id = NULL, printlevels = FALSE){
+# gs_langdatacheck <- function(data = NULL, id = NULL, printlevels = FALSE){
+#
+#   # Check metasheet: weight, type, colnames
 
-  # Check metasheet: weight, type, colnames
-
-  # Check levels
-  levl <- lapply(data[,colnames(data)!= id], unique)
-  # levels <- unlist(lapply(levl, paste, collapse=" , "))
-  cat('The variables have the following levels: \n')
-  # print(as.data.frame(levels))
-  print(levl)
-
-  # data <- as_tibble(data)
-  # print(data)
-
-  # Check missing IDs
-  idmissing <- nrow(data[is.na(data[,id]),] )
-  if(idmissing > 0){
-    message(paste(idmissing, ' rows with missing ID'))
-  } else{message("No missing IDs")}
-
-  # Check whether ids are unique
-  freqtab <- data.frame(table(data[,id]))
-  colnames(freqtab)[1] <- "id"
-  colnames(freqtab)[2] <- "n"
-
-  if(any(freqtab$n > 1)){
-    duplicate <- freqtab[freqtab$n > 1, ]
-    message('IDs are not unique. The following ids have duplicates:')
-    print(duplicate)
-  } else{message("No duplicate IDs.")}
-
-  if(printlevels == TRUE){
-    # Print levels of all columns
-    levl <- lapply(data, unique)
-    levels <- unlist(lapply(levl, paste, collapse=" , "))
-    cat('The variables have the following levels: \n')
-    print(as.data.frame(levels))
-  }
-
-}
+  # # Check levels
+  # levl <- lapply(data[,colnames(data)!= id], unique)
+  # # levels <- unlist(lapply(levl, paste, collapse=" , "))
+  # cat('The variables have the following levels: \n')
+  # # print(as.data.frame(levels))
+  # print(levl)
+  #
+  # # data <- as_tibble(data)
+  # # print(data)
+  #
+  # # Check missing IDs
+  # idmissing <- nrow(data[is.na(data[,id]),] )
+  # if(idmissing > 0){
+  #   message(paste(idmissing, ' rows with missing ID'))
+  # } else{message("No missing IDs")}
+  #
+  # # Check whether ids are unique
+  # freqtab <- data.frame(table(data[,id]))
+  # colnames(freqtab)[1] <- "id"
+  # colnames(freqtab)[2] <- "n"
+  #
+  # if(any(freqtab$n > 1)){
+  #   duplicate <- freqtab[freqtab$n > 1, ]
+  #   message('IDs are not unique. The following ids have duplicates:')
+  #   print(duplicate)
+  # } else{message("No duplicate IDs.")}
+  #
+  # if(printlevels == TRUE){
+  #   # Print levels of all columns
+  #   levl <- lapply(data, unique)
+  #   levels <- unlist(lapply(levl, paste, collapse=" , "))
+  #   cat('The variables have the following levels: \n')
+  #   print(as.data.frame(levels))
+  # }
+#
+# }
 
 gs_langcondist <- function(data, types = NULL, levels = NULL, weights = NULL, structure = NULL){
   #' @param data Data frame. Rows can either be languages, or sublanguages (lower-level aspects of a language, e.g. constructions).
@@ -1163,8 +1170,24 @@ gs_viewnmds <- function(nmds_res, filename = NULL, dist = NULL, view = "nmds", r
     }
 
     if(nmds$ndim == 3){
-      plot_ly(x=nmds_res$NMDS1, y=nmds_res$NMDS2, z=nmds_res$NMDS3, type="scatter3d", mode="markers", color=nmds_res$groups, colors = c("Arawakan" = "tomato1", "Yucuna" = "red3", "Tucanoan" = "royalblue", "Tanimuca" = "navy"))
-    }
+      nmdsplot <- plot_ly(data = nmds_res, x = ~NMDS1, y = ~NMDS2, z = ~NMDS3,
+                          type="scatter3d", mode="markers", color = ~groups,
+                          colors = c("Arawakan" = "tomato1", "Yucuna" = "red3",
+                                     "Tucanoan" = "royalblue", "Tanimuca" = "navy"), hoverinfo = "text",
+                          text = rownames(nmds_res))
+
+      nmdsplot <- nmdsplot %>% layout(
+        title = paste0("NMDS (k = ", nmds$ndim, ", stress = ", round(nmds$stress, 2), ")"),
+        scene = list(
+          xaxis = list(title = "NMDS1"),
+          yaxis = list(title = "NMDS2"),
+          zaxis = list(title = "NMDS3")
+        ))
+
+
+
+      nmdsplot
+      saveWidget(nmdsplot, title = "SAPPHIRE - NMDS TAME 3d", "nmdsplot.html")      }
 
   }
 
