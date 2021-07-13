@@ -5,7 +5,7 @@
 \title{List names of all sheets in an excel file (.xls or .xlsx). This is a wrapper around excel_sheets.
 Use the function \code{"get_sheetdata"}  to import data.}
 \usage{
-get_sheetnames(filepath)
+get_sheetnames(path)
 }
 \arguments{
 \item{path}{Path to excel file}

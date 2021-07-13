@@ -4,12 +4,7 @@
 \alias{glottosearch}
 \title{Search within glottodata for languages, glottocodes, etc.}
 \usage{
-glottosearch(
-  glottodata = "glottolog",
-  find,
-  partialmatch = TRUE,
-  columns = NULL
-)
+glottosearch(glottodata = NULL, find, partialmatch = TRUE, columns = NULL)
 }
 \arguments{
 \item{glottodata}{Any linguistic or cultural dataset. Default is to search within glottolog.}

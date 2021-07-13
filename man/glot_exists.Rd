@@ -2,13 +2,21 @@
 % Please edit documentation in R/search.R
 \name{glot_exists}
 \alias{glot_exists}
-\title{Check whether a glottocode, language, family, or dialect exists in glottolog. This is a wrapper around glotto_search (only exact matches are returned)}
+\title{Check whether a glot or vector of glots exist in glottolog}
 \usage{
-glot_exists(find, columns = NULL)
+glot_exists(find, columns)
+}
+\arguments{
+\item{find}{Glottocode, name of language, family, etc.}
+
+\item{columns}{In which column should be searched}
 }
 \value{
 Logical: TRUE/FALSE
 }
 \description{
-Check whether a glottocode, language, family, or dialect exists in glottolog. This is a wrapper around glotto_search (only exact matches are returned)
+Check whether a glot or vector of glots exist in glottolog
+}
+\examples{
+#' glot_exists(find = c("yucu1253", "abcd1234"), columns = "glottocode")
 }

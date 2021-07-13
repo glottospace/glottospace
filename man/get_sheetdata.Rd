@@ -5,12 +5,14 @@
 \title{Import sheets from an excel file (.xls or .xlsx). This is a wrapper around excel_sheets.
 Use the function \code{"get_sheetnames"} to show all sheetnames in an excel file (without importing them).}
 \usage{
-get_sheetdata(filepath, sheets = NULL)
+get_sheetdata(path, sheets = NULL, simplify = TRUE)
 }
 \arguments{
-\item{filepath}{Path to excel file (.xls or .xlsx)}
+\item{path}{Path to excel file (.xls or .xlsx)}
 
 \item{sheets}{Character vector of sheetnames to import. Leave empty in case you want to import all sheets.}
+
+\item{simplify}{If only one sheet is selected, should the data be returned without placing it inside a list (which would be a list of length one)?}
 }
 \value{
 List with tibble per sheet
@@ -20,6 +22,13 @@ Import sheets from an excel file (.xls or .xlsx). This is a wrapper around excel
 Use the function \code{"get_sheetnames"} to show all sheetnames in an excel file (without importing them).
 }
 \examples{
-get_sheetdata(filepath = "glottodata.xlsx")
-get_sheetdata(filepath = "glottodata.xlsx", sheets = "abcd1234")
+# 1. There is one sheet in which each row represents a glot (anything with a glottocode). The first column contains the glottocodes.
+get_sheetdata(path = "glottodata.xlsx")
+get_sheetdata(path = "glottodata.xlsx", sheets = 1)
+get_sheetdata(path = "glottodata.xlsx", sheets = "glottodata")
+# 2. There are several sheets, each of which represents a glot. The name of the sheets are glottocodes.  The first column in each sheet contains glottosubcodes (abcd1234_a1)
+get_sheetdata(path = "glottodata.xlsx", sheets = c("abcd1234", "abcd1235", "abcd1236") )
+get_sheetdata(path = "glottodata.xlsx", sheets = c(1:16) )
+# 3. There are several sheets, each of which represents a subglot. The name of the sheets are glottosubcodes. The first column in each sheet contains glottosubsubcodes (abcd1234_a1_a1)
+get_sheetdata(path = "glottodata.xlsx", sheets = c("abcd1234_form", "abcd1234_meaning", "abcd1235_form", "abcdf1235_meaning") )
 }

@@ -102,9 +102,7 @@ return(cldfpath)
 #' get_sheetnames(path = "glottodata.xls")
 get_sheetnames <- function(path){
   sheetnames <- readxl::excel_sheets(path)
-  message("Excel file contains the following sheets: \n")
-  message(paste(sheetnames, "\n"))
-  message('Use the function get_sheetdata to import data')
+  message("Excel file contains the following sheets (use the function get_sheetdata for import): \n")
   sheetnames
 }
 
@@ -121,9 +119,11 @@ get_sheetnames <- function(path){
 #' @examples
 #' # 1. There is one sheet in which each row represents a glot (anything with a glottocode). The first column contains the glottocodes.
 #' get_sheetdata(path = "glottodata.xlsx")
+#' get_sheetdata(path = "glottodata.xlsx", sheets = 1)
 #' get_sheetdata(path = "glottodata.xlsx", sheets = "glottodata")
 #' # 2. There are several sheets, each of which represents a glot. The name of the sheets are glottocodes.  The first column in each sheet contains glottosubcodes (abcd1234_a1)
 #' get_sheetdata(path = "glottodata.xlsx", sheets = c("abcd1234", "abcd1235", "abcd1236") )
+#' get_sheetdata(path = "glottodata.xlsx", sheets = c(1:16) )
 #' # 3. There are several sheets, each of which represents a subglot. The name of the sheets are glottosubcodes. The first column in each sheet contains glottosubsubcodes (abcd1234_a1_a1)
 #' get_sheetdata(path = "glottodata.xlsx", sheets = c("abcd1234_form", "abcd1234_meaning", "abcd1235_form", "abcdf1235_meaning") )
 
@@ -145,49 +145,46 @@ get_sheetdata <- function(path, sheets = NULL, simplify = TRUE){
 # d3 <- "C:/Users/sjnor/surfdrive/Shared/Tanimuka_Yucuna/Databases/Voor_Sietze/TAME_V6.xlsx.xlsx"
 
 
-# CHECK WITHIN ONE ELEMENT OF A LIST
-glottodatacheck <- function(){
-  # Check levels
-  levl <- lapply(data[,colnames(data)!= id], unique)
-  # levels <- unlist(lapply(levl, paste, collapse=" , "))
-  cat('The variables have the following levels: \n')
-  # print(as.data.frame(levels))
-  print(levl)
+checkglottodata <- function(data = NULL, idcol = NULL, messages = TRUE){
 
-  # data <- as_tibble(data)
-  # print(data)
-
-  # Check missing IDs
-  idmissing <- nrow(data[is.na(data[,id]),] )
-  if(idmissing > 0){
-    message(paste(idmissing, ' rows with missing ID'))
-  } else{message("No missing IDs")}
-
-  # Check whether ids are unique
-  freqtab <- data.frame(table(data[,id]))
-  colnames(freqtab)[1] <- "id"
-  colnames(freqtab)[2] <- "n"
-
-  if(any(freqtab$n > 1)){
-    duplicate <- freqtab[freqtab$n > 1, ]
-    message('IDs are not unique. The following ids have duplicates:')
-    print(duplicate)
-  } else{message("No duplicate IDs.")}
-
-  if(printlevels == TRUE){
-    # Print levels of all columns
-    levl <- lapply(data, unique)
-    levels <- unlist(lapply(levl, paste, collapse=" , "))
-    cat('The variables have the following levels: \n')
-    print(as.data.frame(levels))
-  }
+  check_idmissing(data = data, idcol = idcol, messages = messages)
+  check_idunique(data = data, idcol = idcol, messages = messages)
+  check_varlevels(data = data, messages = messages)
+  check_glottocodes(data = data, idcol = idcol, messages = messages)
 
 }
-# glottodatacheck
-# gd_check
+
+gs_langsheetmerger <- function(langlist = NULL, col = NULL, newvarname = NULL){
+  # count columns check (see below)
+  #' @param langlist List of languages.
+  #' @return df Data.frame with all languages
+  if(is.null(col)){
+    # Default is to merge by row
+    m <- do.call("rbind", langlist) # alternative approaches: data.table::rbindlist or plyr::rbind.fill
+    df <- as.data.frame(m)
+  }
+  if(!is.null(col)){
+    langlistdata <- lapply(langlist, `[`, col)
+    ls <- unlist(langlistdata, recursive = F) # alternative is to transpose t()
+    m <- do.call("rbind", ls)
+    df <- as.data.frame(m)
+    rownames(df) <- gsub(pattern = "\\.", replacement = "_", x = rownames(df))
+    # rownames(df) <- names(langlist)
+    if(!is.null(newvarname)){
+      varnames <- lapply(langlist, `[`, newvarname)
+      varnmdf <- as.data.frame(lapply(varnames, cbind))
+      nvar <- apply(X = varnmdf, MARGIN = 1, FUN = unique)
+      nvar <- unlist(lapply(nvar, length))
+      if(!all(nvar == 1)){message("Not all varnames are identical across languages")}
+      colnames(df) <- unlist(varnames[[1]])
+    }
+  }
+
+  return(df)
+}
 
 # CHECK ACROSS ALL ELEMENTS OF A LIST
-glottodatacheck_colcount(){
+check_colcountsame <- function(langlist){
   # Check whether number of columns are identical across languages
 colcount <- lapply(X = lsls, FUN = function(x){length(colnames(x))})
 colcount <- unlist(colcount, recursive = F)

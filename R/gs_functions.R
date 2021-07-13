@@ -822,33 +822,7 @@ gs_langsheetreader <- function(dataset = NULL, glottocodes = NULL, metasheet = N
 
 }
 
-gs_langsheetmerger <- function(langlist = NULL, col = NULL, newvarname = NULL){
-  #' @param langlist List of languages.
-  #' @return df Data.frame with all languages
-  if(is.null(col)){
-    # Default is to merge by row
-    m <- do.call("rbind", langlist) # alternative approaches: data.table::rbindlist or plyr::rbind.fill
-    df <- as.data.frame(m)
-  }
-  if(!is.null(col)){
-    langlistdata <- lapply(langlist, `[`, col)
-    ls <- unlist(langlistdata, recursive = F) # alternative is to transpose t()
-    m <- do.call("rbind", ls)
-    df <- as.data.frame(m)
-    rownames(df) <- gsub(pattern = "\\.", replacement = "_", x = rownames(df))
-    # rownames(df) <- names(langlist)
-    if(!is.null(newvarname)){
-      varnames <- lapply(langlist, `[`, newvarname)
-      varnmdf <- as.data.frame(lapply(varnames, cbind))
-      nvar <- apply(X = varnmdf, MARGIN = 1, FUN = unique)
-      nvar <- unlist(lapply(nvar, length))
-      if(!all(nvar == 1)){message("Not all varnames are identical across languages")}
-      colnames(df) <- unlist(varnames[[1]])
-    }
-  }
 
-  return(df)
-}
 
 gs_mergedatadist <- function(data, dist, rm.na = TRUE){
 
