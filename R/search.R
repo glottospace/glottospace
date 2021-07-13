@@ -13,7 +13,7 @@
 #' glottosearch(find = "Yucuni", columns = "name")
 glottosearch <- function(glottodata = NULL, find, partialmatch = TRUE, columns = NULL){
 
- if(is.null(glottodata) ){glottodata <- get_glottolog("glottolog")}
+ if(is.null(glottodata) ){glottodata <- glottobase}
   if(missing(find)){stop("No search term provided, please indicate what you want to search for.")}
   if(length(find) > 1){stop("More than one search term provided, please provide a single term.",
                             call. = FALSE)}
@@ -35,7 +35,7 @@ glottosearch <- function(glottodata = NULL, find, partialmatch = TRUE, columns =
 #' @return Logical: TRUE/FALSE
 glot_exists_one <- function(find, columns){
   # TODO: Do not load glottobase each time. This will be solved if glottodata is added to package.
-  existsdf <- glottosearch(glottodata = glottobase(), find = find, partialmatch = FALSE, columns = columns)
+  existsdf <- glottosearch(glottodata = glottobase, find = find, partialmatch = FALSE, columns = columns)
   ifelse(nrow(existsdf == 1), existing <- TRUE, existing <- FALSE)
 }
 

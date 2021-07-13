@@ -57,7 +57,7 @@ check_idunique <- function(data, idcol, messages = TRUE){
 
 check_varlevels <- function(data, messages = TRUE){
   lslevels <- lapply(data, unique)
-  varlevels <- unlist(lapply(levs, paste, collapse=" , "), use.names = FALSE)
+  varlevels <- unlist(lapply(lslevels, paste, collapse=" , "), use.names = FALSE)
   varlevels <- data.frame(variable = colnames(data), levels = varlevels)
 
   if(messages == TRUE){

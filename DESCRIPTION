@@ -20,3 +20,5 @@ Imports:
     rnaturalearth,
     rnaturalearthdata,
     sf
+Depends: 
+    R (>= 2.10)
