@@ -74,7 +74,7 @@ checkdata_idunique <- function(data, idcol){
   if(any(freqtab$n > 1)){
       duplicate <- freqtab[freqtab$n > 1, ]
       message('IDs are not unique. The following ids have duplicates:')
-      message(paste(duplicate$id, cat = ","))
+      message(paste(duplicate$id, ": ", duplicate$n, "\n"))
       invisible(FALSE)
   } else {
       message("No duplicate IDs.")
@@ -104,7 +104,7 @@ checkdata_twolevels <- function(data){
 
   # How many variables have less than two levels? Which variables?
   totbelow2 <- sum(lslevdf)
-  namesbelow2 <- paste(rownames(lslevdf)[lslevdf], collapse = ",")
+  namesbelow2 <- paste(rownames(lslevdf)[lslevdf], collapse = ", ")
 
   if(totbelow2 != 0){
     message(paste0("There are ", totbelow2, " variables with less than two levels (excluding NA): ", namesbelow2))
@@ -155,4 +155,24 @@ checkdata_glottocodes <- function(data, idcol, messages = TRUE){
     message("All IDs are valid glottocodes")
   }
   invisible(all(existing))
+}
+
+#' Check whether number of columns are identical across all glots (a language data.frame) in a list
+#'
+#' @param langlist
+#'
+#' @return
+#'
+#' @examples
+checkdata_lscolcount <- function(langlist){
+  colcount <- lapply(X = langlist, FUN = function(x){length(colnames(x))})
+  colcount <- unlist(colcount, recursive = F)
+
+  if(is.null(names(langlist))){names(langlist) <- seq_len(length(langlist))}
+
+  if(length(unique(colcount)) > 1){
+    message(paste(names(langlist), ": ", colcount, "\n"))
+    stop('Not all languages have same number of features \n', call. = FALSE)
+  }
+
 }

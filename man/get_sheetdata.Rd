@@ -11,10 +11,10 @@ get_sheetdata(path, sheets = NULL, simplify = TRUE)
 
 \item{sheets}{Character vector of sheetnames to import. Leave empty in case you want to import all sheets.}
 
-\item{simplify}{If only one sheet is selected, should the data be returned without placing it inside a list (which would be a list of length one)?}
+\item{simplify}{If TRUE and only one sheet is selected, the data will be returned without placing it inside a list (which would be a list of length one).}
 }
 \value{
-List with tibble per sheet
+Named list with one table (tibble) per glot.
 }
 \description{
 Import sheets from an excel file (.xls or .xlsx).
@@ -28,9 +28,21 @@ This is a wrapper around excel_sheets.
 get_sheetdata(path = "glottodata.xlsx")
 get_sheetdata(path = "glottodata.xlsx", sheets = 1)
 get_sheetdata(path = "glottodata.xlsx", sheets = "glottodata")
+
+path <- "C:/Users/sjnor/surfdrive/Shared/SAPPHIRE/Output/Presentations/Isolates_WS-Athens/data/dbase_isolates_V2.xlsx"
+data <- get_sheetdata(path = path, sheets = "isolates")
+
 # 2. There are several sheets, each of which represents a glot. The name of the sheets are glottocodes.  The first column in each sheet contains glottosubcodes (abcd1234_a1)
 get_sheetdata(path = "glottodata.xlsx", sheets = c("abcd1234", "abcd1235", "abcd1236") )
 get_sheetdata(path = "glottodata.xlsx", sheets = c(1:16) )
+
+path <- "C:/Users/sjnor/surfdrive/Shared/Tanimuka_Yucuna/Databases/Voor_Sietze/NounPhrase_V6.xlsx"
+get_sheetnames(path)
+data <- get_sheetdata(path = path, sheets = c(1:16) )
+
 # 3. There are several sheets, each of which represents a subglot. The name of the sheets are glottosubcodes. The first column in each sheet contains glottosubsubcodes (abcd1234_a1_a1)
 get_sheetdata(path = "glottodata.xlsx", sheets = c("abcd1234_form", "abcd1234_meaning", "abcd1235_form", "abcdf1235_meaning") )
+
+path <- "C:/Users/sjnor/surfdrive/Shared/Tanimuka_Yucuna/Databases/Voor_Sietze/TAME_V6.xlsx"
+get_sheetnames(path)
 }
