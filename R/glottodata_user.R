@@ -62,31 +62,7 @@ get_sheetdata <- function(path, sheets = NULL, simplify = TRUE){
 # d3 <- "C:/Users/sjnor/surfdrive/Shared/Tanimuka_Yucuna/Databases/Voor_Sietze/TAME_V6.xlsx.xlsx"
 
 
-#' Quality check of user-provided glottodata
-#'
-#' @param data
-#' @param idcol
-#' @param messages
-#'
-#' @return
-#' @export
-#'
-#' @examples
-#' data <- get_sheetdata(path = d1, sheets = 1)
-#' checkglottodata(data = glottodata, idcol = 1)
-#'
-#' checkglottodata(data = glottodata, idcol = "glottocode")
-#' lapply(glottodatalist, checkglottodata, idcol = "glottosubcode", messages = FALSE)
-checkglottodata <- function(data = NULL, idcol = NULL, messages = TRUE){
 
-  check_idmissing(data = data, idcol = idcol, messages = messages)
-  check_idunique(data = data, idcol = idcol, messages = messages)
-  check_varlevels(data = data, messages = messages)
-  check_glottocodes(data = data, idcol = idcol, messages = messages)
-
-  # TODO: output data.frame with summary for each check (useful in case of lapply)
-
-}
 
 gs_langsheetmerger <- function(langlist = NULL, col = NULL, newvarname = NULL){
   # count columns check (see below)
