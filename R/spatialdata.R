@@ -1,6 +1,8 @@
 
 path <- "D:/Global/Biodiversity/wwf_terr_ecos/wwf_terr_ecos.shp"
 path <- "D:/Global/Topography/Geomorpho90m/250m/Global/dtm_roughness_merit.dem_m_250m_s0..0cm_2018_v1.0.tif"
+path <- "D:/Global/Soils/HWSD/1km/Global/sq1.asc"
+
 
 #' Open geodata (raster or vector format)
 #'
@@ -11,26 +13,28 @@ path <- "D:/Global/Topography/Geomorpho90m/250m/Global/dtm_roughness_merit.dem_m
 #' @export
 #'
 #' @examples
-get_geodata <- function(path, name = NULL){
+spatialfilter <- function(path, name = NULL){
   rasvec <- get_rasvec(path = path)
 
-  if(!is.null(rasveclist$raster)){
+  if(is_raster(rasvec)){
     if(!is.null(name)){names(ras) <- name}
   }
 
-  if(!is.null(rasveclist$vector)){
+  if(is_vector(rasvec)){
 
   }
 }
 
-#' Try to open raster/vector data and return list of two
+#' Get spatial data
+#'
+#' Open spatial data from a local path (supports both raster and vector formats).
 #'
 #' @param path Path to raster or vector data
 #'
-#' @return A list of two
+#' @return
 #'
 #' @examples
-get_rasvec <- function(path){
+get_spatialdata <- function(path){
 
   if(!file.exists(path)){stop("Path not found")}
 
@@ -38,72 +42,34 @@ get_rasvec <- function(path){
   # vec <- try(sf::st_read(path), silent = TRUE)
   # if(all(class(vec) != "try-error")){message("Vector data loaded")}
   vec <- tryCatch(sf::st_read(path), error=function(e){})
-
-  if(!is.null(vec)){message("Vector data loaded")
+  if(!is.null(vec)){ras <- NULL
   } else {
     ras <- tryCatch(raster::raster(path), error=function(e){})
-    if(!is.null(ras)){message("Raster data loaded")}
     }
 
   if(is.null(vec) & is.null(ras)){
-    stop(paste0("Cannot open ", path))}
+    stop(paste0("Cannot open ", path))
+    }
 
-  rasvec <- unlist(list(ras, vec))[[1]]
+  if(is.null(vec) & !is.null(ras)){
+    rasvec <- ras
+    message("Raster data loaded")
+    }
+
+if(!is.null(vec) & is.null(ras)){
+    rasvec <- vec
+    message("Vector data loaded")
+    }
+
+  return(rasvec)
 
 }
 
+rasterstack <- function(){}
+rastermosaic <- function(){}
+vectormerge <- function(){}
+rasterfilter <- function(){}
 
-
-# gs_datageo <- function(name = NULL, region = NULL, res = NULL, path = NULL, selection = "default"){
-#
-
-#
-#   if(name == "roughness"){
-#     if(res == "250m" & region == "Global"){file <- "dtm_roughness_merit.dem_m_250m_s0..0cm_2018_v1.0.tif"}
-#     path <- gs_geopath(pathgroup = "Topography/Geomorpho90m", res = res, region = region, file = file)
-#     ras <- raster::raster(path)
-#     cat(paste("Loading raster:", name, "at", res, "resolution for:", region, "\n"))
-#     if(!is.null(ras)){
-#       names(ras) <- name
-#       out <- ras
-#       cat(paste0("Roughness merit dem loaded (", file, ")"))
-#     }
-#   }
-#
-#   if(name == "elevation"){
-#     if(res == "250m" & region == "South America"){file <- "SRTM250mSA.tif"}
-#     path <- gs_geopath(pathgroup = "Topography/SRTM", res = res, region = region, file = file)
-#     ras <- raster::raster(path)
-#     cat(paste("Loading raster:", name, "at", res, "resolution for:", region, "\n"))
-#     if(!is.null(ras)){
-#       names(ras) <- name
-#       out <- ras
-#       cat(paste0("SRTM data loaded (", file, ")"))
-#     }
-#   }
-#
-#   if(name == "nutrients"){
-#     if(res == "1km" & region == "Global"){file <- "sq1.asc"} else {file <- ""}
-#     path <- gs_geopath(pathgroup = "Soils/HWSD", res = res, region = region, file = file)
-#     ras <- raster::raster(path)
-#     cat(paste("Loading raster:", name, "at", res, "resolution for:", region, "\n"))
-#     if(!is.null(ras)){
-#       crs(ras) <- CRS('+init=EPSG:4326')
-#       names(ras) <- name
-#       out <- ras
-#       cat(paste0("Nutrient availability loaded (", file, ")"))
-#       cat(paste("
-#     Legend:
-#     1 = no significant constraint
-#     2 = moderate constraints
-#     3 = severe constraints
-#     4 = very severe constraints
-#     5 = mainly non-soil
-#     6 = permafrost area
-#     7 = water bodies
-#               \n \n"))
-#     }
-#   }
 #
 #   if(name == "worldclim"){
 #     if(res == "1km" & region == "South America"){file <- paste("wc2.0_bio_30s_", sprintf("%02d", seq(1,19)), '.tif', sep='')}
