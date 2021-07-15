@@ -55,7 +55,7 @@ get_sheetnames <- function(path){
 #'
 #' path <- "C:/Users/sjnor/surfdrive/Shared/Tanimuka_Yucuna/Databases/Voor_Sietze/TAME_V6.xlsx"
 #' get_sheetnames(path)
-
+# TOFIX: https://stackoverflow.com/questions/30177053/using-a-trycatch-block-to-read-a-csv-and-an-excel-file
 get_sheetdata <- function(path, sheets = NULL, simplify = TRUE){
   if(is.null(sheets)){
     data <- base::lapply(X = readxl::excel_sheets(path),
