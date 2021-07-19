@@ -4,29 +4,6 @@
 
 
 
-gs_mergedatadist <- function(data, dist, rm.na = TRUE){
-
-  distmat <- as.matrix(dist)
-
-  if(rm.na == TRUE){
-    rowna <- rowSums(is.na(distmat))
-    colna <- colSums(is.na(distmat))
-
-    rmcol <- which(colSums(is.na(distmat)) > min(colna))
-    rmrow <- which(rowSums(is.na(distmat)) > min(rowna))
-
-    if(!purrr::is_empty(rmcol)){  distmat <- distmat[,-rmcol] }
-    if(!purrr::is_empty(rmrow)){  distmat <- distmat[-rmrow,] }
-  }
-
-  distdf <- as.data.frame(distmat)
-  setDT(distdf, keep.rownames = "id")
-
-  setDT(data, keep.rownames = "id")
-
-  inner_join(data, distdf, by = "id")
-
-}
 
 gs_langdatacleaner <- function(data = NULL, rm = NULL, sel = NULL, id = NULL, structure = NULL, rmtypes = c("id", "meta", "bk", "fk")){
 
