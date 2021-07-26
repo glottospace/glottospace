@@ -59,6 +59,7 @@ purrr::map2_lgl(.x = find, .y = columns, .f = glot_exists_one)
 #'
 #' @return A logical vector
 #' @export
+#' @aliases glottocodes_exist
 #'
 #' @examples
 #' glottocode_exists(c("yucu1253"))

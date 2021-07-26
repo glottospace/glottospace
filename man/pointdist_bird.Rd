@@ -2,7 +2,7 @@
 % Please edit documentation in R/geodist.R
 \name{pointdist_bird}
 \alias{pointdist_bird}
-\title{Calculates geographic distances between points, as the bird flies (great circle distance)}
+\title{Calculates distances between spatial points, as the bird flies.}
 \usage{
 pointdist_bird(points, label)
 }
@@ -15,7 +15,7 @@ pointdist_bird(points, label)
 dist object with distances (km) between all points
 }
 \description{
-Great circle distances (Haversine distances) are calculated between all points.
+Calculate Euclidean distances between spatial points, as the bird flies (great circle distances/Haversine distances).
 }
 \examples{
 pointdist_bird(points = points, label = "glottocode")

@@ -1,3 +1,5 @@
+# check CRS identical
+
 is_raster <- function(object){
   (class(object)[1] == "RasterLayer") | (class(object)[1] == "RasterStack")
 }

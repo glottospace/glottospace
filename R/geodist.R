@@ -1,6 +1,6 @@
-#' Calculates geographic distances between points, as the bird flies (great circle distance)
+#' Distances between spatial points, as the bird flies.
 #'
-#' Great circle distances (Haversine distances) are calculated between all points.
+#' Calculate Euclidean distances between spatial points, as the bird flies (great circle distances/Haversine distances).
 #'
 #' @param points Spatial point object
 #' @param label Column name or number indicating how objects should be labeled
@@ -51,6 +51,42 @@ nearestline_bird <- function(points, lines, label){
 
   return(geodist)
 }
+
+#' Distances between spatial points, over land
+#'
+#' @param points # geoglot or sf object
+#' @param label
+#' @param topography raster object or path to raster object
+#'
+#' @return
+#' @export
+#'
+#' @examples
+#' ppath <- "C:/Users/sjnor/surfdrive/Projecten en schrijfsels/Papers in progress/Isolates/output/nwa.gpkg"
+#' topopath <- "D:/Global/Topography/SRTM/250m/South America/SRTM250mSA.tif"
+#' points <- st_read(ppath)
+#' pointdist_topo(points = points, topography = topopath)
+pointdist_topo <- function(points, label, topography){
+  # TODO: add units (km, hours, etc.)
+  # https://stackoverflow.com/questions/36523709/r-gdistance-different-results-for-acccost-and-costdistance
+  if(is_raster(topography)){r <- topography
+  } else {
+    # TODO: check if path, and include try / tryCatch
+    r <- raster(topography) # assume it is a path
+  }
+  p <- sf::as_Spatial(points)
+
+  # TODO: check CRS identical
+
+  tr <- transition(x = r, transitionFunction = function(x) 1/mean(x), directions = 8)
+  geodist <- gdistance::costDistance(x = tr, fromCoords = p)
+  return(geodist)
+
+  # Alternative
+  # topoDist(DEM = r, pts = p, directions = 8, paths = FALSE, zweight = 1)
+
+}
+
 
 
 gs_geodist <- function(points, lines, label = "name"){

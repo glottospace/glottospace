@@ -2,6 +2,7 @@
 
 # STEPS
 # To install package: install(force = TRUE)
+# ALWAYS INSTALL FROM HERE, NOT FROM OTHER SCRIPT.
 
 # FUNCTIONS TO ADD -------------------------------------------------------------------
 
@@ -40,3 +41,8 @@
 # normalize path. Change backward slashes to forward slashes, make platform independent.
 # featuredist (can be used to calculate environmental or linguistic distances)
 # Check if something is a dist object, if it is, convert to distmat
+
+# function to drop spatial and drop units (for statistical/non-spatial analyses, see isolates script STAT preparation)
+# Remove sign languages, unclassified, dummy families (Urban 2021)
+# extend file saving. Both images, maps, objects, but also tables.
+# Family_name column for plotting: 'isolate', if you plot families als isolates will get the same colour.

@@ -7,6 +7,7 @@ glotto_addfeatures <- function(){
 # head(glottolog_cldf$sources[,"LGCODE"])
 
 glottolog_addfamilyname <- function(glottodata = NULL){
+  # TODO: rather than adding "isol0023" in family_name column, better to add NA?
   #' @importFrom magrittr %>%
   if(is.null(glottodata)){
     glottodata <- getglottodata()

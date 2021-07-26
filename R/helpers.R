@@ -1,3 +1,5 @@
+# TODO: is_path # check whether something is a character string and path exists (platform independent)
+
 ## From https://geocompr.robinlovelace.net/reproj-geo-data.html
 lonlat2utm = function(lonlat) {
   utm = (floor((lonlat[1] + 180) / 6) %% 60) + 1
