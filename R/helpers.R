@@ -10,6 +10,8 @@ lonlat2utm = function(lonlat) {
   }
 }
 
+
+
 #' Conditionally transforms coordinates to lonlat
 #'
 #' If CRS of a spatial object is not longitude latitude it will be converted.

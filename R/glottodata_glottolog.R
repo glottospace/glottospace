@@ -82,7 +82,7 @@ tmpfile <- tempfile()
 # tmpfile <- tempfile(tmpdir = destdir)
 utils::download.file(url = url, destfile = tmpfile )
 utils::unzip(zipfile = tmpfile, exdir = destdir)
-
+# FIXME: regex *-metadata.json
 cldf_md <- base::list.files(destdir, pattern = "cldf-metadata.json", recursive = TRUE)
 cldfpath <- paste(destdir,
                    stringr::str_remove(cldf_md, "cldf-metadata.json"), sep = "/" )

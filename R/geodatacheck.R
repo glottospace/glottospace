@@ -1,4 +1,6 @@
-# check CRS identical
+identicalcrs <- function(x, y){
+  base::identical(sf::st_crs(x), sf::st_crs(y))
+}
 
 is_raster <- function(object){
   (class(object)[1] == "RasterLayer") | (class(object)[1] == "RasterStack")

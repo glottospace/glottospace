@@ -28,7 +28,7 @@ pointdist_bird <- function(points, label){
 #'
 #' @param points Spatial point object
 #' @param lines Spatial line object
-#' @param label Column name or number indicating how objects should be labeled
+#' @param label Column name or index to be used for labeling objects.
 #'
 #' @return dist object with distances from each point (km) to the nearest line.
 #' @export
@@ -54,36 +54,61 @@ nearestline_bird <- function(points, lines, label){
 
 #' Distances between spatial points, over land
 #'
-#' @param points # geoglot or sf object
-#' @param label
+#' Least-cost distance between spatial points. Based on the Dijkstra (1959)
+#' algorithm as implemented in the gdistance package (van Etten, 2017)
+#'
+#' @param points geoglot or sf object
+#' @param label Column name or index to be used for labeling objects.
 #' @param topography raster object or path to raster object
 #'
-#' @return
+#' @return dist object
 #' @export
 #'
 #' @examples
 #' ppath <- "C:/Users/sjnor/surfdrive/Projecten en schrijfsels/Papers in progress/Isolates/output/nwa.gpkg"
 #' topopath <- "D:/Global/Topography/SRTM/250m/South America/SRTM250mSA.tif"
-#' points <- st_read(ppath)
+#' points <- sf::st_read(ppath)
+#' points <- sf::st_geometry(points)
+#' points <- points[c(1:10),] # for testing only
 #' pointdist_topo(points = points, topography = topopath)
 pointdist_topo <- function(points, label, topography){
   # TODO: add units (km, hours, etc.)
   # https://stackoverflow.com/questions/36523709/r-gdistance-different-results-for-acccost-and-costdistance
+  # https://gis.stackexchange.com/questions/244364/least-cost-path-barrier-r-gdistance
   if(is_raster(topography)){r <- topography
   } else {
-    # TODO: check if path, and include try / tryCatch
-    r <- raster(topography) # assume it is a path
+    # TODO: check if path exists, and include try / tryCatch
+    r <- raster::raster(topography, package = "gdistance") # assume it is a path
   }
+
   p <- sf::as_Spatial(points)
 
-  # TODO: check CRS identical
+  if(!identicalcrs(x = r, y= p)) {stop("coordinate reference systems do not match.")}
 
-  tr <- transition(x = r, transitionFunction = function(x) 1/mean(x), directions = 8)
-  geodist <- gdistance::costDistance(x = tr, fromCoords = p)
-  return(geodist)
+  rc <- raster::crop(r, p) # added to reduce memory usage. TODO: see suggestions here: https://discuss.ropensci.org/t/how-to-avoid-space-hogging-raster-tempfiles/864
+
+
+
+  # tr <- gdistance::transition(x = rc, transitionFunction = mean, directions = 8)
+  # trc <- gdistance::geoCorrection(tr, type = "c")
+  # # should be saved in temporary directory?
+  # geodist <- gdistance::costDistance(x = trc, fromCoords = p, toCoords = p)
+  # return(geodist)
+
+  # # Example 1 from van Etten 2017
+  # altDiff <- function(x) x[2] - x[1]
+  # hd <- gdistance::transition(rc, altDiff, 8, symm= FALSE)
+  # slope <- gdistance::geoCorrection(hd)
+  # adj <- raster::adjacent(rc, cells = 1:raster::ncell(rc), pairs = TRUE, directions = 8)
+  # speed <- slope
+  # speed[adj] <- 6 * exp(-3.5 * abs(slope[adj] + 0.05))
+  # conductance <- gdistance::geoCorrection(speed)
+  #
+  # AtoB <- gdistance::shortestPath(conductance, p[1,], p[2,], output = "SpatialLines")
+  # BtoA <- gdistance::shortestPath(conductance, p[2,], p[1,], output = "SpatialLines")
 
   # Alternative
-  # topoDist(DEM = r, pts = p, directions = 8, paths = FALSE, zweight = 1)
+  geodist <- topoDistance::topoDist(DEM = rc, pts = p, directions = 8, paths = FALSE, zweight = 1)
 
 }
 
