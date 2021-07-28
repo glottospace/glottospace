@@ -43,6 +43,5 @@
 # Check if something is a dist object, if it is, convert to distmat
 
 # function to drop spatial and drop units (for statistical/non-spatial analyses, see isolates script STAT preparation)
-# Remove sign languages, unclassified, dummy families (Urban 2021)
 # extend file saving. Both images, maps, objects, but also tables.
 # Family_name column for plotting: 'isolate', if you plot families als isolates will get the same colour.

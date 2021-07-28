@@ -1,9 +1,11 @@
-#' Filter glottolog data
+#' Filter glottodata by language, glottocode, etc.
+#'
+#' By default, the glottolog data will be used to filter from. But in case the user provides glottodata, this will be used.
 #'
 #' @param glottodata glot or geoglot object obtained with
-#'   \code{\link{glotto_get}} or \code{\link{as_glot}}  or
+#'   \code{\link{get_glottolog}} or \code{\link{as_glot}}  or
 #'   \code{\link{as_geoglot}}.
-#' @param isocodes A character vector of isocodes
+#' @param isocodes A character vector of iso639P3codes
 #' @param glottocode A character vector of glottocodes
 #' @param family_name A character vector of language families
 #' @param family_id A character vector of language family IDs
@@ -32,6 +34,7 @@
 glottofilter <- function(glottodata = NULL, isocodes = NULL,
                       glottocode = NULL, family_name = NULL, family_id = NULL,
                       continent = NULL, country = NULL, expression = NULL){
+
   # filter glottolog data
   # isocodes: a character vector of isocodes
   # macroarea: a character vector of macroarea(s)
@@ -43,9 +46,7 @@ glottofilter <- function(glottodata = NULL, isocodes = NULL,
   #   }
 
   if(purrr::is_empty(glottodata)){
-    message("No input data provided, glottolog data downloaded and transformed")
-    glottodata <- gs_data()
-    glottodata <- gs_transform(glottodata)
+    glottodata <- get_glottobase()
   }
 
   # Filter by expression:

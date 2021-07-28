@@ -2,7 +2,7 @@
 % Please edit documentation in R/geodist.R
 \name{pointdist_bird}
 \alias{pointdist_bird}
-\title{Calculates distances between spatial points, as the bird flies.}
+\title{Distances between spatial points, as the bird flies.}
 \usage{
 pointdist_bird(points, label)
 }

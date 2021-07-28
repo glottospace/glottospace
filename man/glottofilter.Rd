@@ -4,7 +4,7 @@
 \alias{glottofilter}
 \alias{glotto_select}
 \alias{glotto_subset}
-\title{Filter glottolog data}
+\title{Filter glottodata by language, glottocode, etc.}
 \usage{
 glottofilter(
   glottodata = NULL,
@@ -19,10 +19,10 @@ glottofilter(
 }
 \arguments{
 \item{glottodata}{glot or geoglot object obtained with
-\code{\link{glotto_get}} or \code{\link{as_glot}}  or
+\code{\link{get_glottolog}} or \code{\link{as_glot}}  or
 \code{\link{as_geoglot}}.}
 
-\item{isocodes}{A character vector of isocodes}
+\item{isocodes}{A character vector of iso639P3codes}
 
 \item{glottocode}{A character vector of glottocodes}
 
@@ -40,7 +40,7 @@ glottofilter(
 A smaller glot object or geoglot object containing only the selected features.
 }
 \description{
-Filter glottolog data
+By default, the glottolog data will be used to filter from. But in case the user provides glottodata, this will be used.
 }
 \examples{
 # Get data

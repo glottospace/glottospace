@@ -13,7 +13,7 @@
 #' glottosearch(find = "Yucuni", columns = "name")
 glottosearch <- function(glottodata = NULL, find, partialmatch = TRUE, columns = NULL){
 
- if(is.null(glottodata) ){glottodata <- glottobase}
+ if(is.null(glottodata) ){glottodata <- glottobase()}
   if(missing(find)){stop("No search term provided, please indicate what you want to search for.")}
   if(length(find) > 1){stop("More than one search term provided, please provide a single term.",
                             call. = FALSE)}

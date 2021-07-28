@@ -74,18 +74,33 @@ gs_langdatacleaner <- function(data = NULL, rm = NULL, sel = NULL, id = NULL, st
 
 }
 
-gs_langcondist <- function(data, types = NULL, levels = NULL, weights = NULL, structure = NULL){
-  #' @param data Data frame. Rows can either be languages, or sublanguages (lower-level aspects of a language, e.g. constructions).
-  #' Columns contain the variables based on which distances are calculated.
-  #' @param structure Data frame specifying per column in the data (optional): type, weights. Columns should be named as follows: colnames, type, weight.
 
+
+
+
+
+#' Calculate distances between glots
+#'
+#' @param data Data frame. Rows can either be glots, or subglots (lower-level aspects of a language, e.g. constructions).
+#' Columns contain the variables based on which distances are calculated.
+#' @param types Character vector with the same length as the number of columns specifying the type of each column
+#' @param levels Character vector with the same length as the number of columns specifying the levels of each column
+#' @param weights Character vector with the same length as the number of columns specifying the weight of each column
+#' @param structure Data frame specifying per column in the data (optional): types, levels weights. Columns should be named as follows: colnames, type, weight.
+#'
+#' @return object of class \code{dist}
+#' @export
+#'
+#' @examples
+#' glottodist <- glottodist(glottodata = isolates, structure = structure)
+glottodist <- function(glottodata, types = NULL, levels = NULL, weights = NULL, structure = NULL){
   # Specify column types and levels
   if(!is.null(structure)){
-    structure <- suppressMessages(dplyr::left_join(data.frame("colnames" = colnames(data)), structure))
+    structure <- suppressMessages(dplyr::left_join(data.frame("colnames" = colnames(glottodata)), structure))
     if(is.null(types)){types <- structure$type}
     if(is.null(levels)){levels <- structure$levels}
     if(is.null(weights)){
-      if(is.null(structure$weight)){weights <- rep(1, ncol(data))}
+      if(is.null(structure$weight)){weights <- rep(1, ncol(glottodata))}
       if(!is.null(structure$weight)){weights <- structure$weight}
     }
   }
@@ -104,14 +119,14 @@ gs_langcondist <- function(data, types = NULL, levels = NULL, weights = NULL, st
 
   # set types
   cbinary <- c(symm, asymm)
-  data[cbinary] <- lapply(data[cbinary], as.logical)
-  data[numer] <- lapply(data[numer], as.numeric)
-  data[fact] <- lapply(data[fact], as.factor)
-  data[ordfact] <- mapply(FUN = as.ordfact, x = data[ordfact], levels = levels[ordfact])
-  data[ordratio] <- lapply(data[ordratio], as.numeric)
-  data[logratio] <- lapply(data[logratio], as.numeric)
+  glottodata[cbinary] <- lapply(glottodata[cbinary], as.logical)
+  glottodata[numer] <- lapply(glottodata[numer], as.numeric)
+  glottodata[fact] <- lapply(glottodata[fact], as.factor)
+  glottodata[ordfact] <- mapply(FUN = as.ordfact, x = glottodata[ordfact], levels = levels[ordfact])
+  glottodata[ordratio] <- lapply(glottodata[ordratio], as.numeric)
+  glottodata[logratio] <- lapply(glottodata[logratio], as.numeric)
 
-  dist <- cluster::daisy(x = data, metric = "gower",
+  dist <- cluster::daisy(x = glottodata, metric = "gower",
                          type = list(symm = symm, asymm = asymm, ordratio = ordratio, logratio = logratio),
                          weights = weights)
 }

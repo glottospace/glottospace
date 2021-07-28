@@ -11,7 +11,7 @@ nearestline_bird(points, lines, label)
 
 \item{lines}{Spatial line object}
 
-\item{label}{Column name or number indicating how objects should be labeled}
+\item{label}{Column name or index to be used for labeling objects.}
 }
 \value{
 dist object with distances from each point (km) to the nearest line.
