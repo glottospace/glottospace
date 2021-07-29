@@ -3,7 +3,7 @@
 #' @param data A data.frame
 #' @param dist A dist object
 #' @param rm.na Default is to remove NAs.
-#' @param idcol Column with IDs in \code{data} that match names of dist object
+#' @param id Column with IDs in \code{data} that match names of dist object. By default, the "glottocode" column is used.
 #'
 #' @return Data frame
 #' @export
@@ -14,9 +14,9 @@
 #' dist <- pointdist_bird(sa, label = "glottocode")
 #' distdf <- joindatadist(data = sa, idcol = "glottocode", dist = dist)
 #'
-#' You can subset the distance columns by using the IDs:
+#' After joining, you can subset the distance columns by using the IDs:
 #' distdf[, distdf$glottocode]
-join_glottodist <- function(data, idcol, dist, rm.na = TRUE){
+join_glottodist <- function(data, id = "glottocode", dist, rm.na = TRUE){
 
   distmat <- as.matrix(dist)
 
@@ -31,25 +31,18 @@ join_glottodist <- function(data, idcol, dist, rm.na = TRUE){
     if(!purrr::is_empty(rmrow)){  distmat <- distmat[-rmrow,] }
   }
 
-  # distdf <- as.data.frame(distmat)
-  # distdf <- tibble::rownames_to_column(distdf, "id")
-  # colnames(data)[colnames(data) == idcol] <- "id"
-  # dfjoin <- dplyr::inner_join(data, distdf, by = "id") # not using by = c("a" = "b") because only works with character strings and not with idcol object
-  # colnames(dfjoin)[colnames(dfjoin) == "id"] <- idcol
-  # return(dfjoin)
-
   distdf <- as.data.frame(distmat)
   data.table::setDT(distdf, keep.rownames = "id")
 
-  colnames(data)[colnames(data) == idcol] <- "id"
+  colnames(data)[colnames(data) == id] <- "id"
   data.table::setDT(data, keep.rownames = "id")
 
-  dfjoin <- dplyr::inner_join(data, distdf, by = "id") # not using by = c("a" = "b") because only works with character strings and not with idcol object
-  colnames(dfjoin)[colnames(dfjoin) == "id"] <- idcol
+  dfjoin <- dplyr::inner_join(data, distdf, by = "id") # not using by = c("a" = "b") because only works with character strings and not with id object
+  colnames(dfjoin)[colnames(dfjoin) == "id"] <- id
   return(dfjoin)
 
 }
 
-join_glottodata <- function(data, glottodata){
-  dplyr::left_join(x = data, y = glottodata, by = "glottocode")
+join_glottodata <- function(data, glottodata, id = "glottocode"){
+  dplyr::left_join(x = data, y = glottodata, by = id)
 }
