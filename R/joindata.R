@@ -16,7 +16,7 @@
 #'
 #' You can subset the distance columns by using the IDs:
 #' distdf[, distdf$glottocode]
-joindatadist <- function(data, idcol, dist, rm.na = TRUE){
+join_glottodist <- function(data, idcol, dist, rm.na = TRUE){
 
   distmat <- as.matrix(dist)
 
@@ -48,4 +48,8 @@ joindatadist <- function(data, idcol, dist, rm.na = TRUE){
   colnames(dfjoin)[colnames(dfjoin) == "id"] <- idcol
   return(dfjoin)
 
+}
+
+join_glottodata <- function(data, glottodata){
+  dplyr::left_join(x = data, y = glottodata, by = "glottocode")
 }
