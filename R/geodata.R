@@ -2,28 +2,8 @@
 path <- "D:/Global/Biodiversity/wwf_terr_ecos/wwf_terr_ecos.shp"
 path <- "D:/Global/Topography/Geomorpho90m/250m/Global/dtm_roughness_merit.dem_m_250m_s0..0cm_2018_v1.0.tif"
 path <- "D:/Global/Soils/HWSD/1km/Global/sq1.asc"
+path <- "D:/Global/Societal/travel time/travel_time_to_cities_1.tif"
 
-
-#' Open geodata (raster or vector format)
-#'
-#' @param path Path to raster or vector file
-#' @param name Optional
-#'
-#' @return
-#' @export
-#'
-#' @examples
-spatialfilter <- function(path, name = NULL){
-  rasvec <- get_rasvec(path = path)
-
-  if(is_raster(rasvec)){
-    if(!is.null(name)){names(ras) <- name}
-  }
-
-  if(is_vector(rasvec)){
-
-  }
-}
 
 #' Get spatial data
 #'
@@ -34,7 +14,7 @@ spatialfilter <- function(path, name = NULL){
 #' @return
 #'
 #' @examples
-get_spatialdata <- function(path){
+get_geodata <- function(path){
 
   if(!file.exists(path)){stop("Path not found")}
 

@@ -1,38 +1,24 @@
 # TODO: is_path # check whether something is a character string and path exists (platform independent)
 
-## From https://geocompr.robinlovelace.net/reproj-geo-data.html
-lonlat2utm = function(lonlat) {
-  utm = (floor((lonlat[1] + 180) / 6) %% 60) + 1
-  if(lonlat[2] > 0) {
-    utm + 32600
-  } else{
-    utm + 32700
+
+
+unpack <- function(path = NULL){
+  ftar <- list.files(path = path, pattern = ".tar", full.names = TRUE)
+  if(!purrr::is_empty(ftar)){
+    lapply(ftar, untar, exdir = path)
+    f <- ftar
+    ext <- ".tar"
   }
-}
 
-
-
-#' Conditionally transforms coordinates to lonlat
-#'
-#' If CRS of a spatial object is not longitude latitude it will be converted.
-#'
-#' @param data Spatial object with any crs
-#'
-#' @return Spatial object transformed to lonlat
-#' @export
-#'
-#' @examples
-contransform_lonlat <- function(data){
-  if(!sf::st_is_longlat(data)) {
-    data <- sf::st_transform(x = data, crs = "EPSG:4326")
+  fzip <- list.files(path = path, pattern = ".zip", full.names = TRUE)
+  if(!purrr::is_empty(fzip)){
+    lapply(fzip, unzip, exdir = path)
+    f <- fzip
+    ext <- ".zip"
   }
-  return(data)
-}
 
-contransform_distmat <- function(dist){
-  distmat <- as.matrix(dist)
+  message(paste(length(f), ext, " files unpacked to:", path))
 }
-
 
 
 #' Create empty distance matrix

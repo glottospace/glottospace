@@ -54,20 +54,7 @@ glottolog_download <- function(){
   data <- utils::read.csv(unz(filename, "languoid.csv"), header = TRUE)
 }
 
-glottodata_spatial <- function(glottodata = NULL, lon = "longitude", lat = "latitude"){
-  if(is.null(glottodata)){
-    glottologdata <- glottolog_download()
-    cat("No input data provided, glottolog data downloaded")
-  }
-  glottolatlon <- glottodata %>%
-    dplyr::filter(!is.na(!!as.symbol(lon))) %>%
-    dplyr::filter(!is.na(!!as.symbol(lat)))
 
-    glottodata <- sf::st_as_sf(x = as.data.frame(glottolatlon),
-                     coords = c(lon, lat),
-                     crs = 4326) #https://epsg.io/4326
-
-}
 
 glottolog_download_cldf <- function(destdir = tempdir()){
 base_url <-  "https://zenodo.org/api/records/4762034"
@@ -89,3 +76,18 @@ cldfpath <- paste(destdir,
 return(cldfpath)
 }
 
+#' Get glottobase reference data
+#'
+#' Downloads most recent glottolog data and transforms it. This 'glottobase' is used as reference dataset in several functions.
+#'
+#' @return
+#' @export
+#'
+#' @examples
+#' glottobase <- get_glottobase()
+get_glottobase <- function(){
+  glottolog <- get_glottolog(data = "glottolog")
+  glottobase <- glottologbooster(glottologdata = glottolog)
+  glottobase
+  # TODO: if download fails, load inbuilt glottobase (which won't be the latest version of glottolog)
+}

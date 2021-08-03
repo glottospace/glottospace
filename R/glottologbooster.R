@@ -11,7 +11,7 @@
 #' @examples
 #' glottologdata <- get_glottolog("glottolog")
 #' glottologdata <- glottologbooster(glottologdata)
-glottologbooster <- function(glottologdata){
+glottologbooster <- function(glottologdata, geoglot = TRUE){
   glottologdata <- glottolog_addfamilyname(glottologdata)
   glottologdata <- glottolog_addisolates(glottologdata)
   glottologdata <- glottolog_rmdialects(glottologdata)
@@ -28,7 +28,11 @@ glottologbooster <- function(glottologdata){
                                                       markup_description,
                                                       child_family_count,
                                                       child_language_count))
-  # TODO: set class to glot while keeping tibble format
+  if(geoglot == TRUE){
+  glottologdata <- glot2geoglot(glottologdata)
+  glottologdata <- glottodata_addcountries(glottologdata)
+  }
+  return(glottologdata)
 }
 
 glottolog_addfamilyname <- function(glottologdata){

@@ -4,12 +4,12 @@
 \alias{join_glottodist}
 \title{Join a dataset with a dist object}
 \usage{
-join_glottodist(data, idcol, dist, rm.na = TRUE)
+join_glottodist(data, id = "glottocode", dist, rm.na = TRUE)
 }
 \arguments{
 \item{data}{A data.frame}
 
-\item{idcol}{Column with IDs in \code{data} that match names of dist object}
+\item{id}{Column with IDs in \code{data} that match names of dist object. By default, the "glottocode" column is used.}
 
 \item{dist}{A dist object}
 
@@ -27,6 +27,6 @@ sa <- sf::st_read(dsn = path)
 dist <- pointdist_bird(sa, label = "glottocode")
 distdf <- joindatadist(data = sa, idcol = "glottocode", dist = dist)
 
-You can subset the distance columns by using the IDs:
+After joining, you can subset the distance columns by using the IDs:
 distdf[, distdf$glottocode]
 }

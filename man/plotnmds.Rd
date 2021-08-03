@@ -23,8 +23,12 @@ plotnmds(
 Plot NMDS
 }
 \examples{
+Join NMDS scores with glottodata:
+nmds <- nmds(glottodata, k = 2)
 scores <- nmds_scores(nmds)
-glottodata <- glottofilter(glottodata = get_glottobase(), glottocode = scores$glottocode)
-scoresdata <- join_glottodata(data = scores, glottodata = glottodata)
+scoresdata <- join_glottodata(data = scores, glottodata = get_glottobase())
+
+
 plotnmds(nmds = nmds, scoresdata = scoresdata, colorby = "family_name", sizeby = "isolate")
+plotnmds(nmds = nmds, scoresdata = scoresdata, colorby = "isolate")
 }

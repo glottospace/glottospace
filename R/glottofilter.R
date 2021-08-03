@@ -1,3 +1,5 @@
+# TODO: glottofilter: Make more flexible country or continent, if user specifies country = "South America" this should also work.
+
 #' Filter glottodata by language, glottocode, etc.
 #'
 #' By default, the glottolog data will be used to filter from. But in case the user provides glottodata, this will be used.
