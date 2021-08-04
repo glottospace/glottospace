@@ -1,8 +1,17 @@
 # glottospace
 
 # STEPS
-# To install package: install(force = TRUE)
-# ALWAYS INSTALL FROM HERE, NOT FROM OTHER SCRIPT.
+# library(devtools)
+# document()
+# load_all()
+# install(force = TRUE) # ALWAYS INSTALL FROM HERE (PACKAGE), NOT FROM OTHER SCRIPT.
+
+# FIXME
+# Write wrapper geodist (i.e. make sure it works for points and lines, etc.)
+# geodist only relevant between points and lines, not pols and lines
+# buffer should be equal area, not necessarily equidistant.
+
+
 
 # FUNCTIONS TO ADD -------------------------------------------------------------------
 

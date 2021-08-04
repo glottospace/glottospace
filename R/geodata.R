@@ -4,17 +4,38 @@ path <- "D:/Global/Topography/Geomorpho90m/250m/Global/dtm_roughness_merit.dem_m
 path <- "D:/Global/Soils/HWSD/1km/Global/sq1.asc"
 path <- "D:/Global/Societal/travel time/travel_time_to_cities_1.tif"
 
-
 #' Get spatial data
+#'
+#' Load spatial data either from local path (supports both raster and vector formats), or download from remote server.
+#' @param path Path to geodata
+#' @param download Name of geodata to download (wrapper around raster::getData). Currently, the following are supported: "climate"
+#'
+#' @return
+#' @export
+#'
+#' @examples
+get_geodata <- function(path = NULL, download = NULL){
+  if(!is.null(path) & is.null(download)){
+    geodata <- get_geodata_path(path = path)
+  }
+  if(is.null(path) & !is.null(download)){
+    geodata <- get_geodata_download(download = download)
+  }
+  return(geodata)
+}
+
+
+#' Get spatial data from local path
 #'
 #' Open spatial data from a local path (supports both raster and vector formats).
 #'
-#' @param path Path to raster or vector data
+#' @param path Path to raster (RasterLayer or RasterStack) or vector data
 #'
 #' @return
+#' @export
 #'
 #' @examples
-get_geodata <- function(path){
+get_geodata_path <- function(path){
 
   if(!file.exists(path)){stop("Path not found")}
 
@@ -25,7 +46,10 @@ get_geodata <- function(path){
   if(!is.null(vec)){ras <- NULL
   } else {
     ras <- tryCatch(raster::raster(path), error=function(e){})
+    if(!is.null(ras) & ras@file@nbands != 1) {
+      ras <- tryCatch(raster::stack(path), error=function(e){})
     }
+  }
 
   if(is.null(vec) & is.null(ras)){
     stop(paste0("Cannot open ", path))
@@ -45,66 +69,11 @@ if(!is.null(vec) & is.null(ras)){
 
 }
 
-rasterstack <- function(){}
-rastermosaic <- function(){}
-vectormerge <- function(){}
-rasterfilter <- function(){}
+get_geodata_download <- function(download){
+  if(download == "climate"){
+  raster::getData(name = "worldclim", var = "bio", res = 10)
+  }
+}
 
-#
-#   if(name == "worldclim"){
-#     if(res == "1km" & region == "South America"){file <- paste("wc2.0_bio_30s_", sprintf("%02d", seq(1,19)), '.tif', sep='')}
-#     paths <- gs_geopath(pathgroup = "Climate/WORLDCLIM2", res = "1km", region = "South America", file = file)
-#     stack <- raster::stack(paths)
-#     names(stack) <- paste0("bio", sprintf("%02d", seq(1,19)))
-#     message(paste("Loading raster:", name, "at", res, "resolution for:", region))
-#     if (region == "Global"){
-#       stack <- raster::getData(name = "worldclim", var = "bio", res = 10)
-#     }
-#     if(selection == "default"){
-#       ras <- stack
-#     } else {
-#       ras <- stack[[selection]]
-#     }
-#     if(!is.null(ras)){
-#       out <- ras
-#       cat(paste("WorldClim 2.0 data loaded (", file, ") \n"))
-#     }
-#   }
-#
-#   if(name == "ecoregion"){
-#     file <- "wwf_terr_ecos.shp"
-#     path <- gs_geopath(pathgroup = "Biodiversity/wwf_terr_ecos", file = file)
-#     vec <- st_read(path)
-#     cat(paste("Loading shapefile:", name))
-#     if(!is.null(vec)){
-#       if(selection == "default"){
-#         vec <- vec[, "ECO_NAME"]
-#         colnames(vec)[1] <- name
-#       } else if(selection != "default" & is.character(selection)){
-#         vec <- vec[, selection]
-#       } else if(selection == "all" | is.null(selection)){
-#         vec <- vec
-#       }
-#       out <- vec
-#       cat(paste0("Terrestrial Ecoregions of the World loaded (", file, ")"))
-#     }
-#   }
-#
-#   if(name == "rivervect"){
-#     if(region == "South America"){file <- "South America_constant_Dd.gpkg"}
-#     path <- gs_geopath(pathgroup = "Hydrography/drainage density", region = region, file = file)
-#     vec <- st_read(path)
-#     cat(paste("Loading shapefile:", name))
-#     if(!is.null(vec)){
-#       if(selection == "default"){
-#         vec <- vec
-#       } else if(selection != "default" & is.character(selection)){
-#         vec <- vec[, selection]
-#       } else if(selection == "all" | is.null(selection)){
-#         vec <- vec
-#       }
-#       out <- vec
-#       cat(paste0("River network constant Dd loaded (", file, ") for region: ", region))
-#     }
-#   }
-#
+
+

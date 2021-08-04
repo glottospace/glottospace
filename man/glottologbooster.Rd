@@ -4,7 +4,7 @@
 \alias{glottologbooster}
 \title{Glottologbooster: enhance glottolog data}
 \usage{
-glottologbooster(glottologdata)
+glottologbooster(glottologdata, geoglot = TRUE)
 }
 \arguments{
 \item{glottologdata}{}

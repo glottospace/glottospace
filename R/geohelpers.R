@@ -3,6 +3,43 @@
 # If there are many countries and one continent, mask by continent.
 # If there is one or a few countries, mask by country
 
+#' Stack raster layers from local paths
+#'
+#' @param filepaths Character vector with paths to .tif files
+#' @param newnames Optional vector with new names to be assigned to each layer
+#' @param extent Optional \code{extent} object to crop
+#' @param outfile Optional filename to store resulting rasterstack (.grd is preferred format because .tif doesn't preserve layernames). This might take a while, depending on the file size)
+#'
+#' @return
+#' @export
+#'
+#' @examples
+#' dir <- "D:/Global/Climate/WORLDCLIM2/1km/South America"
+#' files <- list.files(dir, full.names = TRUE)
+#' newnames <- paste0("bio", sprintf("%02d", seq(1,19)))
+rasterstack <- function(filepaths, outfile, newnames = NULL, extent = NULL){
+  stack <- raster::stack(filepaths)
+  if(!is.null(newnames)){
+    if(length(filepaths) != length(newnames)){stop("filepaths and newnames should have the same length")}
+    names(stack) <- newnames
+  }
+
+  if(!is.null(extent)){
+    stack <- raster::crop(stack, extent)
+  }
+
+  if(!is.null(outfile)){
+    message(paste0("saving to ", outfile))
+    if(tools::file_ext(outfile) == ".grd"){
+      raster::writeRaster(stack, filename = outfile, format = "raster", overwrite = TRUE)
+    }
+    if(tools::file_ext(outfile) == ".tif"){
+      raster::writeRaster(stack, filename = outfile, format = "GTiff", overwrite = TRUE)
+    }
+
+  }
+  stack
+}
 
 #' Mosaic raster tiles
 #'
@@ -59,7 +96,7 @@ mergevec <- function(paths = NULL, selection = NULL, outfile = NULL, overwrite =
 #' Convert glottopoints to polygons
 #'
 #' @param glottopoints geoglot object (glottopoints)
-#' @param interpolation Interpolation method, either "buffer" or "voronoi" (synonymous with "thiessen")
+#' @param method Interpolation method, either "buffer" or "voronoi" (synonymous with "thiessen")
 #' @param radius In case interpolation method "buffer", the radius in km.
 #' @param country Optionally mask output by country boundaries
 #' @param continent Optionally mask output by continent boundaries
@@ -71,19 +108,21 @@ mergevec <- function(paths = NULL, selection = NULL, outfile = NULL, overwrite =
 #' gb <- glottologbooster(glottologdata = glottobase)
 #' gbsa <- glottofilter(glottodata = gb, continent = "South America")
 #'
-#' pols <- points2pols(glottopoints = gbsa, interpolation = "thiessen", continent = "South America")
+#' pols <- points2pols(glottopoints = gbsa, method = "thiessen", continent = "South America")
 #' plot(pols[,"family_size"])
-points2pols <- function(glottopoints, interpolation = "buffer", radius = NULL, country = NULL, continent = NULL){
+points2pols <- function(glottopoints, method = "buffer", radius = NULL, country = NULL, continent = NULL){
+  # FIXME: area of buffers is not equal!
+  # sf::st_area(glottodata)
   glottopoints <- contransform_lonlat(glottopoints)
   # Alternative could be to convert to equidistant projection: https://epsg.io/54032
   epsg_utm <- lonlat2utm(sf::st_coordinates(glottopoints))
   pts <- sf::st_transform(glottopoints, sf::st_crs(epsg_utm))
-  if(interpolation == "buffer"){
-    message(paste0('Creating buffer within a radius of ', radius, ' km.'))
+  if(method == "buffer"){
     radius <- radius*1000 # convert km to meters because unit of st_buffer should be meters (crs is transformed to utm, in case lon/lat it would have been degrees.).
     pols <- sf::st_buffer(x = pts, dist = radius)
+    message(paste0('Buffer created with a radius of ', radius, ' km.'))
   }
-  if(interpolation == "voronoi" | interpolation == "thiessen"){
+  if(method == "voronoi" | method == "thiessen"){
     # Interpolate categorical data (e.g. family)
     # https://rspatial.org/raster/analysis/4-interpolation.html
     # https://r-spatial.github.io/sf/reference/geos_unary.html
@@ -94,7 +133,7 @@ points2pols <- function(glottopoints, interpolation = "buffer", radius = NULL, c
     # match them to glottopoints:
     pts$pols <- pols[unlist(sf::st_intersects(pts, pols))]
     pols <- sf::st_set_geometry(pts, "pols")
-    if(!is.null(radius)){message("argument 'radius' not relevant for the specified interpolation.")}
+    if(!is.null(radius)){message("argument 'radius' not relevant for the specified interpolation method.")}
   }
 
   if(!purrr::is_empty(country) | !purrr::is_empty(continent) ){
@@ -133,7 +172,9 @@ lonlat2utm = function(lonlat) {
 #'
 #' @examples
 contransform_lonlat <- function(data){
+  # Split in two functions: is_lonlat and is_lonlattransform
   if(!sf::st_is_longlat(data)) {
+    # raster::isLonLat
     data <- sf::st_transform(x = data, crs = "EPSG:4326")
   }
   return(data)

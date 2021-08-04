@@ -39,9 +39,9 @@ pointdist_bird <- function(points, label){
 nearestline_bird <- function(points, lines, label){
   points <- contransform_lonlat(points)
   lines <- contransform_lonlat(lines)
-  nearest <- st_nearest_feature(x = points, y = lines)
-  geodist <- st_distance(x = points, y = lines[nearest,], by_element = TRUE)
-  geodist <- geodist %>% set_units(km)
+  nearest <- sf::st_nearest_feature(x = points, y = lines)
+  geodist <- sf::st_distance(x = points, y = lines[nearest,], by_element = TRUE)
+  geodist <- geodist %>% units::set_units(km)
   geodist <- round(geodist)
   # if(return == "sf"){
   #   points[ , "dist"] <- geodist

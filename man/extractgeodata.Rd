@@ -28,10 +28,13 @@ Extract and add environmental covariates
 path <- "D:/Global/Societal/travel time/travel_time_to_cities_1.tif"
 geodata <- get_geodata(path)
 
-gb <- glottologbooster(glottologdata = glottobase)
-gbsa <- glottofilter(glottodata = gb, continent = "South America")
-gbsa <- glot2geoglot(gbsa)
-glottodata <- gbsa[1:3,]
+# extract from points
+glottopoints <- glottofilter(continent = "South America")
+glottopoints <- glottopoints[1:3, ]
+extractgeodata(glottodata = glottopoints, geodata = geodata, radius = 10, fun = mean)
 
-extractgeodata(glottodata = glottodata, geodata = geodata, radius = 10, fun = mean)
+# extract from polygons
+glottopoints <- glottofilter(country = "Netherlands")
+glottopols <- points2pols(glottopoints, interpolation = "voronoi", country = "Netherlands")
+extractgeodata(glottodata = glottopols, geodata = geodata,fun = mean)
 }
