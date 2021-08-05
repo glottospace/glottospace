@@ -68,6 +68,16 @@ glottocode_exists <- function(glottocode){
   glot_exists(find = glottocode, columns = "glottocode")
 }
 
-glot_online <- function(language = NULL, family = NULL, dialect = NULL){
-
+#' Open url in web browser for glottocode
+#'
+#' @param glottocode
+#'
+#' @return
+#' @export
+#'
+#' @examples
+#' glottocode_online("yucu1253")
+glottocode_online <- function(glottocode){
+  url <- paste0("https://glottolog.org/resource/languoid/id/", glottocode)
+  utils::browseURL(url)
 }
