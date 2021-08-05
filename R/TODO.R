@@ -27,7 +27,7 @@
 # ethnolog contains information on number of speakers
 # WALS contains information on language features.
 
-# gs_filter: by location (bbox and drawing on plot)
+# glottofilter: by location (bbox and drawing on plot)
 
 # Points to raster:
 # Density/richness interpolation, number of languages in a grid cell.Fig 1b: interpolated richness: https://zenodo.org/record/821360
