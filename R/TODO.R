@@ -15,6 +15,9 @@
 
 # FUNCTIONS TO ADD -------------------------------------------------------------------
 
+# Extend readme with examples: https://r-pkgs.org/release.html?q=readme#readme
+# add a logo: https://rdrr.io/github/r-lib/usethis/man/use_logo.html
+# Add example datasets
 # - Does a language have a dictionary and a grammar, or multiple. Plot for multiple languages. From glottolog_source.bib.zip
 #  - gs_join: join other data to glottolog, or extract glottolog coordinates and add them to external data.
 
