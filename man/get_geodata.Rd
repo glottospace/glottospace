@@ -4,14 +4,16 @@
 \alias{get_geodata}
 \title{Get spatial data}
 \usage{
-get_geodata(path)
+get_geodata(path = NULL, download = NULL)
 }
 \arguments{
-\item{path}{Path to raster or vector data}
+\item{path}{Path to geodata}
+
+\item{download}{Name of geodata to download (wrapper around raster::getData). Currently, the following are supported: "climate"}
 }
 \value{
 
 }
 \description{
-Open spatial data from a local path (supports both raster and vector formats).
+Load spatial data either from local path (supports both raster and vector formats), or download from remote server.
 }

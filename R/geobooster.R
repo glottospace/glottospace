@@ -22,17 +22,26 @@ glot2geoglot <- function(glottodata, lon = "longitude", lat = "latitude"){
 #'
 #' @examples
 glottodata_addcountries <- function(glottodata){
-
-
     # Adding names of countries and continents
     world <- rnaturalearth::ne_countries(returnclass = "sf", scale = "medium")
     world <- world[, c("name", "continent", "subregion")]
     names(world)[1] <- "country"
     names(world)[3] <- "region"
 
+    world <- sf::st_make_valid(world)
     sf::st_join(x = glottodata, y = world, left = TRUE)
-
-
 }
 
-
+#' Add coordinates to glottodata
+#'
+#'
+#' @param glottodata
+#'
+#' @return
+#' @export
+#'
+#' @examples
+glottodata_addcoords <- function(glottodata){
+  glottospace <- get_glottospace()
+  dplyr::left_join(x = glottodata, y = glottospace, by = "glottocode")
+}

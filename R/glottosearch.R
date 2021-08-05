@@ -13,7 +13,7 @@
 #' glottosearch(find = "Yucuni", columns = "name")
 glottosearch <- function(glottodata = NULL, find, partialmatch = TRUE, columns = NULL){
 
- if(is.null(glottodata) ){glottodata <- glottobase()}
+ if(is.null(glottodata) ){glottodata <- get_glottobase()}
   if(missing(find)){stop("No search term provided, please indicate what you want to search for.")}
   if(length(find) > 1){stop("More than one search term provided, please provide a single term.",
                             call. = FALSE)}
@@ -33,10 +33,10 @@ glottosearch <- function(glottodata = NULL, find, partialmatch = TRUE, columns =
 #' Check whether one glot exists in glottolog.
 #'
 #' @return Logical: TRUE/FALSE
+#' @noRd
 glot_exists_one <- function(find, columns){
-  # TODO: Do not load glottobase each time. This will be solved if glottodata is added to package.
-  existsdf <- glottosearch(glottodata = glottobase, find = find, partialmatch = FALSE, columns = columns)
-  ifelse(nrow(existsdf == 1), existing <- TRUE, existing <- FALSE)
+  existsdf <- glottosearch(glottodata = get_glottobase(), find = find, partialmatch = FALSE, columns = columns)
+  nrow(existsdf) == 1
 }
 
 #' Check whether a glot or vector of glots exist in glottolog
@@ -48,7 +48,7 @@ glot_exists_one <- function(find, columns){
 #' @export
 #'
 #' @examples
-#' #' glot_exists(find = c("yucu1253", "abcd1234"), columns = "glottocode")
+#' glot_exists(find = c("yucu1253", "abcd1234"), columns = "glottocode")
 glot_exists <- function(find, columns){
 purrr::map2_lgl(.x = find, .y = columns, .f = glot_exists_one)
 }
@@ -65,7 +65,7 @@ purrr::map2_lgl(.x = find, .y = columns, .f = glot_exists_one)
 #' glottocode_exists(c("yucu1253"))
 #' glottocode_exists(c("yucu1253", "abcd1234"))
 glottocode_exists <- function(glottocode){
-  glot_exists(find = glottocode, columns = "id")
+  glot_exists(find = glottocode, columns = "glottocode")
 }
 
 glot_online <- function(language = NULL, family = NULL, dialect = NULL){

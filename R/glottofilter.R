@@ -14,8 +14,7 @@
 #' @param continent A character vector of continents
 #' @param country A character vector of countries
 #' @param expression A regular expression
-#' @aliases glotto_select
-#' @aliases glotto_subset
+#' @aliases glotto_select glotto_subset
 #'
 #' @return A smaller glot object or geoglot object containing only the selected features.
 #' @export

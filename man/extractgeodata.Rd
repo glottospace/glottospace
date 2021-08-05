@@ -10,7 +10,7 @@ extractgeodata(glottodata, geodata, radius = NULL, fun = NULL, add = TRUE)
 \arguments{
 \item{glottodata}{Spatial vector with glottopoints or glottopols}
 
-\item{geodata}{Spatial data in raster or vector format, or a path to such a file.}
+\item{geodata}{Spatial data in raster (RasterLayer or RasterStack) or vector format, or a path to such a file.}
 
 \item{radius}{Radius (km) from which raster values should be extracted.}
 
@@ -35,6 +35,6 @@ extractgeodata(glottodata = glottopoints, geodata = geodata, radius = 10, fun = 
 
 # extract from polygons
 glottopoints <- glottofilter(country = "Netherlands")
-glottopols <- points2pols(glottopoints, interpolation = "voronoi", country = "Netherlands")
+glottopols <- points2pols(glottopoints, method = "voronoi", country = "Netherlands")
 extractgeodata(glottodata = glottopols, geodata = geodata,fun = mean)
 }

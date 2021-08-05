@@ -4,9 +4,8 @@
 #' Reads a Cross-Linguistic Data Format dataset into an object.
 #'
 #' @param mdpath the path to the directory or metadata.json file.
+#' @noRd
 #' @return A `cldf` object
-#' @export
-#' @examples
 #' cldfobj <- cldf(system.file("extdata/huon", "cldf-metadata.json", package = "rcldf"))
 read_cldf <- function(mdpath) {
   mdpath <- resolve_path(mdpath)
@@ -34,7 +33,7 @@ read_cldf <- function(mdpath) {
 #' Helper function to resolve the path (e.g. directory or md.json file)
 #' Developed by Simon Greenhill: https://github.com/SimonGreenhill/rcldf/blob/master/R/resolve_path.R
 #' @param path the path to resolve
-#' @export
+#' @noRd
 #' @return A string containing the path to the metadata.json file
 resolve_path <- function(path) {
   path <- base::normalizePath(path, mustWork = FALSE)
@@ -61,6 +60,7 @@ resolve_path <- function(path) {
 #' @param dir the directory the BibTeX file is in.
 #' @param bib the name of the BibTeX file (default="sources.bib")
 #' @return A tibble dataframe
+#' @noRd
 read_bib <- function(dir, bib="sources.bib"){
   if (is.null(bib)) return(NA)
   bib <- file.path(dir, bib)
@@ -72,7 +72,7 @@ read_bib <- function(dir, bib="sources.bib"){
 #'
 #' @param tbl the tablename.
 #' @return A string
-#' @export
+#' @noRd
 #' @examples
 #' get_tablename("languages.csv")
 get_tablename <- function(tbl) { tools::file_path_sans_ext(tbl) }
@@ -80,7 +80,9 @@ get_tablename <- function(tbl) { tools::file_path_sans_ext(tbl) }
 #' Extracts the table schema from the metadata schema
 #'
 #' @param schema the metadata schema.
+#' @noRd
 #' @return A column schema
+#'
 get_table_schema <- function(schema) {
   spec <- list()
   for (i in 1:nrow(schema[[1]])) {
@@ -94,6 +96,7 @@ get_table_schema <- function(schema) {
 #'
 #' @param dt a column schema spec
 #' @return a `readr` column spec
+#' @noRd
 get_spec <- function(dt) {
   dt <- unlist(dt)
   # if there's no col type specified, then the CLDF default is string.

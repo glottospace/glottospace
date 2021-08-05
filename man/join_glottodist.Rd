@@ -2,24 +2,24 @@
 % Please edit documentation in R/joindata.R
 \name{join_glottodist}
 \alias{join_glottodist}
-\title{Join a dataset with a dist object}
+\title{Join glottodata with a dist object}
 \usage{
-join_glottodist(data, id = "glottocode", dist, rm.na = TRUE)
+join_glottodist(glottodata, id = NULL, dist, rm.na = TRUE)
 }
 \arguments{
-\item{data}{A data.frame}
-
 \item{id}{Column with IDs in \code{data} that match names of dist object. By default, the "glottocode" column is used.}
 
 \item{dist}{A dist object}
 
 \item{rm.na}{Default is to remove NAs.}
+
+\item{data}{A data.frame}
 }
 \value{
 Data frame
 }
 \description{
-Join a dataset with a dist object
+Join glottodata with a dist object
 }
 \examples{
 path <- "C:/Users/sjnor/surfdrive/Projecten en schrijfsels/Papers in progress/Isolates/output/south america all.gpkg"

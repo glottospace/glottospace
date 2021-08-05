@@ -18,5 +18,5 @@ Logical: TRUE/FALSE
 Check whether a glot or vector of glots exist in glottolog
 }
 \examples{
-#' glot_exists(find = c("yucu1253", "abcd1234"), columns = "glottocode")
+glot_exists(find = c("yucu1253", "abcd1234"), columns = "glottocode")
 }

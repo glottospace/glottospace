@@ -1,4 +1,4 @@
-#' Join a dataset with a dist object
+#' Join glottodata with a dist object
 #'
 #' @param data A data.frame
 #' @param dist A dist object
@@ -16,8 +16,8 @@
 #'
 #' After joining, you can subset the distance columns by using the IDs:
 #' distdf[, distdf$glottocode]
-join_glottodist <- function(data, id = "glottocode", dist, rm.na = TRUE){
-
+join_glottodist <- function(glottodata, id = NULL, dist, rm.na = TRUE){
+  id <- contrans_id2gc(id)
   distmat <- as.matrix(dist)
 
   if(rm.na == TRUE){
@@ -34,15 +34,28 @@ join_glottodist <- function(data, id = "glottocode", dist, rm.na = TRUE){
   distdf <- as.data.frame(distmat)
   data.table::setDT(distdf, keep.rownames = "id")
 
-  colnames(data)[colnames(data) == id] <- "id"
-  data.table::setDT(data, keep.rownames = "id")
+  colnames(glottodata)[colnames(glottodata) == id] <- "id"
+  data.table::setDT(glottodata, keep.rownames = "id")
 
-  dfjoin <- dplyr::inner_join(data, distdf, by = "id") # not using by = c("a" = "b") because only works with character strings and not with id object
+  dfjoin <- dplyr::inner_join(glottodata, distdf, by = "id") # not using by = c("a" = "b") because only works with character strings and not with id object
   colnames(dfjoin)[colnames(dfjoin) == "id"] <- id
   return(dfjoin)
 
 }
 
-join_glottodata <- function(data, glottodata, id = "glottocode"){
-  dplyr::left_join(x = data, y = glottodata, by = id)
+#' Join glottodata with glottobase
+#'
+#' Keeps all rows from glottodata. Can be used to add features from glottobase.
+#'
+#' @param glottodata
+#' @param id
+#'
+#' @return
+#' @export
+#'
+#' @examples
+join_glottobase <- function(glottodata, id = NULL){
+  id <- contrans_id2gc(id)
+  glottobase <- get_glottobase()
+  dplyr::left_join(x = glottodata, y = glottobase, by = id)
 }
