@@ -47,4 +47,11 @@ as.ordfact <- function(x = NULL, levels = NULL){ # alternatively, use: https://f
   return(df)
 }
 
+geodata_rename_column <- function(geodata, oldname, newname){
+  geodata %>%
+  dplyr::mutate() %>% # https://github.com/r-spatial/sf/issues/1472 Empty mutate() also sets geom to last column
+  dplyr::rename(newname = oldname)
+}
+
+
 

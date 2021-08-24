@@ -5,7 +5,14 @@
 \alias{addgeodata}
 \title{Extract and add environmental covariates}
 \usage{
-extractgeodata(glottodata, geodata, radius = NULL, fun = NULL, add = TRUE)
+extractgeodata(
+  glottodata,
+  geodata,
+  radius = NULL,
+  fun = NULL,
+  add = TRUE,
+  funnames = TRUE
+)
 }
 \arguments{
 \item{glottodata}{Spatial vector with glottopoints or glottopols}
@@ -14,9 +21,11 @@ extractgeodata(glottodata, geodata, radius = NULL, fun = NULL, add = TRUE)
 
 \item{radius}{Radius (km) from which raster values should be extracted.}
 
-\item{fun}{One of mean, median, min, max, sd, modal. Alternatively, a user-defined function can be specified, as in fun = function(x){mean(x,na.rm=T)}}
+\item{fun}{One of "mean", "median", "min", "max", "sd", "modal". Alternatively, a user-defined function can be specified, as in fun = function(x){mean(x,na.rm=T)}}
 
 \item{add}{By default, extracted values are added to glottodata.}
+
+\item{funnames}{By default, the name of the function is added to the new variable. For example: "elevation_mean". Use funnames = FALSE if you want to keep the original names}
 }
 \value{
 
@@ -31,10 +40,10 @@ geodata <- get_geodata(path)
 # extract from points
 glottopoints <- glottofilter(continent = "South America")
 glottopoints <- glottopoints[1:3, ]
-extractgeodata(glottodata = glottopoints, geodata = geodata, radius = 10, fun = mean)
+extractgeodata(glottodata = glottopoints, geodata = geodata, radius = 10, fun = "mean")
 
 # extract from polygons
 glottopoints <- glottofilter(country = "Netherlands")
 glottopols <- points2pols(glottopoints, method = "voronoi", country = "Netherlands")
-extractgeodata(glottodata = glottopols, geodata = geodata,fun = mean)
+extractgeodata(glottodata = glottodata, geodata = geodata,fun = "mean")
 }

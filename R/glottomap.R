@@ -1,4 +1,20 @@
 
+#' glottomap
+#'
+#' Create dynamic, static and interactive maps from glottodata
+#'
+#' @param glottodata User-provided glottodata (spatial)
+#' @param colorby column name or index to be used to color features (optional)
+#' @param label Column name or index to be used to label features (optional)
+#' @param type One of: "static", "dynamic", "interactive", or "simple"
+#'
+#' @return
+#' @export
+#'
+#' @examples
+#' glottopoints <- glottofilter(continent = "South America")
+#' glottopols <- points2pols(glottopoints, interpolation = "voronoi", continent = "South America")
+#' glottomap_dynamic(glottodata = glottopols, label = "glottocode", colorby = "family_size_rank")
 glottomap <- function(glottodata, colorby = NULL, label = NULL, type = NULL){
   if(is.null(type)){type <- "dynamic"}
   if(is.null(label)){label <- "glottocode"}
@@ -10,9 +26,18 @@ glottomap <- function(glottodata, colorby = NULL, label = NULL, type = NULL){
 
 }
 
-# glottopoints <- glottofilter(continent = "South America")
-# glottopols <- points2pols(glottopoints, interpolation = "voronoi", continent = "South America")
-# glottomap_dynamic(glottodata = glottopols, label = "glottocode", colorby = "family_size_rank")
+#' glottomap_dynamic
+#'
+#' @param glottodata User-provided glottodata
+#' @param colorby column name or index to be used to color features (optional)
+#' @param label Column name or index to be used to label features (optional)
+#'
+#' @return
+#' @keywords internal
+#' @export
+#'
+#' @examples
+#' glottomap_dynamic(glottodata)
 glottomap_dynamic <- function(glottodata, label, colorby){
     suppressMessages(tmap::tmap_mode("view"))
 
@@ -25,55 +50,55 @@ glottomap_dynamic <- function(glottodata, label, colorby){
           tmap::tm_symbols(id = label, col = colorby, scale = .95, alpha = .85) }
   }
 
-#
-# glottoviewer <- function(...){
-#   data <- gs_data(...)
-#   data <- gs_upgrade(data = data, ...)
-#   points <- gs_filter(data = data, ...)
-#   out <- gs_map(points = points, ...)
-#   return(out)
-# }
-#
-# # TODO: maybe add raster::plot(rasvec) ?
-#
-# glottomap <- function(points = NULL, pols = NULL, map = "dynamic", colorby = "family_name", label = "name", ...){
-#   if (!require(tmap)) {install.packages('tmap')}
-#   library(tmap)
-#   if (!require(tmaptools)) {install.packages('tmaptools')}
-#   library(tmaptools)
-#   tmap_options(max.categories = 100)
-#   if(map == "dynamic"){
-#     tmap_mode("view")
-#     out <- tm_basemap("Esri.WorldTopoMap") +
-#       # tm_basemap("Esri.WorlGrayCanvas") +
-#       # tm_basemap("OpenStreetMap") +
-#       {if(!is_empty(pols))
-#         tm_shape(pols) +
-#           tm_polygons(id = label, col = colorby)} +
-#       {if(!is_empty(points))
-#         tm_shape(points) +
-#           tm_symbols(id = label, col = colorby, scale = .95, alpha = .85) }
-#   }
-#
-#   if(map == "static"){
-#     if (!require(OpenStreetMap)) {install.packages('OpenStreetMap')}
-#     library(OpenStreetMap)
-#     if (!require(rJava)) {install.packages('rJava')}
-#     library(rJava)
-#     tmap_mode("plot")
-#     basemap <- read_osm(points, ext = 1.1)
-#     out <- tm_shape(basemap) + tm_rgb() +
-#       {if(!is_empty(pols))
-#         tm_shape(pols) +
-#           tm_polygons(col = colorby)} +
-#       {if(!is_empty(points))
-#         tm_shape(points) +
-#           tm_symbols(col = colorby, scale = .95, alpha = .85) } +
-#       {if(!is_empty(label)) tm_text(text = label, size = 0.75, auto.placement = TRUE)} +
-#       tm_scale_bar(position = c("left", "bottom")) +
-#       tm_legend(legend.outside = TRUE)
-#   }
-#
+#' glottomap_static
+#'
+#' @param glottodata User-provided glottodata
+#' @param colorby column name or index to be used to color features (optional)
+#' @param label Column name or index to be used to label features (optional)
+#'
+#' @return
+#' @keywords internal
+#' @export
+#'
+#' @examples
+#' glottomap_dynamic(glottodata)
+glottomap_static <- function(glottodata, label, colorby){
+  suppressMessages(tmap::tmap_mode("plot"))
+
+      basemap <- OpenStreetMap::read_osm(points, ext = 1.1)
+      out <- tmap::tm_shape(basemap) + tmap::tm_rgb() +
+        {if(is_polygon(glottodata))
+          tmap::tm_shape(glottodata) +
+            tmap::tm_polygons(col = colorby)} +
+        {if(is_point(glottodata))
+          tmap::tm_shape(glottodata) +
+            tmap::tm_symbols(col = colorby, scale = .95, alpha = .85) } +
+        {if(!is_empty(label)) tmap::tm_text(text = label, size = 0.75, auto.placement = TRUE)} +
+        tmap::tm_scale_bar(position = c("left", "bottom")) +
+        tmap::tm_legend(legend.outside = TRUE)
+}
+
+#' glottomap_geodata
+#'
+#' @param geodata
+#'
+#' @return
+#' @keywords internal
+#' @export
+#'
+#' @examples
+#' glottomap_geodata(geodata)
+glottomap_geodata <- function(geodata){
+  if(is_raster(geodata) ){
+    raster::plot(geodata)
+  }
+  if(is_sf(geodata) ){
+    sf::plot(geodata)
+  }
+}
+
+
+
 #   if(map == "simple"){
 #     data("World") #tmap
 #     worldp <- st_transform(World, crs = st_crs(points))

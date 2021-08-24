@@ -135,7 +135,9 @@ points2pols <- function(glottopoints, method = "buffer", radius = NULL, country 
     pols <- sf::st_set_crs(x = pols, value = sf::st_crs(pts))
     # match them to glottopoints:
     pts$pols <- pols[unlist(sf::st_intersects(pts, pols))]
-    pols <- sf::st_set_geometry(pts, "pols")
+    pts$points <- pts$geometry # these lines are redundant because I could just set the active geometry to the polygons, but for the user this seems more intuitive
+    pols <- st_drop_geometry(pts) %>% dplyr::relocate(pols, .after = last_col()) %>% dplyr::rename(geometry = pols)
+    pols <- sf::st_set_geometry(pols, "geometry")
     if(!is.null(radius)){message("argument 'radius' not relevant for the specified interpolation method.")}
   }
 
@@ -143,7 +145,10 @@ points2pols <- function(glottopoints, method = "buffer", radius = NULL, country 
     country <- rnaturalearth::ne_countries(country = country, continent = continent, returnclass = "sf", scale = "medium")
     country <- sf::st_geometry(country)
     country <- sf::st_transform(country, sf::st_crs(epsg_utm))
-    pols <- sf::st_intersection(pols, country) # crop to country boundaries
+    # merge polygons
+    unicountry <- sf::st_union(country)
+    unicountry <- sfheaders::sf_remove_holes(unicountry)
+    pols <- sf::st_intersection(pols, unicountry) # crop to country boundaries
   } else if (!purrr::is_empty(country) & !purrr::is_empty(country)) {
           stop("Please supply either country or continent, noth both")
   }

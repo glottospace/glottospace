@@ -3,8 +3,9 @@
 #' @param glottodata Spatial vector with glottopoints or glottopols
 #' @param geodata Spatial data in raster (RasterLayer or RasterStack) or vector format, or a path to such a file.
 #' @param radius Radius (km) from which raster values should be extracted.
-#' @param fun One of mean, median, min, max, sd, modal. Alternatively, a user-defined function can be specified, as in fun = function(x){mean(x,na.rm=T)}
+#' @param fun One of "mean", "median", "min", "max", "sd", "modal". Alternatively, a user-defined function can be specified, as in fun = function(x){mean(x,na.rm=T)}
 #' @param add By default, extracted values are added to glottodata.
+#' @param funnames By default, the name of the function is added to the new variable. For example: "elevation_mean". Use funnames = FALSE if you want to keep the original names
 #'
 #' @return
 #' @export
@@ -17,19 +18,27 @@
 #' # extract from points
 #' glottopoints <- glottofilter(continent = "South America")
 #' glottopoints <- glottopoints[1:3, ]
-#' extractgeodata(glottodata = glottopoints, geodata = geodata, radius = 10, fun = mean)
+#' extractgeodata(glottodata = glottopoints, geodata = geodata, radius = 10, fun = "mean")
 #'
 #' # extract from polygons
 #' glottopoints <- glottofilter(country = "Netherlands")
 #' glottopols <- points2pols(glottopoints, method = "voronoi", country = "Netherlands")
-#' extractgeodata(glottodata = glottopols, geodata = geodata,fun = mean)
-extractgeodata <- function(glottodata, geodata, radius = NULL, fun = NULL, add = TRUE){
+#' extractgeodata(glottodata = glottodata, geodata = geodata,fun = "mean")
+extractgeodata <- function(glottodata, geodata, radius = NULL, fun = NULL, add = TRUE, funnames = TRUE){
 
   if(is.character(geodata)){
     geodata <- get_geodata(path = geodata)
   } else if(is.object(geodata)){
     geodata <- geodata
   }
+
+  if(funnames == TRUE){
+    if(is.function(fun)){funname <- "expr"
+    } else {funname <- fun}
+    names(geodata) <- paste(names(geodata),funname, sep = "_")
+  }
+
+  fun <- eval(as.symbol(fun))
 
   if(class(geodata)[1] == "RasterLayer" | class(geodata)[1] == "RasterStack"){
     out <- extractraster(glottodata = glottodata, geodata = geodata, radius = radius, fun = fun, add = add)
@@ -69,9 +78,11 @@ extractraster <- function(glottodata, geodata, radius = NULL, fun = NULL, add = 
     }
   }
 
-    extracted <- raster::extract(x = geodata, y = glottodata, buffer = radius, fun = fun)
+    extracted <- raster::extract(x = geodata, y = glottodata, buffer = radius, fun = fun, na.rm = TRUE)
     if(add == T){
-      glottodata[,names(geodata)] <- extracted # optional TO ADD name_fun
+      extracted <- as.data.frame(extracted)
+      names(extracted) <- names(geodata)
+      glottodata <- cbind(glottodata, extracted)
     } else{
       glottodata <- extracted
     }
@@ -86,9 +97,11 @@ extractraster <- function(glottodata, geodata, radius = NULL, fun = NULL, add = 
       stop('Please indicate how you want to summarize the values within each polygon.')
     }
 
-    extracted <- raster::extract(x = geodata, y = glottodata, fun = fun)
+    extracted <- raster::extract(x = geodata, y = glottodata, fun = fun, na.rm = TRUE)
     if(add == T){
-      glottodata[,names(geodata)] <- extracted # optional TO ADD name_fun
+      extracted <- as.data.frame(extracted)
+      names(extracted) <- names(geodata)
+      glottodata <- cbind(glottodata, extracted)
     } else{
       glottodata <- extracted
     }
