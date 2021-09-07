@@ -11,10 +11,13 @@
 # geodist only relevant between points and lines, not pols and lines
 # buffer should be equal area, not necessarily equidistant.
 
+# Visualization: change colorby to color, sizeby to size, etc? Maybe not..
+
 
 
 # FUNCTIONS TO ADD -------------------------------------------------------------------
 
+# get_dplace: see isolates project
 # Extend readme with examples: https://r-pkgs.org/release.html?q=readme#readme
 # add a logo: https://rdrr.io/github/r-lib/usethis/man/use_logo.html
 # Add example datasets
@@ -56,4 +59,4 @@
 
 # function to drop spatial and drop units (for statistical/non-spatial analyses, see isolates script STAT preparation)
 # extend file saving. Both images, maps, objects, but also tables.
-# Family_name column for plotting: 'isolate', if you plot families als isolates will get the same colour.
+

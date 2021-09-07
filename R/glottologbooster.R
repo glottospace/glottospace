@@ -88,6 +88,14 @@ glottologdata %>%
 
 }
 
+#' Create rank order of family size
+#'
+#' @param glottologdata
+#'
+#' @return
+#' @export
+#'
+#' @examples
 glottolog_addfamilysizerank <- function(glottologdata){
   glottologdata$family_size_rank <- as.factor(glottologdata$family_size)
   levels(glottologdata$family_size_rank) <- seq(1:length(levels(glottologdata$family_size_rank)))

@@ -1,3 +1,5 @@
+# TODO: addfunction: checkglottodata_missingvalues - glottodata[rowSums(is.na(glottodata)) != 0, ]
+
 #' Quality check of user-provided glottodata
 #'
 #' Go through a user-provided glottodataset and check:
@@ -26,7 +28,8 @@ checkglottodata <- function(glottodata, show = TRUE){
   checkdata_idmissing(data = glottodata, id = id)
   checkdata_idunique(data = glottodata, id = id)
   checkdata_twolevels(data = glottodata)
-  checkdata_glottocodes(data = glottodata, id = id)
+  checkdata_glottocodes(glottodata = glottodata, id = id)
+  # Add interactive, ask user to provide y/n. Then show argument can be dropped.
   if(show == TRUE){
   checkdata_varlevels(data = glottodata)
   }

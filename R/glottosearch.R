@@ -32,6 +32,9 @@ glottosearch <- function(glottodata = NULL, find, partialmatch = TRUE, columns =
 
 #' Check whether one glot exists in glottolog.
 #'
+#' @param find
+#' @param columns
+#'
 #' @return Logical: TRUE/FALSE
 #' @noRd
 glot_exists_one <- function(find, columns){
@@ -40,6 +43,12 @@ glot_exists_one <- function(find, columns){
 }
 
 #' Check whether a glot or vector of glots exist in glottolog
+#'
+#' This function checks for exact matches, and returns TRUE/FALSE. In case you
+#' want a more flexible search, you can use
+#' \code{\link[=glottosearch]{glottosearch()}}, in case you want to check
+#' whether glottocodes exist/are valid, use
+#' \code{\link[=glottocodes_exist]{glottocodes_exist()}}
 #'
 #' @param find Glottocode, name of language, family, etc.
 #' @param columns In which column should be searched

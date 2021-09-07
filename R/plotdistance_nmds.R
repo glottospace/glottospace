@@ -37,6 +37,14 @@ nmds <- function(dist, k = 2, rm.na = FALSE){
 
 }
 
+#' Title
+#'
+#' @param nmds
+#'
+#' @return
+#' @export
+#'
+#' @examples
 nmds_scores <- function(nmds){
   scores <- as.data.frame(vegan::scores(nmds))
   scores <- tibble::rownames_to_column(scores, "glottocode")
@@ -80,6 +88,10 @@ plotnmds <- function(nmds, scoresdata, colorby = NULL, sizeby = NULL, labelby = 
     }
 
   if(nmds$ndim == 3){
+    # update function with tilde ~ ... See isolates_anthrodata_V2 and isolates_anthrodata_dplace
+    # perhaps add functionality to save as movie:
+    # https://r-graphics.org/recipe-miscgraph-3d-animate
+    # http://www.sthda.com/english/wiki/a-complete-guide-to-3d-visualization-device-system-in-r-r-software-and-data-visualization#export-the-plot-into-an-interactive-html-file
     nmdsplot <- plotly::plot_ly(data = scoresdata, x = ~NMDS1, y = ~NMDS2, z = ~NMDS3,
                                 type="scatter3d", mode="markers",
                                 color = {if(!is.null(colorby))~.data[[colorby]]},
@@ -96,7 +108,7 @@ plotnmds <- function(nmds, scoresdata, colorby = NULL, sizeby = NULL, labelby = 
       ))
 
       nmdsplot
-      if(!is.null(filename)){saveWidget(nmdsplot, title = "NMDS 3D", filename)}
+      if(!is.null(filename)){htmlwidgets::saveWidget(nmdsplot, title = "NMDS 3D", filename)}
       }
 }
 

@@ -1,3 +1,12 @@
+# TODO:
+# Maybe wrapper function pointdist or geodist?
+# FIXME:
+# > dist <- pointdist_bird(glottodata, "glottocode")
+# > pointdist_bird(dist)
+# Error in if (!sf::st_is_longlat(data)) { :
+#     missing value where TRUE/FALSE needed
+# Probably in contransform_lonlat
+
 #' Distances between spatial points, as the bird flies.
 #'
 #' Calculate Euclidean distances between spatial points, as the bird flies (great circle distances/Haversine distances).

@@ -31,6 +31,13 @@ glottosave <- function(object = NULL, filename = NULL){
                append = FALSE)
     }
   }
+  if(any(class(object) == "matrix" ) ){
+    if(tools::file_ext(filename) == ""){
+    utils::write.csv(object, file = paste0(filename, ".csv"))
+    } else {
+      utils::write.csv(object, file = filename)
+    }
+  }
 }
 
 #' Load glottodata

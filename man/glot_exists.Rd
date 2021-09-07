@@ -15,7 +15,11 @@ glot_exists(find, columns)
 Logical: TRUE/FALSE
 }
 \description{
-Check whether a glot or vector of glots exist in glottolog
+This function checks for exact matches, and returns TRUE/FALSE. In case you
+want a more flexible search, you can use
+\code{\link[=glottosearch]{glottosearch()}}, in case you want to check
+whether glottocodes exist/are valid, use
+\code{\link[=glottocodes_exist]{glottocodes_exist()}}
 }
 \examples{
 glot_exists(find = c("yucu1253", "abcd1234"), columns = "glottocode")

@@ -66,6 +66,8 @@ extractgeodata <- function(glottodata, geodata, radius = NULL, fun = NULL, add =
 #'
 #' @examples
 extractraster <- function(glottodata, geodata, radius = NULL, fun = NULL, add = TRUE){
+# exact_extract(ras, poly, 'mean')
+
 
   if(is_point(glottodata) ){
 
@@ -106,6 +108,8 @@ extractraster <- function(glottodata, geodata, radius = NULL, fun = NULL, add = 
       glottodata <- extracted
     }
     message("geodata extracted")
+    # FIXME: After extraction, active geometry is set to points, this should remain polygons.
+    glottodata <- st_set_geometry(glottodata, "geometry")
     return(glottodata)
   }
 
