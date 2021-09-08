@@ -9,34 +9,99 @@
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
 
-The goal of glottospace is to …
+The goal of glottospace is to … The R package glottospace helps useRs to
+do geospatial analyses on linguistic and cultural data. Examples
+include: matching linguistic datasets to their location, calculating
+distances between languages based on their spatial location or
+linguistic features, visualizing linguistic data on a map.
+
+ADD some examples here with r code
 
 ## Installation
 
-You can install the released version of glottospace from
-[CRAN](https://CRAN.R-project.org) with:
-
-``` r
-install.packages("glottospace")
-```
-
-And the development version from [GitHub](https://github.com/) with:
+You can install the development version of glottospace from
+[GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
 devtools::install_github("SietzeN/glottospace")
 ```
 
+## Workflow of glottospace
+
+### gather
+
+Obtaining data from different sources
+
+### integrate
+
+, and integrating them to use their full potential. Join user-provided
+data with glottodata, add locations
+
+### explore
+
+search: search languages, filter all languages in a certain country
+
+### enhance
+
+spatial enhancement, extract elevation of each language
+
+### calculate
+
+geodistances: calculating distances between languages, nearest
+languages, etc. glottodistances: calculating similarities between
+languages based on linguistic/cultural features
+
+### visualize
+
+plotting linguistic and cultural data on a map plotting distances
+between languages
+
 ## Some basic concepts: data formats
 
-data formats data: can be any kind of data. I use this mainly in
-developer functions that remain hidden from the user. For example if id
-is not ‘glottocode’. glottodata: User-provided data that contains a
-glottocode column (data.frame or tibble) glottosubdata: User-provided
-data that contains a glottosubcode column (data.frame or tibble)
-glottologdata: raw data downloaded from glottolog.org (either cldf or
-csv) glottobase: boosted/enriched glottolog data glottospace: all
-glottocodes + geometry column
+The glottospace package supports three main data formats: glottodata,
+glottobase, glottospace
+
+1.  glottodata. This is user-provided data that consist of a glottocode
+    and any number of linguistic and/or cultural variables (features).
+
+``` r
+glottodata <- get_glottodata()
+head(glottodata)
+```
+
+2.  glottospace. This returns points or polygons for each language in
+    [glottolog](https://glottolog.org/).
+
+``` r
+glottospace <- glottospace::get_glottospace()
+head(glottospace)
+#> Simple feature collection with 6 features and 1 field
+#> Geometry type: POINT
+#> Dimension:     XY
+#> Bounding box:  xmin: 36.5721 ymin: -9.03389 xmax: 146.992 ymax: 5.95034
+#> Geodetic CRS:  WGS 84
+#>   glottocode                  geometry
+#> 1   aari1239   POINT (36.5721 5.95034)
+#> 2   aasa1238  POINT (36.8648 -4.00679)
+#> 3   abad1241  POINT (146.992 -9.03389)
+#> 4   abag1245  POINT (145.665 -6.12028)
+#> 5   abai1240   POINT (118.306 5.55394)
+#> 6   abai1241 POINT (116.1625 3.524226)
+```
+
+3.  glottobase. This is a boosted/enriched version of
+    [glottolog](https://glottolog.org/).
+
+``` r
+glottobase <- glottospace::get_glottobase()
+colnames(glottobase)
+#>  [1] "glottocode"          "family_id"           "parent_id"          
+#>  [4] "name"                "isocode"             "child_dialect_count"
+#>  [7] "country_ids"         "family_name"         "isolate"            
+#> [10] "family_size"         "family_size_rank"    "country"            
+#> [13] "continent"           "region"              "geometry"
+```
 
 ## Example
 
@@ -44,6 +109,11 @@ This is a basic example which shows you how to solve a common problem:
 
 ``` r
 library(glottospace)
+#> 
+#> Attaching package: 'glottospace'
+#> The following object is masked _by_ '.GlobalEnv':
+#> 
+#>     glottobase
 ## basic example code
 ```
 
