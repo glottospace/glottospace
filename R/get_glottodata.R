@@ -1,3 +1,10 @@
+# get_glottodata
+# User provided glottodata.
+# Read data from excel or CSV
+# is_csv, is_excel (.xls .xlsx)
+# If excel file, it checks for a sheet called "glottodata"
+
+
 #' List names of all sheets in an excel file
 #'
 #' Reads an excel file (.xls or .xlsx).
@@ -78,6 +85,3 @@ langlistmerger <- function(langlist = NULL){
 }
 
 
-
-
-# Check metasheet: weight, type, colnames

@@ -1,3 +1,5 @@
+# FIXME: 3d plot nmds
+
 #' Nonmetric Multidimensional Scaling
 #'
 #' @param k

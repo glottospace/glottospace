@@ -1,10 +1,10 @@
 Package: glottospace
 Type: Package
 Title: Geospatial analysis of linguistic and cultural data
-Version: 0.0.0.9013
+Version: 0.0.0.9014
 Author: Sietze Norder
 Maintainer: Sietze Norder <mail@sietzenorder.nl>
-Description: The R package glottospace helps useRs to do geospatial analyses on linguistic data. 
+Description: The R package glottospace helps useRs to do geospatial analyses on linguistic and cultural data. 
     Examples include: matching linguistic datasets to their location, 
     calculating distances between languages based on their spatial location or linguistic features, 
     visualizing linguistic data on a map.

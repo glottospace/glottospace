@@ -48,7 +48,7 @@ glottosave <- function(object = NULL, filename = NULL){
 #' @export
 #'
 #' @examples
-#' glottoload(path)
+#' glottoload(filename)
 glottoload <- function(filename){
   # should this be integrated with get_glottodata?
   if(tools::file_ext(filename) == ".gpkg" | tools::file_ext(filename) == ".shp"){

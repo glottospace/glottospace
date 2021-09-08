@@ -14,5 +14,5 @@ glottoload(filename)
 Load glottodata
 }
 \examples{
-glottoload(path)
+glottoload(filename)
 }

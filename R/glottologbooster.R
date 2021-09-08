@@ -1,4 +1,4 @@
-# # TODO: Match sources to languages by
+# # TODO: Match datasources to languages by
 # head(glottolog_cldf$sources[,"LGCODE"])
 
 #' Glottologbooster: enhance glottolog data

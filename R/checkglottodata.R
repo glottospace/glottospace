@@ -1,4 +1,7 @@
 # TODO: addfunction: checkglottodata_missingvalues - glottodata[rowSums(is.na(glottodata)) != 0, ]
+# checkstructure
+# check type levels (e.g. "sym" vs. "symm", "symmetrica" vs. "symm")
+# check whether 'weights' is not empty. Default should be all the same (i.e. weight is 1). Cannot contain NA.
 
 #' Quality check of user-provided glottodata
 #'
@@ -9,7 +12,7 @@
 #' - All glottocodes are valid
 #'
 #' @param glottodata User-provided glottodata
-#' @param id Column index or column name with IDs (glottocodes, glottosubcodes, or glottosubsubcodes). Default is "glottocode".
+#' @param id Column index or column name with IDs (glottocodes or glottosubcodes). Default is "glottocode".
 #' @param show If TRUE (default) a data viewer will be opened to show the levels of each variable (including NAs)
 #'
 #' @return
