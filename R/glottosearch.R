@@ -90,3 +90,14 @@ glottocode_online <- function(glottocode){
   url <- paste0("https://glottolog.org/resource/languoid/id/", glottocode)
   utils::browseURL(url)
 }
+
+glottosubcode_valid <- function(glottosubcodes){
+  gsc_df <- data.frame(matrix(nrow = length(glottosubcodes), ncol = 3) )
+  colnames(gsc_df) <- c("glottocode", "group", "n")
+
+  for(i in seq(glottosubcodes)){
+  gsc_df[i, "glottocode"] <- strsplit(glottosubcodes, split = "_")[[i]][1]
+  gsc_df[i, "group"] <- strsplit(glottosubcodes, split = "_")[[i]][2]
+  gsc_df[i, "n"] <- strsplit(glottosubcodes, split = "_")[[i]][3]
+  }
+}

@@ -1,3 +1,6 @@
+
+
+
 #' Create empty glottodata for specified glottocodes and variables.
 #'
 #' Output is saved as an excel file with the following sheets: glottodata, structure, metadata, readme
@@ -12,7 +15,8 @@
 #'
 #' @examples
 #' createglottodata(glottocodes = c("yucu1253", "tani1257"), variables = 3, filename = "glottodata.xlsx")
-createglottodata <- function(glottocodes, variables, filename = NULL, ...){
+#' createglottodata(glottocodes = c("yucu1253", "tani1257"), variables = 3, filename = "glottodata_simple.xlsx", meta = FALSE)
+createglottodata <- function(glottocodes, variables, filename = NULL, meta = TRUE, ...){
  if(!all(glottocode_exists(glottocodes)) ){stop("Not all glottocodes are valid. Use glottocode_exists() to check which ones. ")}
 
   if(is.numeric(variables) & length(variables) == 1){
@@ -22,6 +26,7 @@ createglottodata <- function(glottocodes, variables, filename = NULL, ...){
   }
 
   glottodata <- create_glottosheet(glottocodes = glottocodes, varnames = varnames)
+  if(meta == TRUE){
   structure <- create_structuresheet(glottocodes = glottocodes, varnames = varnames)
   metadata <- create_metasheet(varnames = varnames)
   references <- create_refsheet(glottocodes = glottocodes, varnames = varnames)
@@ -35,6 +40,9 @@ createglottodata <- function(glottocodes, variables, filename = NULL, ...){
                     "references" = references,
                     "readme" = readme,
                     "lookup" = lookup)
+  } else {
+    sheetlist <- list("glottodata" = glottodata)
+  }
 
 
   if(!is.null(filename)){
@@ -65,7 +73,7 @@ createglottodata <- function(glottocodes, variables, filename = NULL, ...){
 #'
 #' @examples
 #' createglottosubdata(glottocodes = c("yucu1253", "tani1257"), variables = 3, groups = c("a", "b"), n = 5, filename = "glottosubdata.xlsx")
-createglottosubdata <- function(glottocodes, variables, filename = NULL, groups, n = NULL, ...){
+createglottosubdata <- function(glottocodes, variables, filename = NULL, groups, n = NULL, meta = TRUE, ...){
   if(!all(glottocode_exists(glottocodes)) ){stop("Not all glottocodes are valid. Use glottocode_exists() to check which ones. ")}
 
   if(is.numeric(variables) & length(variables) == 1){
@@ -84,6 +92,7 @@ createglottosubdata <- function(glottocodes, variables, filename = NULL, groups,
   names(glottosublist)[[i]] <- glottocodes[i]
   }
 
+  if(meta == TRUE){
   structure <- create_structuresheet(glottocodes = glottocodes, varnames = varnames)
   metadata <- create_metasheet(varnames = varnames)
   references <- create_refsheet(glottocodes = glottocodes, varnames = varnames)
@@ -99,6 +108,9 @@ createglottosubdata <- function(glottocodes, variables, filename = NULL, groups,
                     "lookup" = lookup)
 
   glottosubsheets <- c(glottosublist, sheetlist)
+  } else {
+    glottosubsheets <- glottosublist
+  }
 
   if(!is.null(filename)){
     # check if path exists, if subfolder doesn't exist, it doesn't write.
@@ -149,7 +161,7 @@ create_readmesheet <- function(maintainer = NULL, email = NULL, citation = NULL,
                   ifelse(is.null(citation), NA, citation),
                   ifelse(is.null(url), NA, url),
                   paste0("version " ,packageVersion("glottospace") ) )
-  colnames(readme) <- NULL
+  colnames(readme) <- c("info", "value")
   readme
 }
 
@@ -199,3 +211,30 @@ create_glottosubcodes <- function(glottocode, groups = NULL, n){
   glottosubcodes
 
 }
+
+createdummydata <- function(){
+  dummy <- createglottodata(glottocodes = c("yucu1253", "tani1257"), variables = 3)
+  dummy$glottodata[,"var001"] <- c("Y", NA)
+  dummy$glottodata[,"var002"] <- c("a", "b")
+  dummy$glottodata[,"var003"] <- c("N", "Y")
+
+  dummy$structure[,"type"] <- c("symm", "factor", "symm")
+
+  dummy
+}
+
+createdummysubdata <- function(){
+  dummy <- createglottosubdata(glottocodes = c("yucu1253", "tani1257"), variables = 3, groups = c("a", "b"), n = 5)
+  dummy[[1]][,"var001"] <- sample(c("Y", "N", NA), size = 10, replace = TRUE)
+  dummy[[1]][,"var002"] <- sample(c("a", "b", NA), size = 10, replace = TRUE)
+  dummy[[1]][,"var003"] <- sample(c("Y", "N", NA), size = 10, replace = TRUE)
+
+  dummy[[2]][,"var001"] <- sample(c("Y", "N", NA), size = 10, replace = TRUE)
+  dummy[[2]][,"var002"] <- sample(c("a", "b", NA), size = 10, replace = TRUE)
+  dummy[[2]][,"var003"] <- sample(c("Y", "N", NA), size = 10, replace = TRUE)
+
+  dummy$structure[,"type"] <- c("symm", "factor", "symm")
+
+  dummy
+}
+

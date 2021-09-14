@@ -17,3 +17,4 @@ contrans_char2obj <- function(){}
 contrans_id2gc <- function(id){
   ifelse(is.null(id), id <- "glottocode", id)
 }
+

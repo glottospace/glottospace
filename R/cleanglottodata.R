@@ -1,4 +1,5 @@
 # cleanglottodata/glottodataclean
+# guess data format for each column? https://stackoverflow.com/questions/21125222/determine-the-data-types-of-a-data-frames-columns
 # recode: N/A, NA, NA? --> NA
 # "Y" --> TRUE
 # etc.

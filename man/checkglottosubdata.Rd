@@ -16,6 +16,7 @@ checkglottosubdata(glottosubdata)
 Quality check of user-provided glottosubdata
 }
 \examples{
-checkglottosubdata(glottosubdata = glottosubdata)
-lapply(glottosubdatalist, checkglottosubdata)
+glottosubdata <- get_glottodata(meta = FALSE, dummy = "glottosubdata")
+checkglottosubdata(glottosubdata[[1]])
+lapply(glottosubdata, checkglottosubdata)
 }

@@ -39,7 +39,13 @@ devtools::install_github("SietzeN/glottospace")
 ## Workflow of glottospace
 
 ### gather
-Obtaining data from different sources
+Download data from different sources, generate empty data structures that help you to add data in a structured way. 
+
+### check
+Interactive quality checks of user-provided data. Quickly check data coverage, missing values, etc. 
+
+### clean
+Clean data where necessary, recode values, select columns/remove redundant
 
 ### integrate
 , and integrating them to use their full potential.
@@ -48,8 +54,8 @@ Join user-provided data with glottodata, add locations
 ### explore
 search: search languages, filter all languages in a certain country
 
-### enhance
-spatial enhancement, extract elevation of each language
+### enrich
+add data, extract elevation of each language
 
 ### calculate
 geodistances: calculating distances between languages, nearest languages, etc.

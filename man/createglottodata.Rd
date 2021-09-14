@@ -4,7 +4,7 @@
 \alias{createglottodata}
 \title{Create empty glottodata for specified glottocodes and variables.}
 \usage{
-createglottodata(glottocodes, variables, filename, ...)
+createglottodata(glottocodes, variables, filename = NULL, meta = TRUE, ...)
 }
 \arguments{
 \item{glottocodes}{Character vector of glottocodes}
@@ -17,8 +17,9 @@ createglottodata(glottocodes, variables, filename, ...)
 
 }
 \description{
-Output is saved as an excel file with the following sheets: glottodata, structure, metadata, README
+Output is saved as an excel file with the following sheets: glottodata, structure, metadata, readme
 }
 \examples{
-createglottodata(glottocodes = c("yucu1253", "abcd1234"), variables = 3, filename = "glottodata.xlsx")
+createglottodata(glottocodes = c("yucu1253", "tani1257"), variables = 3, filename = "glottodata.xlsx")
+createglottodata(glottocodes = c("yucu1253", "tani1257"), variables = 3, filename = "glottodata_simple.xlsx", meta = FALSE)
 }

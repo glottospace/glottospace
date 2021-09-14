@@ -59,3 +59,23 @@ join_glottobase <- function(glottodata, id = NULL){
   glottobase <- get_glottobase()
   dplyr::left_join(x = glottodata, y = glottobase, by = id)
 }
+
+
+
+#' Join glottodata for multiple languages into a single glottodata object
+#'
+#'
+#' @param langlist A list of glottodata objects. Column names across languages should be identical.
+#'
+#' @return A single glottodata object
+#' @export
+#'
+#' @examples
+#' glottodata <- get_glottodata("glottosubdata.xlsx", meta = FALSE)
+#' join_glottodata(langlist = glottodata)
+join_glottodata <- function(langlist){
+  checkdata_lscolcount(langlist) # stops if number of columns is not identical
+  do.call("rbind", langlist) # alternative approaches: data.table::rbindlist or plyr::rbind.fill
+}
+
+

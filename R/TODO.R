@@ -16,6 +16,7 @@
 
 
 # FUNCTIONS TO ADD -------------------------------------------------------------------
+# get_glottodata: https://stackoverflow.com/questions/30177053/using-a-trycatch-block-to-read-a-csv-and-an-excel-file
 
 # get_dplace: see isolates project
 # Extend readme with examples: https://r-pkgs.org/release.html?q=readme#readme

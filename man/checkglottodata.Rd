@@ -11,23 +11,20 @@ checkglottodata(glottodata, show = TRUE)
 
 \item{show}{If TRUE (default) a data viewer will be opened to show the levels of each variable (including NAs)}
 
-\item{id}{Column index or column name with IDs (glottocodes, glottosubcodes, or glottosubsubcodes). Default is "glottocode".}
+\item{id}{Column index or column name with IDs (glottocodes or glottosubcodes). Default is "glottocode".}
 }
 \value{
 
 }
 \description{
-Go through a user-provided glottodataset and check:
-- No missing IDs
-- No duplicate IDs
-- All variables have at least two levels
-- All glottocodes are valid
+Go through a user-provided glottodataset and check whether:
+- one column exists with the name "glottocode"
+- there are rows without a glottocode  (missing IDs)
+- there are rows with duplicated glottocodes (duplicate IDs)
+- all variables have at least two levels
+- all glottocodes are valid
 }
 \examples{
-dpath <- "C:/Users/sjnor/surfdrive/Shared/SAPPHIRE/Output/Presentations/Isolates_WS-Athens/data/dbase_isolates_V2.xlsx"
-glottodata <- get_sheetdata(path = dpath, sheets = 1)
-checkglottodata(glottodata = glottodata, id = 1)
-
+glottodata <- get_glottodata(meta = FALSE)
 checkglottodata(glottodata = glottodata)
-lapply(glottodatalist, checkglottodata)
 }

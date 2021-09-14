@@ -31,7 +31,18 @@ devtools::install_github("SietzeN/glottospace")
 
 ### gather
 
-Obtaining data from different sources
+Download data from different sources, generate empty data structures
+that help you to add data in a structured way.
+
+### check
+
+Interactive quality checks of user-provided data. Quickly check data
+coverage, missing values, etc.
+
+### clean
+
+Clean data where necessary, recode values, select columns/remove
+redundant
 
 ### integrate
 
@@ -42,9 +53,9 @@ data with glottodata, add locations
 
 search: search languages, filter all languages in a certain country
 
-### enhance
+### enrich
 
-spatial enhancement, extract elevation of each language
+add data, extract elevation of each language
 
 ### calculate
 

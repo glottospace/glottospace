@@ -1,8 +1,17 @@
 #' Pipe
 #'
-#' @importFrom magrittr %>%
 #' @name %>%
 #' @rdname pipe
-#' @NoRd
-#' @examples
+#' @keywords internal
+#' @export
+#' @importFrom magrittr %>%
+NULL
 
+#' Negated in
+#'
+#' @name %nin%
+#' @rdname nin
+#' @keywords internal
+#' @export
+#' @importFrom Hmisc %nin%
+NULL
