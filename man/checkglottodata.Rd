@@ -9,7 +9,7 @@ checkglottodata(glottodata, show = TRUE)
 \arguments{
 \item{glottodata}{User-provided glottodata}
 
-\item{show}{If TRUE (default) a data viewer will be opened to show the levels of each variable (including NAs)}
+\item{show}{If TRUE (default) a data viewer will be opened to show the levels of each variable (including NAs), and a data coverage plot will be shown.}
 
 \item{id}{Column index or column name with IDs (glottocodes or glottosubcodes). Default is "glottocode".}
 }

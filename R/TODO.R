@@ -18,6 +18,8 @@
 # FUNCTIONS TO ADD -------------------------------------------------------------------
 # get_glottodata: https://stackoverflow.com/questions/30177053/using-a-trycatch-block-to-read-a-csv-and-an-excel-file
 
+# set_glottofocus: point of interest/higlight/focus. set_glottofocus(). Which glots should be highlighted in visualisations? For example, one language in a plot of Arawakan languages
+
 # get_dplace: see isolates project
 # Extend readme with examples: https://r-pkgs.org/release.html?q=readme#readme
 # add a logo: https://rdrr.io/github/r-lib/usethis/man/use_logo.html

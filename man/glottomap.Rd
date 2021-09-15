@@ -24,5 +24,5 @@ Create dynamic, static and interactive maps from glottodata
 \examples{
 glottopoints <- glottofilter(continent = "South America")
 glottopols <- points2pols(glottopoints, interpolation = "voronoi", continent = "South America")
-glottomap_dynamic(glottodata = glottopols, label = "glottocode", colorby = "family_size_rank")
+glottomap(glottodata = glottopols, label = "glottocode", colorby = "family_size_rank")
 }

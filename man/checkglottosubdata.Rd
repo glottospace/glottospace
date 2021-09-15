@@ -4,7 +4,7 @@
 \alias{checkglottosubdata}
 \title{Quality check of user-provided glottosubdata}
 \usage{
-checkglottosubdata(glottosubdata)
+checkglottosubdata(glottosubdata, show = TRUE)
 }
 \arguments{
 \item{glottosubdata}{}
@@ -17,6 +17,9 @@ Quality check of user-provided glottosubdata
 }
 \examples{
 glottosubdata <- get_glottodata(meta = FALSE, dummy = "glottosubdata")
-checkglottosubdata(glottosubdata[[1]])
+glottosubdata <- join_glottodata(glottosubdata)
+checkglottosubdata(glottosubdata)
+
+Better to join_glottodata first, instead of the following approach (because checks only within each language for duplicates etc.)
 lapply(glottosubdata, checkglottosubdata)
 }

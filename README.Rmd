@@ -1,5 +1,6 @@
 ---
 output: github_document
+always_allow_html: true
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
@@ -13,19 +14,18 @@ knitr::opts_chunk$set(
 )
 ```
 
+
+
 # glottospace
 
 <!-- badges: start -->
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
 
-The goal of glottospace is to ...
-The R package glottospace helps useRs to do geospatial analyses on linguistic and cultural data. 
+## R package for the geospatial analysis of linguistic and cultural data. 
     Examples include: matching linguistic datasets to their location, 
     calculating distances between languages based on their spatial location or linguistic features, 
     visualizing linguistic data on a map.
-
-ADD some examples here with r code
 
 ## Installation
 
@@ -35,6 +35,62 @@ You can install the development version of glottospace from [GitHub](https://git
 # install.packages("devtools")
 devtools::install_github("SietzeN/glottospace")
 ```
+## Introduction to glottospace
+
+### Plotting language locations on a map
+Imagine you're working with languages in a particular region, and want to visualize them on a map.You could for example filter all languages in South America, and show which ones of them are isolate languages:
+
+```{r plot_glottopoints}
+library(glottospace)
+## Filter by continent
+glottopoints <- glottofilter(continent = "South America")
+## Plot point data:
+glottomap(glottodata = glottopoints, label = "glottocode", colorby = "isolate")
+```
+
+Languages are often represented with points, while in reality the speakers of a language can inhabit vast areas. Glottospace works with point and polygon data. When polygon data is not available, you can interpolate the points and plot those. 
+
+```{r plot_glottopols}
+# Interpolate points to polygons:
+glottopols <- points2pols(glottopoints, method = "voronoi", continent = "South America")
+# Plot polygon data:
+glottomap(glottodata = glottopols, label = "glottocode", colorby = "family_size_rank")
+
+```
+
+### Adding contextual data for specific languages
+
+Imagine you are interested in a particular set of languages, and want to add some contextual information.
+
+```{r addenv}
+# Search languages:
+glottosearch(find = "Dutsch")
+```
+
+There are 6 glots that resemble our search term. Let's check on [glottolog](https://glottolog.org/) if Dutch is the language we're looking for.
+
+```{r}
+glottocode_online("dutc1256")
+```
+
+Yes, that's the one. Let's check where Dutch is located in comparison to other languages in the Netherlands. 
+```{r}
+dutchies <- glottofilter(country = "Netherlands")
+```
+
+
+Get and extract environmental data. 
+
+```{r}
+elevation <- get_geodata(download = "elevation", country = "Netherlands")
+elevdutchies <- extractgeodata(glottodata = dutchies, geodata = elevation)
+```
+Let's plot the elevation of the Dutchies:
+
+```{r}
+glottomap(glottodata = elevdutchies, colorby = "elevation", label = "name")
+```
+
 
 ## Workflow of glottospace
 
@@ -70,46 +126,23 @@ plotting distances between languages
 
 ## Some basic concepts: data formats
 
+The glottospace package works with [glottolog](https://glottolog.org/) data, and uses glottocodes as IDs to match different data sources. 
 The glottospace package supports three main data formats: glottodata, glottobase, glottospace
 
 1. glottodata. This is user-provided data that consist of a glottocode and any number of linguistic and/or cultural variables (features). 
 ``` r
-glottodata <- get_glottodata()
-head(glottodata)
+glottodata <- get_glottodata(meta = FALSE)
+glottodata
 ```
 2. glottospace. This returns points or polygons for each language in [glottolog](https://glottolog.org/). 
 ``` {r}
-glottospace <- glottospace::get_glottospace()
+glottospace <- get_glottospace()
 head(glottospace)
 ```
 
 3. glottobase. This is a boosted/enriched version of [glottolog](https://glottolog.org/). 
 ``` {r glottospace}
-glottobase <- glottospace::get_glottobase()
+glottobase <- get_glottobase()
 colnames(glottobase)
 ```
 
-## Example
-
-This is a basic example which shows you how to solve a common problem:
-
-```{r example}
-library(glottospace)
-## basic example code
-```
-
-What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so:
-
-```{r cars}
-summary(cars)
-```
-
-You'll still need to render `README.Rmd` regularly, to keep `README.md` up-to-date. `devtools::build_readme()` is handy for this. You could also use GitHub Actions to re-render `README.Rmd` every time you push. An example workflow can be found here: <https://github.com/r-lib/actions/tree/master/examples>.
-
-You can also embed plots, for example:
-
-```{r pressure, echo = FALSE}
-plot(pressure)
-```
-
-In that case, don't forget to commit and push the resulting figure files, so they display on GitHub and CRAN.

@@ -32,13 +32,14 @@ extractgeodata <- function(glottodata, geodata, radius = NULL, fun = NULL, add =
     geodata <- geodata
   }
 
+  if(!is.null(fun)){
   if(funnames == TRUE){
     if(is.function(fun)){funname <- "expr"
     } else {funname <- fun}
     names(geodata) <- paste(names(geodata),funname, sep = "_")
   }
-
   fun <- eval(as.symbol(fun))
+  }
 
   if(class(geodata)[1] == "RasterLayer" | class(geodata)[1] == "RasterStack"){
     out <- extractraster(glottodata = glottodata, geodata = geodata, radius = radius, fun = fun, add = add)

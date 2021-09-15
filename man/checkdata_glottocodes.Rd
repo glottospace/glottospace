@@ -4,7 +4,7 @@
 \alias{checkdata_glottocodes}
 \title{Check whether all IDs are valid glottocodes.}
 \usage{
-checkdata_glottocodes(glottodata, id, messages = TRUE)
+checkdata_glottocodes(glottodata, messages = TRUE)
 }
 \arguments{
 \item{id}{}

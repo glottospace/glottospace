@@ -14,7 +14,7 @@
 #' @examples
 #' glottopoints <- glottofilter(continent = "South America")
 #' glottopols <- points2pols(glottopoints, interpolation = "voronoi", continent = "South America")
-#' glottomap_dynamic(glottodata = glottopols, label = "glottocode", colorby = "family_size_rank")
+#' glottomap(glottodata = glottopols, label = "glottocode", colorby = "family_size_rank")
 glottomap <- function(glottodata, colorby = NULL, label = NULL, type = NULL){
   if(is.null(type)){type <- "dynamic"}
   if(is.null(label)){label <- "glottocode"}

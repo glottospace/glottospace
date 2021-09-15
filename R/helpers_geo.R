@@ -136,7 +136,7 @@ points2pols <- function(glottopoints, method = "buffer", radius = NULL, country 
     # match them to glottopoints:
     pts$pols <- pols[unlist(sf::st_intersects(pts, pols))]
     pts$points <- pts$geometry # these lines are redundant because I could just set the active geometry to the polygons, but for the user this seems more intuitive
-    pols <- st_drop_geometry(pts) %>% dplyr::relocate(pols, .after = last_col()) %>% dplyr::rename(geometry = pols)
+    pols <- sf::st_drop_geometry(pts) %>% dplyr::relocate(pols, .after = last_col()) %>% dplyr::rename(geometry = pols)
     pols <- sf::st_set_geometry(pols, "geometry")
     if(!is.null(radius)){message("argument 'radius' not relevant for the specified interpolation method.")}
   }
