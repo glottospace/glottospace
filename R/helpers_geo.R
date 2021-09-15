@@ -225,4 +225,14 @@ is_polygon <- function(object){
   any(unique(sf::st_geometry_type(object)) == "POLYGON")
 }
 
+bbox_expand <- function(bbox, f = 0.2){
 
+  xrange <- bbox$xmax - bbox$xmin # range of x values
+  yrange <- bbox$ymax - bbox$ymin # range of y values
+
+  bbox[1] <- bbox[1] - (f * xrange) # xmin - left
+  bbox[3] <- bbox[3] + (f * xrange) # xmax - right
+  bbox[2] <- bbox[2] - (f * yrange) # ymin - bottom
+  bbox[4] <- bbox[4] + (f * yrange) # ymax - top
+  bbox
+}

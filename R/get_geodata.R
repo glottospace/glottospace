@@ -14,12 +14,12 @@ path <- "D:/Global/Societal/travel time/travel_time_to_cities_1.tif"
 #' @export
 #'
 #' @examples
-get_geodata <- function(path = NULL, download = NULL){
+get_geodata <- function(path = NULL, download = NULL, country = NULL){
   if(!is.null(path) & is.null(download)){
     geodata <- get_geodata_path(path = path)
   }
   if(is.null(path) & !is.null(download)){
-    geodata <- get_geodata_download(download = download)
+    geodata <- get_geodata_download(download = download, country = country)
   }
   return(geodata)
 }
@@ -69,9 +69,14 @@ if(!is.null(vec) & is.null(ras)){
 
 }
 
-get_geodata_download <- function(download){
+get_geodata_download <- function(download, country = NULL){
   if(download == "climate"){
   raster::getData(name = "worldclim", var = "bio", res = 10)
+  }
+  if(download == "elevation"){
+    geodata <- raster::getData(name = "alt", country = country)
+    names(geodata) <- "elevation"
+    geodata
   }
 }
 

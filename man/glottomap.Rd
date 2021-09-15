@@ -13,7 +13,7 @@ glottomap(glottodata, colorby = NULL, label = NULL, type = NULL)
 
 \item{label}{Column name or index to be used to label features (optional)}
 
-\item{type}{One of: "static", "dynamic", "interactive", or "simple"}
+\item{type}{One of: "static", "dynamic", or "interactive"}
 }
 \value{
 
@@ -23,6 +23,6 @@ Create dynamic, static and interactive maps from glottodata
 }
 \examples{
 glottopoints <- glottofilter(continent = "South America")
-glottopols <- points2pols(glottopoints, interpolation = "voronoi", continent = "South America")
+glottopols <- points2pols(glottopoints, method = "voronoi", continent = "South America")
 glottomap(glottodata = glottopols, label = "glottocode", colorby = "family_size_rank")
 }

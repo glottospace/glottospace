@@ -1,0 +1,15 @@
+<VRTDataset rasterXSize="480" rasterYSize="348">
+<GeoTransform>3.3, 0.008333333, 0, 53.6, 0, -0.008333333</GeoTransform>
+<SRS>+proj=longlat +ellps=WGS84</SRS>
+	<VRTRasterBand dataType="Int16" band="1" subClass="VRTRawRasterBand">
+		<Description>NLD_msk_alt</Description>
+		<SourceFilename relativetoVRT="1">NLD_msk_alt.gri</SourceFilename>
+		<ImageOffset>0</ImageOffset>
+		<PixelOffset>2</PixelOffset>
+		<LineOffset>960</LineOffset>
+		<ByteOrder>LSB</ByteOrder>
+		<NoDataValue>-9999</NoDataValue>
+		<Offset>0</Offset>
+		<Scale>1</Scale>
+	</VRTRasterBand>
+</VRTDataset>

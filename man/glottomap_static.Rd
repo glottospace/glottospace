@@ -20,6 +20,6 @@ glottomap_static(glottodata, label, colorby)
 glottomap_static
 }
 \examples{
-glottomap_dynamic(glottodata)
+glottomap_static(glottodata)
 }
 \keyword{internal}
