@@ -7,11 +7,14 @@
 # install(force = TRUE) # ALWAYS INSTALL FROM HERE (PACKAGE), NOT FROM OTHER SCRIPT.
 
 # FIXME
+# cleanglottodata
+# checkglottosubdata (checkglottodata), checkdata_glottosubcodes (checkglottodata), glottosubcode_valid (in glottosearch)
+# glottomap_static: maybe use ggplot instead of tmap for simple plot, only country boundaries and points..
 # Write wrapper geodist (i.e. make sure it works for points and lines, etc.)
 # geodist only relevant between points and lines, not pols and lines
 # buffer should be equal area, not necessarily equidistant.
 
-# Visualization: change colorby to color, sizeby to size, etc? Maybe not..
+# Visualization: change colorby to color, sizeby to size, etc? Yes, make sure that it takes a color or a column.
 
 
 
