@@ -63,7 +63,7 @@ checkglottosubdata <- function(glottosubdata, show = TRUE){
   }
 }
 
-#' Check metadata of a glottodataset
+#' Check metadata of glottodata
 #'
 #' @param glottodata
 #'
@@ -76,16 +76,27 @@ checkmetadata <- function(glottodata){
   sheetnames <- paste(names(glottodata), collapse = ", ")
   message( paste("This glottodataset contains the folowing sheets:", sheetnames) )
 
-  if(!all(glottodata$structure$type %in% create_lookupsheet()[,"type_lookup"]) ){
-    message("Some types were not recognized, maybe there was a spelling error? Use create_lookupsheet() to see the possible levels.")
-  }
-  if(any(is.na(glottodata$structure$weight))){message("Some of the weights are NA. If you want to weigh all variables equally, please set each of them to 1.")}
-
+  if(checkmetadata_hasstructure(glottodata)){
+    checkmetadata_types(glottodata)
+    checkmetadata_weights(glottodata)
+  } else {message("No structure sheet found in glottodata")}
 }
 
 
+checkmetadata_hasstructure <- function(glottodata){
+  is.list(glottodata) & any(names(glottodata) %in% "structure")
+}
 
+checkmetadata_types <- function(glottodata){
+  if(!all(glottodata$structure$type %in% create_lookupsheet()[,"type_lookup"]) ){
+    message("Some types were not recognized, maybe there was a spelling error? Type create_lookupsheet() to see the possible levels.")
+  } else{message("All types recognized")}
+}
 
+checkmetadata_weights <- function(glottodata){
+  if(any(is.na(glottodata$structure$weight))){message("Some of the weights are NA. If you want to weigh all variables equally, please set each of them to 1.")
+  } else{message("All weights are specified")}
+}
 
 #' Check whether rows have missing IDs.
 #'

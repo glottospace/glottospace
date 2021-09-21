@@ -3,9 +3,7 @@
 \docType{data}
 \name{glottobase}
 \alias{glottobase}
-\title{Load default glottolog reference data.
-Loads glottolog data which is used in other functions as a reference. For example, to check wether a glottocode exists.
-Glottobase: glottolog dataset used as a reference/lookup}
+\title{Load glottobase data}
 \format{
 A data frame with XX rows and XX variables:
 \describe{
@@ -22,6 +20,6 @@ A data frame with XX rows and XX variables:
 glottobase
 }
 \description{
-Glottolog dataset.
+This is a boosted/enriched version of glottolog data. It is used as reference dataset in several functions. The glottocodes are used as unique IDs to match different data sources.
 }
 \keyword{datasets}

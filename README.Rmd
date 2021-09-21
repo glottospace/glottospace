@@ -45,7 +45,7 @@ library(glottospace)
 ## Filter by continent
 glottopoints <- glottofilter(continent = "South America")
 ## Plot point data:
-glottomap(glottodata = glottopoints, label = "glottocode", colorby = "isolate", type = "static")
+glottomap(glottodata = glottopoints, color = "isolate")
 ```
 
 Languages are often represented with points, while in reality the speakers of a language can inhabit vast areas. Glottospace works with point and polygon data. When polygon data is not available, you can interpolate the points and plot those. 
@@ -54,7 +54,7 @@ Languages are often represented with points, while in reality the speakers of a 
 # Interpolate points to polygons:
 glottopols <- points2pols(glottopoints, method = "voronoi", continent = "South America")
 # Plot polygon data:
-glottomap(glottodata = glottopols, label = "glottocode", colorby = "family_size_rank", type = "static")
+glottomap(glottodata = glottopols, color = "family_size_rank")
 
 ```
 
@@ -88,7 +88,7 @@ elevdutchies <- extractgeodata(glottodata = dutchies, geodata = elevation)
 Let's plot the elevation of the Dutchies:
 
 ```{r map_dutchies}
-glottomap(glottodata = elevdutchies, colorby = "elevation", label = "name", type = "static")
+glottomap(glottodata = elevdutchies, color = "elevation", label = "name")
 ```
 
 

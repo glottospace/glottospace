@@ -2,7 +2,7 @@
 % Please edit documentation in R/checkglottodata.R
 \name{checkmetadata}
 \alias{checkmetadata}
-\title{Check metadata of a glottodataset}
+\title{Check metadata of glottodata}
 \usage{
 checkmetadata(glottodata)
 }
@@ -13,7 +13,7 @@ checkmetadata(glottodata)
 
 }
 \description{
-Check metadata of a glottodataset
+Check metadata of glottodata
 }
 \examples{
 glottodata <- get_glottodata()

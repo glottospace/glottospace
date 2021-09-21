@@ -59,7 +59,7 @@ createglottodata <- function(glottocodes, variables, filename = NULL, meta = TRU
 #' glottosubcodes are created in the following form: glottocode_group_record.
 #' For example: abcd1234_aaa_0001, abcd1234_aaa_0002, abcd1234_bbb_0001, abcd1234_bbb_0002
 #'
-#' Output is saved as an excel file with the following sheets: glottodata, structure, metadata, readme
+#' Output is a list with one data.frame per language (and a number of metasheets if meta = TRUE). Output can  also be saved as an excel file.
 #'
 #' @param variables Either a vector with variable names, or a single number indicating the total number of variable columns to be generated
 #' @param filename
@@ -67,8 +67,9 @@ createglottodata <- function(glottocodes, variables, filename = NULL, meta = TRU
 #' @param glottocodes Character vector of glottocodes
 #' @param groups Character vector of group names
 #' @param n Number of records to be assigned to each group
+#' @param meta Should metasheets be created?
 #'
-#' @return
+#' @return A list with a data.frame for each languages (and metadata if meta = TRUE)
 #' @export
 #'
 #' @examples
@@ -131,11 +132,13 @@ create_glottosheet <- function(glottocodes, varnames){
   glottodata
 }
 
-create_structuresheet <- function(glottocodes, varnames){
+create_structuresheet <- function(glottocodes, varnames = NULL){
 structure <- data.frame(matrix(nrow = length(varnames), ncol = 6) )
 colnames(structure) <- c("varname", "type", "levels", "weight", "groups", "subgroups")
+if(!is.null(varnames)){
 structure[,"varname"] <- varnames
 structure[,"weight"] <- 1
+}
 structure
 }
 

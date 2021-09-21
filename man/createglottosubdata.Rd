@@ -23,17 +23,19 @@ createglottosubdata(
 
 \item{n}{Number of records to be assigned to each group}
 
+\item{meta}{Should metasheets be created?}
+
 \item{...}{Other parameters passed to create_readmesheet(maintainer, email, citation, url)}
 }
 \value{
-
+A list with a data.frame for each languages (and metadata if meta = TRUE)
 }
 \description{
 glottosubcodes are created in the following form: glottocode_group_record.
 For example: abcd1234_aaa_0001, abcd1234_aaa_0002, abcd1234_bbb_0001, abcd1234_bbb_0002
 }
 \details{
-Output is saved as an excel file with the following sheets: glottodata, structure, metadata, readme
+Output is a list with one data.frame per language (and a number of metasheets if meta = TRUE). Output can  also be saved as an excel file.
 }
 \examples{
 createglottosubdata(glottocodes = c("yucu1253", "tani1257"), variables = 3, groups = c("a", "b"), n = 5, filename = "glottosubdata.xlsx")

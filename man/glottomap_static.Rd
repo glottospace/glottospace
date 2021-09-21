@@ -2,24 +2,28 @@
 % Please edit documentation in R/glottomap.R
 \name{glottomap_static}
 \alias{glottomap_static}
-\title{glottomap_static}
+\title{Create a static map with glottodata}
 \usage{
-glottomap_static(glottodata, label, colorby)
+glottomap_static(glottodata, label, color, ptsize)
 }
 \arguments{
-\item{glottodata}{User-provided glottodata}
+\item{glottodata}{User-provided glottodata (either glottopoints or glottopols)}
 
 \item{label}{Column name or index to be used to label features (optional)}
 
-\item{colorby}{column name or index to be used to color features (optional)}
+\item{color}{column name or index to be used to color features (optional), or a color "black"}
+
+\item{ptsize}{Point size between 0 and 1}
 }
 \value{
 
 }
 \description{
-glottomap_static
+This function returns a static map with glottodata. Data is projected using the equal-area Eckert IV projection (following McNew et al. 2018)
 }
 \examples{
+glottodata <- glottofilter(continent = "South America")
+glottodata <- glottofilter(country = "Netherlands")
 glottomap_static(glottodata)
 }
 \keyword{internal}

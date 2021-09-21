@@ -61,6 +61,23 @@ join_glottobase <- function(glottodata, id = NULL){
 }
 
 
+#' Add coordinates to glottodata.
+#'
+#' Join glottodata with glottospace (keeps all rows from glottodata)
+#'
+#'
+#' @param glottodata
+#' @param id
+#'
+#' @return
+#' @export
+#'
+#' @examples
+join_glottospace <- function(glottodata, id = NULL){
+  id <- contrans_id2gc(id)
+  glottospace <- get_glottospace()
+  dplyr::left_join(x = glottodata, y = glottospace, by = id)
+}
 
 #' Join glottodata for multiple languages into a single glottodata object
 #'

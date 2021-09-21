@@ -1,75 +1,66 @@
-# cleanglottodata/glottodataclean
-# guess data format for each column? https://stackoverflow.com/questions/21125222/determine-the-data-types-of-a-data-frames-columns
-# recode: N/A, NA, NA? --> NA
-# "Y" --> TRUE
-# etc.
+#' Clean glottodata
+#'
+#' @param glottodata User-provided glottodata (list or data.frame)
+#'
+#' @return
+#' @export
+#'
+#' @examples
+#' # list:
+#' glottodata_list <- get_glottodata()
+#' glottodata_list <- cleanglottodata(glottodata_list)
+#' glottodata_list[[1]] <- cleanglottodata(glottodata_list[[1]])
+#'
+#' # data.frame:
+#' glottodata <- get_glottodata(meta = FALSE)
+#' glottodata <- cleanglottodata(glottodata)
+cleanglottodata <- function(glottodata, structure = NULL){
+  if(checkmetadata_hasstructure(glottodata) ){
+    glottodata[["glottodata"]] <- cleandata_recodemissing(glottodata[["glottodata"]])
+    glottodata[["glottodata"]] <- cleandata_recodelogical(glottodata = glottodata[["glottodata"]], structure = glottodata[["structure"]])
+    glottodata
+
+  } else {
+    if(is.null(structure)){stop("Please provide a structure data.frame with at least a type column. Run create_structuresheet() to create it.")}
+        glottodata <- cleandata_recodemissing(glottodata)
+        glottodata <- cleandata_recodelogical(glottodata, structure)
+        glottodata
+    }
+}
 
 
-gs_langdatacleaner <- function(data = NULL, rm = NULL, sel = NULL, id = NULL, structure = NULL, rmtypes = c("id", "meta", "bk", "fk")){
 
-  structure <- suppressMessages(dplyr::left_join(data.frame("colnames" = colnames(data)), structure))
+#' Reclass missing values to NA
+#'
+#' @param glottodata User-provided glottodata
+#' @param rec Optional, additional values to recode to NA
+#'
+#' @return
+#' @export
+#'
+#' @examples
+cleandata_recodemissing <- function(glottodata, rec = NULL){
+  data <- glottodata[,-1]
+  na_strings <- c(naniar::common_na_strings, "?", rec)
+  data %>%
+    naniar::replace_with_na_all(condition = ~. %in% na_strings)
+  message("Missing values recoded to NA \n")
+  cbind(glottodata[,1, drop = FALSE], data)
+}
+
+cleandata_recodelogical <- function(glottodata, structure){
   types <- structure$type
-  cbinary <- which(types == "asymm" | types == "symm")
-  if(is.null(id)){id <- structure$colnames[(tolower(types) == "id")]}
+  cbinary <- structure$varname[which(types == "asymm" | types == "symm")]
 
-  # reclass
-  data[data == "#N/A" | data == "<NA>" | data == "NA" | data == "?"  | data == "" | data == " "] <- NA
   if(!is.null(cbinary)){
-    bindat <- data[, cbinary]
+    bindat <- glottodata[, cbinary]
     bindat[bindat == "Y" | bindat == "y" | bindat == 1] <- TRUE
     bindat[bindat == "N" | bindat == "n" | bindat == 0] <- FALSE
-    data[, cbinary] <- bindat
-    cat("Values in binary columns (symm/asymm) reclassified to TRUE/FALSE \n")
+    glottodata[, cbinary] <- bindat
+    message("Values in binary columns (symm/asymm) recoded to TRUE/FALSE \n")
   }
-
-  if(!purrr::is_empty(id)){
-
-    idmissing <- nrow(data[is.na(data[,id]),] )
-    if(idmissing > 0){
-      data <- data[!is.na(data[,id]),]
-      message(paste(idmissing, ' rows with missing ID removed'))
-    }
-
-    # Check whether ids are unique
-    freqtab <- data.frame(table(data[,id]))
-    colnames(freqtab)[1] <- "id"
-    colnames(freqtab)[2] <- "n"
-
-    if(any(freqtab$n > 1)){
-      duplicate <- freqtab[freqtab$n > 1, ]
-      message('IDs are not unique. The following ids have duplicates:')
-      print(duplicate)
-      message('Rownames not set because of duplicate ids. Please use the following naming convention: glottocode_dataname_001.')
-    }
-
-    if(all(freqtab$n == 1)){
-      # set rownames
-      data <- as.data.frame(data)
-      rownames(data) <- data[,id]
-    }
-  }
-
-  # select colnames to remove/select (not by index, because types argument uses index!)
-  if(!is.null(rm) & is.numeric(rm)){rm <- colnames(data)[rm]}
-  if(!is.null(sel) & is.numeric(sel)){sel <- colnames(data)[sel]}
-
-  # remove columns based on types argument (by index of types!)
-  if(length(rmtypes) > 0 | length(is.na(types)) > 0){
-    rmcol <- which(tolower(types) %in% rmtypes)
-    rmna <- which(is.na(types))
-    rmcol <- c(rmcol, rmna)
-    if(!is_empty(rmcol)){data <- data[, -rmcol]}
-  }
-
-  # remove columns based on sel/rm argument, done after index-based removal
-  rm <- rm[rm %in% colnames(data)]
-  if(purrr::is_empty(rm)){rm <- NULL}
-  if(!is.null(rm) & is.null(sel)){data <- select(data, !all_of(rm))}
-
-  sel <- sel[sel %in% colnames(data)]
-  if(purrr::is_empty(sel)){sel <- NULL}
-  if(is.null(rm) & !is.null(sel)){data <- dplyr::select(data, all_of(sel))}
-
-  return(data)
-
+glottodata
 }
+
+
+

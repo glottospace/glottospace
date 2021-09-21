@@ -18,3 +18,12 @@ contrans_id2gc <- function(id){
   ifelse(is.null(id), id <- "glottocode", id)
 }
 
+is_false <- function(x) {
+  # NAs are kept
+  x == FALSE
+}
+
+is_true <- function(x) {
+  # NAs are kept
+    x == TRUE
+}

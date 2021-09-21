@@ -2,22 +2,24 @@
 % Please edit documentation in R/glottomap.R
 \name{glottomap_dynamic}
 \alias{glottomap_dynamic}
-\title{glottomap_dynamic}
+\title{Create a dynamic map with glottodata}
 \usage{
-glottomap_dynamic(glottodata, label, colorby)
+glottomap_dynamic(glottodata, label, color, ptsize)
 }
 \arguments{
-\item{glottodata}{User-provided glottodata}
+\item{glottodata}{User-provided glottodata (either glottopoints or glottopols)}
 
 \item{label}{Column name or index to be used to label features (optional)}
 
-\item{colorby}{column name or index to be used to color features (optional)}
+\item{color}{Column name or index to be used to color features (optional), or a color "black"}
+
+\item{ptsize}{Size of points between 0 and 1}
 }
 \value{
 
 }
 \description{
-glottomap_dynamic
+Create a dynamic map with glottodata
 }
 \examples{
 glottomap_dynamic(glottodata)

@@ -38,8 +38,7 @@ library(glottospace)
 ## Filter by continent
 glottopoints <- glottofilter(continent = "South America")
 ## Plot point data:
-glottomap(glottodata = glottopoints, label = "glottocode", colorby = "isolate", type = "static")
-#> Scale bar set for latitude km and will be different at the top and bottom of the map.
+glottomap(glottodata = glottopoints, color = "isolate")
 ```
 
 <img src="man/figures/README-glottospoints_sa-1.png" width="100%" />
@@ -55,8 +54,7 @@ glottopols <- points2pols(glottopoints, method = "voronoi", continent = "South A
 #> Warning: attribute variables are assumed to be spatially constant throughout all
 #> geometries
 # Plot polygon data:
-glottomap(glottodata = glottopols, label = "glottocode", colorby = "family_size_rank", type = "static")
-#> Scale bar set for latitude km and will be different at the top and bottom of the map.
+glottomap(glottodata = glottopols, color = "family_size_rank")
 ```
 
 <img src="man/figures/README-glottopols_sa-1.png" width="100%" />
@@ -133,7 +131,7 @@ elevdutchies <- extractgeodata(glottodata = dutchies, geodata = elevation)
 Let’s plot the elevation of the Dutchies:
 
 ``` r
-glottomap(glottodata = elevdutchies, colorby = "elevation", label = "name", type = "static")
+glottomap(glottodata = elevdutchies, color = "elevation", label = "name")
 #> Variable(s) "elevation" contains positive and negative values, so midpoint is set to 0. Set midpoint = NA to show the full spectrum of the color palette.
 ```
 
@@ -198,14 +196,12 @@ data(package = "glottospace")
 data("glottobase")
 # For more information about glottobase
 ?glottobase
-#> No documentation for 'glottobase' in specified packages and libraries:
-#> you could try '??glottobase'
 colnames(glottobase)
-#>  [1] "id"                   "family_id"            "parent_id"           
-#>  [4] "name"                 "bookkeeping"          "level"               
-#>  [7] "latitude"             "longitude"            "iso639P3code"        
-#> [10] "description"          "markup_description"   "child_family_count"  
-#> [13] "child_language_count" "child_dialect_count"  "country_ids"
+#>  [1] "glottocode"          "family_id"           "parent_id"          
+#>  [4] "name"                "isocode"             "child_dialect_count"
+#>  [7] "country_ids"         "family_name"         "isolate"            
+#> [10] "family_size"         "family_size_rank"    "country"            
+#> [13] "continent"           "region"              "geometry"
 ```
 
 2.  glottospace. A simple dataset with glottocodes and a geometry colum.
