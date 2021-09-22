@@ -8,9 +8,18 @@
 \usage{
 glottodata_addcountries(glottodata)
 }
+\arguments{
+\item{glottodata}{User-provided glottodata}
+}
 \value{
-
+A spatial (sf) object
 }
 \description{
-Add names of countries, continents, and regions to glottodata
+Spatial intersection between glottodata and
+\href{https://www.naturalearthdata.com/}{naturalearthdata} and extracts names
+of countries, continents, and regions.
+}
+\examples{
+glottodata <- get_glottodata(meta = FALSE)
+glottodata_addcountries(glottodata)
 }

@@ -168,7 +168,6 @@ points2pols <- function(glottopoints, method = "buffer", radius = NULL, country 
 #' @return
 #' @noRd
 #'
-#' @examples
 lonlat2utm = function(lonlat) {
   utm = (floor((lonlat[1] + 180) / 6) %% 60) + 1
   if(lonlat[2] > 0) {
@@ -187,7 +186,6 @@ lonlat2utm = function(lonlat) {
 #' @return Spatial object transformed to lonlat
 #' @noRd
 #'
-#' @examples
 contransform_lonlat <- function(data){
   # Split in two functions: is_lonlat and is_lonlattransform
   if(!sf::st_is_longlat(data)) {
@@ -197,34 +195,99 @@ contransform_lonlat <- function(data){
   return(data)
 }
 
+#' Conditionally transforms dist object to distance matrix
+#'
+#' If dist object is not a distance matrix it will be converted.
+#'
+#' @param dist dist object
+#'
+#' @return distance matrix
+#' @noRd
+#'
 contransform_distmat <- function(dist){
-  distmat <- as.matrix(dist)
+  as.matrix(dist)
 }
 
+#' Check whether crs of two spatial objects are identical
+#'
+#' @param x spatial object
+#' @param y spatial object
+#'
+#' @return TRUE/FALSE
+#' @noRd
+#'
 identicalcrs <- function(x, y){
   base::identical(sf::st_crs(x), sf::st_crs(y))
 }
 
+#' Check whether an object is of class raster
+#'
+#' @param object any object
+#'
+#' @return TRUE/FALSE
+#' @noRd
+#'
 is_raster <- function(object){
   (class(object)[1] == "RasterLayer") | (class(object)[1] == "RasterStack")
 }
 
+#' Check whether an object is of class sf
+#'
+#' @param object any object
+#'
+#' @return TRUE/FALSE
+#' @noRd
+#' @export
+#'
 is_sf <- function(object){
   class(object)[1] == "sf"
 }
 
+
+
+#' Check whether crs is specified for an object
+#'
+#' @param object any object
+#'
+#' @return TRUE/FALSE
+#' @noRd
+#'
 checkdata_crsmissing <- function(object){
   is.na(sf::st_crs(object))
 }
 
+
+#' Check whether the geometry of a spatial object is POINT
+#'
+#' @param object any object
+#'
+#' @return TRUE/FALSE
+#' @noRd
+#'
 is_point <- function(object){
   all(unique(sf::st_geometry_type(object)) == "POINT")
 }
 
+
+#' Check whether the geometry of a spatial object is POLYGON
+#'
+#' @param object any object
+#'
+#' @return TRUE/FALSE
+#' @noRd
+#'
 is_polygon <- function(object){
   any(unique(sf::st_geometry_type(object)) == "POLYGON")
 }
 
+#' Expand bounding box
+#'
+#' @param bbox original bounding box
+#' @param f expansion factor
+#'
+#' @return Expanded bounding box
+#' @noRd
+#'
 bbox_expand <- function(bbox, f = 0.2){
 
   xrange <- bbox$xmax - bbox$xmin # range of x values

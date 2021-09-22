@@ -6,7 +6,7 @@
 #' @param fun One of "mean", "median", "min", "max", "sd", "modal". Alternatively, a user-defined function can be specified, as in fun = function(x){mean(x,na.rm=T)}
 #' @param add By default, extracted values are added to glottodata.
 #' @param funnames By default, the name of the function is added to the new variable. For example: "elevation_mean". Use funnames = FALSE if you want to keep the original names
-#'
+#' @family <geodata>
 #' @return
 #' @export
 #' @aliases addgeodata
@@ -61,11 +61,11 @@ extractgeodata <- function(glottodata, geodata, radius = NULL, fun = NULL, add =
 #' @param radius Radius (km) from which raster values should be extracted.
 #' @param fun One of mean, median, min, max, sd, modal. Alternatively, a user-defined function can be specified, as in fun = function(x){mean(x,na.rm=T)}
 #' @param add By default, extracted values are added to glottodata.
-#'
+#' @keywords internal
+#' @family <geodata>
 #' @return
 #' @export
 #'
-#' @examples
 extractraster <- function(glottodata, geodata, radius = NULL, fun = NULL, add = TRUE){
 # exact_extract(ras, poly, 'mean')
 
@@ -129,7 +129,7 @@ extractvector <- function(glottodata, geodata, radius = NULL, fun = NULL, add = 
   } else if(is_polygon(glottodata)){
     glottodata <- glottodata
   } else {
-    stop("glottodata is not recognized as a spatial object, use 'glot2geoglot' to convert it")
+    stop("glottodata is not recognized as a spatial object, use 'glottodata_makespatial' to convert it")
   }
 
   if(is.null(fun)){

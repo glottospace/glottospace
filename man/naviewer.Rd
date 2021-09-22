@@ -4,14 +4,23 @@
 \alias{naviewer}
 \title{Show data coverage (view NAs)}
 \usage{
-naviewer(data, id)
+naviewer(data, id = NULL)
 }
 \arguments{
-\item{id}{}
+\item{data}{Any dataset}
+
+\item{id}{column name with IDs}
 }
 \value{
 
 }
 \description{
-This function plots the NAs in a dataset. If you used another coding to specify missing data, you should run \code{cleanglottodata} first.
+This function plots the NAs in a dataset. If you used another coding to
+specify missing data, you should run \code{cleandata_recodemissing} or \code{cleanglottodata} first. If you'd
+like some more advanced ways of handling NAs, you might check out the
+\code{naniar} package.
+}
+\examples{
+data <- get_glottodata(meta = FALSE)
+naviewer(data, id = "glottocode")
 }

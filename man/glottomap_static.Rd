@@ -4,7 +4,7 @@
 \alias{glottomap_static}
 \title{Create a static map with glottodata}
 \usage{
-glottomap_static(glottodata, label, color, ptsize)
+glottomap_static(glottodata, label, color, ptsize, transparency)
 }
 \arguments{
 \item{glottodata}{User-provided glottodata (either glottopoints or glottopols)}

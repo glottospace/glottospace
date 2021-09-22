@@ -19,6 +19,8 @@ createglottosubdata(
 
 \item{variables}{Either a vector with variable names, or a single number indicating the total number of variable columns to be generated}
 
+\item{filename}{Optional name of excel file where to store glottodata}
+
 \item{groups}{Character vector of group names}
 
 \item{n}{Number of records to be assigned to each group}
@@ -40,3 +42,8 @@ Output is a list with one data.frame per language (and a number of metasheets if
 \examples{
 createglottosubdata(glottocodes = c("yucu1253", "tani1257"), variables = 3, groups = c("a", "b"), n = 5, filename = "glottosubdata.xlsx")
 }
+\seealso{
+Other <getdata>: 
+\code{\link{createglottodata}()}
+}
+\concept{<getdata>}

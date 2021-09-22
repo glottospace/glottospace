@@ -11,15 +11,22 @@ createglottodata(glottocodes, variables, filename = NULL, meta = TRUE, ...)
 
 \item{variables}{Either a vector with variable names, or a single number indicating the total number of variable columns to be generated}
 
+\item{filename}{Optional name of excel file where to store glottodata}
+
 \item{...}{Other parameters passed to create_readmesheet(maintainer, email, citation, url)}
 }
 \value{
 
 }
 \description{
-Output is saved as an excel file with the following sheets: glottodata, structure, metadata, readme
+Output is a list with one data.frame for glottodata (and a number of metasheets if meta = TRUE). Output can  also be saved as an excel file.
 }
 \examples{
 createglottodata(glottocodes = c("yucu1253", "tani1257"), variables = 3, filename = "glottodata.xlsx")
 createglottodata(glottocodes = c("yucu1253", "tani1257"), variables = 3, filename = "glottodata_simple.xlsx", meta = FALSE)
 }
+\seealso{
+Other <getdata>: 
+\code{\link{createglottosubdata}()}
+}
+\concept{<getdata>}

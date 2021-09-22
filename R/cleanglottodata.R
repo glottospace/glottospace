@@ -39,16 +39,20 @@ cleanglottodata <- function(glottodata, structure = NULL){
 #' @export
 #'
 #' @examples
+#' glottodata <- get_glottodata(meta = FALSE)
+#' cleandata_recodemissing(glottodata, rec = "N")
 cleandata_recodemissing <- function(glottodata, rec = NULL){
+  # maybe better to do with tribble lookup table https://r-pkgs.org/package-within.html
   data <- glottodata[,-1]
   na_strings <- c(naniar::common_na_strings, "?", rec)
-  data %>%
+  data <- data %>%
     naniar::replace_with_na_all(condition = ~. %in% na_strings)
   message("Missing values recoded to NA \n")
   cbind(glottodata[,1, drop = FALSE], data)
 }
 
 cleandata_recodelogical <- function(glottodata, structure){
+  # maybe better to do with tribble lookup table https://r-pkgs.org/package-within.html
   types <- structure$type
   cbinary <- structure$varname[which(types == "asymm" | types == "symm")]
 

@@ -123,7 +123,7 @@ pointdist_topo <- function(points, label, topography){
 
 
 
-gs_geodist <- function(points, lines, label = "name"){
+geodist <- function(points, lines, label = "name"){
   # Perhaps split 'return' into 'class' and 'summary'???
 
 
@@ -175,14 +175,15 @@ gs_geodist <- function(points, lines, label = "name"){
 
 }
 
-#' Calculate mean distance from one features to all other features
+#' Calculate mean distance from one feature to all other features
 #'
 #' @param dist \code{dist} object
 #'
 #' @return
+#' @family <geoglotdist>
 #' @export
-#'
 #' @examples
+#' meandist(dist)
 meandist <- function(dist){
   totdist <- rowSums(as.matrix(dist))
   meandist <- totdist / (nrow(dist) - 1)
@@ -196,6 +197,7 @@ meandist <- function(dist){
 #'
 #' @return Numeric vector with distances
 #' @export
+#' @family <geoglotdist>
 #'
 #' @examples
 #' countwithinradius(dist)
@@ -212,6 +214,7 @@ countwithinradius <- function(dist, r){
 #'
 #' @return numeric vector with distances if only nearest distance is requested (n = 1) and a data.frame otherwise.
 #' @export
+#' @family <geoglotdist>
 #'
 #' @examples
 #' nearestdistance(dist)
@@ -235,6 +238,7 @@ nearestdistance <- function(dist, n = 1){
 #'
 #' @return numeric vector with indices if n = 1 and a data.frame with indices otherwise.
 #' @export
+#' @family <geoglotdist>
 #'
 #' @examples
 #' ind <- nearestfeature(dist = dist, n = 1)

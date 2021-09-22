@@ -10,9 +10,14 @@ checkdata_lscolcount(langlist)
 \item{langlist}{}
 }
 \value{
-
+Returns error message if number of columns is not identical, and invisibly returns TRUE otherwise.
 }
 \description{
 Check whether number of columns are identical across all glottodata objects in a list
+}
+\examples{
+glottosubdata <- createglottosubdata(glottocodes = c("yucu1253", "tani1257"), variables = 3, groups = c("a", "b"), n = 5)
+langlist <- glottosubdata[c(1,2)]
+checkdata_lscolcount(langlist) # invisibly returns TRUE
 }
 \keyword{internal}

@@ -48,8 +48,8 @@ glottolog_addisolates <- function(glottologdata){
     glottologdata$isolate <-   ifelse(
       ( (glottologdata$family_id == "") & (glottologdata$level != "family") ),
       TRUE, FALSE)
-    # # set family name to isolate
-    glottologdata[glottologdata$isolate == TRUE, "family_name"] <- "isolate"
+    # # assign language name to family_name
+    glottologdata[glottologdata$isolate == TRUE, "family_name"] <- glottologdata[glottologdata$isolate == TRUE, "name"]
     # assign glottocode to family_id
     glottologdata[glottologdata$isolate == TRUE, "family_id"] <- glottologdata[glottologdata$isolate == TRUE, "id"]
 

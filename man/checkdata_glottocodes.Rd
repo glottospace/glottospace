@@ -4,10 +4,10 @@
 \alias{checkdata_glottocodes}
 \title{Check whether all IDs are valid glottocodes.}
 \usage{
-checkdata_glottocodes(glottodata, messages = TRUE)
+checkdata_glottocodes(glottodata)
 }
 \arguments{
-\item{id}{}
+\item{glottodata}{User-provided glottodata}
 }
 \value{
 Besides diagnostic messages, this function invisibly returns TRUE if check is passed (all IDs are unique) and FALSE otherwise

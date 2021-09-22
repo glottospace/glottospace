@@ -17,3 +17,7 @@ cleandata_recodemissing(glottodata, rec = NULL)
 \description{
 Reclass missing values to NA
 }
+\examples{
+glottodata <- get_glottodata(meta = FALSE)
+cleandata_recodemissing(glottodata, rec = "N")
+}

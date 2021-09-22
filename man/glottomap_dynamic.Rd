@@ -4,7 +4,7 @@
 \alias{glottomap_dynamic}
 \title{Create a dynamic map with glottodata}
 \usage{
-glottomap_dynamic(glottodata, label, color, ptsize)
+glottomap_dynamic(glottodata, label, color, ptsize, transparency)
 }
 \arguments{
 \item{glottodata}{User-provided glottodata (either glottopoints or glottopols)}

@@ -6,34 +6,44 @@
 #' @param glottodata User-provided glottodata
 #' @param color column name or index to be used to color features (optional)
 #' @param label Column name or index to be used to label features (optional)
-#' @param type One of: "static", "dynamic", or "interactive". Defaults to "static" if nothing is provided.
+#' @param type One of: "static", "dynamic", or "interactive". Defaults to
+#'   "static" if nothing is provided.
+#' @param ptsize Size of points between 0 and 1
+#' @param transparency Transparency of points between 0 (very transparent) and 1 (not transparent)
 #'
 #' @return
 #' @export
 #'
 #' @examples
-#' glottodata <- glottofilter(country = c("Netherlands", "Germany", "Belgium") )
-#' glottodata$country <- as.factor(glottodata$country)
-#' colorpal <- rainbow(length(unique(glottodata$country) ))
-#' glottodata$highlight <- colorpal[glottodata$country]
-#' glottomap(glottodata, color = "highlight")
-#'
 #' glottopoints <- glottofilter(continent = "South America")
 #' glottopols <- points2pols(glottopoints, method = "voronoi", continent = "South America")
 #' glottomap(glottodata = glottopols, color = "family_size_rank")
-glottomap <- function(glottodata, color = NULL, label = NULL, type = NULL, ptsize = NULL){
+#'
+#' glottodata <- get_glottobase()
+#' families <- glottodata %>% dplyr::count(family_name, sort = TRUE)
+#'
+#' # highlight 10 largest families:
+#' glottodata <- glottospotlight(glottodata = glottodata, spotcol =
+#' "family_name", spotlight = families$family_name[1:10], spotcontrast = "family_name", bgcontrast = "family_name")
+#'
+#' # Or, place 10 largest families in background
+#' glottodata <- glottospotlight(glottodata = glottodata, spotcol =
+#' "family_name", spotlight = families$family_name[-c(1:10)], spotcontrast = "family_name", bgcontrast = "family_name")
+#' glottomap(glottodata, color = "color")
+glottomap <- function(glottodata, color = NULL, label = NULL, type = NULL, ptsize = NULL, transparency = NULL){
   if(is.null(ptsize)){ptsize <- 0.35}
+  if(is.null(transparency)){transparency <- 0.65}
   if(!is_sf(glottodata) ) {glottodata <- join_glottospace(glottodata)}
 
   if(is.null(type)){type <- "static"}
   if(is.null(color)){color <- "black"}
 
   if(type == "dynamic"){
-    map <- glottomap_dynamic(glottodata = glottodata, label = label, color = color, ptsize = ptsize)
+    map <- glottomap_dynamic(glottodata = glottodata, label = label, color = color, ptsize = ptsize, transparency = transparency)
   }
 
   if(type == "static"){
-    map <- glottomap_static(glottodata = glottodata, label = label, color = color, ptsize = ptsize)
+    map <- glottomap_static(glottodata = glottodata, label = label, color = color, ptsize = ptsize, transparency = transparency)
   }
 return(map)
 
@@ -54,7 +64,7 @@ return(map)
 #'
 #' @examples
 #' glottomap_dynamic(glottodata)
-glottomap_dynamic <- function(glottodata, label, color, ptsize){
+glottomap_dynamic <- function(glottodata, label, color, ptsize, transparency){
     suppressMessages(tmap::tmap_mode("view"))
 
     tmap::tm_basemap("Esri.WorldTopoMap") +
@@ -63,7 +73,7 @@ glottomap_dynamic <- function(glottodata, label, color, ptsize){
           tmap::tm_polygons(id = label, col = color)} +
       {if(is_point(glottodata))
         tmap::tm_shape(glottodata) +
-          tmap::tm_symbols(id = label, col = color, scale = ptsize, alpha = .85) }
+          tmap::tm_symbols(id = label, col = color, scale = ptsize, alpha = transparency) }
   }
 
 #' Create a static map with glottodata
@@ -83,7 +93,7 @@ glottomap_dynamic <- function(glottodata, label, color, ptsize){
 #' glottodata <- glottofilter(continent = "South America")
 #' glottodata <- glottofilter(country = "Netherlands")
 #' glottomap_static(glottodata)
-glottomap_static <- function(glottodata, label, color, ptsize){
+glottomap_static <- function(glottodata, label, color, ptsize, transparency){
   suppressMessages(tmap::tmap_mode("plot"))
 
   basemap <- rnaturalearth::ne_countries(scale = 50, returnclass = "sf")
@@ -104,7 +114,7 @@ glottomap_static <- function(glottodata, label, color, ptsize){
         tmap::tm_polygons(col = color)} +
     {if(is_point(glottodata))
       tmap::tm_shape(glottodata) +
-        tmap::tm_symbols(col = color, scale = ptsize, alpha = .85) } +
+        tmap::tm_symbols(col = color, scale = ptsize, alpha = transparency) } +
     {if(!purrr::is_empty(label)) tmap::tm_text(text = label, size = 0.75, auto.placement = TRUE)} +
     tmap::tm_legend(legend.outside = TRUE) + tmap::tm_layout(bg.color = "grey85", inner.margins = c(0,0,0,0))
 }

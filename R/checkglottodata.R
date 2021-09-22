@@ -212,15 +212,13 @@ checkdata_varlevels <- function(data){
 #'
 #' This is a wrapper around glottocode_exists
 #'
-#' @param data
-#' @param id
+#' @param glottodata User-provided glottodata
 #'
 #' @return Besides diagnostic messages, this function invisibly returns TRUE if check is passed (all IDs are unique) and FALSE otherwise
 #' @export
 #' @keywords internal
 #'
-#' @examples
-checkdata_glottocodes <- function(glottodata, messages = TRUE){
+checkdata_glottocodes <- function(glottodata){
   existing <- glottocode_exists(glottodata[["glottocode"]])
   if(sum(!existing) > 0){
     message("Not all IDs are valid glottocodes \n The following glottocodes are not found in glottolog: \n")
@@ -238,10 +236,13 @@ checkdata_glottosubcodes <- function(glottosubdata){
 #'
 #' @param langlist
 #'
-#' @return
+#' @return Returns error message if number of columns is not identical, and invisibly returns TRUE otherwise.
 #' @keywords internal
 #'
 #' @examples
+#' glottosubdata <- createglottosubdata(glottocodes = c("yucu1253", "tani1257"), variables = 3, groups = c("a", "b"), n = 5)
+#' langlist <- glottosubdata[c(1,2)]
+#' checkdata_lscolcount(langlist) # invisibly returns TRUE
 checkdata_lscolcount <- function(langlist){
   colcount <- lapply(X = langlist, FUN = function(x){length(colnames(x))})
   colcount <- unlist(colcount, recursive = F)
@@ -251,6 +252,8 @@ checkdata_lscolcount <- function(langlist){
   if(length(unique(colcount)) > 1){
     message(paste(names(langlist), ": ", colcount, "\n"))
     stop('Not all languages have same number of features \n', call. = FALSE)
+  } else {
+    invisible(TRUE)
   }
 
 }
@@ -299,17 +302,26 @@ checkdata_colmissing <- function(data, id){
 
 #' Show data coverage (view NAs)
 #'
-#' This function plots the NAs in a dataset. If you used another coding to specify missing data, you should run \code{cleanglottodata} first.
+#' This function plots the NAs in a dataset. If you used another coding to
+#' specify missing data, you should run \code{cleandata_recodemissing} or \code{cleanglottodata} first. If you'd
+#' like some more advanced ways of handling NAs, you might check out the
+#' \code{naniar} package.
 #'
-#' @param data
-#' @param id
+#' @param data Any dataset
+#' @param id column name with IDs
 #'
 #' @return
 #' @export
 #'
 #' @examples
-naviewer <- function(data, id){
+#' data <- get_glottodata(meta = FALSE)
+#' naviewer(data, id = "glottocode")
+naviewer <- function(data, id = NULL){
+  if(!is.null(id)){
   datamissing <- data[,colnames(data) != id ]
+  } else {
+    datamissing <- data
+  }
   datamissing[is.na(datamissing)] <- "nodata"
 
   datamissing[datamissing != "nodata" ] <- "data"
@@ -321,12 +333,12 @@ naviewer <- function(data, id){
 
   datamissing <- datamissing %>%
     as.data.frame() %>%
-    rownames_to_column("glottocode") %>%
+    tibble::rownames_to_column(id) %>%
     tidyr::pivot_longer(-c(glottocode), names_to = "variable", values_to = "coverage")
 
-  ggplot2::ggplot(data = datamissing, aes(x=variable, y=glottocode, fill=coverage) ) +
+  ggplot2::ggplot(data = datamissing, ggplot2::aes(x=variable, y=glottocode, fill=coverage) ) +
     ggplot2::geom_raster() +
-    scale_fill_manual(labels = c("data", "NA"), values = c("navy", "darkred"))
+    ggplot2::scale_fill_manual(labels = c("data", "NA"), values = c("navy", "darkred"))
 }
 
 

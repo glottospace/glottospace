@@ -3,16 +3,16 @@
 
 #' Create empty glottodata for specified glottocodes and variables.
 #'
-#' Output is saved as an excel file with the following sheets: glottodata, structure, metadata, readme
+#' Output is a list with one data.frame for glottodata (and a number of metasheets if meta = TRUE). Output can  also be saved as an excel file.
 #'
 #' @param variables Either a vector with variable names, or a single number indicating the total number of variable columns to be generated
-#' @param filename
+#' @param filename Optional name of excel file where to store glottodata
 #' @param ... Other parameters passed to create_readmesheet(maintainer, email, citation, url)
 #' @param glottocodes Character vector of glottocodes
 #'
 #' @return
 #' @export
-#'
+#' @family <getdata>
 #' @examples
 #' createglottodata(glottocodes = c("yucu1253", "tani1257"), variables = 3, filename = "glottodata.xlsx")
 #' createglottodata(glottocodes = c("yucu1253", "tani1257"), variables = 3, filename = "glottodata_simple.xlsx", meta = FALSE)
@@ -62,7 +62,7 @@ createglottodata <- function(glottocodes, variables, filename = NULL, meta = TRU
 #' Output is a list with one data.frame per language (and a number of metasheets if meta = TRUE). Output can  also be saved as an excel file.
 #'
 #' @param variables Either a vector with variable names, or a single number indicating the total number of variable columns to be generated
-#' @param filename
+#' @param filename  Optional name of excel file where to store glottodata
 #' @param ... Other parameters passed to create_readmesheet(maintainer, email, citation, url)
 #' @param glottocodes Character vector of glottocodes
 #' @param groups Character vector of group names
@@ -71,6 +71,8 @@ createglottodata <- function(glottocodes, variables, filename = NULL, meta = TRU
 #'
 #' @return A list with a data.frame for each languages (and metadata if meta = TRUE)
 #' @export
+#'
+#' @family <getdata>
 #'
 #' @examples
 #' createglottosubdata(glottocodes = c("yucu1253", "tani1257"), variables = 3, groups = c("a", "b"), n = 5, filename = "glottosubdata.xlsx")
