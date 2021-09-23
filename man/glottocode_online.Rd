@@ -18,3 +18,10 @@ Open url in web browser for glottocode
 \examples{
 glottocode_online("yucu1253")
 }
+\seealso{
+Other <glottocheck><glottosearch>: 
+\code{\link{glot_exists}()},
+\code{\link{glottocode_exists}()},
+\code{\link{glottosubcode_valid}()}
+}
+\concept{<glottocheck><glottosearch>}

@@ -7,7 +7,7 @@
 #'
 #' @return
 #' @export
-#'
+#' @family <glottosearch><glottofilter>
 #' @examples
 #' glottosearch(find = "Yucuni")
 #' glottosearch(find = "Yucuni", columns = "name")
@@ -32,9 +32,9 @@ glottosearch <- function(glottodata = NULL, find, partialmatch = TRUE, columns =
 
 #' Check whether one glot exists in glottolog.
 #'
-#' @param find
-#' @param columns
-#'
+#' @param find Glottocode, name of language, family, etc.
+#' @param columns In which column should be searched
+#' @family <glottocheck><glottosearch>
 #' @return Logical: TRUE/FALSE
 #' @noRd
 glot_exists_one <- function(find, columns){
@@ -52,7 +52,7 @@ glot_exists_one <- function(find, columns){
 #'
 #' @param find Glottocode, name of language, family, etc.
 #' @param columns In which column should be searched
-#'
+#' @family <glottocheck><glottosearch>
 #' @return Logical: TRUE/FALSE
 #' @export
 #'
@@ -69,11 +69,11 @@ purrr::map2_lgl(.x = find, .y = columns, .f = glot_exists_one)
 #' @return A logical vector
 #' @export
 #' @aliases glottocodes_exist
-#'
+#' @family <glottocheck><glottosearch>
 #' @examples
 #' glottocode_exists(c("yucu1253"))
 #' glottocode_exists(c("yucu1253", "abcd1234"))
-glottocode_exists <- function(glottocode){
+glottocode_exists <- glottocodes_exist <- function(glottocode){
   glot_exists(find = glottocode, columns = "glottocode")
 }
 
@@ -83,7 +83,7 @@ glottocode_exists <- function(glottocode){
 #'
 #' @return
 #' @export
-#'
+#' @family <glottocheck><glottosearch>
 #' @examples
 #' glottocode_online("yucu1253")
 glottocode_online <- function(glottocode){
@@ -97,15 +97,16 @@ glottocode_online <- function(glottocode){
 #' following form: glottocode_group_record. For example: abcd1234_aaa_0001,
 #' abcd1234_aaa_0002, abcd1234_bbb_0001, abcd1234_bbb_0002.
 #'
-#' This function also checks whether all glottocodes (which are part of the glotosubcodes) are valid.
+#' Specifically, the function checks whether all glottocodes (which are part of the glotosubcodes) are valid, whether 'group' is a character, and whether 'record' is a number.
 #'
 #'
-#' @param glottosubcodes
-#'
+#' @param glottosubcodes Character vector of glottosubcodes
+#' @family <glottocheck><glottosearch>
 #' @return
 #' @export
 #'
 #' @examples
+#' glottosubcode_valid(c("yucu1253_aaa_0002", "abcd1234_aaa_0001"))
 glottosubcode_valid <- function(glottosubcodes){
   gsc_df <- data.frame(matrix(nrow = length(glottosubcodes), ncol = 4) )
   colnames(gsc_df) <- c("glottosubcode", "glottocode", "group", "n")

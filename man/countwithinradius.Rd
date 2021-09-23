@@ -20,3 +20,10 @@ Count number of points within a radius
 \examples{
 countwithinradius(dist)
 }
+\seealso{
+Other <geodist><glottodist>: 
+\code{\link{meandist}()},
+\code{\link{nearestdistance}()},
+\code{\link{nearestfeature}()}
+}
+\concept{<geodist><glottodist>}

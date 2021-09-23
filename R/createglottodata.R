@@ -12,7 +12,7 @@
 #'
 #' @return
 #' @export
-#' @family <getdata>
+#' @family <getdata><glottodata>
 #' @examples
 #' createglottodata(glottocodes = c("yucu1253", "tani1257"), variables = 3, filename = "glottodata.xlsx")
 #' createglottodata(glottocodes = c("yucu1253", "tani1257"), variables = 3, filename = "glottodata_simple.xlsx", meta = FALSE)
@@ -47,7 +47,7 @@ createglottodata <- function(glottocodes, variables, filename = NULL, meta = TRU
 
   if(!is.null(filename)){
     # check if path exists, if subfolder doesn't exist, it doesn't write.
-  writexl::write_xlsx(sheetlist, path = filename) # works better than openxlsx, which omitted some columns..
+  writexl::write_xlsx(sheetlist, path = filename) # works better than openxlsx, which omits some columns..
   # message that file was saved
   }
 

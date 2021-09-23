@@ -7,7 +7,7 @@
 glottosubcode_valid(glottosubcodes)
 }
 \arguments{
-\item{glottosubcodes}{}
+\item{glottosubcodes}{Character vector of glottosubcodes}
 }
 \value{
 
@@ -18,5 +18,15 @@ following form: glottocode_group_record. For example: abcd1234_aaa_0001,
 abcd1234_aaa_0002, abcd1234_bbb_0001, abcd1234_bbb_0002.
 }
 \details{
-This function also checks whether all glottocodes (which are part of the glotosubcodes) are valid.
+Specifically, the function checks whether all glottocodes (which are part of the glotosubcodes) are valid, whether 'group' is a character, and whether 'record' is a number.
 }
+\examples{
+glottosubcode_valid(c("yucu1253_aaa_0002", "abcd1234_aaa_0001"))
+}
+\seealso{
+Other <glottocheck><glottosearch>: 
+\code{\link{glot_exists}()},
+\code{\link{glottocode_exists}()},
+\code{\link{glottocode_online}()}
+}
+\concept{<glottocheck><glottosearch>}

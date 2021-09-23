@@ -25,3 +25,4 @@ Search within glottodata for languages, glottocodes, etc.
 glottosearch(find = "Yucuni")
 glottosearch(find = "Yucuni", columns = "name")
 }
+\concept{<glottosearch><glottofilter>}

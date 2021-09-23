@@ -1,11 +1,79 @@
-# TODO:
-# Maybe wrapper function pointdist or geodist?
-# FIXME:
 # > dist <- pointdist_bird(glottodata, "glottocode")
 # > pointdist_bird(dist)
 # Error in if (!sf::st_is_longlat(data)) { :
 #     missing value where TRUE/FALSE needed
 # Probably in contransform_lonlat
+
+#' Pairwise distances between spatial objects
+#'
+#' This function calculates pairwise distances between many points, and distances between many points and many lines.
+#' Different distance metrics are possible: least cost distance, river distance,
+#'
+#'
+#' @param points Spatial points between which distances should be calculated
+#'   (sf)
+#' @param lines Optional, spatial lines to which distances should be calculated
+#' @param fun function indicating how distances should be calculated. Default is
+#'   "bird" (Haversine distance/great circle distance). Other options are:
+#'   "leastcost" (least cost distance), "along" (along lines such as rivers or roads), and
+#'   "resistance" (commute distance/random walk/drunkard)
+#' @param label column name that should be used to label points.
+#' @family <geodist>
+#' @return
+#' @export
+#'
+#' @examples
+#' geodist(points = glottodata_sf)
+geodist <- function(points, lines = NULL, fun, label){
+  # Perhaps split 'return' into 'class' and 'summary'???
+
+
+  if(fun %in% c("lc", "wolf", "least cost", "least cost distance")){
+    # TO ADD:
+    # gdistance R package: Van Etten 2017
+    # topoDistance R package; Wang 2020
+    # Least Cost Topographic Path: Taking into account both hanitat suitability and topography.
+    # Least Cost Path: Only habitat suitability
+    # Shortest topographic path: only topography.
+    # Topographic distances account for the additional distance, beyond horizontal distance, imposed by topographic relief and, therefore, capture the full overland distance an organism must move between geographic locations.
+  }
+
+  if(fun %in% c("river", "fish", "riverdist", "river distance")){
+    # This is distance along river, not to river (will be implemented in gs_datageo)
+    # TO ADD:
+    # https://cran.r-project.org/web/packages/riverdist/vignettes/riverdist_vignette.html
+  }
+
+  if(fun %in% c("resistance", "drunkard", "random walk", "commute distance")){
+    # implemented in gdistance
+    # TO ADD:
+    # https://robbymarrotte.weebly.com/blog/running-circuitscape-in-r-windows-os
+  }
+
+  if(return == "units"){
+    out <- geodist
+    message("Matrix of class 'units' returned. Distances are in km.")
+  }
+  if(return == "sf"){
+    out <- geodistsf
+    message("Class 'sf' returned. Distances are in km.")
+  }
+  if(return == "dist" | return == "distmat"){
+    out <- as.dist(geodist)
+    message("Distance matrix returned (default). Distances are in km.")
+  } else if(return == "matrix"){
+    out <- as.matrix(geodist)
+    message("Matrix returned. Distances are in km.")
+  } else if(return == "graph"){
+    out <- reshape2::melt(as.matrix(geodist), na.rm = TRUE)
+    colnames(out)[1] <- "lang1"
+    colnames(out)[2] <- "lang2"
+    colnames(out)[3] <- "dist"
+    message("Graph returned")
+  }
+
+}
+
 
 #' Distances between spatial points, as the bird flies.
 #'
@@ -16,6 +84,7 @@
 #'
 #' @return dist object with distances (km) between all points
 #' @export
+#' @family <geodist>
 #'
 #' @examples
 #' pointdist_bird(points = points, label = "glottocode")
@@ -38,7 +107,7 @@ pointdist_bird <- function(points, label){
 #' @param points Spatial point object
 #' @param lines Spatial line object
 #' @param label Column name or index to be used for labeling objects.
-#'
+#' @family <geodist>
 #' @return dist object with distances from each point (km) to the nearest line.
 #' @export
 #'
@@ -72,7 +141,7 @@ nearestline_bird <- function(points, lines, label){
 #'
 #' @return dist object
 #' @export
-#'
+#' #' @family <geodist>
 #' @examples
 #' ppath <- "C:/Users/sjnor/surfdrive/Projecten en schrijfsels/Papers in progress/Isolates/output/nwa.gpkg"
 #' topopath <- "D:/Global/Topography/SRTM/250m/South America/SRTM250mSA.tif"
@@ -123,69 +192,20 @@ pointdist_topo <- function(points, label, topography){
 
 
 
-geodist <- function(points, lines, label = "name"){
-  # Perhaps split 'return' into 'class' and 'summary'???
 
-
-  fun <- tolower(str_replace_all(fun, "[[:punct:]]", " ")  )
-
-  if(fun %in% c("lc", "wolf", "least cost", "least cost distance")){
-    # TO ADD:
-    # gdistance R package: Van Etten 2017
-    # topoDistance R package; Wang 2020
-    # Least Cost Topographic Path: Taking into account both hanitat suitability and topography.
-    # Least Cost Path: Only habitat suitability
-    # Shortest topographic path: only topography.
-    # Topographic distances account for the additional distance, beyond horizontal distance, imposed by topographic relief and, therefore, capture the full overland distance an organism must move between geographic locations.
-  }
-
-  if(fun %in% c("river", "fish", "riverdist", "river distance")){
-    # This is distance along river, not to river (will be implemented in gs_datageo)
-    # TO ADD:
-    # https://cran.r-project.org/web/packages/riverdist/vignettes/riverdist_vignette.html
-  }
-
-  if(fun %in% c("resistance", "drunkard", "random walk", "commute distance")){
-    # implemented in gdistance
-    # TO ADD:
-    # https://robbymarrotte.weebly.com/blog/running-circuitscape-in-r-windows-os
-  }
-
-  if(return == "units"){
-    out <- geodist
-    message("Matrix of class 'units' returned. Distances are in km.")
-  }
-  if(return == "sf"){
-    out <- geodistsf
-    message("Class 'sf' returned. Distances are in km.")
-  }
-  if(return == "dist" | return == "distmat"){
-    out <- as.dist(geodist)
-    message("Distance matrix returned (default). Distances are in km.")
-  } else if(return == "matrix"){
-    out <- as.matrix(geodist)
-    message("Matrix returned. Distances are in km.")
-  } else if(return == "graph"){
-    out <- reshape2::melt(as.matrix(geodist), na.rm = TRUE)
-    colnames(out)[1] <- "lang1"
-    colnames(out)[2] <- "lang2"
-    colnames(out)[3] <- "dist"
-    message("Graph returned")
-  }
-
-}
 
 #' Calculate mean distance from one feature to all other features
 #'
 #' @param dist \code{dist} object
 #'
 #' @return
-#' @family <geoglotdist>
+#' @family <geodist><glottodist>
 #' @export
 #' @examples
 #' meandist(dist)
 meandist <- function(dist){
-  totdist <- rowSums(as.matrix(dist))
+  distmat <- contransform_distmat(dist)
+  totdist <- rowSums(distmat)
   meandist <- totdist / (nrow(dist) - 1)
   return(meandist)
 }
@@ -197,7 +217,7 @@ meandist <- function(dist){
 #'
 #' @return Numeric vector with distances
 #' @export
-#' @family <geoglotdist>
+#' @family <geodist><glottodist>
 #'
 #' @examples
 #' countwithinradius(dist)
@@ -214,7 +234,7 @@ countwithinradius <- function(dist, r){
 #'
 #' @return numeric vector with distances if only nearest distance is requested (n = 1) and a data.frame otherwise.
 #' @export
-#' @family <geoglotdist>
+#' @family <geodist><glottodist>
 #'
 #' @examples
 #' nearestdistance(dist)
@@ -238,7 +258,7 @@ nearestdistance <- function(dist, n = 1){
 #'
 #' @return numeric vector with indices if n = 1 and a data.frame with indices otherwise.
 #' @export
-#' @family <geoglotdist>
+#' @family <geodist><glottodist>
 #'
 #' @examples
 #' ind <- nearestfeature(dist = dist, n = 1)

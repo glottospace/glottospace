@@ -25,8 +25,4 @@ Output is a list with one data.frame for glottodata (and a number of metasheets 
 createglottodata(glottocodes = c("yucu1253", "tani1257"), variables = 3, filename = "glottodata.xlsx")
 createglottodata(glottocodes = c("yucu1253", "tani1257"), variables = 3, filename = "glottodata_simple.xlsx", meta = FALSE)
 }
-\seealso{
-Other <getdata>: 
-\code{\link{createglottosubdata}()}
-}
-\concept{<getdata>}
+\concept{<getdata><glottodata>}

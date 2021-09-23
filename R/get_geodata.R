@@ -1,19 +1,21 @@
-
-path <- "D:/Global/Biodiversity/wwf_terr_ecos/wwf_terr_ecos.shp"
-path <- "D:/Global/Topography/Geomorpho90m/250m/Global/dtm_roughness_merit.dem_m_250m_s0..0cm_2018_v1.0.tif"
-path <- "D:/Global/Soils/HWSD/1km/Global/sq1.asc"
-path <- "D:/Global/Societal/travel time/travel_time_to_cities_1.tif"
-
-#' Get spatial data
+#' Get geographic data
 #'
 #' Load spatial data either from local path (supports both raster and vector formats), or download from remote server.
 #' @param path Path to geodata
-#' @param download Name of geodata to download (wrapper around raster::getData). Currently, the following are supported: "climate"
+#' @param download Name of geodata to download (wrapper around raster::getData). Currently, the following are supported: "elevation" and "climate"
 #'
 #' @return
 #' @export
+#' @family <geodata>
 #'
 #' @examples
+#' From local path (not run):
+#' get_geodata(path = "D:/data/vector.shp")
+#' get_geodata(path = "D:/data/raster.tif")
+#'
+#' Download:
+#' get_geodata(download = "elevation", country = "Netherlands")
+#' get_geodata(download = "climate")
 get_geodata <- function(path = NULL, download = NULL, country = NULL){
   if(!is.null(path) & is.null(download)){
     geodata <- get_geodata_path(path = path)
@@ -31,10 +33,10 @@ get_geodata <- function(path = NULL, download = NULL, country = NULL){
 #'
 #' @param path Path to raster (RasterLayer or RasterStack) or vector data
 #'
+#' @keywords internal
 #' @return
 #' @export
-#'
-#' @examples
+#' @family <geodata>
 get_geodata_path <- function(path){
 
   if(!file.exists(path)){stop("Path not found")}
@@ -69,6 +71,15 @@ if(!is.null(vec) & is.null(ras)){
 
 }
 
+#' Download geodata
+#'
+#' @param download name of data to download ("climate" or "elevation")
+#' @param country In some cases, this is required to crop the data
+#' @family <geodata>
+#' @keywords internal
+#' @return
+#' @export
+#'
 get_geodata_download <- function(download, country = NULL){
   if(download == "climate"){
   raster::getData(name = "worldclim", var = "bio", res = 10)

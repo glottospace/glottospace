@@ -24,3 +24,10 @@ whether glottocodes exist/are valid, use
 \examples{
 glot_exists(find = c("yucu1253", "abcd1234"), columns = "glottocode")
 }
+\seealso{
+Other <glottocheck><glottosearch>: 
+\code{\link{glottocode_exists}()},
+\code{\link{glottocode_online}()},
+\code{\link{glottosubcode_valid}()}
+}
+\concept{<glottocheck><glottosearch>}

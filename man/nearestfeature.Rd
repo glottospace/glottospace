@@ -23,3 +23,10 @@ ind2 <- nearestfeature(dist = dist, n = 2)
 data.frame(point = rownames(ind), neighbor = rownames(ind)[ind$nnids1])
 cbind(rownames(ind),rownames(ind)[ind$nnids1])
 }
+\seealso{
+Other <geodist><glottodist>: 
+\code{\link{countwithinradius}()},
+\code{\link{meandist}()},
+\code{\link{nearestdistance}()}
+}
+\concept{<geodist><glottodist>}

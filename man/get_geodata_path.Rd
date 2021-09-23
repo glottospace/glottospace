@@ -15,3 +15,13 @@ get_geodata_path(path)
 \description{
 Open spatial data from a local path (supports both raster and vector formats).
 }
+\seealso{
+Other <geodata>: 
+\code{\link{extractgeodata}()},
+\code{\link{extractraster}()},
+\code{\link{get_geodata_download}()},
+\code{\link{get_geodata}()},
+\code{\link{glottomap_geodata}()}
+}
+\concept{<geodata>}
+\keyword{internal}

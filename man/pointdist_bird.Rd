@@ -20,3 +20,9 @@ Calculate Euclidean distances between spatial points, as the bird flies (great c
 \examples{
 pointdist_bird(points = points, label = "glottocode")
 }
+\seealso{
+Other <geodist>: 
+\code{\link{geodist}()},
+\code{\link{nearestline_bird}()}
+}
+\concept{<geodist>}

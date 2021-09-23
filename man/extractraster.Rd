@@ -23,4 +23,13 @@ extractraster(glottodata, geodata, radius = NULL, fun = NULL, add = TRUE)
 \description{
 Raster values can be extracted at glottopoint locations, from a search radius surrounding glottopoints, or from glottopols
 }
+\seealso{
+Other <geodata>: 
+\code{\link{extractgeodata}()},
+\code{\link{get_geodata_download}()},
+\code{\link{get_geodata_path}()},
+\code{\link{get_geodata}()},
+\code{\link{glottomap_geodata}()}
+}
+\concept{<geodata>}
 \keyword{internal}

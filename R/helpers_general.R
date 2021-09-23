@@ -87,8 +87,27 @@ glottospotlight <- function(glottodata, spotcol, spotlight, spotcontrast = NULL,
   suppressMessages(dplyr::left_join(glottodata, data[, c("glottocode", "spotlight", "legend", "color")]))
 }
 
-
-
-
-
-
+# Replace values across r scripts: https://stackoverflow.com/questions/25548333/r-find-and-replace-multiple-scripts-at-once
+# library(xfun)
+#
+# gsub_dir(dir = "Scripts", pattern = "color = 'green'", replacement = "color = 'blue'")
+#
+# # Define function to find-and-replace text in a single file
+# file_find_replace <- function(filepath, pattern, replacement) {
+#   file_contents <- readLines(filepath)
+#   updated_contents <- gsub(x = file_contents, pattern = pattern, replacement = replacement)
+#   cat(updated_contents, file = filepath, sep = "\n")
+# }
+#
+# # Apply the function to each of the R scripts in the directory
+# my_r_scripts <- list.files(path = my_dir, pattern = "(r|R)$")
+#
+# for (r_script in my_r_scripts ) {
+#   file_find_replace(r_script,
+#                     "color = 'green'",
+#                     "color = 'blue'")
+# }
+#
+#
+#
+#

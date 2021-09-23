@@ -2,7 +2,7 @@
 % Please edit documentation in R/glottomap.R
 \name{glottomap_geodata}
 \alias{glottomap_geodata}
-\title{glottomap_geodata}
+\title{plotgeodata}
 \usage{
 glottomap_geodata(geodata)
 }
@@ -13,9 +13,19 @@ glottomap_geodata(geodata)
 
 }
 \description{
-glottomap_geodata
+plotgeodata
 }
 \examples{
-glottomap_geodata(geodata)
+nl <- get_geodata(download = "elevation", country = c("Netherlands"))
+plotgeodata(nl)
 }
+\seealso{
+Other <geodata>: 
+\code{\link{extractgeodata}()},
+\code{\link{extractraster}()},
+\code{\link{get_geodata_download}()},
+\code{\link{get_geodata_path}()},
+\code{\link{get_geodata}()}
+}
+\concept{<geodata>}
 \keyword{internal}

@@ -23,3 +23,9 @@ Great circle distances (Haversine distances) are calculated between points an ne
 nearestline_bird(points = points, lines = rivers, label = "glottocode")
 nearestline_bird(points = points, lines = roads, label = "glottocode")
 }
+\seealso{
+Other <geodist>: 
+\code{\link{geodist}()},
+\code{\link{pointdist_bird}()}
+}
+\concept{<geodist>}

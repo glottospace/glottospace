@@ -121,16 +121,18 @@ glottomap_static <- function(glottodata, label, color, ptsize, transparency){
 
 
 
-#' glottomap_geodata
+#' plotgeodata
 #'
 #' @param geodata
 #'
 #' @return
 #' @keywords internal
 #' @export
+#' @family <geodata>
 #'
 #' @examples
-#' glottomap_geodata(geodata)
+#' nl <- get_geodata(download = "elevation", country = c("Netherlands"))
+#' plotgeodata(nl)
 glottomap_geodata <- function(geodata){
   if(is_raster(geodata) ){
     raster::plot(geodata)

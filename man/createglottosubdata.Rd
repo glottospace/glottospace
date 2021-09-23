@@ -42,8 +42,4 @@ Output is a list with one data.frame per language (and a number of metasheets if
 \examples{
 createglottosubdata(glottocodes = c("yucu1253", "tani1257"), variables = 3, groups = c("a", "b"), n = 5, filename = "glottosubdata.xlsx")
 }
-\seealso{
-Other <getdata>: 
-\code{\link{createglottodata}()}
-}
 \concept{<getdata>}

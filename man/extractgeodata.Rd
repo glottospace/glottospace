@@ -47,3 +47,12 @@ glottopoints <- glottofilter(country = "Netherlands")
 glottopols <- points2pols(glottopoints, method = "voronoi", country = "Netherlands")
 extractgeodata(glottodata = glottodata, geodata = geodata,fun = "mean")
 }
+\seealso{
+Other <geodata>: 
+\code{\link{extractraster}()},
+\code{\link{get_geodata_download}()},
+\code{\link{get_geodata_path}()},
+\code{\link{get_geodata}()},
+\code{\link{glottomap_geodata}()}
+}
+\concept{<geodata>}

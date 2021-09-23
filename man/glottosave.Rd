@@ -2,12 +2,14 @@
 % Please edit documentation in R/glottosave.R
 \name{glottosave}
 \alias{glottosave}
-\title{Save any geoglot/glot object in relevant format}
+\title{Save glottodata in relevant format}
 \usage{
-glottosave(object = NULL, filename = NULL)
+glottosave(glottodata, filename = NULL)
 }
 \arguments{
-\item{filename}{}
+\item{glottodata}{User-provided glottodata}
+
+\item{filename}{Filename either with or without file extension}
 }
 \value{
 
@@ -18,3 +20,27 @@ If no file extention is provided, a sensible default is chosen. Dynamic maps
 Spatial data (sf) are saved as geopackage (.GPKG) by default, but .shp is
 also possible.
 }
+\examples{
+
+glottodata <- get_glottodata(meta = FALSE)
+Saves as .xlsx
+glottosave(glottodata, filename = "glottodata")
+
+glottodata <- glottodata_makespatial(glottodata)
+Saves as .GPKG
+glottosave(glottodata, filename = "glottodata")
+
+glottomap <- glottomap(glottodata)
+Saves as .png
+glottosave(glottomap, filename = "glottomap")
+
+Saves as .html
+glottomap <- glottomap(glottodata, type = "dynamic")
+}
+\seealso{
+get_glottodata
+
+Other <glottodata>: 
+\code{\link{get_glottodata}()}
+}
+\concept{<glottodata>}

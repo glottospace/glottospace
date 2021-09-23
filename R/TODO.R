@@ -10,41 +10,17 @@
 
 
 # warnings ----------------------------------------------------------------
-# glottospace\R\get_geodata.R:16] @examples requires a value
-# glottospace\R\get_geodata.R:37] @examples requires a value
-# glottospace\R\glottologbooster.R:98] @examples requires a value
-# glottospace\R\glottosave.R:8] @param requires name and description
-# glottospace\R\glottosave.R:14] @examples requires a value
-# glottospace\R\glottosave.R:45] @param requires name and description
-# glottospace\R\glottosearch.R:35] @param requires name and description
-# glottospace\R\glottosearch.R:108] @examples requires a value
-# glottospace\R\helpers_geo.R:49] @param requires name and description
-# glottospace\R\helpers_geo.R:50] @param requires name and description
-# glottospace\R\helpers_geo.R:57] @examples requires a value
-# glottospace\R\helpers_geo.R:80] @param requires name and description
-# glottospace\R\helpers_geo.R:81] @param requires name and description
-# glottospace\R\helpers_geo.R:82] @param requires name and description
-# glottospace\R\helpers_geo.R:89] @examples requires a value
-# glottospace\R\joindata.R:50] @param requires name and description
-# glottospace\R\joindata.R:56] @examples requires a value
-# glottospace\R\joindata.R:69] @param requires name and description
-# glottospace\R\joindata.R:75] @examples requires a value
-# glottospace\R\plotdistance_nmds.R:5] @param requires name and description
-# glottospace\R\plotdistance_nmds.R:6] @param requires name and description
-# glottospace\R\plotdistance_nmds.R:49] @examples requires a value
-# glottospace\R\plotdistance_nmds.R:58] @param requires name and description
-# glottospace\R\plotdistance_nmds.R:59] @param requires name and description
-# glottospace\R\plotdistance_nmds.R:60] @param requires name and description
-# glottospace\R\plotdistance_nmds.R:61] @param requires name and description
 
 # getdata -----------------------------------------------------------------
 # FIXME: get_glottolog: https://stackoverflow.com/questions/30177053/using-a-trycatch-block-to-read-a-csv-and-an-excel-file
+# TODO: get_glottodata() default meta=FALSE. replace all meta = FALSE
+# TODO: Match datasources of glottologdata to languages with: head(glottolog_cldf$sources[,"LGCODE"])
 # TODO: function name remove underscore? getglottobase, getglottodata
 # TODO: get_dplace: see isolates project
 # TODO: Does a language have a dictionary and a grammar, or multiple. From glottolog_source.bib.zip
 # TODO: Add data sources: ethnolog contains information on number of speakers
 # TODO: Add data sources: WALS contains information on language features.
-
+# TODO: getglottodata / loadglottodata: support spatial.
 
 
 # checkdata ---------------------------------------------------------------
@@ -54,6 +30,7 @@
 
 
 # joindata ----------------------------------------------------------------
+# TODO: change naming to glottojoindist, glottojoinbase, glottojoinspace
 
 # searchdata --------------------------------------------------------------
 # TODO: glottofilter: by location (bbox and drawing on plot)
@@ -62,9 +39,20 @@
 # glottodistance ----------------------------------------------------------
 # featuredist (can be used to calculate environmental or linguistic distances)
 
-# geodata -----------------------------------------------------------------
+
+# glottospace -------------------------------------------------------------
+# TODO: one wrapper function called glottospace. That replaces glottodata_addcoords, glottodata_makespatial, points2pols
+
+
+# geodata & geotools -----------------------------------------------------------------
 # FIXME: After rasterextraction, active geometry is set to points, this should remain polygons.
 # TODO: glottodata_dropspatial: drop spatial and drop units (for statistical/non-spatial analyses, see isolates script STAT preparation)
+# mergevec: overwrite = FALSE
+
+# TODO: points2pols: Make more flexible country or continent, if user specifies country = "South America" this should also work.
+# Or would it be possible to do that automatically: check unique values in country and continent.
+# If there are many countries and one continent, mask by continent.
+# If there is one or a few countries, mask by country
 
 # geodistance -------------------------------------------------------------
 # FIXME: Write wrapper geodist (i.e. make sure it works for points and lines, etc.)
@@ -73,18 +61,18 @@
 
 
 
-# visualize ---------------------------------------------------------------
+
+# glottomap & glottoplot ---------------------------------------------------------------
+# FIXME: 3d plot nmds
+
 
 # save & export -----------------------------------------------------------
-# TODO: extend file saving. Both images, maps, objects, but also tables.
+# TODO: overwrite = TRUE/FALSE
 
 # general -----------------------------------------------------------------
 # TODO: add a logo: https://rdrr.io/github/r-lib/usethis/man/use_logo.html
 # TODO: argument matching of functions (indicate choices): https://cran.r-project.org/web/packages/strex/vignettes/argument-matching.html
 # TODO: normalize path. Change backward slashes to forward slashes, make platform independent.
-
-# Documentation: # @family <> tag , follow readme..
-
 
 
 

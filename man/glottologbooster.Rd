@@ -7,7 +7,7 @@
 glottologbooster(glottologdata, geoglot = TRUE)
 }
 \arguments{
-\item{glottologdata}{}
+\item{glottologdata}{data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{get_glottolog()}}}
 }
 \value{
 

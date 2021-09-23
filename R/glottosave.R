@@ -1,27 +1,41 @@
-#' Save any geoglot/glot object in relevant format
+#' Save glottodata in relevant format
 #'
 #' If no file extention is provided, a sensible default is chosen. Dynamic maps
 #' (tmap) are saved in .html format, static maps (tmap) are saved as .png.
 #' Spatial data (sf) are saved as geopackage (.GPKG) by default, but .shp is
 #' also possible.
 #'
-#' @param object
-#' @param filename
-#'
+#' @param glottodata User-provided glottodata
+#' @param filename Filename either with or without file extension
+#' @family <glottodata>
 #' @return
 #' @export
-#'
+#' @seealso get_glottodata
 #' @examples
-glottosave <- function(object = NULL, filename = NULL){
-  # dynamic/static maps
-  # empty glottospace object
-  # spatial object as GPKG
+#'
+#' glottodata <- get_glottodata(meta = FALSE)
+#' Saves as .xlsx
+#' glottosave(glottodata, filename = "glottodata")
+#'
+#' glottodata <- glottodata_makespatial(glottodata)
+#' Saves as .GPKG
+#' glottosave(glottodata, filename = "glottodata")
+#'
+#' glottomap <- glottomap(glottodata)
+#' Saves as .png
+#' glottosave(glottomap, filename = "glottomap")
+#'
+#' Saves as .html
+#' glottomap <- glottomap(glottodata, type = "dynamic")
+
+glottosave <- function(glottodata, filename = NULL){
 
   if((class(object) == "tmap")[1]){
-    filename <- sub(pattern = "(.*)\\..*$", replacement = "\\1", filename)
+    if(tools::file_ext(filename) == ""){
+    ifelse(getOption("tmap.mode") == "plot", filename <- paste0(filename, ".png"), filename <- paste0(filename, ".html"))
+    }
     tmap::tmap_save(object, filename = filename)
-  }
-  if( is_sf(object) ){
+  } else if( is_sf(object) ){
     # if no file extension: gpkg
     if(tools::file_ext(filename) == ""){
       sf::st_write(obj = object, dsn = paste0(filename, ".gpkg"),
@@ -30,28 +44,16 @@ glottosave <- function(object = NULL, filename = NULL){
       sf::st_write(obj = object, dsn = filename,
                append = FALSE)
     }
-  }
-  if(any(class(object) == "matrix" ) ){
+  } else if(any(class(object) == "matrix" ) ){
     if(tools::file_ext(filename) == ""){
     utils::write.csv(object, file = paste0(filename, ".csv"))
     } else {
       utils::write.csv(object, file = filename)
     }
+  } else if(class(object) == "data.frame"){
+    if(tools::file_ext(filename) == ""){filename <- paste0(filename, ".xlsx")}
+    writexl::write_xlsx(object, path = filename) # works better than openxlsx, which omits some columns..
   }
+
 }
 
-#' Load glottodata
-#'
-#' @param filename
-#' @aliases glottoread
-#' @return
-#' @export
-#'
-#' @examples
-#' glottoload(filename)
-glottoload <- function(filename){
-  # should this be integrated with get_glottodata?
-  if(tools::file_ext(filename) == ".gpkg" | tools::file_ext(filename) == ".shp"){
-  sf::st_read(dsn = filename)
-  }
-}

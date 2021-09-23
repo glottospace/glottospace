@@ -20,3 +20,10 @@ Get distance to nearest features
 \examples{
 nearestdistance(dist)
 }
+\seealso{
+Other <geodist><glottodist>: 
+\code{\link{countwithinradius}()},
+\code{\link{meandist}()},
+\code{\link{nearestfeature}()}
+}
+\concept{<geodist><glottodist>}

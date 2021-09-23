@@ -12,7 +12,7 @@ get_glottodata(
 )
 }
 \arguments{
-\item{filename}{Path to excel file (.xls or .xlsx). If no filename is specified, an artificial dummy dataset will be created.}
+\item{filename}{Path to glottodata file with extension (.xlsx .xls .gpkg .shp). If no filename is specified, an artificial dummy dataset will be created.}
 
 \item{meta}{By default, all sheets are loaded, including all meta sheets. Use meta=FALSE if you want to ignore metasheets}
 
@@ -24,9 +24,17 @@ get_glottodata(
 
 }
 \description{
-Load glottodadata/glottosubdata from an excel file, or create artificial dummy data.
+Load glottodadata/glottosubdata from a file, or create artificial dummy data.
 }
 \examples{
 get_glottodata()
 get_glottodata(filename = "glottodata.xlsx")
+get_glottodata(filename = "glottodata.gpkg")
 }
+\seealso{
+glottosave
+
+Other <glottodata>: 
+\code{\link{glottosave}()}
+}
+\concept{<glottodata>}

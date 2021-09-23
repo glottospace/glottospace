@@ -20,3 +20,10 @@ Check whether glottocodes exist in glottolog
 glottocode_exists(c("yucu1253"))
 glottocode_exists(c("yucu1253", "abcd1234"))
 }
+\seealso{
+Other <glottocheck><glottosearch>: 
+\code{\link{glot_exists}()},
+\code{\link{glottocode_online}()},
+\code{\link{glottosubcode_valid}()}
+}
+\concept{<glottocheck><glottosearch>}

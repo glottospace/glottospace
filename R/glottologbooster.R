@@ -1,9 +1,6 @@
-# # TODO: Match datasources to languages by
-# head(glottolog_cldf$sources[,"LGCODE"])
-
 #' Glottologbooster: enhance glottolog data
 #'
-#' @param glottologdata
+#' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{get_glottolog()}}
 #'
 #' @return
 #' @export
@@ -35,6 +32,13 @@ glottologbooster <- function(glottologdata, geoglot = TRUE){
   return(glottologdata)
 }
 
+#' Glottolog: add family name
+#'
+#' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{get_glottolog()}}
+#' @keywords internal
+#' @family <glottolog>
+#' @return
+#' @export
 glottolog_addfamilyname <- function(glottologdata){
     families <- glottologdata %>%
       dplyr::filter(level == "family") %>%
@@ -43,6 +47,13 @@ glottolog_addfamilyname <- function(glottologdata){
     dplyr::left_join(x = glottologdata, y = families, by = "family_id")
 }
 
+#' Glottolog: add isolates
+#'
+#' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{get_glottolog()}}
+#' @keywords internal
+#' @family <glottolog>
+#' @return
+#' @export
 glottolog_addisolates <- function(glottologdata){
 
     glottologdata$isolate <-   ifelse(
@@ -56,14 +67,35 @@ glottolog_addisolates <- function(glottologdata){
 glottologdata
 }
 
+#' Glottolog: remove dialects
+#'
+#' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{get_glottolog()}}
+#' @keywords internal
+#' @family <glottolog>
+#' @return
+#' @export
 glottolog_rmdialects <- function(glottologdata){
   glottologdata %>% dplyr::filter(level != "dialect")
 }
 
+#' Glottolog: remove families
+#'
+#' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{get_glottolog()}}
+#' @keywords internal
+#' @family <glottolog>
+#' @return
+#' @export
 glottolog_rmfamilies <- function(glottologdata){
   glottologdata %>% dplyr::filter(level != "family")
 }
 
+#' Glottolog: remove bookkeeping
+#'
+#' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{get_glottolog()}}
+#' @keywords internal
+#' @family <glottolog>
+#' @return
+#' @export
 glottolog_rmbookkeeping <- function(glottologdata){
   # unique(glottologdata$bookkeeping)
   glottologdata %>%
@@ -71,31 +103,50 @@ glottolog_rmbookkeeping <- function(glottologdata){
     dplyr::select(-bookkeeping)
 }
 
+#' Glottolog: remove artificial families
+#'
+#' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{get_glottolog()}}
+#' @keywords internal
+#' @family <glottolog>
+#' @return
+#' @export
 glottolog_rmartifam <- function(glottologdata){
   glottologdata %>%
     dplyr::filter(family_id != "arti1236")
 }
 
+#' Glottolog: remove sign languages
+#'
+#' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{get_glottolog()}}
+#' @keywords internal
+#' @family <glottolog>
+#' @return
+#' @export
 glottolog_rmsignlangs <- function(glottologdata){
   glottologdata %>%
     dplyr::filter(family_id != "sign1238")
 }
 
+#' Glottolog: add family size
+#'
+#' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{get_glottolog()}}
+#' @keywords internal
+#' @family <glottolog>
+#' @return
+#' @export
 glottolog_addfamilysize <- function(glottologdata){
 glottologdata %>%
     dplyr::group_by(family_id) %>%
     dplyr::mutate(family_size = dplyr::n())
-
 }
 
-#' Create rank order of family size
+#' Glottolog: add rank order of family size
 #'
-#' @param glottologdata
-#'
+#' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{get_glottolog()}}
+#' @keywords internal
+#' @family <glottolog>
 #' @return
 #' @export
-#'
-#' @examples
 glottolog_addfamilysizerank <- function(glottologdata){
   glottologdata$family_size_rank <- as.factor(glottologdata$family_size)
   levels(glottologdata$family_size_rank) <- seq(1:length(levels(glottologdata$family_size_rank)))

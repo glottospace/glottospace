@@ -2,14 +2,14 @@
 % Please edit documentation in R/get_geodata.R
 \name{get_geodata}
 \alias{get_geodata}
-\title{Get spatial data}
+\title{Get geographic data}
 \usage{
 get_geodata(path = NULL, download = NULL, country = NULL)
 }
 \arguments{
 \item{path}{Path to geodata}
 
-\item{download}{Name of geodata to download (wrapper around raster::getData). Currently, the following are supported: "climate"}
+\item{download}{Name of geodata to download (wrapper around raster::getData). Currently, the following are supported: "elevation" and "climate"}
 }
 \value{
 
@@ -17,3 +17,21 @@ get_geodata(path = NULL, download = NULL, country = NULL)
 \description{
 Load spatial data either from local path (supports both raster and vector formats), or download from remote server.
 }
+\examples{
+From local path (not run):
+get_geodata(path = "D:/data/vector.shp")
+get_geodata(path = "D:/data/raster.tif")
+
+Download:
+get_geodata(download = "elevation", country = "Netherlands")
+get_geodata(download = "climate")
+}
+\seealso{
+Other <geodata>: 
+\code{\link{extractgeodata}()},
+\code{\link{extractraster}()},
+\code{\link{get_geodata_download}()},
+\code{\link{get_geodata_path}()},
+\code{\link{glottomap_geodata}()}
+}
+\concept{<geodata>}

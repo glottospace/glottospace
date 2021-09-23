@@ -2,16 +2,29 @@
 % Please edit documentation in R/glottologbooster.R
 \name{glottolog_addfamilysizerank}
 \alias{glottolog_addfamilysizerank}
-\title{Create rank order of family size}
+\title{Glottolog: add rank order of family size}
 \usage{
 glottolog_addfamilysizerank(glottologdata)
 }
 \arguments{
-\item{glottologdata}{}
+\item{glottologdata}{data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{get_glottolog()}}}
 }
 \value{
 
 }
 \description{
-Create rank order of family size
+Glottolog: add rank order of family size
 }
+\seealso{
+Other <glottolog>: 
+\code{\link{glottolog_addfamilyname}()},
+\code{\link{glottolog_addfamilysize}()},
+\code{\link{glottolog_addisolates}()},
+\code{\link{glottolog_rmartifam}()},
+\code{\link{glottolog_rmbookkeeping}()},
+\code{\link{glottolog_rmdialects}()},
+\code{\link{glottolog_rmfamilies}()},
+\code{\link{glottolog_rmsignlangs}()}
+}
+\concept{<glottolog>}
+\keyword{internal}

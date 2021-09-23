@@ -2,7 +2,7 @@
 % Please edit documentation in R/geodist.R
 \name{meandist}
 \alias{meandist}
-\title{Calculate mean distance from one features to all other features}
+\title{Calculate mean distance from one feature to all other features}
 \usage{
 meandist(dist)
 }
@@ -13,5 +13,15 @@ meandist(dist)
 
 }
 \description{
-Calculate mean distance from one features to all other features
+Calculate mean distance from one feature to all other features
 }
+\examples{
+meandist(dist)
+}
+\seealso{
+Other <geodist><glottodist>: 
+\code{\link{countwithinradius}()},
+\code{\link{nearestdistance}()},
+\code{\link{nearestfeature}()}
+}
+\concept{<geodist><glottodist>}
