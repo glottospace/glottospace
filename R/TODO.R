@@ -24,10 +24,15 @@
 
 
 # checkdata ---------------------------------------------------------------
-
+# TODO: Add high-level function glottocheck, first check: glottodata, glottosubdata, metadata
 
 # cleandata ---------------------------------------------------------------
+# FIXME: glottoclean_recodemissing replace naniar, results in errors when building
 
+# glottocreate ------------------------------------------------------------
+
+# Perhaps replace create_structuretable with glottodata_createstructuretable, that feels more logical, because it's an operation on glottodata
+# Be more explicit about tables and lists: glottodata can be stored in a table or in a list of tables.
 
 # joindata ----------------------------------------------------------------
 # TODO: change naming to glottojoindist, glottojoinbase, glottojoinspace
@@ -56,6 +61,7 @@
 
 # geodistance -------------------------------------------------------------
 # FIXME: Write wrapper geodist (i.e. make sure it works for points and lines, etc.)
+# FIXME: geodist, save by default as dist, not as 'units'.
 # geodist only relevant between points and lines, not pols and lines
 # buffer should be equal area, not necessarily equidistant.
 

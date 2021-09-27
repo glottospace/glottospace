@@ -51,7 +51,7 @@ points2pols <- function(glottopoints, method = "buffer", radius = NULL, country 
     # merge polygons
     unicountry <- sf::st_union(country)
     unicountry <- sfheaders::sf_remove_holes(unicountry)
-    pols <- sf::st_intersection(pols, unicountry) # crop to country boundaries
+    pols <- suppressWarnings(sf::st_intersection(pols, unicountry) ) # crop to country boundaries
   } else if (!purrr::is_empty(country) & !purrr::is_empty(country)) {
     stop("Please supply either country or continent, noth both")
   }

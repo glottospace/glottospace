@@ -28,3 +28,10 @@ points <- sf::st_geometry(points)
 points <- points[c(1:10),] # for testing only
 pointdist_topo(points = points, topography = topopath)
 }
+\seealso{
+Other <geodist>: 
+\code{\link{geodist}()},
+\code{\link{nearestline_bird}()},
+\code{\link{pointdist_bird}()}
+}
+\concept{<geodist>}

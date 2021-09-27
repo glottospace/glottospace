@@ -32,6 +32,7 @@ geodist(points = glottodata_sf)
 \seealso{
 Other <geodist>: 
 \code{\link{nearestline_bird}()},
-\code{\link{pointdist_bird}()}
+\code{\link{pointdist_bird}()},
+\code{\link{pointdist_topo}()}
 }
 \concept{<geodist>}

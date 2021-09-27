@@ -23,6 +23,7 @@ pointdist_bird(points = points, label = "glottocode")
 \seealso{
 Other <geodist>: 
 \code{\link{geodist}()},
-\code{\link{nearestline_bird}()}
+\code{\link{nearestline_bird}()},
+\code{\link{pointdist_topo}()}
 }
 \concept{<geodist>}

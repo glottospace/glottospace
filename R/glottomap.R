@@ -3,18 +3,21 @@
 #'
 #' Create dynamic, static and interactive maps from glottodata
 #'
-#' @param glottodata User-provided glottodata
+#' @param glottodata Optional, user-provided glottodata. In case no glottodata is provided, you can specify pass arguments directly to glottofilter.
 #' @param color column name or index to be used to color features (optional)
 #' @param label Column name or index to be used to label features (optional)
 #' @param type One of: "static", "dynamic", or "interactive". Defaults to
 #'   "static" if nothing is provided.
 #' @param ptsize Size of points between 0 and 1
 #' @param transparency Transparency of points between 0 (very transparent) and 1 (not transparent)
+#' @param ... Arguments to pass to glottofilter in case glottodata is empty
 #'
 #' @return
 #' @export
 #'
 #' @examples
+#' glottomap(country = "Netherlands")
+#'
 #' glottopoints <- glottofilter(continent = "South America")
 #' glottopols <- points2pols(glottopoints, method = "voronoi", continent = "South America")
 #' glottomap(glottodata = glottopols, color = "family_size_rank")
@@ -30,7 +33,8 @@
 #' glottodata <- glottospotlight(glottodata = glottodata, spotcol =
 #' "family_name", spotlight = families$family_name[-c(1:10)], spotcontrast = "family_name", bgcontrast = "family_name")
 #' glottomap(glottodata, color = "color")
-glottomap <- function(glottodata, color = NULL, label = NULL, type = NULL, ptsize = NULL, transparency = NULL){
+glottomap <- function(glottodata = NULL, color = NULL, label = NULL, type = NULL, ptsize = NULL, transparency = NULL, ...){
+  if(is.null(glottodata)){glottodata <- glottofilter(...)}
   if(is.null(ptsize)){ptsize <- 0.35}
   if(is.null(transparency)){transparency <- 0.65}
   if(!is_sf(glottodata) ) {glottodata <- join_glottospace(glottodata)}

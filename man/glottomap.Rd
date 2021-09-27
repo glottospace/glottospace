@@ -5,16 +5,17 @@
 \title{glottomap}
 \usage{
 glottomap(
-  glottodata,
+  glottodata = NULL,
   color = NULL,
   label = NULL,
   type = NULL,
   ptsize = NULL,
-  transparency = NULL
+  transparency = NULL,
+  ...
 )
 }
 \arguments{
-\item{glottodata}{User-provided glottodata}
+\item{glottodata}{Optional, user-provided glottodata. In case no glottodata is provided, you can specify pass arguments directly to glottofilter.}
 
 \item{color}{column name or index to be used to color features (optional)}
 
@@ -26,6 +27,8 @@ glottomap(
 \item{ptsize}{Size of points between 0 and 1}
 
 \item{transparency}{Transparency of points between 0 (very transparent) and 1 (not transparent)}
+
+\item{...}{Arguments to pass to glottofilter in case glottodata is empty}
 }
 \value{
 
@@ -34,6 +37,8 @@ glottomap(
 Create dynamic, static and interactive maps from glottodata
 }
 \examples{
+glottomap(country = "Netherlands")
+
 glottopoints <- glottofilter(continent = "South America")
 glottopols <- points2pols(glottopoints, method = "voronoi", continent = "South America")
 glottomap(glottodata = glottopols, color = "family_size_rank")

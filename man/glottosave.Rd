@@ -41,6 +41,7 @@ glottomap <- glottomap(glottodata, type = "dynamic")
 get_glottodata
 
 Other <glottodata>: 
-\code{\link{get_glottodata}()}
+\code{\link{get_glottodata}()},
+\code{\link{glottoget}()}
 }
 \concept{<glottodata>}

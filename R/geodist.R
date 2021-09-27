@@ -141,7 +141,7 @@ nearestline_bird <- function(points, lines, label){
 #'
 #' @return dist object
 #' @export
-#' #' @family <geodist>
+#' @family <geodist>
 #' @examples
 #' ppath <- "C:/Users/sjnor/surfdrive/Projecten en schrijfsels/Papers in progress/Isolates/output/nwa.gpkg"
 #' topopath <- "D:/Global/Topography/SRTM/250m/South America/SRTM250mSA.tif"
