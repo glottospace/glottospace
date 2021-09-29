@@ -2,8 +2,6 @@
 % Please edit documentation in R/glottofilter.R
 \name{glottofilter}
 \alias{glottofilter}
-\alias{glotto_select}
-\alias{glotto_subset}
 \title{Filter glottodata by language, glottocode, etc.}
 \usage{
 glottofilter(
@@ -14,6 +12,7 @@ glottofilter(
   family_id = NULL,
   continent = NULL,
   country = NULL,
+  region = NULL,
   expression = NULL
 )
 }
@@ -37,7 +36,7 @@ glottofilter(
 \item{expression}{A regular expression}
 }
 \value{
-A smaller glot object or geoglot object containing only the selected features.
+A subset of the original glottodata table  containing only filtered languages.
 }
 \description{
 By default, the glottolog data will be used to filter from. But in case the user provides glottodata, this will be used.
@@ -55,3 +54,4 @@ points <- glottofilter(glottodata = glottodata, continent = "South America")
 points <- glottofilter(glottodata = glottodata, country = c("Colombia", "Venezuela"))
 points <- glottofilter(glottodata = glottodata, expression = family_name \%in\% c("Arawakan", "Tucanoan"))
 }
+\concept{<glottofilter><glottosearch>}

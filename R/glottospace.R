@@ -1,4 +1,24 @@
 
+#' Make glottodata spatial
+#'
+#' This function takes glottodata (either a table or list of tables) and turns it into spatial points or polygons.
+#'
+#' @param glottodata A glottodata table, or list of glottodata tables
+#' @param glottospace By default, glottopoints are returned, glottopols are also supported.
+#'
+#' @return
+#' @export
+#'
+#' @examples
+#' glottodata <- glottoget()
+#' glottodataspace <- glottospace(glottodata)
+glottospace <- function(glottodata, glottospace){
+  if(class(glottodata) == "data.frame"){
+    glottodataspace <- glottodata_makespatial(glottodata)
+  }
+  glottodataspace
+}
+
 #' Convert glottopoints to polygons
 #'
 #' @param glottopoints geoglot object (glottopoints)
@@ -116,7 +136,7 @@ glottodata_addcountries <- function(glottodata){
 #' @export
 #'
 #' @examples
-#' glottodata <- get_glottodata()
+#' glottodata <- glottoget()
 #' glottodata_makespatial(glottodata)
 glottodata_makespatial <- glottodata_addcoords <- function(glottodata){
   if(class(glottodata)[1] != "sf") {

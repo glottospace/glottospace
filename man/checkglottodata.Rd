@@ -29,6 +29,7 @@ checkglottodata(glottodata = glottodata)
 \seealso{
 Other <glottocheck>: 
 \code{\link{checkglottosubdata}()},
+\code{\link{glottocheck_hasmeta}()},
 \code{\link{glottocheck}()}
 }
 \concept{<glottocheck>}

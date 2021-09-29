@@ -23,7 +23,9 @@
 #' @export
 #'
 #' @examples
-#' geodist(points = glottodata_sf)
+#' glottodata <- glottoget()
+#' glottodataspace <- glottospace(glottodata)
+#' geodist(points = glottodataspace)
 geodist <- function(points, lines = NULL, fun = NULL, label = NULL){
   # Perhaps split 'return' into 'class' and 'summary'???
   if(is.null(label)){label <- "glottocode"}

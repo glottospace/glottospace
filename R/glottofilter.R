@@ -1,5 +1,3 @@
-# TODO: glottofilter: Make more flexible country or continent, if user specifies country = "South America" this should also work.
-
 #' Filter glottodata by language, glottocode, etc.
 #'
 #' By default, the glottolog data will be used to filter from. But in case the user provides glottodata, this will be used.
@@ -14,9 +12,8 @@
 #' @param continent A character vector of continents
 #' @param country A character vector of countries
 #' @param expression A regular expression
-#' @aliases glotto_select glotto_subset
-#'
-#' @return A smaller glot object or geoglot object containing only the selected features.
+#' @family <glottofilter><glottosearch>
+#' @return A subset of the original glottodata table  containing only filtered languages.
 #' @export
 #'
 #' @examples
@@ -31,10 +28,9 @@
 #' points <- glottofilter(glottodata = glottodata, continent = "South America")
 #' points <- glottofilter(glottodata = glottodata, country = c("Colombia", "Venezuela"))
 #' points <- glottofilter(glottodata = glottodata, expression = family_name %in% c("Arawakan", "Tucanoan"))
-
 glottofilter <- function(glottodata = NULL, isocodes = NULL,
                       glottocode = NULL, family_name = NULL, family_id = NULL,
-                      continent = NULL, country = NULL, expression = NULL){
+                      continent = NULL, country = NULL, region = NULL, expression = NULL){
 
   # filter glottolog data
   # isocodes: a character vector of isocodes
@@ -88,6 +84,11 @@ glottofilter <- function(glottodata = NULL, isocodes = NULL,
     selection <- country
     glottodata <- glottodata %>%
       dplyr::filter(country %in% selection)
+  }
+  if(!purrr::is_empty(region)){
+    selection <- region
+    glottodata <- glottodata %>%
+      dplyr::filter(region %in% selection)
   }
   return(glottodata)
 }

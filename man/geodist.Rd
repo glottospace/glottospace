@@ -27,7 +27,9 @@ This function calculates pairwise distances between many points, and distances b
 Different distance metrics are possible: least cost distance, river distance,
 }
 \examples{
-geodist(points = glottodata_sf)
+glottodata <- glottoget()
+glottodataspace <- glottospace(glottodata)
+geodist(points = glottodataspace)
 }
 \seealso{
 Other <geodist>: 

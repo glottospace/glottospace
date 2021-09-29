@@ -259,6 +259,30 @@ createdummysubdata <- function(){
   dummy
 }
 
-glottodata_addtable <- function(glottodata, table){
+#' Add a table to glottodata
+#'
+#' @param glottodata A glottodata table, or a list of glottodata tables
+#' @param table A table to be added
+#' @param name A name for the table
+#'
+#' @return
+#' @export
+#'
+#' @examples
+glottodata_addtable <- function(glottodata, table, name){
+  if(is_list(table) & length(table) != 1){stop("Please provide either a data.frame or a list of 1 data.frame")}
+
+  if(!is_list(table)){
+    table <- list(table)
+    }
+  names(table) <- name
+
+  if(!is_list(glottodata)){
+    glottodata <- list("glottodata" = glottodata)
+  }
+
+  c(glottodata, table)
+
+
 
 }

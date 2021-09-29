@@ -41,20 +41,22 @@
 
 # glottofilter --------------------------------------------------------------
 # TODO: glottofilter: by location (bbox and drawing on plot)
-# TODO: by region.. region = ""
 # TODO: make more tolerant: if no country/continent/region found, message did you mean: country?
+# make sure that's not case-senisitive 'Europe' vs. 'europe'
+# TODO: glottofilter: Make more flexible country or continent, if user specifies country = "South America" this should also work.
+
+
 
 # glottosearch ------------------------------------------------------------
 
 
-
 # glottodistance ----------------------------------------------------------
 # featuredist (can be used to calculate environmental or linguistic distances)
-
+# FIXME: currently colnames is hardcoded, perhaps it should be the first column by default, unless a name is provided. Create clear error message to indicate this.
 
 # glottospace -------------------------------------------------------------
 # TODO: one wrapper function called glottospace. That replaces glottodata_addcoords, glottodata_makespatial, points2pols
-
+# TODO: check whether glottodata has meta, if so only glottodata should be made spatial (not meta columns)
 
 # geodata & geotools -----------------------------------------------------------------
 # FIXME: After rasterextraction, active geometry is set to points, this should remain polygons.

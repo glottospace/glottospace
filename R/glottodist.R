@@ -2,7 +2,7 @@
 
 
 
-#' Calculate distances between glots
+#' Calculate distances between languages
 #'
 #' @param data Data frame. Rows can either be glots, or subglots (lower-level aspects of a language, e.g. constructions).
 #' Columns contain the variables based on which distances are calculated.
@@ -15,16 +15,23 @@
 #' @export
 #'
 #' @examples
-#' glottodist <- glottodist(glottodata = isolates, structure = structure)
+#' glottodata <- glottoget(meta = TRUE)
+#' glottodist <- glottodist(glottodata = glottodata)
 glottodist <- function(glottodata, types = NULL, levels = NULL, weights = NULL, structure = NULL){
-  # FIXME: currently colnames is hardcoded, perhaps it should be the first column by default, unless a name is provided. Create clear error message to indicate this.
+  if(glottocheck_hasmeta(glottodata) & is.null(structure)){
+    structure <- glottodata[["structure"]]
+    glottodata <- glottodata[["glottodata"]]
+  }
+
+  glottodata <- tibble::column_to_rownames(glottodata, "glottocode")
+
   # Specify column types and levels
   if(!is.null(structure)){
-    structure <- suppressMessages(dplyr::left_join(data.frame("colnames" = colnames(glottodata)), structure))
+    # structure <- suppressMessages(dplyr::left_join(data.frame("colnames" = colnames(glottodata)), structure))
     if(is.null(types)){types <- structure$type}
     if(is.null(levels)){levels <- structure$levels}
     if(is.null(weights)){
-      if(is.null(structure$weight)){weights <- rep(1, ncol(glottodata))}
+      if(is.null(structure$weight)){weights <- rep(1, ncol(structure))}
       if(!is.null(structure$weight)){weights <- structure$weight}
     }
   }

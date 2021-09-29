@@ -110,8 +110,19 @@ checkmetadata <- function(glottodata){
 }
 
 
+#' Check whether glottodata contains metadata
+#'
+#' In fact, this function only checks whether glottodata contains a structure table, because the structure table is the only table that is required by some glottospace functions. All other tables are for humans, not computers;-).
+#'
+#' @param glottodata
+#'
+#' @return
+#' @export
+#' @aliases checkmetadata_hasstructure
+#' @family <glottocheck>
+#' @examples
 glottocheck_hasmeta <- checkmetadata_hasstructure <- function(glottodata){
-  is.list(glottodata) & any(names(glottodata) %in% "structure")
+  is_list(glottodata) & any(names(glottodata) %in% "structure")
 }
 
 checkmetadata_types <- function(glottodata){

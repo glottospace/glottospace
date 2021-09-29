@@ -2,7 +2,7 @@
 % Please edit documentation in R/glottodist.R
 \name{glottodist}
 \alias{glottodist}
-\title{Calculate distances between glots}
+\title{Calculate distances between languages}
 \usage{
 glottodist(
   glottodata,
@@ -28,8 +28,9 @@ Columns contain the variables based on which distances are calculated.}
 object of class \code{dist}
 }
 \description{
-Calculate distances between glots
+Calculate distances between languages
 }
 \examples{
-glottodist <- glottodist(glottodata = isolates, structure = structure)
+glottodata <- glottoget(meta = TRUE)
+glottodist <- glottodist(glottodata = glottodata)
 }

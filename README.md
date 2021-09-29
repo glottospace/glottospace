@@ -373,11 +373,37 @@ glottosearch(find = "Yucuni", columns = c("name", "family_name"))
 
 filter, select, query
 
+``` r
+eurasia <- glottofilter(continent = c("Europe", "Asia"))
+wari <- glottofilter(glottodata = glottodata, glottocode = "wari1268")
+indo_european <- glottofilter(glottodata = glottodata, family_name = 'Indo-European')
+south_america <- glottofilter(glottodata = glottodata, continent = "South America")
+colovenz <- glottofilter(glottodata = glottodata, country = c("Colombia", "Venezuela"))
+# arawtuca <- glottofilter(glottodata = glottodata, expression = family_name %in% c("Arawakan", "Tucanoan"))
+```
+
 ### glottodist
 
 Quantify differences and similarities between languages glottodistances:
 calculating similarities between languages based on linguistic/cultural
 features
+
+``` r
+# In order to be able to calculate linguistic distances a structure table is required, that's why I specify meta = TRUE.
+glottodata <- glottoget(meta = TRUE)
+glottodist <- glottodist(glottodata = glottodata)
+#> Warning in cluster::daisy(x = glottodata, metric = "gower", type = list(symm =
+#> symm, : at least one binary variable has not 2 different levels.
+#> Warning in min(x): no non-missing arguments to min; returning Inf
+#> Warning in max(x): no non-missing arguments to max; returning -Inf
+#> Warning in min(x): no non-missing arguments to min; returning Inf
+#> Warning in max(x): no non-missing arguments to max; returning -Inf
+
+# As we'vee seen above, in case you have glottodata without a structure table, you can add it:
+glottodata <- glottoget(meta = FALSE)
+structure <- create_structuretable()
+glottodata <- glottodata_addtable(glottodata, structure, name = "structure")
+```
 
 ### glottoplot
 
@@ -400,6 +426,14 @@ dd
 
 geodistances: calculate distances between languages, nearest languages,
 etc.
+
+``` r
+glottodata <- glottoget()
+glottodataspace <- glottospace(glottodata)
+geodist(points = glottodataspace)
+#>          yucu1253
+#> tani1257       71
+```
 
 ### glottomap
 

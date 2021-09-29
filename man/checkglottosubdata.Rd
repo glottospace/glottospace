@@ -28,6 +28,7 @@ lapply(glottosubdata, checkglottosubdata)
 \seealso{
 Other <glottocheck>: 
 \code{\link{checkglottodata}()},
+\code{\link{glottocheck_hasmeta}()},
 \code{\link{glottocheck}()}
 }
 \concept{<glottocheck>}

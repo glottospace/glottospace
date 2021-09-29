@@ -18,6 +18,6 @@ Adds coordinates to glottodata.
 If glottodata does not contain a geometry column, it will be added.
 }
 \examples{
-glottodata <- get_glottodata()
+glottodata <- glottoget()
 glottodata_makespatial(glottodata)
 }
