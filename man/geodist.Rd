@@ -4,7 +4,7 @@
 \alias{geodist}
 \title{Pairwise distances between spatial objects}
 \usage{
-geodist(points, lines = NULL, fun, label)
+geodist(points, lines = NULL, fun = NULL, label = NULL)
 }
 \arguments{
 \item{points}{Spatial points between which distances should be calculated

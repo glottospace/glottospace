@@ -2,9 +2,14 @@
 % Please edit documentation in R/glottoget.R
 \name{glottoget}
 \alias{glottoget}
-\title{Download glottodata, or load user-provided glottodata}
+\title{Load user-provided glottodata}
 \usage{
-glottoget(glottodata = NULL, ...)
+glottoget(
+  filename = NULL,
+  meta = FALSE,
+  simplify = TRUE,
+  create = "glottodata"
+)
 }
 \arguments{
 \item{filename}{Path to glottodata file with extension (.xlsx .xls .gpkg .shp). If no filename is specified, an artificial dummy dataset will be created.}
@@ -19,7 +24,7 @@ glottoget(glottodata = NULL, ...)
 
 }
 \description{
-Download glottodata, load glottodadata/glottosubdata from a file, or create artificial dummy data.
+Load glottodadata/glottosubdata from a file, or create artificial dummy data.
 }
 \examples{
 glottoget()
@@ -30,7 +35,7 @@ glottoget(filename = "glottodata.gpkg")
 glottosave
 
 Other <glottodata>: 
-\code{\link{get_glottodata}()},
+\code{\link{glottogetbase}()},
 \code{\link{glottosave}()}
 }
 \concept{<glottodata>}

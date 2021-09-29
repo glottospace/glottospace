@@ -73,6 +73,7 @@ glot2geoglot <- function(glottodata, lon = "longitude", lat = "latitude"){
                              coords = c(lon, lat),
                              crs = 4326) #https://epsg.io/4326
 
+return(glottodata)
 }
 
 #' Add names of countries, continents, and regions to glottodata

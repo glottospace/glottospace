@@ -17,6 +17,7 @@
 #' @export
 #'
 #' @examples
+#' glottocheck(glottodata)
 glottocheck <- function(glottodata, diagnostic = TRUE){
   if(glottocheck_isglottosubdata(glottodata) == FALSE){
     checkglottodata(glottodata = glottodata, diagnostic = diagnostic)
@@ -367,7 +368,7 @@ naviewer <- function(data, id = NULL){
     ggplot2::scale_fill_manual(labels = c("data", "NA"), values = c("navy", "darkred"))
 }
 
-#' Guess whether a dataset is glottosubdata
+#' Guess whether a list of glottodata tables is glottosubdata
 #'
 #' @param glottodata User-provided glottodata
 #'
@@ -375,6 +376,7 @@ naviewer <- function(data, id = NULL){
 #' @export
 #'
 #' @examples
+#' glottocheck_isglottosubdata(glottodata)
 glottocheck_isglottosubdata <- function(glottodata){
     class(glottodata) == "list" &
     !any(names(glottodata) %in% "glottodata") &

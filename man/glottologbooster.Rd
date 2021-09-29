@@ -7,7 +7,7 @@
 glottologbooster(glottologdata, geoglot = TRUE)
 }
 \arguments{
-\item{glottologdata}{data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{get_glottolog()}}}
+\item{glottologdata}{data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{glottoget("glottolog")}}}
 }
 \value{
 
@@ -16,6 +16,6 @@ glottologbooster(glottologdata, geoglot = TRUE)
 Glottologbooster: enhance glottolog data
 }
 \examples{
-glottologdata <- get_glottolog("glottolog")
+glottologdata <- glottoget("glottolog")
 glottologdata <- glottologbooster(glottologdata)
 }

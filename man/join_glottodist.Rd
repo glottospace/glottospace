@@ -4,16 +4,16 @@
 \alias{join_glottodist}
 \title{Join glottodata with a dist object}
 \usage{
-join_glottodist(glottodata, id = NULL, dist, rm.na = TRUE)
+join_glottodist(glottodata, id = NULL, dist, rm.na = FALSE)
 }
 \arguments{
-\item{id}{Column with IDs in \code{data} that match names of dist object. By default, the "glottocode" column is used.}
+\item{glottodata}{User-provided glottodata}
+
+\item{id}{Column with IDs in \code{glottodata} that match names of dist object. By default, the "glottocode" column is used.}
 
 \item{dist}{A dist object}
 
-\item{rm.na}{Default is to remove NAs.}
-
-\item{data}{A data.frame}
+\item{rm.na}{Default is to keep NAs.}
 }
 \value{
 Data frame
@@ -22,10 +22,7 @@ Data frame
 Join glottodata with a dist object
 }
 \examples{
-path <- "C:/Users/sjnor/surfdrive/Projecten en schrijfsels/Papers in progress/Isolates/output/south america all.gpkg"
-sa <- sf::st_read(dsn = path)
-dist <- pointdist_bird(sa, label = "glottocode")
-distdf <- joindatadist(data = sa, idcol = "glottocode", dist = dist)
+distdf <- join_glottodist(glottodata = glottodata, dist = dist)
 
 After joining, you can subset the distance columns by using the IDs:
 distdf[, distdf$glottocode]

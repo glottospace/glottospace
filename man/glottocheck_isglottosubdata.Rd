@@ -2,7 +2,7 @@
 % Please edit documentation in R/glottocheck.R
 \name{glottocheck_isglottosubdata}
 \alias{glottocheck_isglottosubdata}
-\title{Guess whether a dataset is glottosubdata}
+\title{Guess whether a list of glottodata tables is glottosubdata}
 \usage{
 glottocheck_isglottosubdata(glottodata)
 }
@@ -13,5 +13,8 @@ glottocheck_isglottosubdata(glottodata)
 
 }
 \description{
-Guess whether a dataset is glottosubdata
+Guess whether a list of glottodata tables is glottosubdata
+}
+\examples{
+glottocheck_isglottosubdata(glottodata)
 }

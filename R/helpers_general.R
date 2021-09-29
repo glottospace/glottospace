@@ -111,3 +111,11 @@ glottospotlight <- function(glottodata, spotcol, spotlight, spotcontrast = NULL,
 #
 #
 #
+
+is_dist <- function(object){
+  any(class(object) == "dist")
+}
+
+is_list <- function(object){
+  class(object) == "list"
+}

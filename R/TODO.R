@@ -12,6 +12,7 @@
 # warnings ----------------------------------------------------------------
 
 # getdata -----------------------------------------------------------------
+# TODO: if download fails, load inbuilt glottobase (which won't be the latest version of glottolog)
 # FIXME: get_glottolog: https://stackoverflow.com/questions/30177053/using-a-trycatch-block-to-read-a-csv-and-an-excel-file
 # TODO: get_glottodata() default meta=FALSE. replace all meta = FALSE
 # TODO: Match datasources of glottologdata to languages with: head(glottolog_cldf$sources[,"LGCODE"])
@@ -21,6 +22,7 @@
 # TODO: Add data sources: ethnolog contains information on number of speakers
 # TODO: Add data sources: WALS contains information on language features.
 # TODO: getglottodata / loadglottodata: support spatial.
+# TODO: Replace 'User-provided glottodata' with 'A glottodata table' (or glottodata list in some cases)
 
 
 # checkdata ---------------------------------------------------------------
@@ -30,15 +32,20 @@
 # FIXME: glottoclean_recodemissing replace naniar, results in errors when building
 
 # glottocreate ------------------------------------------------------------
-
+# TODO: write wrapper: glottocreate (glottosubdata or glottodata)
 # Perhaps replace create_structuretable with glottodata_createstructuretable, that feels more logical, because it's an operation on glottodata
 # Be more explicit about tables and lists: glottodata can be stored in a table or in a list of tables.
 
 # joindata ----------------------------------------------------------------
 # TODO: change naming to glottojoindist, glottojoinbase, glottojoinspace
 
-# searchdata --------------------------------------------------------------
+# glottofilter --------------------------------------------------------------
 # TODO: glottofilter: by location (bbox and drawing on plot)
+# TODO: by region.. region = ""
+# TODO: make more tolerant: if no country/continent/region found, message did you mean: country?
+
+# glottosearch ------------------------------------------------------------
+
 
 
 # glottodistance ----------------------------------------------------------

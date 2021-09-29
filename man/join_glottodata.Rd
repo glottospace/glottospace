@@ -2,20 +2,29 @@
 % Please edit documentation in R/glottojoin.R
 \name{join_glottodata}
 \alias{join_glottodata}
-\title{Join glottodata for multiple languages into a single glottodata object}
+\title{Join two glottodata tables.}
 \usage{
-join_glottodata(langlist)
+join_glottodata(glottodata, with, id = NULL)
 }
 \arguments{
-\item{langlist}{A list of glottodata objects. Column names across languages should be identical.}
+\item{glottodata}{User-provided glottodata}
+
+\item{with}{User-provided glottodata}
+
+\item{id}{Optional, name of column with glottocodes}
 }
 \value{
-A single glottodata object
+
 }
 \description{
-Join glottodata for multiple languages into a single glottodata object
+Join two glottodata tables.
 }
 \examples{
-glottodata <- get_glottodata("glottosubdata.xlsx", meta = FALSE)
-join_glottodata(langlist = glottodata)
+glottodatax <- glottoget(meta = FALSE)
+glottodatay <- glottoget(meta = FALSE)
+join_glottodata(glottodatax, glottodatay)
 }
+\seealso{
+glottodata_makespatial glottodata_addcoords
+}
+\keyword{internal}

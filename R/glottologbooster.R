@@ -1,12 +1,12 @@
 #' Glottologbooster: enhance glottolog data
 #'
-#' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{get_glottolog()}}
+#' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{glottoget("glottolog")}}
 #'
 #' @return
 #' @export
 #'
 #' @examples
-#' glottologdata <- get_glottolog("glottolog")
+#' glottologdata <- glottoget("glottolog")
 #' glottologdata <- glottologbooster(glottologdata)
 glottologbooster <- function(glottologdata, geoglot = TRUE){
   glottologdata <- glottolog_addfamilyname(glottologdata)

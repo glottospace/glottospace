@@ -25,6 +25,9 @@ It subsequently checks whether:
 - all variables have at least two levels
 - all glottocodes are valid
 }
+\examples{
+glottocheck(glottodata)
+}
 \seealso{
 Other <glottocheck>: 
 \code{\link{checkglottodata}()},

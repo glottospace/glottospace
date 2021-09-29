@@ -24,8 +24,15 @@
 #'
 #' @examples
 #' geodist(points = glottodata_sf)
-geodist <- function(points, lines = NULL, fun, label){
+geodist <- function(points, lines = NULL, fun = NULL, label = NULL){
   # Perhaps split 'return' into 'class' and 'summary'???
+  if(is.null(label)){label <- "glottocode"}
+  if(is.null(fun)){fun <- "bird"}
+
+  if(fun %in% c("bird", "haversine", "greatcircle")){
+    geodist <- pointdist_bird(points = points, label = label)
+
+  }
 
 
   if(fun %in% c("lc", "wolf", "least cost", "least cost distance")){
@@ -50,28 +57,29 @@ geodist <- function(points, lines = NULL, fun, label){
     # https://robbymarrotte.weebly.com/blog/running-circuitscape-in-r-windows-os
   }
 
-  if(return == "units"){
-    out <- geodist
-    message("Matrix of class 'units' returned. Distances are in km.")
-  }
-  if(return == "sf"){
-    out <- geodistsf
-    message("Class 'sf' returned. Distances are in km.")
-  }
-  if(return == "dist" | return == "distmat"){
-    out <- as.dist(geodist)
-    message("Distance matrix returned (default). Distances are in km.")
-  } else if(return == "matrix"){
-    out <- as.matrix(geodist)
-    message("Matrix returned. Distances are in km.")
-  } else if(return == "graph"){
-    out <- reshape2::melt(as.matrix(geodist), na.rm = TRUE)
-    colnames(out)[1] <- "lang1"
-    colnames(out)[2] <- "lang2"
-    colnames(out)[3] <- "dist"
-    message("Graph returned")
-  }
-
+  # if(return == "units"){
+  #   out <- geodist
+  #   message("Matrix of class 'units' returned. Distances are in km.")
+  # }
+  # if(return == "sf"){
+  #   out <- geodistsf
+  #   message("Class 'sf' returned. Distances are in km.")
+  # }
+  # if(return == "dist" | return == "distmat"){
+  #   out <- as.dist(geodist)
+  #   message("Distance matrix returned (default). Distances are in km.")
+  # } else if(return == "matrix"){
+  #   out <- as.matrix(geodist)
+  #   message("Matrix returned. Distances are in km.")
+  # } else if(return == "graph"){
+  #   out <- reshape2::melt(as.matrix(geodist), na.rm = TRUE)
+  #   colnames(out)[1] <- "lang1"
+  #   colnames(out)[2] <- "lang2"
+  #   colnames(out)[3] <- "dist"
+  #   message("Graph returned")
+  # }
+  geodist <- as.dist(geodist)
+return(geodist)
 }
 
 
@@ -89,6 +97,7 @@ geodist <- function(points, lines = NULL, fun, label){
 #' @examples
 #' pointdist_bird(points = points, label = "glottocode")
 pointdist_bird <- function(points, label){
+  if(is.null(label)){label <- "glottocode"}
 
       points <- contransform_lonlat(points)
       geodist <- sf::st_distance(x = points)

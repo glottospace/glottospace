@@ -124,11 +124,16 @@ lonlat2utm = function(lonlat) {
 #'
 contransform_lonlat <- function(data){
   # Split in two functions: is_lonlat and is_lonlattransform
-  if(!sf::st_is_longlat(data)) {
+  if(!is_lonlat(data)) {
     # raster::isLonLat
     data <- sf::st_transform(x = data, crs = "EPSG:4326")
   }
   return(data)
+}
+
+is_lonlat <- function(object){
+  if(is.na(sf::st_is_longlat(object))){stop("No coordinate reference system!")}
+  sf::st_is_longlat(object)
 }
 
 #' Conditionally transforms dist object to distance matrix

@@ -11,6 +11,7 @@
 #' @examples
 #' glottosearch(find = "Yucuni")
 #' glottosearch(find = "Yucuni", columns = "name")
+#' glottosearch(find = "Yucuni", columns = c("name", "family_name"))
 glottosearch <- function(glottodata = NULL, find, partialmatch = TRUE, columns = NULL){
 
  if(is.null(glottodata) ){glottodata <- get_glottobase()}
