@@ -6,7 +6,7 @@
 \usage{
 points2pols(
   glottopoints,
-  method = "buffer",
+  method = NULL,
   radius = NULL,
   country = NULL,
   continent = NULL

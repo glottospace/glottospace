@@ -19,10 +19,8 @@ Download geodata
 }
 \seealso{
 Other <geodata>: 
-\code{\link{extractgeodata}()},
-\code{\link{extractraster}()},
-\code{\link{get_geodata_path}()},
-\code{\link{get_geodata}()}
+\code{\link{geoget}()},
+\code{\link{get_geodata_path}()}
 }
 \concept{<geodata>}
 \keyword{internal}

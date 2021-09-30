@@ -12,6 +12,8 @@
 # warnings ----------------------------------------------------------------
 
 # getdata -----------------------------------------------------------------
+# TODO: make function names consistent, perhaps split geoget in geogetremote and geogetpath, getgeodata, getgeobase
+# TODO glottogetremote, glottogetpath, glottoremote, glottopath
 # TODO: if download fails, load inbuilt glottobase (which won't be the latest version of glottolog)
 # FIXME: get_glottolog: https://stackoverflow.com/questions/30177053/using-a-trycatch-block-to-read-a-csv-and-an-excel-file
 # TODO: get_glottodata() default meta=FALSE. replace all meta = FALSE
@@ -58,6 +60,8 @@
 # TODO: one wrapper function called glottospace. That replaces glottodata_addcoords, glottodata_makespatial, points2pols
 # TODO: check whether glottodata has meta, if so only glottodata should be made spatial (not meta columns)
 
+# TODO: if buffer, elongated shape because of equal area projection, mention in readme
+
 # geodata & geotools -----------------------------------------------------------------
 # FIXME: After rasterextraction, active geometry is set to points, this should remain polygons.
 # TODO: glottodata_dropspatial: drop spatial and drop units (for statistical/non-spatial analyses, see isolates script STAT preparation)
@@ -79,7 +83,7 @@
 
 # glottomap & glottoplot ---------------------------------------------------------------
 # FIXME: 3d plot nmds
-
+# bbox expansion: default true, but optional.
 
 # save & export -----------------------------------------------------------
 # TODO: overwrite = TRUE/FALSE

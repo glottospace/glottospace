@@ -22,13 +22,15 @@
 #' # Join a list of glottodata tables:
 #' glottodatalist <- createglottosubdata(glottocodes = c("yucu1253", "tani1257"), variables = 3, groups = c("a", "b"), n = 2, meta = FALSE)
 #' glottodatatable <- glottojoin(glottodata = glottodatalist)
+#'
 glottojoin <- function(glottodata, with = NULL, id = NULL, rm.na = FALSE){
   if(is_list(glottodata) & is.null(with)){
     joined <- join_glottodatalist(glottodatalist = glottodata)
   } else if(!is.null(with)){
-
     if(is_dist(with)){
     joined <- join_glottodist(glottodata = glottodata, id = id, dist = with, rm.na = rm.na)
+    } else if(is_list(with)){
+    joined <- join_glottometa(glottodata = glottodata, glottometa = with)
   } else if(with == "glottobase"){
     joined <- join_glottobase(glottodata = glottodata, id = id)
   } else if(with == "glottospace"){
@@ -158,6 +160,38 @@ join_glottodatalist <- function(glottodatalist){
 #' join_glottodata(glottodatax, glottodatay)
 join_glottodata <- function(glottodata, with, id = NULL){
   id <- contrans_id2gc(id)
-  glottospace <- get_glottospace()
   dplyr::left_join(x = glottodata, y = with, by = id)
+}
+
+#' Join glottodata with glottometa
+#'
+#' @param glottodata A glottodata table, or a glottodata list with one table.
+#' @param glottometa A glottometa table, or a glottometa list
+#' @param name
+#'
+#' @return
+#' @export
+#'
+#' @examples
+#' glottodata <- glottoget(meta = TRUE)
+#' glottometa <- glottodata[-1]
+#' glottodata <- glottodata[[1]]
+#' join_glottometa(glottodata, glottometa)
+join_glottometa <- function(glottodata, glottometa, name = NULL){
+
+  if(is_sf(glottodata)){
+    glottodata <- list("glottodata" = glottodata)
+  } else if(!is_list(glottodata)){
+    glottodata <- list("glottodata" = glottodata)
+    names(glottodata) <- "glottodata"
+  }
+
+  if(!is_list(glottometa)){
+    glottometa <- list(glottometa)
+    names(glottometa) <- name
+  }
+
+  c(glottodata, glottometa)
+
+
 }

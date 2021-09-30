@@ -3,7 +3,7 @@
 #' Load spatial data either from local path (supports both raster and vector formats), or download from remote server.
 #' @param path Path to geodata
 #' @param download Name of geodata to download (wrapper around raster::getData). Currently, the following are supported: "elevation" and "climate"
-#'
+#' @aliases geoget
 #' @return
 #' @export
 #' @family <geodata>
@@ -16,7 +16,7 @@
 #' Download:
 #' get_geodata(download = "elevation", country = "Netherlands")
 #' get_geodata(download = "climate")
-get_geodata <- function(path = NULL, download = NULL, country = NULL){
+geoget <- get_geodata <- function(path = NULL, download = NULL, country = NULL){
   if(!is.null(path) & is.null(download)){
     geodata <- get_geodata_path(path = path)
   }
@@ -82,13 +82,13 @@ if(!is.null(vec) & is.null(ras)){
 #'
 get_geodata_download <- function(download, country = NULL){
   if(download == "climate"){
-  raster::getData(name = "worldclim", var = "bio", res = 10)
+  geodata <- raster::getData(name = "worldclim", var = "bio", res = 10)
   }
   if(download == "elevation"){
     geodata <- raster::getData(name = "alt", country = country)
     names(geodata) <- "elevation"
-    geodata
   }
+  geodata
 }
 
 

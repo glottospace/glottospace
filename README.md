@@ -52,7 +52,7 @@ interpolate the points and plot those.
 ## Filter by continent
 glottopoints <- glottofilter(continent = "South America")
 # Interpolate points to polygons:
-glottopols <- points2pols(glottopoints, method = "voronoi", continent = "South America")
+glottopols <- glottospace(glottopoints, method = "voronoi", continent = "South America")
 # Plot polygon data:
 glottomap(glottodata = glottopols, color = "family_size_rank")
 ```
@@ -98,7 +98,7 @@ peruvians <- glottofilter(country = "Peru")
 Get and extract environmental data.
 
 ``` r
-elevation <- get_geodata(download = "elevation", country = "Peru")
+elevation <- geoget(download = "elevation", country = "Peru")
 #> Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO", prefer_proj
 #> = prefer_proj): Discarded datum Unknown based on WGS84 ellipsoid in Proj4
 #> definition
@@ -333,113 +333,79 @@ glottodatatable <- glottojoin(glottodata = glottodatalist)
 As demonstrated in the example above, you can search glottodata for a
 specific search term
 
+You can search for a match in all columns:
+
 ``` r
-# You can search for a match in all columns:
-glottosearch(find = "yurakar")
-#> Simple feature collection with 1 feature and 14 fields
+glottosearch(find = "yurakar")[,"name"]
+#> Simple feature collection with 1 feature and 1 field
 #> Geometry type: POINT
 #> Dimension:     XY
 #> Bounding box:  xmin: -65.1224 ymin: -16.7479 xmax: -65.1224 ymax: -16.7479
 #> Geodetic CRS:  WGS 84
-#>      glottocode family_id parent_id     name isocode child_dialect_count
-#> 7701   yura1255  yura1255           Yuracaré     yuz                   2
-#>      country_ids family_name isolate family_size family_size_rank country
-#> 7701          BO    Yuracaré    TRUE           1                1 Bolivia
-#>          continent        region                  geometry
-#> 7701 South America South America POINT (-65.1224 -16.7479)
-# Or limit the search to specific columns:
-glottosearch(find = "Yucuni", columns = c("name", "family_name"))
-#> Simple feature collection with 2 features and 14 fields
+#>          name                  geometry
+#> 7701 Yuracaré POINT (-65.1224 -16.7479)
+```
+
+Or limit the search to specific columns:
+
+``` r
+glottosearch(find = "Yucuni", columns = c("name", "family_name"))[,"name"]
+#> Simple feature collection with 2 features and 1 field
 #> Geometry type: POINT
 #> Dimension:     XY
 #> Bounding box:  xmin: -97.91818 ymin: -0.76075 xmax: -71.0033 ymax: 17.23743
 #> Geodetic CRS:  WGS 84
-#>      glottocode family_id parent_id              name isocode
-#> 7687   yucu1253  araw1281  yucu1252            Yucuna     ycn
-#> 7688   yucu1254  otom1299  sout3179 Yucunicoco Mixtec        
-#>      child_dialect_count country_ids family_name isolate family_size
-#> 7687                   2    BR CO PE    Arawakan   FALSE          77
-#> 7688                   0          MX Otomanguean   FALSE         181
-#>      family_size_rank  country     continent          region
-#> 7687               42 Colombia South America   South America
-#> 7688               48   Mexico North America Central America
-#>                        geometry
-#> 7687  POINT (-71.0033 -0.76075)
-#> 7688 POINT (-97.91818 17.23743)
-# If you can't find what you're looking for, you can increase the tolerance:
-glottosearch(find = "matsigenka")
-#> Simple feature collection with 0 features and 14 fields
+#>                   name                   geometry
+#> 7687            Yucuna  POINT (-71.0033 -0.76075)
+#> 7688 Yucunicoco Mixtec POINT (-97.91818 17.23743)
+```
+
+Sometimes you don’t find a match:
+
+``` r
+glottosearch(find = "matsigenka")[,"name"]
+#> Simple feature collection with 0 features and 1 field
 #> Bounding box:  xmin: NA ymin: NA xmax: NA ymax: NA
 #> Geodetic CRS:  WGS 84
-#>  [1] glottocode          family_id           parent_id          
-#>  [4] name                isocode             child_dialect_count
-#>  [7] country_ids         family_name         isolate            
-#> [10] family_size         family_size_rank    country            
-#> [13] continent           region              geometry           
+#> [1] name     geometry
 #> <0 rows> (or 0-length row.names)
-glottosearch(find = "matsigenka", tolerance = 0.2)
-#> Simple feature collection with 1 feature and 14 fields
+```
+
+If you can’t find what you’re looking for, you can increase the
+tolerance:
+
+``` r
+glottosearch(find = "matsigenka", tolerance = 0.2)[,"name"]
+#> Simple feature collection with 1 feature and 1 field
 #> Geometry type: POINT
 #> Dimension:     XY
 #> Bounding box:  xmin: -74.4371 ymin: -11.5349 xmax: -74.4371 ymax: -11.5349
 #> Geodetic CRS:  WGS 84
-#>      glottocode family_id parent_id          name isocode child_dialect_count
-#> 4862   noma1263  araw1281  prea1240 Nomatsiguenga     not                   0
-#>      country_ids family_name isolate family_size family_size_rank country
-#> 4862          PE    Arawakan   FALSE          77               42    Peru
-#>          continent        region                  geometry
-#> 4862 South America South America POINT (-74.4371 -11.5349)
-glottosearch(find = "matsigenka", tolerance = 0.4) # Aha! There it is: 'Machiguenga'
-#> Simple feature collection with 12 features and 14 fields
+#>               name                  geometry
+#> 4862 Nomatsiguenga POINT (-74.4371 -11.5349)
+```
+
+Aha! There it is: ‘Machiguenga’
+
+``` r
+glottosearch(find = "matsigenka", tolerance = 0.4)[,"name"]
+#> Simple feature collection with 12 features and 1 field
 #> Geometry type: POINT
 #> Dimension:     XY
 #> Bounding box:  xmin: -74.4371 ymin: -14.9959 xmax: 166.738 ymax: 13.5677
 #> Geodetic CRS:  WGS 84
 #> First 10 features:
-#>      glottocode family_id parent_id               name isocode
-#> 1735   east2426  mand1469  mane1267 Eastern Maninkakan     emk
-#> 3121   kita1249  mand1469  kita1248    Kita Maninkakan     mwk
-#> 3205   kony1250  mand1469  mane1267   Konyanka Maninka     mku
-#> 3791   maas1239  atla1278  fula1264   Maasina Fulfulde     ffm
-#> 3808   mach1267  araw1281  mats1245        Machiguenga     mcb
-#> 3964   mand1436  mand1469  west2499           Mandinka     mnk
-#> 4000   mans1259  atla1278  atla1278          Mansoanka     msw
-#> 4106   mati1250  aust1307  cent2088  Matigsalug Manobo     mbt
-#> 4862   noma1263  araw1281  prea1240      Nomatsiguenga     not
-#> 5462   piam1242  aust1307  nort3217         Piamatsina     ptr
-#>      child_dialect_count       country_ids    family_name isolate family_size
-#> 1735                   4    CI GN LR ML SL          Mande   FALSE          75
-#> 3121                   1             GN ML          Mande   FALSE          75
-#> 3205                   0          CI GN LR          Mande   FALSE          75
-#> 3791                   2 BF CI GH ML MR NE Atlantic-Congo   FALSE        1403
-#> 3808                   0                PE       Arawakan   FALSE          77
-#> 3964                   0       GM GN GW SN          Mande   FALSE          75
-#> 4000                   0             GM GW Atlantic-Congo   FALSE        1403
-#> 4106                   4                PH   Austronesian   FALSE        1274
-#> 4862                   0                PE       Arawakan   FALSE          77
-#> 5462                   0                VU   Austronesian   FALSE        1274
-#>      family_size_rank      country     continent             region
-#> 1735               41       Guinea        Africa     Western Africa
-#> 3121               41         Mali        Africa     Western Africa
-#> 3205               41       Guinea        Africa     Western Africa
-#> 3791               57 Burkina Faso        Africa     Western Africa
-#> 3808               42         Peru South America      South America
-#> 3964               41      Senegal        Africa     Western Africa
-#> 4000               57      Senegal        Africa     Western Africa
-#> 4106               56  Philippines          Asia South-Eastern Asia
-#> 4862               42         Peru South America      South America
-#> 5462               56      Vanuatu       Oceania          Melanesia
-#>                        geometry
-#> 1735   POINT (-10.5394 9.33048)
-#> 3121   POINT (-9.49151 13.1798)
-#> 3205   POINT (-8.89972 8.04788)
-#> 3791   POINT (-3.64763 11.1324)
-#> 3808  POINT (-72.5017 -12.1291)
-#> 3964 POINT (-15.65395 12.81652)
-#> 4000   POINT (-15.9202 12.8218)
-#> 4106     POINT (125.16 7.72124)
-#> 4862  POINT (-74.4371 -11.5349)
-#> 5462   POINT (166.738 -14.9959)
+#>                    name                   geometry
+#> 1735 Eastern Maninkakan   POINT (-10.5394 9.33048)
+#> 3121    Kita Maninkakan   POINT (-9.49151 13.1798)
+#> 3205   Konyanka Maninka   POINT (-8.89972 8.04788)
+#> 3791   Maasina Fulfulde   POINT (-3.64763 11.1324)
+#> 3808        Machiguenga  POINT (-72.5017 -12.1291)
+#> 3964           Mandinka POINT (-15.65395 12.81652)
+#> 4000          Mansoanka   POINT (-15.9202 12.8218)
+#> 4106  Matigsalug Manobo     POINT (125.16 7.72124)
+#> 4862      Nomatsiguenga  POINT (-74.4371 -11.5349)
+#> 5462         Piamatsina   POINT (166.738 -14.9959)
 ```
 
 ### glottofilter
@@ -472,7 +438,7 @@ glottodist <- glottodist(glottodata = glottodata)
 #> Warning in min(x): no non-missing arguments to min; returning Inf
 #> Warning in max(x): no non-missing arguments to max; returning -Inf
 
-# As we'vee seen above, in case you have glottodata without a structure table, you can add it:
+# As we've seen above, in case you have glottodata without a structure table, you can add it:
 glottodata <- glottoget(meta = FALSE)
 structure <- create_structuretable()
 glottodata <- glottodata_addtable(glottodata, structure, name = "structure")
@@ -499,15 +465,48 @@ glottoplot(glottodist)
 
 ### glottospace
 
-ff
+This family of functions turns glottodata into a spatial object. As I’ve
+illustrated above, these can be either glottopoints or glottopols
+
+``` r
+glottodata <- glottoget()
+glottospacedata <- glottospace(glottodata, method = "buffer", radius = 5)
+#> Buffer created with a radius of 5 km.
+# By default, the projection of maps is equal area, and shape is not preserved:
+glottomap(glottospacedata)
+```
+
+<img src="man/figures/README-glottospace-1.png" width="100%" />
 
 ### geoget
 
-dd
+The geoget function supports both raster and vector formats. It either
+loads spatial data from a local path, or downloads is from a remote
+server.
 
-## geotools
+``` r
+climate <- geoget(download = "climate")[[12]]
+names(climate) <- "precipitation"
+geomap(climate)
+```
 
-..
+<img src="man/figures/README-geoget-1.png" width="100%" /> \#\# geotools
+This is a large family of functions to work with spatial data. Most of
+these however, will probably not be called directly by the users. I’ve
+already demonstrated the function geodataextract() which can be used to
+extract environmental data for languages. You can also use a buffer
+radius to extract environmental features and summarize them. Here, I’m
+using a buffer of 10 km and summarize by taking the mean.
+
+``` r
+dutchies <- glottofilter(country = "Netherlands")
+climatedutchies <- extractgeodata(glottodata = dutchies, geodata = climate, radius = 10, fun = "mean")
+#> Extracting values within a radius of 10 km.
+#> geodata extracted
+glottomap(climatedutchies, color = "precipitation_mean", ptsize = 1)
+```
+
+<img src="man/figures/README-geotools-1.png" width="100%" />
 
 ### geodist
 

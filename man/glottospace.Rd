@@ -4,20 +4,33 @@
 \alias{glottospace}
 \title{Make glottodata spatial}
 \usage{
-glottospace(glottodata, glottospace)
+glottospace(
+  glottodata,
+  method = NULL,
+  radius = NULL,
+  country = NULL,
+  continent = NULL
+)
 }
 \arguments{
-\item{glottodata}{A glottodata table, or list of glottodata tables}
+\item{glottodata}{A glottodata table, or list of a glottodata table and metadata table(s)}
 
-\item{glottospace}{By default, glottopoints are returned, glottopols are also supported.}
+\item{method}{In case output should be polygons, interpolation method, either "buffer" or "voronoi" (synonymous with "thiessen")}
+
+\item{radius}{In case interpolation method "buffer", the radius in km.}
+
+\item{country}{Optionally mask output by country boundaries}
+
+\item{continent}{Optionally mask output by continent boundaries}
 }
 \value{
 
 }
 \description{
-This function takes glottodata (either a table or list of tables) and turns it into spatial points or polygons.
+This function takes glottodata (either with or without metadata) and turns it into spatial points or polygons.
 }
 \examples{
 glottodata <- glottoget()
-glottodataspace <- glottospace(glottodata)
+glottospacedata <- glottospace(glottodata)
+
 }

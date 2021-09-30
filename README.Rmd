@@ -53,7 +53,7 @@ Languages are often represented with points, while in reality the speakers of a 
 ## Filter by continent
 glottopoints <- glottofilter(continent = "South America")
 # Interpolate points to polygons:
-glottopols <- points2pols(glottopoints, method = "voronoi", continent = "South America")
+glottopols <- glottospace(glottopoints, method = "voronoi", continent = "South America")
 # Plot polygon data:
 glottomap(glottodata = glottopols, color = "family_size_rank")
 
@@ -83,7 +83,7 @@ peruvians <- glottofilter(country = "Peru")
 Get and extract environmental data. 
 
 ```{r example_extractgeodata}
-elevation <- get_geodata(download = "elevation", country = "Peru")
+elevation <- geoget(download = "elevation", country = "Peru")
 # Let's make a map:
 geomap(elevation)
 # Extract elevation for each language
@@ -207,16 +207,31 @@ glottodatatable <- glottojoin(glottodata = glottodatalist)
 ### glottosearch 
 As demonstrated in the example above, you can search glottodata for a specific search term
 
-``` {r glottosearch}
-# You can search for a match in all columns:
-glottosearch(find = "yurakar")
-# Or limit the search to specific columns:
-glottosearch(find = "Yucuni", columns = c("name", "family_name"))
-# If you can't find what you're looking for, you can increase the tolerance:
-glottosearch(find = "matsigenka")
-glottosearch(find = "matsigenka", tolerance = 0.2)
-glottosearch(find = "matsigenka", tolerance = 0.4) # Aha! There it is: 'Machiguenga'
+You can search for a match in all columns:
 
+```{r glottosearch1}
+glottosearch(find = "yurakar")[,"name"]
+```
+
+Or limit the search to specific columns:
+
+``` {r glottosearch2}
+glottosearch(find = "Yucuni", columns = c("name", "family_name"))[,"name"]
+
+```
+Sometimes you don't find a match:
+```{r glottosearch3}
+glottosearch(find = "matsigenka")[,"name"]
+```
+
+If you can't find what you're looking for, you can increase the tolerance:
+```{r glottosearch4}
+glottosearch(find = "matsigenka", tolerance = 0.2)[,"name"]
+```
+
+Aha! There it is: 'Machiguenga'
+```{r glottosearch5}
+glottosearch(find = "matsigenka", tolerance = 0.4)[,"name"]
 ```
 
 
@@ -242,7 +257,7 @@ glottodistances: calculating similarities between languages based on linguistic/
 glottodata <- glottoget(meta = TRUE)
 glottodist <- glottodist(glottodata = glottodata)
 
-# As we'vee seen above, in case you have glottodata without a structure table, you can add it:
+# As we've seen above, in case you have glottodata without a structure table, you can add it:
 glottodata <- glottoget(meta = FALSE)
 structure <- create_structuretable()
 glottodata <- glottodata_addtable(glottodata, structure, name = "structure")
@@ -259,13 +274,33 @@ glottoplot(glottodist)
 
 
 ### glottospace
-ff  
+This family of functions turns glottodata into a spatial object. As I've illustrated above, these can be either glottopoints or glottopols
+
+```{r glottospace}
+glottodata <- glottoget()
+glottospacedata <- glottospace(glottodata, method = "buffer", radius = 5)
+# By default, the projection of maps is equal area, and shape is not preserved:
+glottomap(glottospacedata)
+```
+
 
 ### geoget
-dd
+The geoget function supports both raster and vector formats. It either loads spatial data from a local path, or downloads is from a remote server.
 
+```{r geoget}
+climate <- geoget(download = "climate")[[12]]
+names(climate) <- "precipitation"
+geomap(climate)
+```
 ## geotools
-..
+This is a large family of functions to work with spatial data. Most of these however, will probably not be called directly by the users. I've already demonstrated the function geodataextract() which can be used to extract environmental data for languages. You can also use a buffer radius to extract environmental features and summarize them. Here, I'm using a buffer of 10 km and summarize by taking the mean. 
+
+```{r geotools}
+dutchies <- glottofilter(country = "Netherlands")
+climatedutchies <- extractgeodata(glottodata = dutchies, geodata = climate, radius = 10, fun = "mean")
+glottomap(climatedutchies, color = "precipitation_mean", ptsize = 1)
+```
+
 
 ### geodist
 geodistances: calculate distances between languages, nearest languages, etc.

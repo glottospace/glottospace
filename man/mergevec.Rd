@@ -26,6 +26,8 @@ Merge multiple shapefiles
 }
 \seealso{
 Other <geodata><geotools>: 
+\code{\link{extractgeodata}()},
+\code{\link{extractraster}()},
 \code{\link{rasterstack}()}
 }
 \concept{<geodata><geotools>}

@@ -2,7 +2,7 @@
 % Please edit documentation in R/glottomap.R
 \name{geomap}
 \alias{geomap}
-\title{plotgeodata}
+\title{Map environmental data}
 \usage{
 geomap(geodata)
 }
@@ -13,7 +13,7 @@ geomap(geodata)
 
 }
 \description{
-plotgeodata
+Map environmental data
 }
 \examples{
 nl <- get_geodata(download = "elevation", country = c("Netherlands"))

@@ -1,22 +1,39 @@
 
 #' Make glottodata spatial
 #'
-#' This function takes glottodata (either a table or list of tables) and turns it into spatial points or polygons.
+#' This function takes glottodata (either with or without metadata) and turns it into spatial points or polygons.
 #'
-#' @param glottodata A glottodata table, or list of glottodata tables
-#' @param glottospace By default, glottopoints are returned, glottopols are also supported.
+#' @param glottodata A glottodata table, or list of a glottodata table and metadata table(s)
+#' @param method In case output should be polygons, interpolation method, either "buffer" or "voronoi" (synonymous with "thiessen")
+#' @param radius In case interpolation method "buffer", the radius in km.
+#' @param country Optionally mask output by country boundaries
+#' @param continent Optionally mask output by continent boundaries
 #'
 #' @return
 #' @export
 #'
 #' @examples
 #' glottodata <- glottoget()
-#' glottodataspace <- glottospace(glottodata)
-glottospace <- function(glottodata, glottospace){
-  if(class(glottodata) == "data.frame"){
-    glottodataspace <- glottodata_makespatial(glottodata)
+#' glottospacedata <- glottospace(glottodata)
+#'
+glottospace <- function(glottodata, method = NULL, radius = NULL, country = NULL, continent = NULL){
+  if(!is_sf(glottodata)){
+    #   if(glottocheck_hasmeta(glottodata) ){
+    # glottometa <- glottodata[-1]
+    # glottodata <- glottodata[[1]]
+    # hasmeta <- TRUE
+    #   }
+    glottodata <- glottodata_makespatial(glottodata)
   }
-  glottodataspace
+
+  if(any( c(!is.null(method), !is.null(radius), !is.null(country), !is.null(continent) ) ) ){
+    glottodata <- points2pols(glottopoints = glottodata, method = method, radius = radius, country = country, continent = continent)
+  }
+
+  # if(hasmeta){
+  #   glottodata <- join_glottometa(glottodata = glottodata, glottometa = glottometa)
+  # }
+return(glottodata)
 }
 
 #' Convert glottopoints to polygons
@@ -36,7 +53,8 @@ glottospace <- function(glottodata, glottospace){
 #'
 #' pols <- points2pols(glottopoints = gbsa, method = "thiessen", continent = "South America")
 #' plot(pols[,"family_size"])
-points2pols <- function(glottopoints, method = "buffer", radius = NULL, country = NULL, continent = NULL){
+points2pols <- function(glottopoints, method = NULL, radius = NULL, country = NULL, continent = NULL){
+  if(is.null(method)){method <- "buffer"}
   # FIXME: area of buffers is not equal!
   # sf::st_area(glottodata)
   glottopoints <- contransform_lonlat(glottopoints)
@@ -44,9 +62,10 @@ points2pols <- function(glottopoints, method = "buffer", radius = NULL, country 
   epsg_utm <- lonlat2utm(sf::st_coordinates(glottopoints))
   pts <- sf::st_transform(glottopoints, sf::st_crs(epsg_utm))
   if(method == "buffer"){
+    message(paste0('Buffer created with a radius of ', radius, ' km.'))
     radius <- radius*1000 # convert km to meters because unit of st_buffer should be meters (crs is transformed to utm, in case lon/lat it would have been degrees.).
     pols <- sf::st_buffer(x = pts, dist = radius)
-    message(paste0('Buffer created with a radius of ', radius, ' km.'))
+
   }
   if(method == "voronoi" | method == "thiessen"){
     # Interpolate categorical data (e.g. family)

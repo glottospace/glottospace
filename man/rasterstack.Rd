@@ -28,6 +28,8 @@ newnames <- paste0("bio", sprintf("\%02d", seq(1,19)))
 }
 \seealso{
 Other <geodata><geotools>: 
+\code{\link{extractgeodata}()},
+\code{\link{extractraster}()},
 \code{\link{mergevec}()}
 }
 \concept{<geodata><geotools>}
