@@ -13,11 +13,11 @@
 #' @seealso get_glottodata
 #' @examples
 #'
-#' glottodata <- get_glottodata(meta = FALSE)
+#' glottodata <- glottoget(meta = FALSE)
 #' Saves as .xlsx
 #' glottosave(glottodata, filename = "glottodata")
 #'
-#' glottodata <- glottodata_makespatial(glottodata)
+#' glottospacedata <- glottospace(glottodata)
 #' Saves as .GPKG
 #' glottosave(glottodata, filename = "glottodata")
 #'

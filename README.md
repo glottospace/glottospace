@@ -66,73 +66,58 @@ add some contextual information.
 
 ``` r
 # Search languages:
-glottosearch(find = "Dutsch")
-#> Simple feature collection with 6 features and 14 fields
+glottosearch(find = "chicom")
+#> Simple feature collection with 1 feature and 14 fields
 #> Geometry type: POINT
 #> Dimension:     XY
-#> Bounding box:  xmin: -58.5626 ymin: -4.19566 xmax: 152.183 ymax: 52.16
+#> Bounding box:  xmin: -91.2869 ymin: 15.6078 xmax: -91.2869 ymax: 15.6078
 #> Geodetic CRS:  WGS 84
-#>      glottocode family_id parent_id                   name isocode
-#> 763    berb1259  indo1319  zeeu1239   Berbice Creole Dutch     brc
-#> 1681   dutc1256  indo1319  glob1241                  Dutch     nld
-#> 4263   midd1321  indo1319  midd1347           Middle Dutch     dum
-#> 5155   oldd1237  indo1319  macr1270 Old Dutch-Old Frankish     odt
-#> 6163   skep1238  indo1319  zeeu1239     Skepi Creole Dutch     skw
-#> 7044   unse1236  indo1319  glob1243           Unserdeutsch     uln
-#>      child_dialect_count                      country_ids   family_name isolate
-#> 763                    0                               GY Indo-European   FALSE
-#> 1681                  12 AW BE BQ BR CW DE GF GY NL SR SX Indo-European   FALSE
-#> 4263                   0                               NL Indo-European   FALSE
-#> 5155                   2                               NL Indo-European   FALSE
-#> 6163                   0                               GY Indo-European   FALSE
-#> 7044                   0                            AU PG Indo-European   FALSE
-#>      family_size family_size_rank     country     continent         region
-#> 763          583               55      Guyana South America  South America
-#> 1681         583               55 Netherlands        Europe Western Europe
-#> 4263         583               55 Netherlands        Europe Western Europe
-#> 5155         583               55 Netherlands        Europe Western Europe
-#> 6163         583               55      Guyana South America  South America
-#> 7044         583               55        <NA>          <NA>           <NA>
-#>                      geometry
-#> 763   POINT (-58.0002 5.3829)
-#> 1681             POINT (5 52)
-#> 4263      POINT (5.34 51.656)
-#> 5155        POINT (5.2 52.16)
-#> 6163 POINT (-58.5626 6.05191)
-#> 7044 POINT (152.183 -4.19566)
+#>      glottocode family_id parent_id          name isocode child_dialect_count
+#> 1269   chic1271  maya1287  huas1241 Chicomuceltec     cob                   0
+#>      country_ids family_name isolate family_size family_size_rank   country
+#> 1269       GT MX       Mayan   FALSE          33               26 Guatemala
+#>          continent          region                 geometry
+#> 1269 North America Central America POINT (-91.2869 15.6078)
 ```
 
-There are 6 glots that resemble our search term. Let’s check on
-[glottolog](https://glottolog.org/) if Dutch is the language we’re
+There are 6 languages that resemble our search term. Let’s check on
+[glottolog](https://glottolog.org/) if Shuar is the language we’re
 looking for.
 
 ``` r
-glottocode_online("dutc1256")
+glottocode_online("shua1257")
 ```
 
-Yes, that’s the one. Let’s check where Dutch is located in comparison to
-other languages in the Netherlands.
+Yes, that’s the one. Let’s check where Shuar is located in comparison to
+other languages in Peru.
 
 ``` r
-dutchies <- glottofilter(country = "Netherlands")
+peruvians <- glottofilter(country = "Peru")
 ```
 
 Get and extract environmental data.
 
 ``` r
-elevation <- get_geodata(download = "elevation", country = "Netherlands")
+elevation <- get_geodata(download = "elevation", country = "Peru")
 #> Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO", prefer_proj
 #> = prefer_proj): Discarded datum Unknown based on WGS84 ellipsoid in Proj4
 #> definition
-elevdutchies <- extractgeodata(glottodata = dutchies, geodata = elevation)
+# Let's make a map:
+geomap(elevation)
+```
+
+<img src="man/figures/README-example_extractgeodata-1.png" width="100%" />
+
+``` r
+# Extract elevation for each language
+elevperuvians <- extractgeodata(glottodata = peruvians, geodata = elevation)
 #> geodata extracted
 ```
 
 Let’s plot the elevation of the Dutchies:
 
 ``` r
-glottomap(glottodata = elevdutchies, color = "elevation", label = "name", ptsize = 0.85)
-#> Variable(s) "elevation" contains positive and negative values, so midpoint is set to 0. Set midpoint = NA to show the full spectrum of the color palette.
+glottomap(glottodata = elevperuvians, color = "elevation", ptsize = 0.85)
 ```
 
 <img src="man/figures/README-example_mapgeodata-1.png" width="100%" />
@@ -349,6 +334,20 @@ As demonstrated in the example above, you can search glottodata for a
 specific search term
 
 ``` r
+# You can search for a match in all columns:
+glottosearch(find = "yurakar")
+#> Simple feature collection with 1 feature and 14 fields
+#> Geometry type: POINT
+#> Dimension:     XY
+#> Bounding box:  xmin: -65.1224 ymin: -16.7479 xmax: -65.1224 ymax: -16.7479
+#> Geodetic CRS:  WGS 84
+#>      glottocode family_id parent_id     name isocode child_dialect_count
+#> 7701   yura1255  yura1255           Yuracaré     yuz                   2
+#>      country_ids family_name isolate family_size family_size_rank country
+#> 7701          BO    Yuracaré    TRUE           1                1 Bolivia
+#>          continent        region                  geometry
+#> 7701 South America South America POINT (-65.1224 -16.7479)
+# Or limit the search to specific columns:
 glottosearch(find = "Yucuni", columns = c("name", "family_name"))
 #> Simple feature collection with 2 features and 14 fields
 #> Geometry type: POINT
@@ -367,6 +366,80 @@ glottosearch(find = "Yucuni", columns = c("name", "family_name"))
 #>                        geometry
 #> 7687  POINT (-71.0033 -0.76075)
 #> 7688 POINT (-97.91818 17.23743)
+# If you can't find what you're looking for, you can increase the tolerance:
+glottosearch(find = "matsigenka")
+#> Simple feature collection with 0 features and 14 fields
+#> Bounding box:  xmin: NA ymin: NA xmax: NA ymax: NA
+#> Geodetic CRS:  WGS 84
+#>  [1] glottocode          family_id           parent_id          
+#>  [4] name                isocode             child_dialect_count
+#>  [7] country_ids         family_name         isolate            
+#> [10] family_size         family_size_rank    country            
+#> [13] continent           region              geometry           
+#> <0 rows> (or 0-length row.names)
+glottosearch(find = "matsigenka", tolerance = 0.2)
+#> Simple feature collection with 1 feature and 14 fields
+#> Geometry type: POINT
+#> Dimension:     XY
+#> Bounding box:  xmin: -74.4371 ymin: -11.5349 xmax: -74.4371 ymax: -11.5349
+#> Geodetic CRS:  WGS 84
+#>      glottocode family_id parent_id          name isocode child_dialect_count
+#> 4862   noma1263  araw1281  prea1240 Nomatsiguenga     not                   0
+#>      country_ids family_name isolate family_size family_size_rank country
+#> 4862          PE    Arawakan   FALSE          77               42    Peru
+#>          continent        region                  geometry
+#> 4862 South America South America POINT (-74.4371 -11.5349)
+glottosearch(find = "matsigenka", tolerance = 0.4) # Aha! There it is: 'Machiguenga'
+#> Simple feature collection with 12 features and 14 fields
+#> Geometry type: POINT
+#> Dimension:     XY
+#> Bounding box:  xmin: -74.4371 ymin: -14.9959 xmax: 166.738 ymax: 13.5677
+#> Geodetic CRS:  WGS 84
+#> First 10 features:
+#>      glottocode family_id parent_id               name isocode
+#> 1735   east2426  mand1469  mane1267 Eastern Maninkakan     emk
+#> 3121   kita1249  mand1469  kita1248    Kita Maninkakan     mwk
+#> 3205   kony1250  mand1469  mane1267   Konyanka Maninka     mku
+#> 3791   maas1239  atla1278  fula1264   Maasina Fulfulde     ffm
+#> 3808   mach1267  araw1281  mats1245        Machiguenga     mcb
+#> 3964   mand1436  mand1469  west2499           Mandinka     mnk
+#> 4000   mans1259  atla1278  atla1278          Mansoanka     msw
+#> 4106   mati1250  aust1307  cent2088  Matigsalug Manobo     mbt
+#> 4862   noma1263  araw1281  prea1240      Nomatsiguenga     not
+#> 5462   piam1242  aust1307  nort3217         Piamatsina     ptr
+#>      child_dialect_count       country_ids    family_name isolate family_size
+#> 1735                   4    CI GN LR ML SL          Mande   FALSE          75
+#> 3121                   1             GN ML          Mande   FALSE          75
+#> 3205                   0          CI GN LR          Mande   FALSE          75
+#> 3791                   2 BF CI GH ML MR NE Atlantic-Congo   FALSE        1403
+#> 3808                   0                PE       Arawakan   FALSE          77
+#> 3964                   0       GM GN GW SN          Mande   FALSE          75
+#> 4000                   0             GM GW Atlantic-Congo   FALSE        1403
+#> 4106                   4                PH   Austronesian   FALSE        1274
+#> 4862                   0                PE       Arawakan   FALSE          77
+#> 5462                   0                VU   Austronesian   FALSE        1274
+#>      family_size_rank      country     continent             region
+#> 1735               41       Guinea        Africa     Western Africa
+#> 3121               41         Mali        Africa     Western Africa
+#> 3205               41       Guinea        Africa     Western Africa
+#> 3791               57 Burkina Faso        Africa     Western Africa
+#> 3808               42         Peru South America      South America
+#> 3964               41      Senegal        Africa     Western Africa
+#> 4000               57      Senegal        Africa     Western Africa
+#> 4106               56  Philippines          Asia South-Eastern Asia
+#> 4862               42         Peru South America      South America
+#> 5462               56      Vanuatu       Oceania          Melanesia
+#>                        geometry
+#> 1735   POINT (-10.5394 9.33048)
+#> 3121   POINT (-9.49151 13.1798)
+#> 3205   POINT (-8.89972 8.04788)
+#> 3791   POINT (-3.64763 11.1324)
+#> 3808  POINT (-72.5017 -12.1291)
+#> 3964 POINT (-15.65395 12.81652)
+#> 4000   POINT (-15.9202 12.8218)
+#> 4106     POINT (125.16 7.72124)
+#> 4862  POINT (-74.4371 -11.5349)
+#> 5462   POINT (166.738 -14.9959)
 ```
 
 ### glottofilter
@@ -410,6 +483,20 @@ glottodata <- glottodata_addtable(glottodata, structure, name = "structure")
 Visualizing differences (distances) between languages based on
 linguistic, cultural, and environmental features.
 
+``` r
+glottodata <- glottoget(meta = TRUE)
+glottodist <- glottodist(glottodata = glottodata)
+#> Warning in cluster::daisy(x = glottodata, metric = "gower", type = list(symm =
+#> symm, : at least one binary variable has not 2 different levels.
+#> Warning in min(x): no non-missing arguments to min; returning Inf
+#> Warning in max(x): no non-missing arguments to max; returning -Inf
+#> Warning in min(x): no non-missing arguments to min; returning Inf
+#> Warning in max(x): no non-missing arguments to max; returning -Inf
+glottoplot(glottodist)
+```
+
+<img src="man/figures/README-glottoplot-1.png" width="100%" />
+
 ### glottospace
 
 ff
@@ -437,10 +524,56 @@ geodist(points = glottodataspace)
 
 ### glottomap
 
-Visualizing linguistic and cultural data on a map
+With glottomap you can quickly visualize the location of languages.
+Below I show simple static maps, but you can also create dynamic maps by
+specifying type = “dynamic”.
+
+You can pass arguments directly to glottofilter
+
+``` r
+glottomap(country = "Colombia")
+```
+
+<img src="man/figures/README-glottomap-1.png" width="100%" />
+
+However, you can also create maps with other glottodata. For example, we
+might want to create a worldmap highlighting the largest language
+families
+
+``` r
+glottodata <- glottogetbase()
+families <- glottodata %>% dplyr::count(family_name, sort = TRUE)
+
+# highlight 10 largest families:
+glottodata <- glottospotlight(glottodata = glottodata, spotcol = "family_name", spotlight = families$family_name[1:10], spotcontrast = "family_name", bgcontrast = "family_name")
+
+# Create map
+glottomap(glottodata, color = "color")
+```
+
+<img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
 
 ### glottosave
 
-Save output generated by glottospace (data, figures, maps, etc.). Output
-that has been exported from the glottospace package can be read from
-other software package, or loaded again with getglottodata.
+All output generated with the glottospace package (data, figures, maps,
+etc.) can be saved with a single command.
+
+``` r
+glottodata <- glottoget(meta = FALSE)
+# Saves as .xlsx
+glottosave(glottodata, filename = "glottodata")
+#> Data.frame saved as glottodata.xlsx
+
+glottospacedata <- glottospace(glottodata)
+# Saves as .GPKG
+glottosave(glottodata, filename = "glottodata")
+#> Data.frame saved as glottodata.xlsx
+
+glottomap <- glottomap(glottodata)
+# By default, static maps are saved as .png, dynamic maps are saved as .html
+glottosave(glottomap, filename = "glottomap")
+#> Map saved to C:\Users\sjnor\surfdrive\PROJECTS_SN\SAPPHIRE\R\glottospace\glottomap.png
+#> Resolution: 3373.408 by 1307.283 pixels
+#> Size: 11.24469 by 4.357611 inches (300 dpi)
+#> Map (tmap object) saved as glottomap.png
+```

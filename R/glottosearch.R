@@ -4,6 +4,7 @@
 #' @param find Character string to search for, this can be the name of a language, a family, a dialect, a glottocode, isocode.
 #' @param partialmatch By default, partial matches will be returned as well. In case you only want exact matches, this argument should be set to FALSE.
 #' @param columns By default, the entire dataset is searched, but optionally the search can be limited to specific columns.
+#' @param tolerance In case partialmatch is TRUE: what is the maximum difference between search term and match? Default is 0.1
 #'
 #' @return
 #' @export
@@ -12,13 +13,14 @@
 #' glottosearch(find = "Yucuni")
 #' glottosearch(find = "Yucuni", columns = "name")
 #' glottosearch(find = "Yucuni", columns = c("name", "family_name"))
-glottosearch <- function(glottodata = NULL, find, partialmatch = TRUE, columns = NULL){
+glottosearch <- function(glottodata = NULL, find, partialmatch = TRUE, columns = NULL, tolerance = NULL){
+  if(is.null(tolerance)){tolerance <- 0.1}
 
  if(is.null(glottodata) ){glottodata <- get_glottobase()}
   if(missing(find)){stop("No search term provided, please indicate what you want to search for.")}
   if(length(find) > 1){stop("More than one search term provided, please provide a single term.",
                             call. = FALSE)}
-  ifelse(partialmatch == TRUE, ldist <- 0.1, ldist <- 0)
+  ifelse(partialmatch == TRUE, ldist <- tolerance, ldist <- 0)
 
   if(is.null(columns)){
     glottodata_sel <- glottodata

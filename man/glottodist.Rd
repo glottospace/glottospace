@@ -4,25 +4,12 @@
 \alias{glottodist}
 \title{Calculate distances between languages}
 \usage{
-glottodist(
-  glottodata,
-  types = NULL,
-  levels = NULL,
-  weights = NULL,
-  structure = NULL
-)
+glottodist(glottodata, structure = NULL)
 }
 \arguments{
-\item{types}{Character vector with the same length as the number of columns specifying the type of each column}
+\item{glottodata}{A glottodata table, or a list with a glottodata table and a structure table.}
 
-\item{levels}{Character vector with the same length as the number of columns specifying the levels of each column}
-
-\item{weights}{Character vector with the same length as the number of columns specifying the weight of each column}
-
-\item{structure}{Data frame specifying per column in the data (optional): types, levels weights. Columns should be named as follows: colnames, type, weight.}
-
-\item{data}{Data frame. Rows can either be glots, or subglots (lower-level aspects of a language, e.g. constructions).
-Columns contain the variables based on which distances are calculated.}
+\item{structure}{If glottodata is a table without metadata, a structure table should be provided. You can create it with create_structuretable() and add it with glottodata_addtable()}
 }
 \value{
 object of class \code{dist}

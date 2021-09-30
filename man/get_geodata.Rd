@@ -31,7 +31,6 @@ Other <geodata>:
 \code{\link{extractgeodata}()},
 \code{\link{extractraster}()},
 \code{\link{get_geodata_download}()},
-\code{\link{get_geodata_path}()},
-\code{\link{glottomap_geodata}()}
+\code{\link{get_geodata_path}()}
 }
 \concept{<geodata>}

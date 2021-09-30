@@ -155,7 +155,7 @@ glottolog_download <- function(){
   url <- paste0(base_url, filename)
   if(!base::file.exists(filename)){
     utils::download.file(url = url, destfile = filename)}
-  data <- utils::read.csv(unz(filename, "languoid.csv"), header = TRUE)
+  data <- utils::read.csv(unz(filename, "languoid.csv"), header = TRUE, encoding = "UTF-8")
 }
 
 

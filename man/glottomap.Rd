@@ -11,11 +11,12 @@ glottomap(
   type = NULL,
   ptsize = NULL,
   transparency = NULL,
+  lbsize = NULL,
   ...
 )
 }
 \arguments{
-\item{glottodata}{Optional, user-provided glottodata. In case no glottodata is provided, you can specify pass arguments directly to glottofilter.}
+\item{glottodata}{Optional, user-provided glottodata. In case no glottodata is provided, you can pass arguments directly to glottofilter.}
 
 \item{color}{column name or index to be used to color features (optional)}
 
@@ -27,6 +28,8 @@ glottomap(
 \item{ptsize}{Size of points between 0 and 1}
 
 \item{transparency}{Transparency of points between 0 (very transparent) and 1 (not transparent)}
+
+\item{lbsize}{Size of labels between 0 and 1}
 
 \item{...}{Arguments to pass to glottofilter in case glottodata is empty}
 }
@@ -43,7 +46,7 @@ glottopoints <- glottofilter(continent = "South America")
 glottopols <- points2pols(glottopoints, method = "voronoi", continent = "South America")
 glottomap(glottodata = glottopols, color = "family_size_rank")
 
-glottodata <- get_glottobase()
+glottodata <- glottogetbase()
 families <- glottodata \%>\% dplyr::count(family_name, sort = TRUE)
 
 # highlight 10 largest families:
@@ -55,3 +58,7 @@ glottodata <- glottospotlight(glottodata = glottodata, spotcol =
 "family_name", spotlight = families$family_name[-c(1:10)], spotcontrast = "family_name", bgcontrast = "family_name")
 glottomap(glottodata, color = "color")
 }
+\seealso{
+geomap
+}
+\concept{<glottomap>}

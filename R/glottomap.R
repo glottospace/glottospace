@@ -3,15 +3,17 @@
 #'
 #' Create dynamic, static and interactive maps from glottodata
 #'
-#' @param glottodata Optional, user-provided glottodata. In case no glottodata is provided, you can specify pass arguments directly to glottofilter.
+#' @param glottodata Optional, user-provided glottodata. In case no glottodata is provided, you can pass arguments directly to glottofilter.
 #' @param color column name or index to be used to color features (optional)
 #' @param label Column name or index to be used to label features (optional)
 #' @param type One of: "static", "dynamic", or "interactive". Defaults to
 #'   "static" if nothing is provided.
 #' @param ptsize Size of points between 0 and 1
+#' @param lbsize Size of labels between 0 and 1
 #' @param transparency Transparency of points between 0 (very transparent) and 1 (not transparent)
 #' @param ... Arguments to pass to glottofilter in case glottodata is empty
-#'
+#' @family <glottomap>
+#' @seealso geomap
 #' @return
 #' @export
 #'
@@ -22,7 +24,7 @@
 #' glottopols <- points2pols(glottopoints, method = "voronoi", continent = "South America")
 #' glottomap(glottodata = glottopols, color = "family_size_rank")
 #'
-#' glottodata <- get_glottobase()
+#' glottodata <- glottogetbase()
 #' families <- glottodata %>% dplyr::count(family_name, sort = TRUE)
 #'
 #' # highlight 10 largest families:
@@ -33,9 +35,10 @@
 #' glottodata <- glottospotlight(glottodata = glottodata, spotcol =
 #' "family_name", spotlight = families$family_name[-c(1:10)], spotcontrast = "family_name", bgcontrast = "family_name")
 #' glottomap(glottodata, color = "color")
-glottomap <- function(glottodata = NULL, color = NULL, label = NULL, type = NULL, ptsize = NULL, transparency = NULL, ...){
+glottomap <- function(glottodata = NULL, color = NULL, label = NULL, type = NULL, ptsize = NULL, transparency = NULL, lbsize = NULL, ...){
   if(is.null(glottodata)){glottodata <- glottofilter(...)}
   if(is.null(ptsize)){ptsize <- 0.35}
+  if(is.null(lbsize)){lbsize <- 0.75}
   if(is.null(transparency)){transparency <- 0.65}
   if(!is_sf(glottodata) ) {glottodata <- join_glottospace(glottodata)}
 
@@ -88,6 +91,7 @@ glottomap_dynamic <- function(glottodata, label, color, ptsize, transparency){
 #' @param color column name or index to be used to color features (optional), or a color "black"
 #' @param label Column name or index to be used to label features (optional)
 #' @param ptsize Point size between 0 and 1
+#' @param lbsize Label size between 0 an 1
 #'
 #' @return
 #' @keywords internal
@@ -97,7 +101,7 @@ glottomap_dynamic <- function(glottodata, label, color, ptsize, transparency){
 #' glottodata <- glottofilter(continent = "South America")
 #' glottodata <- glottofilter(country = "Netherlands")
 #' glottomap_static(glottodata)
-glottomap_static <- function(glottodata, label, color, ptsize, transparency){
+glottomap_static <- function(glottodata, label, color, ptsize, lbsize, transparency){
   suppressMessages(tmap::tmap_mode("plot"))
 
   basemap <- rnaturalearth::ne_countries(scale = 50, returnclass = "sf")
@@ -119,25 +123,25 @@ glottomap_static <- function(glottodata, label, color, ptsize, transparency){
     {if(is_point(glottodata))
       tmap::tm_shape(glottodata) +
         tmap::tm_symbols(col = color, scale = ptsize, alpha = transparency) } +
-    {if(!purrr::is_empty(label)) tmap::tm_text(text = label, size = 0.75, auto.placement = TRUE)} +
+    {if(!purrr::is_empty(label)) tmap::tm_text(text = label, size = lbsize, auto.placement = TRUE)} +
     tmap::tm_legend(legend.outside = TRUE) + tmap::tm_layout(bg.color = "grey85", inner.margins = c(0,0,0,0))
 }
 
 
 
-#' plotgeodata
+#' Map environmental data
 #'
 #' @param geodata
 #'
 #' @return
 #' @keywords internal
 #' @export
-#' @family <geodata>
+#' @family <geodata><glottomap><geotools>
 #'
 #' @examples
 #' nl <- get_geodata(download = "elevation", country = c("Netherlands"))
 #' plotgeodata(nl)
-glottomap_geodata <- function(geodata){
+geomap <- function(geodata){
   if(is_raster(geodata) ){
     raster::plot(geodata)
   }

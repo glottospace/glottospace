@@ -4,7 +4,13 @@
 \alias{glottosearch}
 \title{Search within glottodata for languages, glottocodes, etc.}
 \usage{
-glottosearch(glottodata = NULL, find, partialmatch = TRUE, columns = NULL)
+glottosearch(
+  glottodata = NULL,
+  find,
+  partialmatch = TRUE,
+  columns = NULL,
+  tolerance = NULL
+)
 }
 \arguments{
 \item{glottodata}{Any linguistic or cultural dataset. Default is to search within glottolog.}
@@ -14,6 +20,8 @@ glottosearch(glottodata = NULL, find, partialmatch = TRUE, columns = NULL)
 \item{partialmatch}{By default, partial matches will be returned as well. In case you only want exact matches, this argument should be set to FALSE.}
 
 \item{columns}{By default, the entire dataset is searched, but optionally the search can be limited to specific columns.}
+
+\item{tolerance}{In case partialmatch is TRUE: what is the maximum difference between search term and match? Default is 0.1}
 }
 \value{
 

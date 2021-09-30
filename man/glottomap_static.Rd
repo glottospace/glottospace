@@ -4,7 +4,7 @@
 \alias{glottomap_static}
 \title{Create a static map with glottodata}
 \usage{
-glottomap_static(glottodata, label, color, ptsize, transparency)
+glottomap_static(glottodata, label, color, ptsize, lbsize, transparency)
 }
 \arguments{
 \item{glottodata}{User-provided glottodata (either glottopoints or glottopols)}
@@ -14,6 +14,8 @@ glottomap_static(glottodata, label, color, ptsize, transparency)
 \item{color}{column name or index to be used to color features (optional), or a color "black"}
 
 \item{ptsize}{Point size between 0 and 1}
+
+\item{lbsize}{Label size between 0 an 1}
 }
 \value{
 

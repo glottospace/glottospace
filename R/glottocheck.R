@@ -121,6 +121,7 @@ checkmetadata <- function(glottodata){
 #' @aliases checkmetadata_hasstructure
 #' @family <glottocheck>
 #' @examples
+#' glottocheck_hasmeta(glottodata)
 glottocheck_hasmeta <- checkmetadata_hasstructure <- function(glottodata){
   is_list(glottodata) & any(names(glottodata) %in% "structure")
 }

@@ -4,12 +4,8 @@
 
 #' Calculate distances between languages
 #'
-#' @param data Data frame. Rows can either be glots, or subglots (lower-level aspects of a language, e.g. constructions).
-#' Columns contain the variables based on which distances are calculated.
-#' @param types Character vector with the same length as the number of columns specifying the type of each column
-#' @param levels Character vector with the same length as the number of columns specifying the levels of each column
-#' @param weights Character vector with the same length as the number of columns specifying the weight of each column
-#' @param structure Data frame specifying per column in the data (optional): types, levels weights. Columns should be named as follows: colnames, type, weight.
+#' @param glottodata A glottodata table, or a list with a glottodata table and a structure table.
+#' @param structure If glottodata is a table without metadata, a structure table should be provided. You can create it with create_structuretable() and add it with glottodata_addtable()
 #'
 #' @return object of class \code{dist}
 #' @export
@@ -17,38 +13,49 @@
 #' @examples
 #' glottodata <- glottoget(meta = TRUE)
 #' glottodist <- glottodist(glottodata = glottodata)
-glottodist <- function(glottodata, types = NULL, levels = NULL, weights = NULL, structure = NULL){
+glottodist <- function(glottodata, structure = NULL){
   if(glottocheck_hasmeta(glottodata) & is.null(structure)){
     structure <- glottodata[["structure"]]
     glottodata <- glottodata[["glottodata"]]
   }
 
+  # glottodata:
   glottodata <- tibble::column_to_rownames(glottodata, "glottocode")
 
-  # Specify column types and levels
-  if(!is.null(structure)){
-    # structure <- suppressMessages(dplyr::left_join(data.frame("colnames" = colnames(glottodata)), structure))
-    if(is.null(types)){types <- structure$type}
-    if(is.null(levels)){levels <- structure$levels}
-    if(is.null(weights)){
-      if(is.null(structure$weight)){weights <- rep(1, ncol(structure))}
-      if(!is.null(structure$weight)){weights <- structure$weight}
-    }
+  # structure:
+  if(!("varname" %in% colnames(structure) ) ){
+    colnames(structure)[1] <- "varname"
+    message("The structure table does not contain a 'varname' column, trying with the first column instead.")
+  }
+  # glottodata <-  glottodata[, (colnames(glottodata) %in% structure$varname)]
+
+  structure <- suppressMessages(dplyr::left_join(data.frame("varname" = colnames(glottodata)), structure))
+
+  # type
+  if(!("type" %in% colnames(structure) ) ){
+    stop('No type column found in structure. Please add a type column.')
   }
 
-  if(!is.null(types)){
-    symm <- which(types == "symm")
-    asymm <- which(types == "asymm")
-    numer <- which(types == "numeric")
-    fact <- which(types == "factor")
-    ordfact <- which(types == "ordered")
-    ordratio <- which(types == "ordratio")
-    logratio <- which(types == "logratio")
-  } else{message('No type column found in structure. Please add a column labelled type.')}
+  dropvars <- which(structure$type %nin% create_lookuptable()$type_lookup )
+  if(!purrr::is_empty(dropvars)){
+    dropvarnames <- paste0(colnames(glottodata[,dropvars]), collapse = ",")
+    message(paste0("The following variables are ignored in distance calculation (their type is not one of the pre-specified types): \n", dropvarnames))
+    glottodata <- glottodata[,-dropvars]
+    structure <- structure[-dropvars, ]
+  }
 
-  # TODO: Check whether pre-specified levels match existing levels
+  symm <- which(structure$type == "symm")
+  asymm <- which(structure$type == "asymm")
+  numer <- which(structure$type == "numeric")
+  fact <- which(structure$type == "factor")
+  ordfact <- which(structure$type == "ordered")
+  ordratio <- which(structure$type == "ordratio")
+  logratio <- which(structure$type == "logratio")
 
-  # set types
+  # levels
+  levels <- structure$levels
+
+  # set type
   cbinary <- c(symm, asymm)
   glottodata[cbinary] <- lapply(glottodata[cbinary], as.logical)
   glottodata[numer] <- lapply(glottodata[numer], as.numeric)
@@ -57,7 +64,19 @@ glottodist <- function(glottodata, types = NULL, levels = NULL, weights = NULL, 
   glottodata[ordratio] <- lapply(glottodata[ordratio], as.numeric)
   glottodata[logratio] <- lapply(glottodata[logratio], as.numeric)
 
-  dist <- cluster::daisy(x = glottodata, metric = "gower",
+
+
+  # weights
+  if(all(is.na(structure$weight))){
+        weights <- rep(1, nrow(structure))
+        message('All weights are NA. Default is to weight all variables equally: all weights set to 1')
+  } else{
+  weights <- structure$weight
+  }
+
+
+
+  cluster::daisy(x = glottodata, metric = "gower",
                          type = list(symm = symm, asymm = asymm, ordratio = ordratio, logratio = logratio),
                          weights = weights)
 }

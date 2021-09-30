@@ -1,0 +1,27 @@
+[general] 
+creator=R package 'raster' 
+created= 2011-11-12 14:51:06 
+[georeference] 
+nrows= 2232 
+ncols= 1536 
+xmin= -81.4 
+ymin= -18.5 
+xmax= -68.6 
+ymax= 0.1 
+projection= +proj=longlat +ellps=WGS84 
+[data] 
+datatype= INT2S 
+byteorder= little 
+nbands= 1 
+bandorder= BIL 
+categorical= FALSE 
+minvalue= -281 
+maxvalue= 6543 
+nodatavalue= -9999 
+[legend] 
+legendtype=  
+values=  
+color=  
+[description] 
+layername= PER_msk_alt 
+history=  

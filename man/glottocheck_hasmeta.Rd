@@ -16,6 +16,9 @@ glottocheck_hasmeta(glottodata)
 \description{
 In fact, this function only checks whether glottodata contains a structure table, because the structure table is the only table that is required by some glottospace functions. All other tables are for humans, not computers;-).
 }
+\examples{
+glottocheck_hasmeta(glottodata)
+}
 \seealso{
 Other <glottocheck>: 
 \code{\link{checkglottodata}()},

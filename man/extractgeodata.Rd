@@ -52,7 +52,6 @@ Other <geodata>:
 \code{\link{extractraster}()},
 \code{\link{get_geodata_download}()},
 \code{\link{get_geodata_path}()},
-\code{\link{get_geodata}()},
-\code{\link{glottomap_geodata}()}
+\code{\link{get_geodata}()}
 }
 \concept{<geodata>}

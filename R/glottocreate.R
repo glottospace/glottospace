@@ -269,6 +269,8 @@ createdummysubdata <- function(){
 #' @export
 #'
 #' @examples
+#' structuretable <- create_structuretable()
+#' glottodata_addtable(glottodata, table = structuretable, name = "structure")
 glottodata_addtable <- function(glottodata, table, name){
   if(is_list(table) & length(table) != 1){stop("Please provide either a data.frame or a list of 1 data.frame")}
 

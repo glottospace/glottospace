@@ -1,9 +1,3 @@
-# > dist <- pointdist_bird(glottodata, "glottocode")
-# > pointdist_bird(dist)
-# Error in if (!sf::st_is_longlat(data)) { :
-#     missing value where TRUE/FALSE needed
-# Probably in contransform_lonlat
-
 #' Pairwise distances between spatial objects
 #'
 #' This function calculates pairwise distances between many points, and distances between many points and many lines.

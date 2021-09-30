@@ -44,7 +44,7 @@
 # TODO: make more tolerant: if no country/continent/region found, message did you mean: country?
 # make sure that's not case-senisitive 'Europe' vs. 'europe'
 # TODO: glottofilter: Make more flexible country or continent, if user specifies country = "South America" this should also work.
-
+# FIXME: error with expression
 
 
 # glottosearch ------------------------------------------------------------
@@ -88,9 +88,6 @@
 # TODO: add a logo: https://rdrr.io/github/r-lib/usethis/man/use_logo.html
 # TODO: argument matching of functions (indicate choices): https://cran.r-project.org/web/packages/strex/vignettes/argument-matching.html
 # TODO: normalize path. Change backward slashes to forward slashes, make platform independent.
-
-
-
 
 # optional extensions ---------------------------------------------------
 # circles function from dismo package (similar to buffer, but overlapping and raster output)
