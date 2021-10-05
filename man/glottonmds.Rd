@@ -20,7 +20,7 @@ glottonmds(dist, k = 2, rm.na = FALSE)
 Nonmetric Multidimensional Scaling
 }
 \examples{
-glottodata <- get_glottodata()
+glottodata <- glottoget_glottodata()
 dist <- glottodist(glottodata = glottodata, structure = structure)
 nmds <- glottonmds(dist = dist, k = 2)
 }

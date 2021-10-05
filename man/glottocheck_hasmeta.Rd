@@ -2,7 +2,7 @@
 % Please edit documentation in R/glottocheck.R
 \name{glottocheck_hasmeta}
 \alias{glottocheck_hasmeta}
-\alias{checkmetadata_hasstructure}
+\alias{glottocheck_hasstructure}
 \title{Check whether glottodata contains metadata}
 \usage{
 glottocheck_hasmeta(glottodata)
@@ -21,8 +21,8 @@ glottocheck_hasmeta(glottodata)
 }
 \seealso{
 Other <glottocheck>: 
-\code{\link{checkglottodata}()},
-\code{\link{checkglottosubdata}()},
+\code{\link{glottocheck_data}()},
+\code{\link{glottocheck_subdata}()},
 \code{\link{glottocheck}()}
 }
 \concept{<glottocheck>}

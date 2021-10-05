@@ -1,28 +1,29 @@
 #' Get geographic data
 #'
-#' Load spatial data either from local path (supports both raster and vector formats), or download from remote server.
-#' @param path Path to geodata
-#' @param download Name of geodata to download (wrapper around raster::getData). Currently, the following are supported: "elevation" and "climate"
-#' @aliases geoget
+#' Load spatial data either from local path (supports both raster and vector
+#' formats), or download from remote server.
+#' @param geodata Either a filepath to locally stored geodata, or the name of
+#'   geodata to download ("elevation" or "climate"). This calls raster::getData.
 #' @return
 #' @export
 #' @family <geodata>
 #'
 #' @examples
 #' From local path (not run):
-#' get_geodata(path = "D:/data/vector.shp")
-#' get_geodata(path = "D:/data/raster.tif")
+#' geoget(geodata = "D:/data/vector.shp")
+#' geoget(geodata = "D:/data/raster.tif")
 #'
 #' Download:
-#' get_geodata(download = "elevation", country = "Netherlands")
-#' get_geodata(download = "climate")
-geoget <- get_geodata <- function(path = NULL, download = NULL, country = NULL){
-  if(!is.null(path) & is.null(download)){
-    geodata <- get_geodata_path(path = path)
+#' geoget(geodata = "elevation", country = "Netherlands")
+#' geoget(geodata = "climate")
+geoget <- function(geodata, country = NULL){
+  geodownload <- c("climate", "elevation")
+  if(geodata %in% geodownload){
+    geodata <- geoget_remote(download = geodata, country = country)
+  } else {
+    geodata <- geoget_path(path = geodata)
   }
-  if(is.null(path) & !is.null(download)){
-    geodata <- get_geodata_download(download = download, country = country)
-  }
+
   return(geodata)
 }
 
@@ -37,7 +38,7 @@ geoget <- get_geodata <- function(path = NULL, download = NULL, country = NULL){
 #' @return
 #' @export
 #' @family <geodata>
-get_geodata_path <- function(path){
+geoget_path <- function(path){
 
   if(!file.exists(path)){stop("Path not found")}
 
@@ -74,13 +75,13 @@ if(!is.null(vec) & is.null(ras)){
 #' Download geodata
 #'
 #' @param download name of data to download ("climate" or "elevation")
-#' @param country In some cases, this is required to crop the data
+#' @param country Required in case of "elevation" to crop the data
 #' @family <geodata>
 #' @keywords internal
 #' @return
 #' @export
 #'
-get_geodata_download <- function(download, country = NULL){
+geoget_remote <- function(download, country = NULL){
   if(download == "climate"){
   geodata <- raster::getData(name = "worldclim", var = "bio", res = 10)
   }

@@ -22,6 +22,6 @@ glottoplot(glottodist, type = NULL, filename = NULL, ...)
 This function offers different types of visualizations to show linguistic distances.
 }
 \examples{
-glottodata <- glottoget(meta = TRUE)
+glottodata <- glottoget_path(meta = TRUE)
 glottodist <- glottodist(glottodata = glottodata)
 }

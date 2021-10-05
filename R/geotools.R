@@ -13,7 +13,7 @@
 #'
 #' @examples
 #' path <- "D:/Global/Societal/travel time/travel_time_to_cities_1.tif"
-#' geodata <- get_geodata(path)
+#' geodata <- geoget(path)
 #'
 #' # extract from points
 #' glottopoints <- glottofilter(continent = "South America")
@@ -27,7 +27,7 @@
 extractgeodata <- function(glottodata, geodata, radius = NULL, fun = NULL, add = TRUE, funnames = TRUE){
 
   if(is.character(geodata)){
-    geodata <- get_geodata(path = geodata)
+    geodata <- geoget(path = geodata)
   } else if(is.object(geodata)){
     geodata <- geodata
   }

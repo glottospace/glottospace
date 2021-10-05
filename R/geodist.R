@@ -17,7 +17,7 @@
 #' @export
 #'
 #' @examples
-#' glottodata <- glottoget()
+#' glottodata <- glottoget_path()
 #' glottodataspace <- glottospace(glottodata)
 #' geodist(points = glottodataspace)
 geodist <- function(points, lines = NULL, fun = NULL, label = NULL){

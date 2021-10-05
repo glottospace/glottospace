@@ -13,7 +13,7 @@
 #' @export
 #'
 #' @examples
-#' glottodata <- glottoget()
+#' glottodata <- glottoget_path()
 #' glottospacedata <- glottospace(glottodata)
 #'
 glottospace <- function(glottodata, method = NULL, radius = NULL, country = NULL, continent = NULL){
@@ -129,7 +129,7 @@ return(glottodata)
 #' @export
 #'
 #' @examples
-#' glottodata <- get_glottodata(meta = FALSE)
+#' glottodata <- glottoget_glottodata(meta = FALSE)
 #' glottodata_addcountries(glottodata)
 glottodata_addcountries <- function(glottodata){
   glottodata <- glottodata_makespatial(glottodata)
@@ -155,7 +155,7 @@ glottodata_addcountries <- function(glottodata){
 #' @export
 #'
 #' @examples
-#' glottodata <- glottoget()
+#' glottodata <- glottoget_path()
 #' glottodata_makespatial(glottodata)
 glottodata_makespatial <- glottodata_addcoords <- function(glottodata){
   if(class(glottodata)[1] != "sf") {

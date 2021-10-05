@@ -21,6 +21,6 @@ like some more advanced ways of handling NAs, you might check out the
 \code{naniar} package.
 }
 \examples{
-data <- get_glottodata(meta = FALSE)
+data <- glottoget_glottodata(meta = FALSE)
 naviewer(data, id = "glottocode")
 }

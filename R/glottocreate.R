@@ -7,7 +7,7 @@
 #'
 #' @param variables Either a vector with variable names, or a single number indicating the total number of variable columns to be generated
 #' @param filename Optional name of excel file where to store glottodata
-#' @param ... Other parameters passed to create_readmetable(maintainer, email, citation, url)
+#' @param ... Other parameters passed to glottocreate_readmetable(maintainer, email, citation, url)
 #' @param glottocodes Character vector of glottocodes
 #' @param meta By default, meta tables are created. Use meta=FALSE to exclude them.
 #' @param simplify By default, if only one table is loaded, the data will be returned as a data.frame (instead of placing the data inside a list of length 1)
@@ -16,9 +16,9 @@
 #' @export
 #' @family <glottocreate><glottodata>
 #' @examples
-#' createglottodata(glottocodes = c("yucu1253", "tani1257"), variables = 3, filename = "glottodata.xlsx")
-#' createglottodata(glottocodes = c("yucu1253", "tani1257"), variables = 3, filename = "glottodata_simple.xlsx", meta = FALSE)
-createglottodata <- function(glottocodes, variables, filename = NULL, meta = TRUE, simplify = TRUE, ...){
+#' glottocreate_data(glottocodes = c("yucu1253", "tani1257"), variables = 3, filename = "glottodata.xlsx")
+#' glottocreate_data(glottocodes = c("yucu1253", "tani1257"), variables = 3, filename = "glottodata_simple.xlsx", meta = FALSE)
+glottocreate_data <- function(glottocodes, variables, filename = NULL, meta = TRUE, simplify = TRUE, ...){
  if(!all(glottocode_exists(glottocodes)) ){stop("Not all glottocodes are valid. Use glottocode_exists() to check which ones. ")}
 
   if(is.numeric(variables) & length(variables) == 1){
@@ -27,14 +27,14 @@ createglottodata <- function(glottocodes, variables, filename = NULL, meta = TRU
     varnames <- variables
   }
 
-  glottodata <- create_glottotable(glottocodes = glottocodes, varnames = varnames)
+  glottodata <- glottocreate_glottotable(glottocodes = glottocodes, varnames = varnames)
   if(meta == TRUE){
-  structure <- create_structuretable(glottocodes = glottocodes, varnames = varnames)
-  metadata <- create_metatable(varnames = varnames)
-  references <- create_reftable(glottocodes = glottocodes, varnames = varnames)
-  readme <- create_readmetable(...) # for testing remove ... readme <- create_readmetable()
+  structure <- glottocreate_structuretable(glottocodes = glottocodes, varnames = varnames)
+  metadata <- glottocreate_metatable(varnames = varnames)
+  references <- glottocreate_reftable(glottocodes = glottocodes, varnames = varnames)
+  readme <- glottocreate_readmetable(...) # for testing remove ... readme <- glottocreate_readmetable()
 
-  lookup <- create_lookuptable()
+  lookup <- glottocreate_lookuptable()
 
   tablelist <- list("glottodata" = glottodata,
                     "structure" = structure,
@@ -49,8 +49,9 @@ createglottodata <- function(glottocodes, variables, filename = NULL, meta = TRU
 
   if(!is.null(filename)){
     # check if path exists, if subfolder doesn't exist, it doesn't write.
-  writexl::write_xlsx(tablelist, path = filename) # works better than openxlsx, which omits some columns..
-  # message that file was saved
+    if(tools::file_ext(filename) == ""){filename <- paste0(filename, ".xlsx")}
+    writexl::write_xlsx(tablelist, path = filename) # works better than openxlsx, which omitted some columns..
+    message(paste("Glottodata saved: ", filename))
   }
 
   if(simplify == TRUE & length(tablelist) == 1 & any(class(tablelist) == "list") ){
@@ -69,7 +70,7 @@ createglottodata <- function(glottocodes, variables, filename = NULL, meta = TRU
 #'
 #' @param variables Either a vector with variable names, or a single number indicating the total number of variable columns to be generated
 #' @param filename  Optional name of excel file where to store glottodata
-#' @param ... Other parameters passed to create_readmetable(maintainer, email, citation, url)
+#' @param ... Other parameters passed to glottocreate_readmetable(maintainer, email, citation, url)
 #' @param glottocodes Character vector of glottocodes
 #' @param groups Character vector of group names
 #' @param n Number of records to be assigned to each group
@@ -78,11 +79,11 @@ createglottodata <- function(glottocodes, variables, filename = NULL, meta = TRU
 #' @return A list with a data.frame for each languages (and metadata if meta = TRUE)
 #' @export
 #'
-#' @family <glottoget><glottocreate>
+#' @family <glottoget_path><glottocreate>
 #'
 #' @examples
-#' createglottosubdata(glottocodes = c("yucu1253", "tani1257"), variables = 3, groups = c("a", "b"), n = 5, filename = "glottosubdata.xlsx")
-createglottosubdata <- function(glottocodes, variables, filename = NULL, groups, n = NULL, meta = TRUE, ...){
+#' glottocreate_subdata(glottocodes = c("yucu1253", "tani1257"), variables = 3, groups = c("a", "b"), n = 5, filename = "glottosubdata.xlsx")
+glottocreate_subdata <- function(glottocodes, variables, filename = NULL, groups, n = NULL, meta = TRUE, ...){
   if(!all(glottocode_exists(glottocodes)) ){stop("Not all glottocodes are valid. Use glottocode_exists() to check which ones. ")}
 
   if(is.numeric(variables) & length(variables) == 1){
@@ -94,21 +95,21 @@ createglottosubdata <- function(glottocodes, variables, filename = NULL, groups,
   glottosublist <- vector(mode='list', length= length(glottocodes))
 
   for(i in seq(glottocodes)){
-  glottosubcodes <- create_glottosubcodes(glottocode = glottocodes[i], groups = groups, n = n)
-  glottosubdata <- create_glottotable(glottocodes = glottosubcodes, varnames = varnames)
+  glottosubcodes <- glottocreate_glottosubcodes(glottocode = glottocodes[i], groups = groups, n = n)
+  glottosubdata <- glottocreate_glottotable(glottocodes = glottosubcodes, varnames = varnames)
   colnames(glottosubdata)[1] <- "glottosubcode"
   glottosublist[[i]] <- glottosubdata
   names(glottosublist)[[i]] <- glottocodes[i]
   }
 
   if(meta == TRUE){
-  structure <- create_structuretable(glottocodes = glottocodes, varnames = varnames)
-  metadata <- create_metatable(varnames = varnames)
-  references <- create_reftable(glottocodes = glottocodes, varnames = varnames)
+  structure <- glottocreate_structuretable(glottocodes = glottocodes, varnames = varnames)
+  metadata <- glottocreate_metatable(varnames = varnames)
+  references <- glottocreate_reftable(glottocodes = glottocodes, varnames = varnames)
 
-  readme <- create_readmetable(...) # for testing remove ... readme <- create_readmetable()
+  readme <- glottocreate_readmetable(...) # for testing remove ... readme <- glottocreate_readmetable()
 
-  lookup <- create_lookuptable()
+  lookup <- glottocreate_lookuptable()
 
   tablelist <- list("structure" = structure,
                     "metadata" = metadata,
@@ -123,8 +124,9 @@ createglottosubdata <- function(glottocodes, variables, filename = NULL, groups,
 
   if(!is.null(filename)){
     # check if path exists, if subfolder doesn't exist, it doesn't write.
+    if(tools::file_ext(filename) == ""){filename <- paste0(filename, ".xlsx")}
     writexl::write_xlsx(glottosubtables, path = filename) # works better than openxlsx, which omitted some columns..
-    # message that file was saved
+    message(paste("Glottosubdata saved: ", filename))
   }
 
   glottosubtables
@@ -132,7 +134,7 @@ createglottosubdata <- function(glottocodes, variables, filename = NULL, groups,
 
 
 
-create_glottotable <- function(glottocodes, varnames){
+glottocreate_glottotable <- function(glottocodes, varnames){
   colnames <- c("glottocode", varnames)
   glottodata <- data.frame(matrix(nrow=length(glottocodes),ncol=length(colnames))) # alternative: tbl <- colnames %>% purrr::map_dfc(setNames, object = list(character()))
   colnames(glottodata) <- colnames
@@ -149,8 +151,8 @@ create_glottotable <- function(glottocodes, varnames){
 #' @export
 #'
 #' @examples
-#' create_structuretable(glottocodes = c("yucu1253", "tani1257"), varnames = c("var001", "var002", "var003"))
-create_structuretable <- function(glottocodes, varnames = NULL){
+#' glottocreate_structuretable(glottocodes = c("yucu1253", "tani1257"), varnames = c("var001", "var002", "var003"))
+glottocreate_structuretable <- function(glottocodes, varnames = NULL){
 structure <- data.frame(matrix(nrow = length(varnames), ncol = 6) )
 colnames(structure) <- c("varname", "type", "levels", "weight", "groups", "subgroups")
 if(!is.null(varnames)){
@@ -160,21 +162,21 @@ structure[,"weight"] <- 1
 structure
 }
 
-create_metatable <- function(varnames){
+glottocreate_metatable <- function(varnames){
   metadata <- data.frame(matrix(nrow = length(varnames), ncol = 6) )
   colnames(metadata) <- c("varname", "description", "reference", "page", "contributor", "remarks")
   metadata[,"varname"] <- varnames
   metadata
 }
 
-create_reftable <- function(glottocodes, varnames){
+glottocreate_reftable <- function(glottocodes, varnames){
   references <- data.frame(matrix(nrow = length(glottocodes), ncol = (length(varnames)*2)+1 ) )
   colnames(references) <- c("glottocode", paste(rep(varnames, each = 2) , c("ref", "page"), sep = "_") )
   references[,"glottocode"] <- glottocodes
   references
 }
 
-create_readmetable <- function(maintainer = NULL, email = NULL, citation = NULL, url = NULL ){
+glottocreate_readmetable <- function(maintainer = NULL, email = NULL, citation = NULL, url = NULL ){
   readme <- data.frame(matrix(nrow = 5, ncol = 2) )
   readme[,1] <- c("maintainer", "email", "citation", "url", "This database was created using the glottospace R package")
   readme[,2] <- c(ifelse(is.null(maintainer), NA, maintainer),
@@ -186,7 +188,7 @@ create_readmetable <- function(maintainer = NULL, email = NULL, citation = NULL,
   readme
 }
 
-create_lookuptable <- function(){
+glottocreate_lookuptable <- function(){
   lookup <- data.frame(matrix(nrow = 7, ncol = 2) )
   lookup[,1] <- c("symm",
                   "asymm",
@@ -217,8 +219,8 @@ create_lookuptable <- function(){
 #' @export
 #'
 #' @examples
-#' create_glottosubcodes(glottocode = "yucu1253", groups = c("a", "b"), n = 5)
-create_glottosubcodes <- function(glottocode, groups = NULL, n){
+#' glottocreate_glottosubcodes(glottocode = "yucu1253", groups = c("a", "b"), n = 5)
+glottocreate_glottosubcodes <- function(glottocode, groups = NULL, n){
   if(length(glottocode) != 1){stop("Please provide a single glottocode")}
   n <- ifelse(!exists("n"), 1, n)
   glottogroups <- paste(glottocode, groups, sep = "_")
@@ -233,8 +235,8 @@ create_glottosubcodes <- function(glottocode, groups = NULL, n){
 
 }
 
-createdummydata <- function(){
-  dummy <- createglottodata(glottocodes = c("yucu1253", "tani1257"), variables = 3)
+glottocreate_dummydata <- function(){
+  dummy <- glottocreate_data(glottocodes = c("yucu1253", "tani1257"), variables = 3)
   dummy$glottodata[,"var001"] <- c("Y", NA)
   dummy$glottodata[,"var002"] <- c("a", "b")
   dummy$glottodata[,"var003"] <- c("N", "Y")
@@ -244,8 +246,8 @@ createdummydata <- function(){
   dummy
 }
 
-createdummysubdata <- function(){
-  dummy <- createglottosubdata(glottocodes = c("yucu1253", "tani1257"), variables = 3, groups = c("a", "b"), n = 5)
+glottocreate_dummysubdata <- function(){
+  dummy <- glottocreate_subdata(glottocodes = c("yucu1253", "tani1257"), variables = 3, groups = c("a", "b"), n = 5)
   dummy[[1]][,"var001"] <- sample(c("Y", "N", NA), size = 10, replace = TRUE)
   dummy[[1]][,"var002"] <- sample(c("a", "b", NA), size = 10, replace = TRUE)
   dummy[[1]][,"var003"] <- sample(c("Y", "N", NA), size = 10, replace = TRUE)
@@ -269,7 +271,7 @@ createdummysubdata <- function(){
 #' @export
 #'
 #' @examples
-#' structuretable <- create_structuretable()
+#' structuretable <- glottocreate_structuretable()
 #' glottodata_addtable(glottodata, table = structuretable, name = "structure")
 glottodata_addtable <- function(glottodata, table, name){
   if(is_list(table) & length(table) != 1){stop("Please provide either a data.frame or a list of 1 data.frame")}

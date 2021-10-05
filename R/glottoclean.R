@@ -7,21 +7,21 @@
 #'
 #' @examples
 #' # list:
-#' glottodata_list <- glottoget()
+#' glottodata_list <- glottoget_path()
 #' glottodata_list <- glottoclean(glottodata_list)
 #' glottodata_list[[1]] <- glottoclean(glottodata_list[[1]])
 #'
 #' # data.frame:
-#' glottodata <- glottoget(meta = TRUE)
+#' glottodata <- glottoget_path(meta = TRUE)
 #' glottodata <- glottoclean(glottodata)
 glottoclean <- function(glottodata, structure = NULL){
-  if(checkmetadata_hasstructure(glottodata) ){
+  if(glottocheck_hasstructure(glottodata) ){
     # glottodata[["glottodata"]] <- glottoclean_recodemissing(glottodata[["glottodata"]])
     glottodata[["glottodata"]] <- glottoclean_recodelogical(glottodata = glottodata[["glottodata"]], structure = glottodata[["structure"]])
     glottodata
 
   } else {
-    if(is.null(structure)){stop("Please provide a structure table with at least a type column. Run create_structuretable() to create it.")}
+    if(is.null(structure)){stop("Please provide a structure table with at least a type column. Run glottocreate_structuretable() to create it.")}
         # glottodata <- glottoclean_recodemissing(glottodata)
         glottodata <- glottoclean_recodelogical(glottodata, structure)
         glottodata
@@ -39,7 +39,7 @@ glottoclean <- function(glottodata, structure = NULL){
 #' @export
 #'
 #' @examples
-#' glottodata <- glottoget()
+#' glottodata <- glottoget_path()
 #' glottoclean_recodemissing(glottodata, rec = "N")
 glottoclean_recodemissing <- function(glottodata, rec = NULL){
   # maybe better to do with tribble lookup table https://r-pkgs.org/package-within.html

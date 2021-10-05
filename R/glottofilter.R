@@ -3,7 +3,7 @@
 #' By default, the glottolog data will be used to filter from. But in case the user provides glottodata, this will be used.
 #'
 #' @param glottodata glot or geoglot object obtained with
-#'   \code{\link{get_glottolog}} or \code{\link{as_glot}}  or
+#'   \code{\link{glottoget_glottolog}} or \code{\link{as_glot}}  or
 #'   \code{\link{as_geoglot}}.
 #' @param isocodes A character vector of iso639P3codes
 #' @param glottocode A character vector of glottocodes
@@ -43,7 +43,7 @@ glottofilter <- function(glottodata = NULL, isocodes = NULL,
   #   }
 
   if(purrr::is_empty(glottodata)){
-    glottodata <- get_glottobase()
+    glottodata <- glottoget_glottobase()
   }
 
   # Filter by expression:

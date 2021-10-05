@@ -22,7 +22,7 @@ also possible.
 }
 \examples{
 
-glottodata <- glottoget(meta = FALSE)
+glottodata <- glottoget_path(meta = FALSE)
 Saves as .xlsx
 glottosave(glottodata, filename = "glottodata")
 
@@ -38,10 +38,11 @@ Saves as .html
 glottomap <- glottomap(glottodata, type = "dynamic")
 }
 \seealso{
-get_glottodata
+glottoget_glottodata
 
 Other <glottodata>: 
-\code{\link{glottogetbase}()},
+\code{\link{glottoget_path}()},
+\code{\link{glottoget_remote}()},
 \code{\link{glottoget}()}
 }
 \concept{<glottodata>}

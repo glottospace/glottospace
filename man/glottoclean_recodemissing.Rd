@@ -18,7 +18,7 @@ glottoclean_recodemissing(glottodata, rec = NULL)
 Recode missing values to NA
 }
 \examples{
-glottodata <- glottoget()
+glottodata <- glottoget_path()
 glottoclean_recodemissing(glottodata, rec = "N")
 }
 \seealso{

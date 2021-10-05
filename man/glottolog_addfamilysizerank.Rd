@@ -7,7 +7,7 @@
 glottolog_addfamilysizerank(glottologdata)
 }
 \arguments{
-\item{glottologdata}{data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{get_glottolog()}}}
+\item{glottologdata}{data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{glottoget_glottolog()}}}
 }
 \value{
 

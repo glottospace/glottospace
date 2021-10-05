@@ -10,10 +10,10 @@
 #' @family <glottodata>
 #' @return
 #' @export
-#' @seealso get_glottodata
+#' @seealso glottoget_glottodata
 #' @examples
 #'
-#' glottodata <- glottoget(meta = FALSE)
+#' glottodata <- glottoget_path(meta = FALSE)
 #' Saves as .xlsx
 #' glottosave(glottodata, filename = "glottodata")
 #'

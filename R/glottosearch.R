@@ -16,7 +16,7 @@
 glottosearch <- function(glottodata = NULL, find, partialmatch = TRUE, columns = NULL, tolerance = NULL){
   if(is.null(tolerance)){tolerance <- 0.1}
 
- if(is.null(glottodata) ){glottodata <- get_glottobase()}
+ if(is.null(glottodata) ){glottodata <- glottoget_glottobase()}
   if(missing(find)){stop("No search term provided, please indicate what you want to search for.")}
   if(length(find) > 1){stop("More than one search term provided, please provide a single term.",
                             call. = FALSE)}
@@ -41,7 +41,7 @@ glottosearch <- function(glottodata = NULL, find, partialmatch = TRUE, columns =
 #' @return Logical: TRUE/FALSE
 #' @noRd
 glot_exists_one <- function(find, columns){
-  existsdf <- glottosearch(glottodata = get_glottobase(), find = find, partialmatch = FALSE, columns = columns)
+  existsdf <- glottosearch(glottodata = glottoget_glottobase(), find = find, partialmatch = FALSE, columns = columns)
   nrow(existsdf) == 1
 }
 

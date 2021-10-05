@@ -18,6 +18,6 @@ join_glottobase(glottodata, id = NULL)
 Keeps all rows from glottodata. Can be used to add features from glottobase.
 }
 \examples{
-glottodata <- glottoget(meta = FALSE)
+glottodata <- glottoget_path(meta = FALSE)
 join_glottobase(glottodata)
 }

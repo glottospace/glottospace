@@ -4,31 +4,31 @@
 \alias{geoget}
 \title{Get geographic data}
 \usage{
-geoget(path = NULL, download = NULL, country = NULL)
+geoget(geodata, country = NULL)
 }
 \arguments{
-\item{path}{Path to geodata}
-
-\item{download}{Name of geodata to download (wrapper around raster::getData). Currently, the following are supported: "elevation" and "climate"}
+\item{geodata}{Either a filepath to locally stored geodata, or the name of
+geodata to download ("elevation" or "climate"). This calls raster::getData.}
 }
 \value{
 
 }
 \description{
-Load spatial data either from local path (supports both raster and vector formats), or download from remote server.
+Load spatial data either from local path (supports both raster and vector
+formats), or download from remote server.
 }
 \examples{
 From local path (not run):
-get_geodata(path = "D:/data/vector.shp")
-get_geodata(path = "D:/data/raster.tif")
+geoget(geodata = "D:/data/vector.shp")
+geoget(geodata = "D:/data/raster.tif")
 
 Download:
-get_geodata(download = "elevation", country = "Netherlands")
-get_geodata(download = "climate")
+geoget(geodata = "elevation", country = "Netherlands")
+geoget(geodata = "climate")
 }
 \seealso{
 Other <geodata>: 
-\code{\link{get_geodata_download}()},
-\code{\link{get_geodata_path}()}
+\code{\link{geoget_path}()},
+\code{\link{geoget_remote}()}
 }
 \concept{<geodata>}

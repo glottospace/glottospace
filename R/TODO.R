@@ -12,19 +12,17 @@
 # warnings ----------------------------------------------------------------
 
 # getdata -----------------------------------------------------------------
-# TODO: make function names consistent, perhaps split geoget in geogetremote and geogetpath, getgeodata, getgeobase
-# TODO glottogetremote, glottogetpath, glottoremote, glottopath
 # TODO: if download fails, load inbuilt glottobase (which won't be the latest version of glottolog)
-# FIXME: get_glottolog: https://stackoverflow.com/questions/30177053/using-a-trycatch-block-to-read-a-csv-and-an-excel-file
-# TODO: get_glottodata() default meta=FALSE. replace all meta = FALSE
+# FIXME: glottoget_glottolog: https://stackoverflow.com/questions/30177053/using-a-trycatch-block-to-read-a-csv-and-an-excel-file
 # TODO: Match datasources of glottologdata to languages with: head(glottolog_cldf$sources[,"LGCODE"])
-# TODO: function name remove underscore? getglottobase, getglottodata
-# TODO: get_dplace: see isolates project
+# TODO: glottoget_dplace: see isolates project
 # TODO: Does a language have a dictionary and a grammar, or multiple. From glottolog_source.bib.zip
 # TODO: Add data sources: ethnolog contains information on number of speakers
 # TODO: Add data sources: WALS contains information on language features.
-# TODO: getglottodata / loadglottodata: support spatial.
 # TODO: Replace 'User-provided glottodata' with 'A glottodata table' (or glottodata list in some cases)
+# xfun::gsub_dir(dir = "C:/Users/sjnor/surfdrive/PROJECTS_SN/SAPPHIRE/R/glottospace/R", pattern = "glottocreatesubdata", replacement = "glottocreate_subdata")
+
+# xfun::gsub_dir(dir = "C:/Users/sjnor/surfdrive/PROJECTS_SN/SAPPHIRE/R/glottospace/R", pattern = "glottocheck_metaweights", replacement = "glottocheck_metaweights")
 
 
 # checkdata ---------------------------------------------------------------
@@ -35,7 +33,7 @@
 
 # glottocreate ------------------------------------------------------------
 # TODO: write wrapper: glottocreate (glottosubdata or glottodata)
-# Perhaps replace create_structuretable with glottodata_createstructuretable, that feels more logical, because it's an operation on glottodata
+# Perhaps replace glottocreate_structuretable with glottodata_createstructuretable, that feels more logical, because it's an operation on glottodata
 # Be more explicit about tables and lists: glottodata can be stored in a table or in a list of tables.
 
 # joindata ----------------------------------------------------------------

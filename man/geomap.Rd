@@ -16,7 +16,7 @@ geomap(geodata)
 Map environmental data
 }
 \examples{
-nl <- get_geodata(download = "elevation", country = c("Netherlands"))
+nl <- geoget(download = "elevation", country = c("Netherlands"))
 plotgeodata(nl)
 }
 \concept{<geodata><glottomap><geotools>}

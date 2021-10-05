@@ -1,6 +1,6 @@
 #' Quality check of user-provided glottodata or glottosubdata
 #'
-#' This function first checks whether a dataset is glottodata or glottosubdata, and depending on the result calls checkglottodata or checkglottosubdata.
+#' This function first checks whether a dataset is glottodata or glottosubdata, and depending on the result calls glottocheck_data or glottocheck_subdata.
 #'
 #' It subsequently checks whether:
 #' - one column exists with the name "glottocode"
@@ -20,9 +20,9 @@
 #' glottocheck(glottodata)
 glottocheck <- function(glottodata, diagnostic = TRUE){
   if(glottocheck_isglottosubdata(glottodata) == FALSE){
-    checkglottodata(glottodata = glottodata, diagnostic = diagnostic)
+    glottocheck_data(glottodata = glottodata, diagnostic = diagnostic)
   } else{
-    checkglottosubdata(glottosubdata = glottodata, diagnostic = diagnostic)
+    glottocheck_subdata(glottosubdata = glottodata, diagnostic = diagnostic)
   }
 }
 
@@ -43,9 +43,9 @@ glottocheck <- function(glottodata, diagnostic = TRUE){
 #' @export
 #'
 #' @examples
-#' glottodata <- get_glottodata(meta = FALSE)
-#' checkglottodata(glottodata = glottodata)
-checkglottodata <- function(glottodata, diagnostic = TRUE){
+#' glottodata <- glottoget_glottodata(meta = FALSE)
+#' glottocheck_data(glottodata = glottodata)
+glottocheck_data <- function(glottodata, diagnostic = TRUE){
   id <- "glottocode"
   checkdata_glottocol(glottodata = glottodata)
   checkdata_idmissing(data = glottodata, id = id)
@@ -69,13 +69,13 @@ checkglottodata <- function(glottodata, diagnostic = TRUE){
 #' @export
 #' @family <glottocheck>
 #' @examples
-#' glottosubdata <- get_glottodata(meta = FALSE, dummy = "glottosubdata")
+#' glottosubdata <- glottoget_glottodata(meta = FALSE, dummy = "glottosubdata")
 #' glottosubdata <- join_glottodata(glottosubdata)
-#' checkglottosubdata(glottosubdata)
+#' glottocheck_subdata(glottosubdata)
 #'
 #' Better to join_glottodata first, instead of the following approach (because checks only within each language for duplicates etc.)
-#' lapply(glottosubdata, checkglottosubdata)
-checkglottosubdata <- function(glottosubdata, diagnostic = TRUE){
+#' lapply(glottosubdata, glottocheck_subdata)
+glottocheck_subdata <- function(glottosubdata, diagnostic = TRUE){
   id <- "glottosubcode"
   checkdata_glottosubcol(glottosubdata = glottosubdata)
   checkdata_idmissing(data = glottosubdata, id = id)
@@ -98,14 +98,14 @@ checkglottosubdata <- function(glottosubdata, diagnostic = TRUE){
 #' @export
 #'
 #' @examples
-#' glottodata <- get_glottodata()
-checkmetadata <- function(glottodata){
+#' glottodata <- glottoget_glottodata()
+glottocheck_metadata <- function(glottodata){
   tablenames <- paste(names(glottodata), collapse = ", ")
   message( paste("This glottodataset contains the folowing tables:", tablenames) )
 
-  if(checkmetadata_hasstructure(glottodata)){
-    checkmetadata_types(glottodata)
-    checkmetadata_weights(glottodata)
+  if(glottocheck_hasstructure(glottodata)){
+    glottocheck_metatypes(glottodata)
+    glottocheck_metaweights(glottodata)
   } else {message("No structure table found in glottodata")}
 }
 
@@ -118,21 +118,21 @@ checkmetadata <- function(glottodata){
 #'
 #' @return
 #' @export
-#' @aliases checkmetadata_hasstructure
+#' @aliases glottocheck_hasstructure
 #' @family <glottocheck>
 #' @examples
 #' glottocheck_hasmeta(glottodata)
-glottocheck_hasmeta <- checkmetadata_hasstructure <- function(glottodata){
+glottocheck_hasmeta <- glottocheck_hasstructure <- function(glottodata){
   is_list(glottodata) & any(names(glottodata) %in% "structure")
 }
 
-checkmetadata_types <- function(glottodata){
-  if(!all(glottodata$structure$type %in% create_lookuptable()[,"type_lookup"]) ){
-    message("Some types were not recognized, maybe there was a spelling error? Type create_lookuptable() to see the possible levels.")
+glottocheck_metatypes <- function(glottodata){
+  if(!all(glottodata$structure$type %in% glottocreate_lookuptable()[,"type_lookup"]) ){
+    message("Some types were not recognized, maybe there was a spelling error? Type glottocreate_lookuptable() to see the possible levels.")
   } else{message("All types recognized")}
 }
 
-checkmetadata_weights <- function(glottodata){
+glottocheck_metaweights <- function(glottodata){
   if(any(is.na(glottodata$structure$weight))){message("Some of the weights are NA. If you want to weigh all variables equally, please set each of them to 1.")
   } else{message("All weights are specified")}
 }
@@ -279,7 +279,7 @@ checkdata_glottosubcodes <- function(glottosubdata){
 #' @keywords internal
 #'
 #' @examples
-#' glottosubdata <- createglottosubdata(glottocodes = c("yucu1253", "tani1257"), variables = 3, groups = c("a", "b"), n = 5)
+#' glottosubdata <- glottocreate_subdata(glottocodes = c("yucu1253", "tani1257"), variables = 3, groups = c("a", "b"), n = 5)
 #' langlist <- glottosubdata[c(1,2)]
 #' checkdata_lscolcount(langlist) # invisibly returns TRUE
 checkdata_lscolcount <- function(langlist){
@@ -353,7 +353,7 @@ checkdata_colmissing <- function(data, id, diagnostic = FALSE){
 #' @export
 #'
 #' @examples
-#' data <- get_glottodata(meta = FALSE)
+#' data <- glottoget_glottodata(meta = FALSE)
 #' naviewer(data, id = "glottocode")
 naviewer <- function(data, id = NULL){
   if(!is.null(id)){

@@ -2,40 +2,42 @@
 % Please edit documentation in R/glottoget.R
 \name{glottoget}
 \alias{glottoget}
-\title{Load user-provided glottodata}
+\title{Get glottodata from local path or online global databases}
 \usage{
-glottoget(
-  filename = NULL,
-  meta = FALSE,
-  simplify = TRUE,
-  create = "glottodata"
-)
+glottoget(glottodata = NULL, meta = FALSE, simplify = TRUE)
 }
 \arguments{
-\item{filename}{Path to glottodata file with extension (.xlsx .xls .gpkg .shp). If no filename is specified, an artificial dummy dataset will be created.}
+\item{glottodata}{options are:
+\itemize{
+\item A filepath to locally stored glottodata with file extension (.xlsx .xls .gpkg
+.shp). See also: options meta and simplify.
+\item "glottobase" - Default option, an enhanced version of \href{https://glottolog.org/}{glottolog}. See
+\link{glottologbooster} for details.
+\item "glottolog" - This is the raw data downloaded from \href{https://glottolog.org/}{glottolog}
+\item "glottospace" - A simple dataset with glottocodes and a geometry column. This
+is a subset of all languages in \href{https://glottolog.org/}{glottolog} with
+spatial coordinates.
+\item "demodata" - Built-in artificial glottodata (included for demonstration and testing)
+\item "demosubdata" - Built-in artificial glottosubdata (included for demonstration and testing)
+}}
 
-\item{meta}{By default, meta sheets are not loaded. Use meta=TRUE if you want to include them.}
+\item{meta}{In case 'glottodata' is a path to locally stored data (or demodata/demosubdata): by default, meta sheets are not loaded. Use meta=TRUE if you want to include them.}
 
-\item{simplify}{By default, if only one sheet is loaded, the data will be returned as a data.frame (instead of placing the data inside a list of length 1)}
-
-\item{create}{In case 'filename' is not specified, artificial dummy data will be created in glottodata format (specify create = "glottosubdata" to create data in glottosubdata format)}
+\item{simplify}{In case 'glottodata' is a path to locally stored data  (or demodata/demosubdata): by default, if only one sheet is loaded, the data will be returned as a data.frame (instead of placing the data inside a list of length 1)}
 }
 \value{
 
 }
 \description{
-Load glottodadata/glottosubdata from a file, or create artificial dummy data.
+Load locally stored glottodata, download databases from online sources, or load built-in dummy data
 }
 \examples{
 glottoget()
-glottoget(filename = "glottodata.xlsx")
-glottoget(filename = "glottodata.gpkg")
 }
 \seealso{
-glottosave
-
 Other <glottodata>: 
-\code{\link{glottogetbase}()},
+\code{\link{glottoget_path}()},
+\code{\link{glottoget_remote}()},
 \code{\link{glottosave}()}
 }
 \concept{<glottodata>}

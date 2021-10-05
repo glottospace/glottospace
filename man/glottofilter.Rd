@@ -18,7 +18,7 @@ glottofilter(
 }
 \arguments{
 \item{glottodata}{glot or geoglot object obtained with
-\code{\link{get_glottolog}} or \code{\link{as_glot}}  or
+\code{\link{glottoget_glottolog}} or \code{\link{as_glot}}  or
 \code{\link{as_geoglot}}.}
 
 \item{isocodes}{A character vector of iso639P3codes}

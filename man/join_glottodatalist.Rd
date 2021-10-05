@@ -2,7 +2,7 @@
 % Please edit documentation in R/glottojoin.R
 \name{join_glottodatalist}
 \alias{join_glottodatalist}
-\title{Join a list of glottodata tables for multiple languages into a single glottodata object}
+\title{Join glottosubdata (a list of glottodata tables for multiple languages) into a single glottodata object}
 \usage{
 join_glottodatalist(glottodatalist)
 }
@@ -13,9 +13,9 @@ join_glottodatalist(glottodatalist)
 A single glottodata object
 }
 \description{
-Join a list of glottodata tables for multiple languages into a single glottodata object
+Join glottosubdata (a list of glottodata tables for multiple languages) into a single glottodata object
 }
 \examples{
-glottodatalist <- get_glottodata("glottosubdata.xlsx", meta = FALSE)
+glottodatalist <- glottoget_glottodata("glottosubdata.xlsx", meta = FALSE)
 join_glottodata(glottodatalist = glottodatalist)
 }

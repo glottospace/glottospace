@@ -18,7 +18,7 @@ join_glottospace(glottodata, id = NULL)
 Join glottodata with glottospace (keeps all rows from glottodata). It is recommended to use the function glottospace().
 }
 \examples{
-glottodata <- glottoget(meta = FALSE)
+glottodata <- glottoget_path(meta = FALSE)
 join_glottospace(glottodata)
 }
 \seealso{

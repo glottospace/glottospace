@@ -11,7 +11,7 @@
 #' @export
 #'
 #' @examples
-#' glottodata <- glottoget()
+#' glottodata <- glottoget_path()
 #' glottodata <- glottojoin(glottodata, with = "glottospace")
 #' glottodata <- glottojoin(glottodata, with = "glottobase")
 #'
@@ -20,7 +20,7 @@
 #' glottodatadist <- glottojoin(glottodata, with = dist)
 #'
 #' # Join a list of glottodata tables:
-#' glottodatalist <- createglottosubdata(glottocodes = c("yucu1253", "tani1257"), variables = 3, groups = c("a", "b"), n = 2, meta = FALSE)
+#' glottodatalist <- glottocreate_subdata(glottocodes = c("yucu1253", "tani1257"), variables = 3, groups = c("a", "b"), n = 2, meta = FALSE)
 #' glottodatatable <- glottojoin(glottodata = glottodatalist)
 #'
 glottojoin <- function(glottodata, with = NULL, id = NULL, rm.na = FALSE){
@@ -94,11 +94,11 @@ join_glottodist <- function(glottodata, id = NULL, dist, rm.na = FALSE){
 #' @export
 #'
 #' @examples
-#' glottodata <- glottoget(meta = FALSE)
+#' glottodata <- glottoget_path(meta = FALSE)
 #' join_glottobase(glottodata)
 join_glottobase <- function(glottodata, id = NULL){
   id <- contrans_id2gc(id)
-  glottobase <- get_glottobase()
+  glottobase <- glottoget_glottobase()
   glottodata <- dplyr::left_join(x = glottodata, y = glottobase, by = id)
   sf::st_sf(glottodata)
 }
@@ -116,16 +116,16 @@ join_glottobase <- function(glottodata, id = NULL){
 #' @export
 #' @seealso glottodata_makespatial glottodata_addcoords
 #' @examples
-#' glottodata <- glottoget(meta = FALSE)
+#' glottodata <- glottoget_path(meta = FALSE)
 #' join_glottospace(glottodata)
 join_glottospace <- function(glottodata, id = NULL){
   id <- contrans_id2gc(id)
-  glottospace <- get_glottospace()
+  glottospace <- glottoget_glottospace()
   glottodata <- dplyr::left_join(x = glottodata, y = glottospace, by = id)
   sf::st_sf(glottodata)
 }
 
-#' Join a list of glottodata tables for multiple languages into a single glottodata object
+#' Join glottosubdata (a list of glottodata tables for multiple languages) into a single glottodata object
 #'
 #'
 #' @param glottodatalist A list of glottodata objects. Column names across languages should be identical.
@@ -134,7 +134,7 @@ join_glottospace <- function(glottodata, id = NULL){
 #' @export
 #'
 #' @examples
-#' glottodatalist <- get_glottodata("glottosubdata.xlsx", meta = FALSE)
+#' glottodatalist <- glottoget_glottodata("glottosubdata.xlsx", meta = FALSE)
 #' join_glottodata(glottodatalist = glottodatalist)
 join_glottodatalist <- function(glottodatalist){
   checkdata_lscolcount(glottodatalist) # stops if number of columns is not identical
@@ -155,8 +155,8 @@ join_glottodatalist <- function(glottodatalist){
 #' @export
 #' @seealso glottodata_makespatial glottodata_addcoords
 #' @examples
-#' glottodatax <- glottoget(meta = FALSE)
-#' glottodatay <- glottoget(meta = FALSE)
+#' glottodatax <- glottoget_path(meta = FALSE)
+#' glottodatay <- glottoget_path(meta = FALSE)
 #' join_glottodata(glottodatax, glottodatay)
 join_glottodata <- function(glottodata, with, id = NULL){
   id <- contrans_id2gc(id)
@@ -173,7 +173,7 @@ join_glottodata <- function(glottodata, with, id = NULL){
 #' @export
 #'
 #' @examples
-#' glottodata <- glottoget(meta = TRUE)
+#' glottodata <- glottoget_path(meta = TRUE)
 #' glottometa <- glottodata[-1]
 #' glottodata <- glottodata[[1]]
 #' join_glottometa(glottodata, glottometa)

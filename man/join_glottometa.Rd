@@ -20,7 +20,7 @@ join_glottometa(glottodata, glottometa, name = NULL)
 Join glottodata with glottometa
 }
 \examples{
-glottodata <- glottoget(meta = TRUE)
+glottodata <- glottoget_path(meta = TRUE)
 glottometa <- glottodata[-1]
 glottodata <- glottodata[[1]]
 join_glottometa(glottodata, glottometa)

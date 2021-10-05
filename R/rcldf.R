@@ -20,8 +20,8 @@ read_cldf <- function(mdpath) {
 
   for (i in 1:nrow(o$metadata$tables)) {
     filename <- file.path(dir, o$metadata$tables[i, "url"])
-    table <- get_tablename(o$metadata$tables[i, "url"])
-    cols <- get_table_schema(o$metadata$tables[i, "tableSchema"]$columns)
+    table <- glottoget_tablename(o$metadata$tables[i, "url"])
+    cols <- glottoget_table_schema(o$metadata$tables[i, "tableSchema"]$columns)
 
     o[["tables"]][[table]] <- vroom::vroom(
       filename, delim=",", col_names = TRUE, col_types = cols$cols, quote = '"'
@@ -74,8 +74,8 @@ read_bib <- function(dir, bib="sources.bib"){
 #' @return A string
 #' @noRd
 #' @examples
-#' get_tablename("languages.csv")
-get_tablename <- function(tbl) { tools::file_path_sans_ext(tbl) }
+#' glottoget_tablename("languages.csv")
+glottoget_tablename <- function(tbl) { tools::file_path_sans_ext(tbl) }
 
 #' Extracts the table schema from the metadata schema
 #'
@@ -83,11 +83,11 @@ get_tablename <- function(tbl) { tools::file_path_sans_ext(tbl) }
 #' @noRd
 #' @return A column schema
 #'
-get_table_schema <- function(schema) {
+glottoget_table_schema <- function(schema) {
   spec <- list()
   for (i in 1:nrow(schema[[1]])) {
     label <- as.name(schema[[1]][i, "name"])
-    spec[[label]] <- get_spec(schema[[1]][i, "datatype"])
+    spec[[label]] <- glottoget_spec(schema[[1]][i, "datatype"])
   }
   do.call(readr::cols, spec)
 }
@@ -97,7 +97,7 @@ get_table_schema <- function(schema) {
 #' @param dt a column schema spec
 #' @return a `readr` column spec
 #' @noRd
-get_spec <- function(dt) {
+glottoget_spec <- function(dt) {
   dt <- unlist(dt)
   # if there's no col type specified, then the CLDF default is string.
   if (is.null(dt) | all(is.na(dt))) {
@@ -122,4 +122,4 @@ get_spec <- function(dt) {
   }
 }
 
-get_spec <- compiler::cmpfun(get_spec)
+glottoget_spec <- compiler::cmpfun(glottoget_spec)

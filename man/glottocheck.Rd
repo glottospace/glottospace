@@ -15,7 +15,7 @@ glottocheck(glottodata, diagnostic = TRUE)
 
 }
 \description{
-This function first checks whether a dataset is glottodata or glottosubdata, and depending on the result calls checkglottodata or checkglottosubdata.
+This function first checks whether a dataset is glottodata or glottosubdata, and depending on the result calls glottocheck_data or glottocheck_subdata.
 }
 \details{
 It subsequently checks whether:
@@ -30,8 +30,8 @@ glottocheck(glottodata)
 }
 \seealso{
 Other <glottocheck>: 
-\code{\link{checkglottodata}()},
-\code{\link{checkglottosubdata}()},
-\code{\link{glottocheck_hasmeta}()}
+\code{\link{glottocheck_data}()},
+\code{\link{glottocheck_hasmeta}()},
+\code{\link{glottocheck_subdata}()}
 }
 \concept{<glottocheck>}

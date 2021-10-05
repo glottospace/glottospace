@@ -35,7 +35,7 @@ Extract and add environmental covariates
 }
 \examples{
 path <- "D:/Global/Societal/travel time/travel_time_to_cities_1.tif"
-geodata <- get_geodata(path)
+geodata <- geoget(path)
 
 # extract from points
 glottopoints <- glottofilter(continent = "South America")

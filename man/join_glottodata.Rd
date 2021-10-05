@@ -20,8 +20,8 @@ join_glottodata(glottodata, with, id = NULL)
 Join two glottodata tables.
 }
 \examples{
-glottodatax <- glottoget(meta = FALSE)
-glottodatay <- glottoget(meta = FALSE)
+glottodatax <- glottoget_path(meta = FALSE)
+glottodatay <- glottoget_path(meta = FALSE)
 join_glottodata(glottodatax, glottodatay)
 }
 \seealso{

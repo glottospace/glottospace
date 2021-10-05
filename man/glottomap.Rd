@@ -46,7 +46,7 @@ glottopoints <- glottofilter(continent = "South America")
 glottopols <- points2pols(glottopoints, method = "voronoi", continent = "South America")
 glottomap(glottodata = glottopols, color = "family_size_rank")
 
-glottodata <- glottogetbase()
+glottodata <- glottoget_remote()
 families <- glottodata \%>\% dplyr::count(family_name, sort = TRUE)
 
 # highlight 10 largest families:

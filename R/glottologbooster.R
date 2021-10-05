@@ -1,12 +1,12 @@
 #' Glottologbooster: enhance glottolog data
 #'
-#' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{glottoget("glottolog")}}
+#' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{glottoget_path("glottolog")}}
 #'
 #' @return
 #' @export
 #'
 #' @examples
-#' glottologdata <- glottoget("glottolog")
+#' glottologdata <- glottoget_path("glottolog")
 #' glottologdata <- glottologbooster(glottologdata)
 glottologbooster <- function(glottologdata, geoglot = TRUE){
   glottologdata <- glottolog_addfamilyname(glottologdata)
@@ -34,7 +34,7 @@ glottologbooster <- function(glottologdata, geoglot = TRUE){
 
 #' Glottolog: add family name
 #'
-#' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{get_glottolog()}}
+#' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{glottoget_glottolog()}}
 #' @keywords internal
 #' @family <glottolog>
 #' @return
@@ -49,7 +49,7 @@ glottolog_addfamilyname <- function(glottologdata){
 
 #' Glottolog: add isolates
 #'
-#' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{get_glottolog()}}
+#' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{glottoget_glottolog()}}
 #' @keywords internal
 #' @family <glottolog>
 #' @return
@@ -69,7 +69,7 @@ glottologdata
 
 #' Glottolog: remove dialects
 #'
-#' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{get_glottolog()}}
+#' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{glottoget_glottolog()}}
 #' @keywords internal
 #' @family <glottolog>
 #' @return
@@ -80,7 +80,7 @@ glottolog_rmdialects <- function(glottologdata){
 
 #' Glottolog: remove families
 #'
-#' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{get_glottolog()}}
+#' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{glottoget_glottolog()}}
 #' @keywords internal
 #' @family <glottolog>
 #' @return
@@ -91,7 +91,7 @@ glottolog_rmfamilies <- function(glottologdata){
 
 #' Glottolog: remove bookkeeping
 #'
-#' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{get_glottolog()}}
+#' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{glottoget_glottolog()}}
 #' @keywords internal
 #' @family <glottolog>
 #' @return
@@ -105,7 +105,7 @@ glottolog_rmbookkeeping <- function(glottologdata){
 
 #' Glottolog: remove artificial families
 #'
-#' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{get_glottolog()}}
+#' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{glottoget_glottolog()}}
 #' @keywords internal
 #' @family <glottolog>
 #' @return
@@ -117,7 +117,7 @@ glottolog_rmartifam <- function(glottologdata){
 
 #' Glottolog: remove sign languages
 #'
-#' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{get_glottolog()}}
+#' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{glottoget_glottolog()}}
 #' @keywords internal
 #' @family <glottolog>
 #' @return
@@ -129,7 +129,7 @@ glottolog_rmsignlangs <- function(glottologdata){
 
 #' Glottolog: add family size
 #'
-#' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{get_glottolog()}}
+#' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{glottoget_glottolog()}}
 #' @keywords internal
 #' @family <glottolog>
 #' @return
@@ -142,7 +142,7 @@ glottologdata %>%
 
 #' Glottolog: add rank order of family size
 #'
-#' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{get_glottolog()}}
+#' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{glottoget_glottolog()}}
 #' @keywords internal
 #' @family <glottolog>
 #' @return

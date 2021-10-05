@@ -17,12 +17,12 @@ Clean glottodata
 }
 \examples{
 # list:
-glottodata_list <- glottoget()
+glottodata_list <- glottoget_path()
 glottodata_list <- glottoclean(glottodata_list)
 glottodata_list[[1]] <- glottoclean(glottodata_list[[1]])
 
 # data.frame:
-glottodata <- glottoget(meta = TRUE)
+glottodata <- glottoget_path(meta = TRUE)
 glottodata <- glottoclean(glottodata)
 }
 \seealso{

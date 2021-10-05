@@ -9,7 +9,7 @@ glottodist(glottodata, structure = NULL)
 \arguments{
 \item{glottodata}{A glottodata table, or a list with a glottodata table and a structure table.}
 
-\item{structure}{If glottodata is a table without metadata, a structure table should be provided. You can create it with create_structuretable() and add it with glottodata_addtable()}
+\item{structure}{If glottodata is a table without metadata, a structure table should be provided. You can create it with glottocreate_structuretable() and add it with glottodata_addtable()}
 }
 \value{
 object of class \code{dist}
@@ -18,6 +18,6 @@ object of class \code{dist}
 Calculate distances between languages
 }
 \examples{
-glottodata <- glottoget(meta = TRUE)
+glottodata <- glottoget_path(meta = TRUE)
 glottodist <- glottodist(glottodata = glottodata)
 }

@@ -12,7 +12,7 @@
 #' @export
 #'
 #' @examples
-#' glottodata <- glottoget(meta = TRUE)
+#' glottodata <- glottoget_path(meta = TRUE)
 #' glottodist <- glottodist(glottodata = glottodata)
 glottoplot <- function(glottodist, type = NULL, filename = NULL, ...){
   if(is.null(type)){type <- "heatmap"}
@@ -37,7 +37,7 @@ glottoplot <- function(glottodist, type = NULL, filename = NULL, ...){
 #' @export
 #'
 #' @examples
-#' glottodata <- get_glottodata()
+#' glottodata <- glottoget_glottodata()
 #' dist <- glottodist(glottodata = glottodata, structure = structure)
 #' nmds <- glottonmds(dist = dist, k = 2)
 glottonmds <- function(dist, k = 2, rm.na = FALSE){

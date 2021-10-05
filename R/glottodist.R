@@ -5,13 +5,13 @@
 #' Calculate distances between languages
 #'
 #' @param glottodata A glottodata table, or a list with a glottodata table and a structure table.
-#' @param structure If glottodata is a table without metadata, a structure table should be provided. You can create it with create_structuretable() and add it with glottodata_addtable()
+#' @param structure If glottodata is a table without metadata, a structure table should be provided. You can create it with glottocreate_structuretable() and add it with glottodata_addtable()
 #'
 #' @return object of class \code{dist}
 #' @export
 #'
 #' @examples
-#' glottodata <- glottoget(meta = TRUE)
+#' glottodata <- glottoget_path(meta = TRUE)
 #' glottodist <- glottodist(glottodata = glottodata)
 glottodist <- function(glottodata, structure = NULL){
   if(glottocheck_hasmeta(glottodata) & is.null(structure)){
@@ -36,7 +36,7 @@ glottodist <- function(glottodata, structure = NULL){
     stop('No type column found in structure. Please add a type column.')
   }
 
-  dropvars <- which(structure$type %nin% create_lookuptable()$type_lookup )
+  dropvars <- which(structure$type %nin% glottocreate_lookuptable()$type_lookup )
   if(!purrr::is_empty(dropvars)){
     dropvarnames <- paste0(colnames(glottodata[,dropvars]), collapse = ",")
     message(paste0("The following variables are ignored in distance calculation (their type is not one of the pre-specified types): \n", dropvarnames))

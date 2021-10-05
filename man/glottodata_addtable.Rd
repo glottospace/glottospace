@@ -20,6 +20,6 @@ glottodata_addtable(glottodata, table, name)
 Add a table to glottodata
 }
 \examples{
-structuretable <- create_structuretable()
+structuretable <- glottocreate_structuretable()
 glottodata_addtable(glottodata, table = structuretable, name = "structure")
 }

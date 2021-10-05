@@ -24,7 +24,7 @@
 #' glottopols <- points2pols(glottopoints, method = "voronoi", continent = "South America")
 #' glottomap(glottodata = glottopols, color = "family_size_rank")
 #'
-#' glottodata <- glottogetbase()
+#' glottodata <- glottoget_remote()
 #' families <- glottodata %>% dplyr::count(family_name, sort = TRUE)
 #'
 #' # highlight 10 largest families:
@@ -139,7 +139,7 @@ glottomap_static <- function(glottodata, label, color, ptsize, lbsize, transpare
 #' @family <geodata><glottomap><geotools>
 #'
 #' @examples
-#' nl <- get_geodata(download = "elevation", country = c("Netherlands"))
+#' nl <- geoget(download = "elevation", country = c("Netherlands"))
 #' plotgeodata(nl)
 geomap <- function(geodata){
   if(is_raster(geodata) ){
