@@ -1,7 +1,7 @@
 Package: glottospace
 Type: Package
 Title: Geospatial analysis of linguistic and cultural data
-Version: 0.0.0.9101
+Version: 0.0.1
 Author: Sietze Norder
 Maintainer: Sietze Norder <mail@sietzenorder.nl>
 Description: The R package glottospace helps useRs to do geospatial analyses on linguistic and cultural data. 
@@ -15,10 +15,15 @@ Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.1
 Imports: 
+    dplyr (>= 1.0.6),
+    Hmisc,
     magrittr,
+    purrr,
     rgeos,
     rnaturalearth,
     rnaturalearthdata,
     sf
 Depends: 
     R (>= 2.10)
+Remotes:  
+    tidyverse/dplyr

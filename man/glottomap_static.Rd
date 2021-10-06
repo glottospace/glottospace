@@ -21,7 +21,7 @@ glottomap_static(glottodata, label, color, ptsize, lbsize, transparency)
 
 }
 \description{
-This function returns a static map with glottodata. Data is projected using the equal-area Eckert IV projection (following McNew et al. 2018)
+This function returns a static map with glottodata. Data is projected using the equal-area Eckert IV projection (following McNew et al. 2018). See \url{https://en.wikipedia.org/wiki/Eckert_IV_projection}.
 }
 \examples{
 glottodata <- glottofilter(continent = "South America")

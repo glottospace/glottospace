@@ -236,10 +236,10 @@ glottocreate_glottosubcodes <- function(glottocode, groups = NULL, n){
 }
 
 glottocreate_dummydata <- function(){
-  dummy <- glottocreate_data(glottocodes = c("yucu1253", "tani1257"), variables = 3)
-  dummy$glottodata[,"var001"] <- c("Y", NA)
-  dummy$glottodata[,"var002"] <- c("a", "b")
-  dummy$glottodata[,"var003"] <- c("N", "Y")
+  dummy <- glottocreate_data(glottocodes = c("yucu1253", "tani1257", "ticu1245", "orej1242", "nade1244", "mara1409"), variables = 3)
+  dummy$glottodata[,"var001"] <- c("Y", NA, "Y", "N", "N", "N")
+  dummy$glottodata[,"var002"] <- c("a", "b", "a", "b", "c", "a")
+  dummy$glottodata[,"var003"] <- c("N", "Y", "Y", "N", "Y", "N")
 
   dummy$structure[,"type"] <- c("symm", "factor", "symm")
 

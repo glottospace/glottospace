@@ -5,17 +5,17 @@
 \title{Search within glottodata for languages, glottocodes, etc.}
 \usage{
 glottosearch(
-  glottodata = NULL,
   find,
+  glottodata = NULL,
   partialmatch = TRUE,
   columns = NULL,
   tolerance = NULL
 )
 }
 \arguments{
-\item{glottodata}{Any linguistic or cultural dataset. Default is to search within glottolog.}
-
 \item{find}{Character string to search for, this can be the name of a language, a family, a dialect, a glottocode, isocode.}
+
+\item{glottodata}{Any linguistic or cultural dataset. Default is to search within glottolog.}
 
 \item{partialmatch}{By default, partial matches will be returned as well. In case you only want exact matches, this argument should be set to FALSE.}
 

@@ -37,13 +37,13 @@ glottomap(
 
 }
 \description{
-Create dynamic, static and interactive maps from glottodata
+Create dynamic, static and interactive maps from glottodata.
 }
 \examples{
 glottomap(country = "Netherlands")
 
 glottopoints <- glottofilter(continent = "South America")
-glottopols <- points2pols(glottopoints, method = "voronoi", continent = "South America")
+glottopols <- glottospace(glottopoints, method = "voronoi", continent = "South America")
 glottomap(glottodata = glottopols, color = "family_size_rank")
 
 glottodata <- glottoget_remote()

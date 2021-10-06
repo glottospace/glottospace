@@ -1,7 +1,7 @@
 
 #' glottomap
 #'
-#' Create dynamic, static and interactive maps from glottodata
+#' Create dynamic, static and interactive maps from glottodata.
 #'
 #' @param glottodata Optional, user-provided glottodata. In case no glottodata is provided, you can pass arguments directly to glottofilter.
 #' @param color column name or index to be used to color features (optional)
@@ -21,7 +21,7 @@
 #' glottomap(country = "Netherlands")
 #'
 #' glottopoints <- glottofilter(continent = "South America")
-#' glottopols <- points2pols(glottopoints, method = "voronoi", continent = "South America")
+#' glottopols <- glottospace(glottopoints, method = "voronoi", continent = "South America")
 #' glottomap(glottodata = glottopols, color = "family_size_rank")
 #'
 #' glottodata <- glottoget_remote()
@@ -85,7 +85,7 @@ glottomap_dynamic <- function(glottodata, label, color, ptsize, transparency){
 
 #' Create a static map with glottodata
 #'
-#' This function returns a static map with glottodata. Data is projected using the equal-area Eckert IV projection (following McNew et al. 2018)
+#' This function returns a static map with glottodata. Data is projected using the equal-area Eckert IV projection (following McNew et al. 2018). See \url{https://en.wikipedia.org/wiki/Eckert_IV_projection}.
 #'
 #' @param glottodata User-provided glottodata (either glottopoints or glottopols)
 #' @param color column name or index to be used to color features (optional), or a color "black"

@@ -60,6 +60,11 @@
 
 # TODO: if buffer, elongated shape because of equal area projection, mention in readme
 
+
+# glottodrop --------------------------------------------------------------
+
+
+
 # geodata & geotools -----------------------------------------------------------------
 # FIXME: After rasterextraction, active geometry is set to points, this should remain polygons.
 # TODO: glottodata_dropspatial: drop spatial and drop units (for statistical/non-spatial analyses, see isolates script STAT preparation)
