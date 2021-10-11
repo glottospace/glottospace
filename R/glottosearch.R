@@ -26,9 +26,9 @@ glottosearch <- function(find, glottodata = NULL, partialmatch = TRUE, columns =
     glottodata_sel <- glottodata
   } else{ glottodata_sel <- dplyr::select(glottodata, all_of(columns))}
 
-    found <- apply(glottodata_sel, MARGIN = 2, simplify = FALSE,
+    found <- base::apply(glottodata_sel, MARGIN = 2, simplify = FALSE,
                    FUN = base::agrep, pattern = find, ignore.case = T, value = FALSE, max.distance = ldist)
-    rowid <- unique(unlist(found))
+    rowid <- base::unique(unlist(found))
     glottodata[rowid, ]
 
 }
