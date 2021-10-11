@@ -85,7 +85,7 @@ glottoget_remote <- function(glottodata = NULL){
 #' glottoget_path()
 #' glottoget_path(filename = "glottodata.xlsx")
 #' glottoget_path(filename = "glottodata.gpkg")
-glottoget_path <- function(filename = NULL, meta = FALSE, simplify = TRUE, create = "glottodata"){
+glottoget_path <- function(filename = NULL, meta = FALSE, simple = TRUE, create = "glottodata"){
 
 
   metasheets <- c("structure",  "metadata",   "references", "readme",     "lookup" )
@@ -121,12 +121,9 @@ glottoget_path <- function(filename = NULL, meta = FALSE, simplify = TRUE, creat
 
   }
 
-  if(simplify == TRUE & length(glottodata) == 1 & any(class(glottodata) == "list") ){
+  if(simple == TRUE & length(glottodata) == 1 & any(class(glottodata) == "list") ){
     glottodata <- glottodata[[1]]
-  } else if(simplify == FALSE){
-    glottodata <- glottodata
   }
-
   return(glottodata)
 }
 
