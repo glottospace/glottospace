@@ -17,7 +17,4 @@ Besides diagnostic messages, this function invisibly returns TRUE if check is pa
 \description{
 Check whether rows have missing IDs.
 }
-\examples{
-suppressMessages(checkdata_idmissing(data = data, id = 1))
-}
 \keyword{internal}

@@ -4,10 +4,10 @@
 \alias{geoget_path}
 \title{Get spatial data from local path}
 \usage{
-geoget_path(path)
+geoget_path(filepath)
 }
 \arguments{
-\item{path}{Path to raster (RasterLayer or RasterStack) or vector data}
+\item{filepath}{Path to raster (RasterLayer or RasterStack) or vector data}
 }
 \value{
 

@@ -16,14 +16,14 @@
 #' \item "demosubdata" - Built-in artificial glottosubdata (included for demonstration and testing)
 #' }
 #' @param meta In case 'glottodata' is a path to locally stored data (or demodata/demosubdata): by default, meta sheets are not loaded. Use meta=TRUE if you want to include them.
-#' @param simplify In case 'glottodata' is a path to locally stored data  (or demodata/demosubdata): by default, if only one sheet is loaded, the data will be returned as a data.frame (instead of placing the data inside a list of length 1)
+#' @param simple In case 'glottodata' is a path to locally stored data  (or demodata/demosubdata): by default, if only one sheet is loaded, the data will be returned as a data.frame (instead of placing the data inside a list of length 1)
 #'
 #' @family <glottodata>
 #' @return
 #' @export
 #' @examples
 #' glottoget()
-glottoget <- function(glottodata = NULL, meta = FALSE, simplify = TRUE){
+glottoget <- function(glottodata = NULL, meta = FALSE, simple = TRUE){
   if(is.null(glottodata)){
     glottodata <- glottoget_glottobase()
   } else if(glottodata == "glottobase"){
@@ -33,11 +33,11 @@ glottoget <- function(glottodata = NULL, meta = FALSE, simplify = TRUE){
   } else if (glottodata == "glottospace"){
     glottodata <- glottoget_glottospace()
   }  else if(glottodata == "demodata"){
-    glottodata <- glottoget_path(meta = meta, simplify = simplify, create = "glottodata")
+    glottodata <- glottoget_path(meta = meta, simple = simple, create = "glottodata")
   } else if(glottodata == "demosubdata"){
-    glottodata <- glottoget_path(meta = meta, simplify = simplify, create = "glottosubdata")
+    glottodata <- glottoget_path(meta = meta, simple = simple, create = "glottosubdata")
   } else if(tools::file_ext(glottodata) != ""){
-    glottodata <- glottoget_path(filename = glottodata, meta = meta, simplify = simplify)
+    glottodata <- glottoget_path(filename = glottodata, meta = meta, simple = simple)
   } else {message("Unable to load requested glottodata")}
 return(glottodata)
 }
@@ -75,7 +75,7 @@ glottoget_remote <- function(glottodata = NULL){
 #'
 #' @param filename Path to glottodata file with extension (.xlsx .xls .gpkg .shp). If no filename is specified, an artificial dummy dataset will be created.
 #' @param meta By default, meta sheets are not loaded. Use meta=TRUE if you want to include them.
-#' @param simplify By default, if only one sheet is loaded, the data will be returned as a data.frame (instead of placing the data inside a list of length 1)
+#' @param simple By default, if only one sheet is loaded, the data will be returned as a data.frame (instead of placing the data inside a list of length 1)
 #' @param create In case 'filename' is not specified, artificial dummy data will be created in glottodata format (specify create = "glottosubdata" to create data in glottosubdata format)
 #' @family <glottodata>
 #' @return

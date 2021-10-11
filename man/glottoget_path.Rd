@@ -16,9 +16,9 @@ glottoget_path(
 
 \item{meta}{By default, meta sheets are not loaded. Use meta=TRUE if you want to include them.}
 
-\item{create}{In case 'filename' is not specified, artificial dummy data will be created in glottodata format (specify create = "glottosubdata" to create data in glottosubdata format)}
+\item{simple}{By default, if only one sheet is loaded, the data will be returned as a data.frame (instead of placing the data inside a list of length 1)}
 
-\item{simplify}{By default, if only one sheet is loaded, the data will be returned as a data.frame (instead of placing the data inside a list of length 1)}
+\item{create}{In case 'filename' is not specified, artificial dummy data will be created in glottodata format (specify create = "glottosubdata" to create data in glottosubdata format)}
 }
 \value{
 

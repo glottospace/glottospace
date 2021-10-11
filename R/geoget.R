@@ -21,7 +21,7 @@ geoget <- function(geodata, country = NULL){
   if(geodata %in% geodownload){
     geodata <- geoget_remote(download = geodata, country = country)
   } else {
-    geodata <- geoget_path(path = geodata)
+    geodata <- geoget_path(filepath = geodata)
   }
 
   return(geodata)
@@ -32,30 +32,30 @@ geoget <- function(geodata, country = NULL){
 #'
 #' Open spatial data from a local path (supports both raster and vector formats).
 #'
-#' @param path Path to raster (RasterLayer or RasterStack) or vector data
+#' @param filepath Path to raster (RasterLayer or RasterStack) or vector data
 #'
 #' @keywords internal
 #' @return
 #' @export
 #' @family <geodata>
-geoget_path <- function(path){
+geoget_path <- function(filepath){
 
-  if(!file.exists(path)){stop("Path not found")}
+  if(!file.exists(filepath)){stop("Path not found")}
 
 
-  # vec <- try(sf::st_read(path), silent = TRUE)
+  # vec <- try(sf::st_read(filepath), silent = TRUE)
   # if(all(class(vec) != "try-error")){message("Vector data loaded")}
-  vec <- tryCatch(sf::st_read(path), error=function(e){})
+  vec <- tryCatch(sf::st_read(dsn = filepath), error=function(e){})
   if(!is.null(vec)){ras <- NULL
   } else {
-    ras <- tryCatch(raster::raster(path), error=function(e){})
+    ras <- tryCatch(raster::raster(x = filepath), error=function(e){})
     if(!is.null(ras) & ras@file@nbands != 1) {
-      ras <- tryCatch(raster::stack(path), error=function(e){})
+      ras <- tryCatch(raster::stack(x = filepath), error=function(e){})
     }
   }
 
   if(is.null(vec) & is.null(ras)){
-    stop(paste0("Cannot open ", path))
+    stop(paste0("Cannot open ", filepath))
     }
 
   if(is.null(vec) & !is.null(ras)){
