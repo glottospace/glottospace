@@ -30,8 +30,9 @@ The **glottospace** package facilitates the geospatial analysis of linguistic an
 
 # Development
 This package is still under active development. While the basic functionality has been implemented, we're still working on adding new functions and improving existing ones. While using **glottospace** you will certainly find bugs or encounter things you might find confusing. You can help me improve the package by:
-- sending an email to [Sietze Norder](mailto:s.j.norder@hum.leidenuniv.nl) with a clear description of the issue or error message.  
-- opening a new issue in the [glottospace issues page on GitHub](https://github.com/SietzeN/glottospace/issues)
+
+- Sending an email to [Sietze Norder](mailto:s.j.norder@hum.leidenuniv.nl) with a clear description of the issue or error message.  
+- Opening a new issue in the [glottospace issues page on GitHub](https://github.com/SietzeN/glottospace/issues)
 
 # Citation
 Once there is a stable version of the package we intend to write a paper about it presenting its full functionality. If you find the **glottospace** package useful, please cite it in your work:
@@ -39,7 +40,7 @@ Once there is a stable version of the package we intend to write a paper about i
 ```{r, echo = FALSE}
 citation("glottospace")
 ```
-The package builds on the [glottolog](https://glottolog.org/) database and uses several rspatial packages, of which **sf** and **raster** are the most important ones. Please cite those as well. 
+The package builds on the [glottolog](https://glottolog.org/) database and uses several rspatial packages, of which **sf**, **raster** and **tmap** are the most important ones. Please cite those as well. 
 
 # Installation
 
@@ -348,7 +349,7 @@ glottomap(glottodata, color = "color")
 ## glottosave 
 All output generated with the glottospace package (data, figures, maps, etc.) can be saved with a single command. 
 
-```{r}
+```{r glottoworldmap}
 glottodata <- glottoget("demodata", meta = FALSE)
 # Saves as .xlsx
 glottosave(glottodata, filename = "glottodata")

@@ -610,7 +610,7 @@ glottodata <- glottospotlight(glottodata = glottodata, spotcol = "family_name", 
 glottomap(glottodata, color = "color")
 ```
 
-<img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
+<img src="man/figures/README-glottoworldmap-1.png" width="100%" />
 
 ## glottosave
 
