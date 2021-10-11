@@ -18,6 +18,6 @@ Besides diagnostic messages, this function invisibly returns TRUE if check is pa
 Check whether rows have missing IDs.
 }
 \examples{
-suppressMessages(check_idmissing(data = data, id = 1))
+suppressMessages(checkdata_idmissing(data = data, id = 1))
 }
 \keyword{internal}

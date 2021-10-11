@@ -147,7 +147,7 @@ glottocheck_metaweights <- function(glottodata){
 #' @export
 #'
 #' @examples
-#' suppressMessages(check_idmissing(data = data, id = 1))
+#' suppressMessages(checkdata_idmissing(data = data, id = 1))
 checkdata_idmissing <- function(data, id){
 
   idmissing <- nrow(data[is.na(data[,id]),] )

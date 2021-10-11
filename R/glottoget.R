@@ -123,6 +123,8 @@ glottoget_path <- function(filename = NULL, meta = FALSE, simplify = TRUE, creat
 
   if(simplify == TRUE & length(glottodata) == 1 & any(class(glottodata) == "list") ){
     glottodata <- glottodata[[1]]
+  } else if(simplify == FALSE){
+    glottodata <- glottodata
   }
 
   return(glottodata)
