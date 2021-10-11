@@ -4,22 +4,20 @@
 \alias{glottoget_path}
 \title{Load user-provided glottodata}
 \usage{
-glottoget_path(filepath = NULL, meta = FALSE, simple = TRUE, create = NULL)
+glottoget_path(filepath = NULL, meta = FALSE, simplify = TRUE)
 }
 \arguments{
-\item{filepath}{Path to glottodata file with extension (.xlsx .xls .gpkg .shp). If no filepath is specified, an artificial dummy dataset will be created.}
+\item{filepath}{Path to glottodata file with extension (.xlsx .xls .gpkg .shp). If no filepath is specified, an artificial demo dataset will be created.}
 
 \item{meta}{By default, meta sheets are not loaded. Use meta=TRUE if you want to include them.}
 
-\item{simple}{By default, if only one sheet is loaded, the data will be returned as a data.frame (instead of placing the data inside a list of length 1)}
-
-\item{create}{In case 'filepath' is not specified, artificial dummy data will be created in glottodata format (specify create = "glottosubdata" to create data in glottosubdata format)}
+\item{simplify}{By default, if only one sheet is loaded, the data will be returned as a data.frame (instead of placing the data inside a list of length 1)}
 }
 \value{
 
 }
 \description{
-Load glottodadata/glottosubdata from a file, or create artificial dummy data.
+Load glottodadata/glottosubdata from a file
 }
 \examples{
 glottoget_path()

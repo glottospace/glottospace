@@ -18,7 +18,7 @@ glottocheck_subdata(glottosubdata, diagnostic = TRUE)
 Quality check of user-provided glottosubdata
 }
 \examples{
-glottosubdata <- glottoget_glottodata(meta = FALSE, dummy = "glottosubdata")
+glottosubdata <- glottoget_glottodata(meta = FALSE, demo = "glottosubdata")
 glottosubdata <- join_glottodata(glottosubdata)
 glottocheck_subdata(glottosubdata)
 

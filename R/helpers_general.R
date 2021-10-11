@@ -87,7 +87,7 @@ glottospotlight <- function(glottodata, spotcol, spotlight, spotcontrast = NULL,
   suppressMessages(dplyr::left_join(glottodata, data[, c("glottocode", "spotlight", "legend", "color")]))
 }
 
-# xfun::gsub_dir(dir = "C:/Users/sjnor/surfdrive/PROJECTS_SN/SAPPHIRE/R/glottospace/R", pattern = "geoget(path", replacement = "geoget(filepath")
+# xfun::gsub_dir(dir = "C:/Users/sjnor/surfdrive/PROJECTS_SN/SAPPHIRE/R/glottospace/R", pattern = "dummy", replacement = "demo")
 
 is_dist <- function(object){
   any(class(object) == "dist")

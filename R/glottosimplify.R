@@ -12,6 +12,10 @@ glottodrop <- function(glottodata){
 
 if(glottocheck_hasmeta(glottodata)){
 
+
+  # if(simple == TRUE & length(glottodata) == 1 & any(class(glottodata) == "list") ){
+  #   glottodata <- glottodata[[1]]
+  # }
 }
 
 if(glottocheck_isglottosubdata(glottodata)){

@@ -235,30 +235,63 @@ glottocreate_glottosubcodes <- function(glottocode, groups = NULL, n){
 
 }
 
-glottocreate_dummydata <- function(){
-  dummy <- glottocreate_data(glottocodes = c("yucu1253", "tani1257", "ticu1245", "orej1242", "nade1244", "mara1409"), variables = 3)
-  dummy$glottodata[,"var001"] <- c("Y", NA, "Y", "N", "N", "N")
-  dummy$glottodata[,"var002"] <- c("a", "b", "a", "b", "c", "a")
-  dummy$glottodata[,"var003"] <- c("N", "Y", "Y", "N", "Y", "N")
+#' Create demodata
+#'
+#' @return
+#' @export
+#'
+glottocreate_demodata <- function(meta = TRUE){
+  demo <- glottocreate_data(glottocodes = c("yucu1253", "tani1257", "ticu1245", "orej1242", "nade1244", "mara1409"), variables = 3, meta = meta)
+  if(meta == TRUE){
+    demodata <- demo$glottodata
+    demo$structure[,"type"] <- c("symm", "factor", "symm")
+  } else{
+    demodata <- demo
+  }
 
-  dummy$structure[,"type"] <- c("symm", "factor", "symm")
+  demodata[,"var001"] <- c("Y", NA, "Y", "N", "N", "N")
+  demodata[,"var002"] <- c("a", "b", "a", "b", "c", "a")
+  demodata[,"var003"] <- c("N", "Y", "Y", "N", "Y", "N")
 
-  dummy
+  if(meta == TRUE){
+    demo$glottodata <- demodata
+  } else{
+    demo <- demodata
+  }
+
+  demo
 }
 
-glottocreate_dummysubdata <- function(){
-  dummy <- glottocreate_subdata(glottocodes = c("yucu1253", "tani1257"), variables = 3, groups = c("a", "b"), n = 5)
-  dummy[[1]][,"var001"] <- sample(c("Y", "N", NA), size = 10, replace = TRUE)
-  dummy[[1]][,"var002"] <- sample(c("a", "b", NA), size = 10, replace = TRUE)
-  dummy[[1]][,"var003"] <- sample(c("Y", "N", NA), size = 10, replace = TRUE)
+#' Create demosubdata
+#'
+#' @return
+#' @export
+#'
+glottocreate_demosubdata <- function(meta = TRUE){
+  demo <- glottocreate_subdata(glottocodes = c("yucu1253", "tani1257"), variables = 3, groups = c("a", "b"), n = 5, meta = meta)
 
-  dummy[[2]][,"var001"] <- sample(c("Y", "N", NA), size = 10, replace = TRUE)
-  dummy[[2]][,"var002"] <- sample(c("a", "b", NA), size = 10, replace = TRUE)
-  dummy[[2]][,"var003"] <- sample(c("Y", "N", NA), size = 10, replace = TRUE)
+  if(meta == TRUE){
+    demodata <- demo$glottodata
+    demo$structure[,"type"] <- c("symm", "factor", "symm")
+  } else{
+    demodata <- demo
+  }
 
-  dummy$structure[,"type"] <- c("symm", "factor", "symm")
+  demodata[[1]][,"var001"] <- sample(c("Y", "N", NA), size = 10, replace = TRUE)
+  demodata[[1]][,"var002"] <- sample(c("a", "b", NA), size = 10, replace = TRUE)
+  demodata[[1]][,"var003"] <- sample(c("Y", "N", NA), size = 10, replace = TRUE)
 
-  dummy
+  demodata[[2]][,"var001"] <- sample(c("Y", "N", NA), size = 10, replace = TRUE)
+  demodata[[2]][,"var002"] <- sample(c("a", "b", NA), size = 10, replace = TRUE)
+  demodata[[2]][,"var003"] <- sample(c("Y", "N", NA), size = 10, replace = TRUE)
+
+  if(meta == TRUE){
+    demo$glottodata <- demodata
+  } else{
+    demo <- demodata
+  }
+
+  demo
 }
 
 #' Add a table to glottodata

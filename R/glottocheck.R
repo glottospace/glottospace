@@ -69,7 +69,7 @@ glottocheck_data <- function(glottodata, diagnostic = TRUE){
 #' @export
 #' @family <glottocheck>
 #' @examples
-#' glottosubdata <- glottoget_glottodata(meta = FALSE, dummy = "glottosubdata")
+#' glottosubdata <- glottoget_glottodata(meta = FALSE, demo = "glottosubdata")
 #' glottosubdata <- join_glottodata(glottosubdata)
 #' glottocheck_subdata(glottosubdata)
 #'

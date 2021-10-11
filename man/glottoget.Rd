@@ -4,7 +4,7 @@
 \alias{glottoget}
 \title{Get glottodata from local path or online global databases}
 \usage{
-glottoget(glottodata = NULL, meta = FALSE, simple = TRUE)
+glottoget(glottodata = NULL, meta = FALSE)
 }
 \arguments{
 \item{glottodata}{options are:
@@ -29,7 +29,7 @@ spatial coordinates.
 
 }
 \description{
-Load locally stored glottodata, download databases from online sources, or load built-in dummy data
+Load locally stored glottodata, download databases from online sources, or load built-in demo data
 }
 \examples{
 glottoget()

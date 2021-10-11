@@ -1,6 +1,6 @@
 #' Get glottodata from local path or online global databases
 #'
-#' Load locally stored glottodata, download databases from online sources, or load built-in dummy data
+#' Load locally stored glottodata, download databases from online sources, or load built-in demo data
 #'
 #' @param glottodata options are:
 #' \itemize{
@@ -23,7 +23,7 @@
 #' @export
 #' @examples
 #' glottoget()
-glottoget <- function(glottodata = NULL, meta = FALSE, simple = TRUE){
+glottoget <- function(glottodata = NULL, meta = FALSE){
   if(is.null(glottodata)){
     glottodata <- glottoget_glottobase()
   } else if(glottodata == "glottobase"){
@@ -32,12 +32,12 @@ glottoget <- function(glottodata = NULL, meta = FALSE, simple = TRUE){
     glottodata <- glottoget_glottolog()
   } else if (glottodata == "glottospace"){
     glottodata <- glottoget_glottospace()
-  }  else if(glottodata == "demodata"){
-    glottodata <- glottoget_path(meta = meta, simple = simple, create = "glottodata")
+  } else if(glottodata == "demodata"){
+    glottodata <- glottocreate_demodata(meta = meta)
   } else if(glottodata == "demosubdata"){
-    glottodata <- glottoget_path(meta = meta, simple = simple, create = "glottosubdata")
+    glottodata <- glottocreate_demosubdata(meta = meta)
   } else if(tools::file_ext(glottodata) != ""){
-    glottodata <- glottoget_path(filepath = glottodata, meta = meta, simple = simple)
+    glottodata <- glottoget_path(filepath = glottodata, meta = meta)
   } else {message("Unable to load requested glottodata")}
 return(glottodata)
 }
@@ -71,12 +71,11 @@ glottoget_remote <- function(glottodata = NULL){
 
 #' Load user-provided glottodata
 #'
-#' Load glottodadata/glottosubdata from a file, or create artificial dummy data.
+#' Load glottodadata/glottosubdata from a file
 #'
-#' @param filepath Path to glottodata file with extension (.xlsx .xls .gpkg .shp). If no filepath is specified, an artificial dummy dataset will be created.
+#' @param filepath Path to glottodata file with extension (.xlsx .xls .gpkg .shp). If no filepath is specified, an artificial demo dataset will be created.
 #' @param meta By default, meta sheets are not loaded. Use meta=TRUE if you want to include them.
-#' @param simple By default, if only one sheet is loaded, the data will be returned as a data.frame (instead of placing the data inside a list of length 1)
-#' @param create In case 'filepath' is not specified, artificial dummy data will be created in glottodata format (specify create = "glottosubdata" to create data in glottosubdata format)
+#' @param simplify By default, if only one sheet is loaded, the data will be returned as a data.frame (instead of placing the data inside a list of length 1)
 #' @family <glottodata>
 #' @return
 #' @export
@@ -85,14 +84,11 @@ glottoget_remote <- function(glottodata = NULL){
 #' glottoget_path()
 #' glottoget_path(filepath = "glottodata.xlsx")
 #' glottoget_path(filepath = "glottodata.gpkg")
-glottoget_path <- function(filepath = NULL, meta = FALSE, simple = TRUE, create = NULL){
-  if(is.null(create) ){create <- "glottodata"}
-
+glottoget_path <- function(filepath = NULL, meta = FALSE, simplify = TRUE){
 
   metasheets <- c("structure",  "metadata",   "references", "readme",     "lookup" )
 
-  if(!is.null(filepath)){
-    if(tools::file_ext(filepath) == ".xlsx" | tools::file_ext(filepath) == ".xls"){
+  if(tools::file_ext(filepath) == ".xlsx" | tools::file_ext(filepath) == ".xls"){
     sheetnames <- readxl::excel_sheets(filepath)
   if(meta == TRUE){
     sheetnames <- sheetnames
@@ -106,23 +102,7 @@ glottoget_path <- function(filepath = NULL, meta = FALSE, simple = TRUE, create 
       glottodata <- sf::st_read(dsn = filepath)
     }
 
-  } else {
-    if(create == "glottodata"){glottodata <- glottocreate_dummydata()
-    } else if(create == "glottosubdata"){
-      glottodata <- glottocreate_dummysubdata()
-    }
-    sheetnames <- names(glottodata)
-    if(meta == TRUE){
-      sheetnames <- sheetnames
-    } else {
-      sheetnames <- sheetnames[sheetnames %nin% metasheets]
-    }
-
-    glottodata <- glottodata[sheetnames]
-
-  }
-
-  if(simple == TRUE & length(glottodata) == 1 & any(class(glottodata) == "list") ){
+  if(simplify == TRUE & length(glottodata) == 1 & any(class(glottodata) == "list") ){
     glottodata <- glottodata[[1]]
   }
   return(glottodata)
