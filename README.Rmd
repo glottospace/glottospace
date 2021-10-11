@@ -1,5 +1,8 @@
 ---
-output: rmarkdown::github_document
+output: 
+  github_document: 
+  toc: TRUE
+  toc_depth: 2
 always_allow_html: true
 ---
 
@@ -313,7 +316,7 @@ glottomap(climatedutchies, color = "precipitation_mean", ptsize = 1)
 ## geodist
 geodistances: calculate distances between languages, nearest languages, etc.
 ```{r geodist}
-glottodata <- glottoget()
+glottodata <- glottoget("demodata")
 glottodataspace <- glottospace(glottodata)
 geodist(points = glottodataspace)
 ```
