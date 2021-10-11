@@ -37,7 +37,7 @@ glottoget <- function(glottodata = NULL, meta = FALSE, simple = TRUE){
   } else if(glottodata == "demosubdata"){
     glottodata <- glottoget_path(meta = meta, simple = simple, create = "glottosubdata")
   } else if(tools::file_ext(glottodata) != ""){
-    glottodata <- glottoget_path(filename = glottodata, meta = meta, simple = simple)
+    glottodata <- glottoget_path(filepath = glottodata, meta = meta, simple = simple)
   } else {message("Unable to load requested glottodata")}
 return(glottodata)
 }
@@ -73,36 +73,37 @@ glottoget_remote <- function(glottodata = NULL){
 #'
 #' Load glottodadata/glottosubdata from a file, or create artificial dummy data.
 #'
-#' @param filename Path to glottodata file with extension (.xlsx .xls .gpkg .shp). If no filename is specified, an artificial dummy dataset will be created.
+#' @param filepath Path to glottodata file with extension (.xlsx .xls .gpkg .shp). If no filepath is specified, an artificial dummy dataset will be created.
 #' @param meta By default, meta sheets are not loaded. Use meta=TRUE if you want to include them.
 #' @param simple By default, if only one sheet is loaded, the data will be returned as a data.frame (instead of placing the data inside a list of length 1)
-#' @param create In case 'filename' is not specified, artificial dummy data will be created in glottodata format (specify create = "glottosubdata" to create data in glottosubdata format)
+#' @param create In case 'filepath' is not specified, artificial dummy data will be created in glottodata format (specify create = "glottosubdata" to create data in glottosubdata format)
 #' @family <glottodata>
 #' @return
 #' @export
 #' @seealso glottosave
 #' @examples
 #' glottoget_path()
-#' glottoget_path(filename = "glottodata.xlsx")
-#' glottoget_path(filename = "glottodata.gpkg")
-glottoget_path <- function(filename = NULL, meta = FALSE, simple = TRUE, create = "glottodata"){
+#' glottoget_path(filepath = "glottodata.xlsx")
+#' glottoget_path(filepath = "glottodata.gpkg")
+glottoget_path <- function(filepath = NULL, meta = FALSE, simple = TRUE, create = NULL){
+  if(is.null(create) ){create <- "glottodata"}
 
 
   metasheets <- c("structure",  "metadata",   "references", "readme",     "lookup" )
 
-  if(!is.null(filename)){
-    if(tools::file_ext(filename) == ".xlsx" | tools::file_ext(filename) == ".xls"){
-    sheetnames <- readxl::excel_sheets(filename)
+  if(!is.null(filepath)){
+    if(tools::file_ext(filepath) == ".xlsx" | tools::file_ext(filepath) == ".xls"){
+    sheetnames <- readxl::excel_sheets(filepath)
   if(meta == TRUE){
     sheetnames <- sheetnames
   } else {
     sheetnames <- sheetnames[sheetnames %nin% metasheets]
   }
   glottodata <- base::lapply(X = sheetnames,
-                         FUN = readxl::read_excel, path = filename)
+                         FUN = readxl::read_excel, path = filepath)
   names(glottodata) <- sheetnames
-    } else if(tools::file_ext(filename) == ".gpkg" | tools::file_ext(filename) == ".shp"){
-      glottodata <- sf::st_read(dsn = filename)
+    } else if(tools::file_ext(filepath) == ".gpkg" | tools::file_ext(filepath) == ".shp"){
+      glottodata <- sf::st_read(dsn = filepath)
     }
 
   } else {
@@ -194,11 +195,11 @@ glottolog_download <- function(){
   # https://github.com/cran/raster/blob/master/R/getData.R
   # https://rdrr.io/github/inbo/inborutils/src/R/download_zenodo.R
   base_url <- "https://cdstar.shh.mpg.de/bitstreams/EAEA0-E62D-ED67-FD05-0/"
-  filename <- "glottolog_languoid.csv.zip"
-  url <- paste0(base_url, filename)
-  if(!base::file.exists(filename)){
-    utils::download.file(url = url, destfile = filename)}
-  data <- utils::read.csv(unz(filename, "languoid.csv"), header = TRUE, encoding = "UTF-8")
+  filepath <- "glottolog_languoid.csv.zip"
+  url <- paste0(base_url, filepath)
+  if(!base::file.exists(filepath)){
+    utils::download.file(url = url, destfile = filepath)}
+  data <- utils::read.csv(unz(filepath, "languoid.csv"), header = TRUE, encoding = "UTF-8")
 }
 
 
@@ -210,7 +211,7 @@ glottolog_download_cldf <- function(destdir = tempdir()){
   # title <- gsub(".*:", "", content$metadata$title)
   # version <- content$metadata$version
   url <- content$files[[1]]$links[[1]]
-  # filename <- base::basename(url)
+  # filepath <- base::basename(url)
   destdir <- paste0(normalizePath(destdir, winslash = "/", mustWork = FALSE), "/cldf")
   tmpfile <- tempfile()
   # tmpfile <- tempfile(tmpdir = destdir)
