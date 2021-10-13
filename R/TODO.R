@@ -87,6 +87,9 @@
 # glottomap & glottoplot ---------------------------------------------------------------
 # FIXME: 3d plot nmds
 # bbox expansion: default true, but optional.
+# administrative units of lower level
+# 360 degrees to focal region
+
 
 # save & export -----------------------------------------------------------
 # TODO: overwrite = TRUE/FALSE

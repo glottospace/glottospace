@@ -36,13 +36,23 @@
 #' "family_name", spotlight = families$family_name[-c(1:10)], spotcontrast = "family_name", bgcontrast = "family_name")
 #' glottomap(glottodata, color = "color")
 glottomap <- function(glottodata = NULL, color = NULL, label = NULL, type = NULL, ptsize = NULL, transparency = NULL, lbsize = NULL, ...){
-  if(is.null(glottodata)){glottodata <- glottofilter(...)}
+  if(is.null(type)){type <- "static"}
+
+  if(is.null(glottodata)){
+    glottodata <- glottofilter(...)
+    if(mapview::npts(glottodata) == 1 & type == "static"){ #added to solve issue with countries that are not polygons in naturalearthdata (they consist of a single point)
+      # glottodata <- sf::st_buffer(glottodata, dist = 0)
+      type <- "dynamic"
+      message("The country you are trying to plot is too small for a static map, returning a dynamic map instead.")
+    }
+
+  }
   if(is.null(ptsize)){ptsize <- 0.35}
   if(is.null(lbsize)){lbsize <- 0.75}
   if(is.null(transparency)){transparency <- 0.65}
   if(!is_sf(glottodata) ) {glottodata <- join_glottospace(glottodata)}
 
-  if(is.null(type)){type <- "static"}
+
   if(is.null(color)){color <- "black"}
 
   if(type == "dynamic"){

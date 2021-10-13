@@ -90,6 +90,11 @@ glottofilter <- function(glottodata = NULL, isocodes = NULL,
     glottodata <- glottodata %>%
       dplyr::filter(region %in% selection)
   }
+
+  if(nrow(glottodata) == 0){
+    message("No search results. Use glottosearch() first to find what you're looking for")
+  } else{
   return(glottodata)
+  }
 }
 
