@@ -8,7 +8,8 @@ glottofilter(
   glottodata = NULL,
   isocodes = NULL,
   glottocode = NULL,
-  family_name = NULL,
+  name = NULL,
+  family = NULL,
   family_id = NULL,
   continent = NULL,
   country = NULL,
@@ -25,7 +26,7 @@ glottofilter(
 
 \item{glottocode}{A character vector of glottocodes}
 
-\item{family_name}{A character vector of language families}
+\item{family}{A character vector of language families}
 
 \item{family_id}{A character vector of language family IDs}
 
@@ -49,9 +50,9 @@ glottodata <- gs_upgrade(data = glottoraw)
 # Filter glottodata
 points <- glottofilter(glottodata = glottodata, isocodes = colnames(distmat))
 points <- glottofilter(glottodata = glottodata, glottocode = "wari1268")
-points <- glottofilter(glottodata = glottodata, family_name = 'Indo-European')
+points <- glottofilter(glottodata = glottodata, family = 'Indo-European')
 points <- glottofilter(glottodata = glottodata, continent = "South America")
 points <- glottofilter(glottodata = glottodata, country = c("Colombia", "Venezuela"))
-points <- glottofilter(glottodata = glottodata, expression = family_name \%in\% c("Arawakan", "Tucanoan"))
+points <- glottofilter(glottodata = glottodata, expression = family \%in\% c("Arawakan", "Tucanoan"))
 }
 \concept{<glottofilter><glottosearch>}

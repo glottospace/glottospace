@@ -22,7 +22,7 @@
 # TODO: Replace 'User-provided glottodata' with 'A glottodata table' (or glottodata list in some cases)
 # xfun::gsub_dir(dir = "C:/Users/sjnor/surfdrive/PROJECTS_SN/SAPPHIRE/R/glottospace/R", pattern = "glottocreatesubdata", replacement = "glottocreate_subdata")
 
-# xfun::gsub_dir(dir = "C:/Users/sjnor/surfdrive/PROJECTS_SN/SAPPHIRE/R/glottospace/R", pattern = "join_glotto", replacement = "glottojoin_")
+# xfun::gsub_dir(dir = "C:/Users/sjnor/surfdrive/PROJECTS_SN/SAPPHIRE/R/glottospace/R", pattern = "family_name", replacement = "family")
 
 
 # checkdata ---------------------------------------------------------------
@@ -41,7 +41,6 @@
 
 # glottofilter --------------------------------------------------------------
 # TODO: glottofilter: by location (bbox and drawing on plot)
-# TODO: filter by language name!
 # TODO: make more tolerant: if no country/continent/region found, message did you mean: country?
 # make sure that's not case-senisitive 'Europe' vs. 'europe'
 # TODO: glottofilter: Make more flexible country or continent, if user specifies country = "South America" this should also work.
@@ -60,14 +59,10 @@
 # FIXME: currently colnames is hardcoded, perhaps it should be the first column by default, unless a name is provided. Create clear error message to indicate this.
 
 # glottospace -------------------------------------------------------------
-# TODO: one wrapper function called glottospace. That replaces glottodata_addcoords, glottodata_makespatial, points2pols
 # TODO: check whether glottodata has meta, if so only glottodata should be made spatial (not meta columns)
 
-# TODO: if buffer, elongated shape because of equal area projection, mention in readme
-
-
-# glottodrop --------------------------------------------------------------
-
+# glottosimplify --------------------------------------------------------------
+# TODO: simplify structure
 
 
 # geodata & geotools -----------------------------------------------------------------

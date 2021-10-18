@@ -36,8 +36,8 @@ Plot nmds
 Join nmds scores with glottodata:
 nmds <- glottonmds(glottodata, k = 2)
 scores <- glottonmds_scores(nmds)
-scoresdata <- join_glottobase(scores)
+scoresdata <- glottojoin_base(scores)
 
-glottoplot_nmds(nmds = nmds, scoresdata = scoresdata, colorby = "family_name", sizeby = "isolate")
+glottoplot_nmds(nmds = nmds, scoresdata = scoresdata, colorby = "family", sizeby = "isolate")
 glottoplot_nmds(nmds = nmds, scoresdata = scoresdata, colorby = "isolate")
 }
