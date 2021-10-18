@@ -25,18 +25,18 @@
 #'
 glottojoin <- function(glottodata, with = NULL, id = NULL, rm.na = FALSE){
   if(is_list(glottodata) & is.null(with)){
-    joined <- join_glottodatalist(glottodatalist = glottodata)
+    joined <- glottojoin_datalist(glottodatalist = glottodata)
   } else if(!is.null(with)){
     if(is_dist(with)){
-    joined <- join_glottodist(glottodata = glottodata, id = id, dist = with, rm.na = rm.na)
+    joined <- glottojoin_dist(glottodata = glottodata, id = id, dist = with, rm.na = rm.na)
     } else if(is_list(with)){
-    joined <- join_glottometa(glottodata = glottodata, glottometa = with)
+    joined <- glottojoin_meta(glottodata = glottodata, glottometa = with)
   } else if(with == "glottobase"){
-    joined <- join_glottobase(glottodata = glottodata, id = id)
+    joined <- glottojoin_base(glottodata = glottodata, id = id)
   } else if(with == "glottospace"){
-    joined <- join_glottospace(glottodata = glottodata, id = id)
+    joined <- glottojoin_space(glottodata = glottodata, id = id)
   }  else if(is.data.frame(glottodata) & is.data.frame(with)){
-    joined <- join_glottodata(glottodata = glottodata, with = with)
+    joined <- glottojoin_data(glottodata = glottodata, with = with)
   } else(message("Class of input data not supported.") )
   }
 return(joined)
@@ -53,11 +53,11 @@ return(joined)
 #' @export
 #'
 #' @examples
-#' distdf <- join_glottodist(glottodata = glottodata, dist = dist)
+#' distdf <- glottojoin_dist(glottodata = glottodata, dist = dist)
 #'
 #' After joining, you can subset the distance columns by using the IDs:
 #' distdf[, distdf$glottocode]
-join_glottodist <- function(glottodata, id = NULL, dist, rm.na = FALSE){
+glottojoin_dist <- function(glottodata, id = NULL, dist, rm.na = FALSE){
   id <- contrans_id2gc(id)
   distmat <- as.matrix(dist)
 
@@ -95,8 +95,8 @@ join_glottodist <- function(glottodata, id = NULL, dist, rm.na = FALSE){
 #'
 #' @examples
 #' glottodata <- glottoget_path(meta = FALSE)
-#' join_glottobase(glottodata)
-join_glottobase <- function(glottodata, id = NULL){
+#' glottojoin_base(glottodata)
+glottojoin_base <- function(glottodata, id = NULL){
   id <- contrans_id2gc(id)
   glottobase <- glottoget_glottobase()
   glottodata <- dplyr::left_join(x = glottodata, y = glottobase, by = id)
@@ -117,8 +117,8 @@ join_glottobase <- function(glottodata, id = NULL){
 #' @seealso glottodata_makespatial glottodata_addcoords
 #' @examples
 #' glottodata <- glottoget_path(meta = FALSE)
-#' join_glottospace(glottodata)
-join_glottospace <- function(glottodata, id = NULL){
+#' glottojoin_space(glottodata)
+glottojoin_space <- function(glottodata, id = NULL){
   id <- contrans_id2gc(id)
   glottospace <- glottoget_glottospace()
   glottodata <- dplyr::left_join(x = glottodata, y = glottospace, by = id)
@@ -135,8 +135,8 @@ join_glottospace <- function(glottodata, id = NULL){
 #'
 #' @examples
 #' glottodatalist <- glottoget_glottodata("glottosubdata.xlsx", meta = FALSE)
-#' join_glottodata(glottodatalist = glottodatalist)
-join_glottodatalist <- function(glottodatalist){
+#' glottojoin_data(glottodatalist = glottodatalist)
+glottojoin_datalist <- function(glottodatalist){
   checkdata_lscolcount(glottodatalist) # stops if number of columns is not identical
   do.call("rbind", glottodatalist) # alternative approaches: data.table::rbindlist or plyr::rbind.fill
 }
@@ -157,8 +157,8 @@ join_glottodatalist <- function(glottodatalist){
 #' @examples
 #' glottodatax <- glottoget_path(meta = FALSE)
 #' glottodatay <- glottoget_path(meta = FALSE)
-#' join_glottodata(glottodatax, glottodatay)
-join_glottodata <- function(glottodata, with, id = NULL){
+#' glottojoin_data(glottodatax, glottodatay)
+glottojoin_data <- function(glottodata, with, id = NULL){
   id <- contrans_id2gc(id)
   dplyr::left_join(x = glottodata, y = with, by = id)
 }
@@ -176,8 +176,8 @@ join_glottodata <- function(glottodata, with, id = NULL){
 #' glottodata <- glottoget_path(meta = TRUE)
 #' glottometa <- glottodata[-1]
 #' glottodata <- glottodata[[1]]
-#' join_glottometa(glottodata, glottometa)
-join_glottometa <- function(glottodata, glottometa, name = NULL){
+#' glottojoin_meta(glottodata, glottometa)
+glottojoin_meta <- function(glottodata, glottometa, name = NULL){
 
   if(is_sf(glottodata)){
     glottodata <- list("glottodata" = glottodata)

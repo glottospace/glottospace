@@ -70,10 +70,10 @@ glottocheck_data <- function(glottodata, diagnostic = TRUE){
 #' @family <glottocheck>
 #' @examples
 #' glottosubdata <- glottoget_glottodata(meta = FALSE, demo = "glottosubdata")
-#' glottosubdata <- join_glottodata(glottosubdata)
+#' glottosubdata <- glottojoin_data(glottosubdata)
 #' glottocheck_subdata(glottosubdata)
 #'
-#' Better to join_glottodata first, instead of the following approach (because checks only within each language for duplicates etc.)
+#' Better to glottojoin_data first, instead of the following approach (because checks only within each language for duplicates etc.)
 #' lapply(glottosubdata, glottocheck_subdata)
 glottocheck_subdata <- function(glottosubdata, diagnostic = TRUE){
   id <- "glottosubcode"

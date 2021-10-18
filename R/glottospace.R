@@ -31,7 +31,7 @@ glottospace <- function(glottodata, method = NULL, radius = NULL, country = NULL
   }
 
   # if(hasmeta){
-  #   glottodata <- join_glottometa(glottodata = glottodata, glottometa = glottometa)
+  #   glottodata <- glottojoin_meta(glottodata = glottodata, glottometa = glottometa)
   # }
 return(glottodata)
 }
@@ -159,7 +159,7 @@ glottodata_addcountries <- function(glottodata){
 #' glottodata_makespatial(glottodata)
 glottodata_makespatial <- glottodata_addcoords <- function(glottodata){
   if(class(glottodata)[1] != "sf") {
-    glottodata <- join_glottospace(glottodata)
+    glottodata <- glottojoin_space(glottodata)
     glottodata <- sf::st_sf(glottodata)
   }
   glottodata

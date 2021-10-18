@@ -50,7 +50,7 @@ glottomap <- function(glottodata = NULL, color = NULL, label = NULL, type = NULL
   if(is.null(ptsize)){ptsize <- 0.35}
   if(is.null(lbsize)){lbsize <- 0.75}
   if(is.null(transparency)){transparency <- 0.65}
-  if(!is_sf(glottodata) ) {glottodata <- join_glottospace(glottodata)}
+  if(!is_sf(glottodata) ) {glottodata <- glottojoin_space(glottodata)}
 
 
   if(is.null(color)){color <- "black"}

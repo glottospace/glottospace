@@ -19,7 +19,7 @@ if(glottocheck_hasmeta(glottodata)){
 }
 
 if(glottocheck_isglottosubdata(glottodata)){
-  glottodata <- join_glottodatalist(glottodata)
+  glottodata <- glottojoin_datalist(glottodata)
 }
 
 if(is_sf(glottodata)){
