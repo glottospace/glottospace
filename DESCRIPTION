@@ -18,6 +18,7 @@ Imports:
     dplyr (>= 1.0.6),
     Hmisc,
     magrittr,
+    mapview,
     purrr,
     rgeos,
     rnaturalearth,
