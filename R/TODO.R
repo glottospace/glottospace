@@ -41,6 +41,7 @@
 
 # glottofilter --------------------------------------------------------------
 # TODO: glottofilter: by location (bbox and drawing on plot)
+# TODO: filter by language name!
 # TODO: make more tolerant: if no country/continent/region found, message did you mean: country?
 # make sure that's not case-senisitive 'Europe' vs. 'europe'
 # TODO: glottofilter: Make more flexible country or continent, if user specifies country = "South America" this should also work.
@@ -88,8 +89,12 @@
 # FIXME: 3d plot nmds
 # bbox expansion: default true, but optional.
 # administrative units of lower level
-# 360 degrees to focal region
+# Center map: https://stackoverflow.com/questions/10620862/use-different-center-than-the-prime-meridian-in-plotting-a-world-map
+# use: coord_map(xlim = c(-180, 180)) or coord_map(xlim = c(0, 360)) instead of scale_x_continuous(limits = c(0, 360))
+# Plot on a sphere (Lambert Azimuthal Equal Area): # # https://proj.org/operations/projections/laea.html
+# # https://stackoverflow.com/questions/43207947/whole-earth-polygon-for-world-map-in-ggplot2-and-sf
 
+# https://stackoverflow.com/questions/26102012/plotting-world-map-in-orthographic-projection-is-giving-non-finite-points
 
 # save & export -----------------------------------------------------------
 # TODO: overwrite = TRUE/FALSE

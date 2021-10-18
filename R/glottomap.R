@@ -120,18 +120,20 @@ glottomap_static <- function(glottodata, label, color, ptsize, lbsize, transpare
   wrld_proj <- sf::st_make_valid(wrld_proj)
   wrld_proj <- sf::st_geometry(wrld_proj)
 
-  glottodata_proj <- sf::st_transform(glottodata, crs = "+proj=eck4")
+  glottodata <- sf::st_make_valid(glottodata)
+  glottodata_wrap <- sf::st_wrap_dateline(glottodata, options = c("WRAPDATELINE=YES","DATELINEOFFSET=180"), quiet = TRUE)
+  glottodata_proj <- sf::st_transform(glottodata_wrap, crs = "+proj=eck4")
 
   bbox <- sf::st_bbox(glottodata_proj)
   bboxe <- bbox_expand(bbox, f = 0.1)
   wrld_projbb <- sf::st_crop(wrld_proj, bboxe)
 
   tmap::tm_shape(wrld_projbb) + tmap::tm_fill(col = "white", alpha = 1) + tmap::tm_borders(lwd=1.2) +
-    {if(is_polygon(glottodata))
-      tmap::tm_shape(glottodata) +
+    {if(is_polygon(glottodata_proj))
+      tmap::tm_shape(glottodata_proj) +
         tmap::tm_polygons(col = color)} +
-    {if(is_point(glottodata))
-      tmap::tm_shape(glottodata) +
+    {if(is_point(glottodata_proj))
+      tmap::tm_shape(glottodata_proj) +
         tmap::tm_symbols(col = color, scale = ptsize, alpha = transparency) } +
     {if(!purrr::is_empty(label)) tmap::tm_text(text = label, size = lbsize, auto.placement = TRUE)} +
     tmap::tm_legend(legend.outside = TRUE) + tmap::tm_layout(bg.color = "grey85", inner.margins = c(0,0,0,0))
@@ -190,7 +192,6 @@ geomap <- function(geodata){
 #
 #   return(out)
 # }
-#
 #
 #
 #
