@@ -18,11 +18,13 @@ Imports:
     dplyr (>= 1.0.6),
     Hmisc,
     magrittr,
+    mapview,
     purrr,
     rgeos,
     rnaturalearth,
     rnaturalearthdata,
-    sf
+    sf,
+    tmap
 Depends: 
     R (>= 2.10)
 Remotes:  
