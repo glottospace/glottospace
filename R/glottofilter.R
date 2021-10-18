@@ -29,7 +29,7 @@
 #' points <- glottofilter(glottodata = glottodata, country = c("Colombia", "Venezuela"))
 #' points <- glottofilter(glottodata = glottodata, expression = family %in% c("Arawakan", "Tucanoan"))
 glottofilter <- function(glottodata = NULL, isocodes = NULL,
-                      glottocode = NULL, family = NULL, family_id = NULL,
+                      glottocode = NULL, name = NULL, family = NULL, family_id = NULL,
                       continent = NULL, country = NULL, region = NULL, expression = NULL){
 
   # filter glottolog data
@@ -66,6 +66,11 @@ glottofilter <- function(glottodata = NULL, isocodes = NULL,
     selection <- family
     glottodata <- glottodata %>%
       dplyr::filter(family %in% selection)
+  }
+  if(!purrr::is_empty(name)){
+    selection <- name
+    glottodata <- glottodata %>%
+      dplyr::filter(name %in% selection)
   }
   if(!purrr::is_empty(family_id)){
     selection <- family_id
