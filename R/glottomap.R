@@ -25,15 +25,15 @@
 #' glottomap(glottodata = glottopols, color = "family_size_rank")
 #'
 #' glottodata <- glottoget_remote()
-#' families <- glottodata %>% dplyr::count(family_name, sort = TRUE)
+#' families <- glottodata %>% dplyr::count(family, sort = TRUE)
 #'
 #' # highlight 10 largest families:
 #' glottodata <- glottospotlight(glottodata = glottodata, spotcol =
-#' "family_name", spotlight = families$family_name[1:10], spotcontrast = "family_name", bgcontrast = "family_name")
+#' "family", spotlight = families$family[1:10], spotcontrast = "family", bgcontrast = "family")
 #'
 #' # Or, place 10 largest families in background
 #' glottodata <- glottospotlight(glottodata = glottodata, spotcol =
-#' "family_name", spotlight = families$family_name[-c(1:10)], spotcontrast = "family_name", bgcontrast = "family_name")
+#' "family", spotlight = families$family[-c(1:10)], spotcontrast = "family", bgcontrast = "family")
 #' glottomap(glottodata, color = "color")
 glottomap <- function(glottodata = NULL, color = NULL, label = NULL, type = NULL, ptsize = NULL, transparency = NULL, lbsize = NULL, ...){
   if(is.null(type)){type <- "static"}

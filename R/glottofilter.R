@@ -7,7 +7,7 @@
 #'   \code{\link{as_geoglot}}.
 #' @param isocodes A character vector of iso639P3codes
 #' @param glottocode A character vector of glottocodes
-#' @param family_name A character vector of language families
+#' @param family A character vector of language families
 #' @param family_id A character vector of language family IDs
 #' @param continent A character vector of continents
 #' @param country A character vector of countries
@@ -24,12 +24,12 @@
 #' # Filter glottodata
 #' points <- glottofilter(glottodata = glottodata, isocodes = colnames(distmat))
 #' points <- glottofilter(glottodata = glottodata, glottocode = "wari1268")
-#' points <- glottofilter(glottodata = glottodata, family_name = 'Indo-European')
+#' points <- glottofilter(glottodata = glottodata, family = 'Indo-European')
 #' points <- glottofilter(glottodata = glottodata, continent = "South America")
 #' points <- glottofilter(glottodata = glottodata, country = c("Colombia", "Venezuela"))
-#' points <- glottofilter(glottodata = glottodata, expression = family_name %in% c("Arawakan", "Tucanoan"))
+#' points <- glottofilter(glottodata = glottodata, expression = family %in% c("Arawakan", "Tucanoan"))
 glottofilter <- function(glottodata = NULL, isocodes = NULL,
-                      glottocode = NULL, family_name = NULL, family_id = NULL,
+                      glottocode = NULL, family = NULL, family_id = NULL,
                       continent = NULL, country = NULL, region = NULL, expression = NULL){
 
   # filter glottolog data
@@ -62,10 +62,10 @@ glottofilter <- function(glottodata = NULL, isocodes = NULL,
     glottodata <- glottodata %>%
       dplyr::filter(glottocode %in% selection)
   }
-  if(!purrr::is_empty(family_name)){
-    selection <- family_name
+  if(!purrr::is_empty(family)){
+    selection <- family
     glottodata <- glottodata %>%
-      dplyr::filter(family_name %in% selection)
+      dplyr::filter(family %in% selection)
   }
   if(!purrr::is_empty(family_id)){
     selection <- family_id

@@ -99,7 +99,7 @@ glottonmds_scores <- function(glottonmds){
 #' scores <- glottonmds_scores(nmds)
 #' scoresdata <- glottojoin_base(scores)
 #'
-#' glottoplot_nmds(nmds = nmds, scoresdata = scoresdata, colorby = "family_name", sizeby = "isolate")
+#' glottoplot_nmds(nmds = nmds, scoresdata = scoresdata, colorby = "family", sizeby = "isolate")
 #' glottoplot_nmds(nmds = nmds, scoresdata = scoresdata, colorby = "isolate")
 glottoplot_nmds <- function(nmds, scoresdata, colorby = NULL, sizeby = NULL, labelby = NULL, filename = NULL){
 

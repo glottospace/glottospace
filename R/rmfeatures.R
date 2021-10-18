@@ -16,7 +16,7 @@ rowdrop_bookkeeping <- function(glottodata){
 }
 
 rowdrop_bookkeeping <- function(glottodata){
-  glotto_filter(family_name = "sign")
+  glotto_filter(family = "sign")
 
 
   glottodata <- glottodata %>% dplyr::filter(bookkeeping == FALSE)

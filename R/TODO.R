@@ -22,7 +22,7 @@
 # TODO: Replace 'User-provided glottodata' with 'A glottodata table' (or glottodata list in some cases)
 # xfun::gsub_dir(dir = "C:/Users/sjnor/surfdrive/PROJECTS_SN/SAPPHIRE/R/glottospace/R", pattern = "glottocreatesubdata", replacement = "glottocreate_subdata")
 
-# xfun::gsub_dir(dir = "C:/Users/sjnor/surfdrive/PROJECTS_SN/SAPPHIRE/R/glottospace/R", pattern = "glottocheck_metaweights", replacement = "glottocheck_metaweights")
+# xfun::gsub_dir(dir = "C:/Users/sjnor/surfdrive/PROJECTS_SN/SAPPHIRE/R/glottospace/R", pattern = "join_glotto", replacement = "glottojoin_")
 
 
 # checkdata ---------------------------------------------------------------
@@ -36,8 +36,8 @@
 # Perhaps replace glottocreate_structuretable with glottodata_createstructuretable, that feels more logical, because it's an operation on glottodata
 # Be more explicit about tables and lists: glottodata can be stored in a table or in a list of tables.
 
-# joindata ----------------------------------------------------------------
-# TODO: change naming to glottojoindist, glottojoinbase, glottojoinspace
+# glottojoin ----------------------------------------------------------------
+
 
 # glottofilter --------------------------------------------------------------
 # TODO: glottofilter: by location (bbox and drawing on plot)
@@ -46,6 +46,10 @@
 # make sure that's not case-senisitive 'Europe' vs. 'europe'
 # TODO: glottofilter: Make more flexible country or continent, if user specifies country = "South America" this should also work.
 # FIXME: error with expression
+
+
+# glottodrop --------------------------------------------------------------
+# TODO: drop languages based on conditions, for example, remove all Indo-European languages.
 
 
 # glottosearch ------------------------------------------------------------

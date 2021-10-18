@@ -42,7 +42,7 @@ glottologbooster <- function(glottologdata, geoglot = TRUE){
 glottolog_addfamilyname <- function(glottologdata){
     families <- glottologdata %>%
       dplyr::filter(level == "family") %>%
-      dplyr::transmute(family_id = id, family_name = name)
+      dplyr::transmute(family_id = id, family = name)
 
     dplyr::left_join(x = glottologdata, y = families, by = "family_id")
 }
@@ -59,8 +59,8 @@ glottolog_addisolates <- function(glottologdata){
     glottologdata$isolate <-   ifelse(
       ( (glottologdata$family_id == "") & (glottologdata$level != "family") ),
       TRUE, FALSE)
-    # # assign language name to family_name
-    glottologdata[glottologdata$isolate == TRUE, "family_name"] <- glottologdata[glottologdata$isolate == TRUE, "name"]
+    # # assign language name to family
+    glottologdata[glottologdata$isolate == TRUE, "family"] <- glottologdata[glottologdata$isolate == TRUE, "name"]
     # assign glottocode to family_id
     glottologdata[glottologdata$isolate == TRUE, "family_id"] <- glottologdata[glottologdata$isolate == TRUE, "id"]
 
