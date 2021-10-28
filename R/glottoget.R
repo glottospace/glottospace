@@ -154,6 +154,12 @@ glottoget_glottospace <- function(){
 #' @examples
 #' glottodata <- glottoget_glottolog()
 glottoget_glottolog <- function(data = NULL){
+  # TODO: build in fall back options, try one first, if that doesn't work, try next one.
+  # Check whether file exists locally
+  # Check local version
+  # Check remote version
+  # If newer version is available: ask user whether they want to download it
+  # If that doesn't work, use built-in glottobase
   if(is.null(data) ){data <- "glottolog"}
   if(data == "glottolog"){
     glottodata <- glottolog_download()
@@ -166,9 +172,16 @@ glottoget_glottolog <- function(data = NULL){
   return(glottodata)
 }
 
+glottoget_glottolog_v2 <- function(){
+  if(glottolog_version_remote() > glottolog_version_local()){
+  glottolog_download_cldf()
+  }
+}
+
 glottolog_download <- function(){
   # FIXME: Now URL is fixed, which means that it doesn't update when newer version of glottolog becomes available.
   # TODO: try other URL if first one fails.
+  # TODO: give message of which file version was downloaded, or loaded in case it was already available locally
   # https://stackoverflow.com/questions/12193779/how-to-write-trycatch-in-r
   # from glottolog website or from zenodo.
 
@@ -184,25 +197,82 @@ glottolog_download <- function(){
 
 
 
-glottolog_download_cldf <- function(destdir = tempdir()){
+
+
+#' Local directory with glottospace package files
+#'
+#' Loads path to local directory where glottospace files are stored and creates directory in a platform independent way in case it doesn't exist.
+#'
+#' @return
+#' @export
+#'
+glottofiles_cachedir <- function(){
+  cachedir <- base::normalizePath(rappdirs::user_data_dir("glottospace"), winslash = "\\", mustWork = FALSE)
+  if(!base::dir.exists(cachedir)){
+    base::dir.create(cachedir, recursive = TRUE)
+  }
+  cachedir
+}
+
+#' Create local path for a filename
+#'
+#' @param filename
+#'
+#' @return
+#' @export
+#'
+glottofiles_makepath <- function(filename){
+  filedir <- glottofiles_cachedir()
+  filepath <- base::file.path(filedir, filename)
+  normalizePath(filepath, winslash = "\\", mustWork = FALSE)
+  # pkgfilecache::are_files_available(pkgfilecache::get_pkg_info("glottospace"), "something.gpkg")
+}
+
+#' Create local directory for a dirname
+#'
+#' @param dirname
+#'
+#' @return
+#' @export
+#'
+glottofiles_makedir <- function(dirname){
+  filedir <- glottofiles_cachedir()
+  dirpath <- base::file.path(filedir, dirname)
+  dirpath <- normalizePath(dirpath, winslash = "\\", mustWork = FALSE)
+  if(!base::dir.exists(dirpath)){
+    base::dir.create(dirpath, recursive = TRUE)
+  }
+  dirpath
+}
+
+glottolog_version_remote <- function(){
   base_url <-  "https://zenodo.org/api/records/4762034"
   req <- curl::curl_fetch_memory(base_url)
   content <- RJSONIO::fromJSON(rawToChar(req$content))
   # title <- gsub(".*:", "", content$metadata$title)
-  # version <- content$metadata$version
-  url <- content$files[[1]]$links[[1]]
-  # filepath <- base::basename(url)
-  destdir <- paste0(normalizePath(destdir, winslash = "/", mustWork = FALSE), "/cldf")
-  tmpfile <- tempfile()
-  # tmpfile <- tempfile(tmpdir = destdir)
-  utils::download.file(url = url, destfile = tmpfile )
-  utils::unzip(zipfile = tmpfile, exdir = destdir)
-  # FIXME: regex *-metadata.json
-  cldf_md <- base::list.files(destdir, pattern = "cldf-metadata.json", recursive = TRUE)
-  cldfpath <- paste(destdir,
-                    stringr::str_remove(cldf_md, "cldf-metadata.json"), sep = "/" )
-  return(cldfpath)
+  as.numeric(gsub(pattern = "v", x = content$metadata$version, replacement = ""))
 }
 
+glottolog_version_local <- function(){
+  dirs <- list.dirs(glottofiles_cachedir(), full.names = FALSE, recursive = FALSE)
+  glottologdirs <- dirs[grepl(pattern = "glottolog-cldf-v", x = dirs)]
+  # glottologdirs <- c("glottolog-cldf-v4.4", "glottolog-cldf-v4.5")
+  versions <- gsub(pattern = "glottolog-cldf-v", x = glottologdirs, replacement = "")
+  max(as.numeric(versions))
+}
 
-
+glottolog_download_cldf <- function(){
+  base_url <-  "https://zenodo.org/api/records/4762034"
+  req <- curl::curl_fetch_memory(base_url)
+  content <- RJSONIO::fromJSON(rawToChar(req$content))
+  url <- content$files[[1]]$links[[1]]
+  filename <- base::basename(url)
+  filepath <- glottofiles_makepath(filename)
+  exdir <- glottofiles_makedir(tools::file_path_sans_ext(filename))
+  utils::download.file(url = url, destfile = filepath )
+  utils::unzip(zipfile = filepath, exdir = exdir)
+  message(paste(gsub(".*:", "", content$metadata$title), "downloaded"))
+  # FIXME: regex *-metadata.json
+  cldf_metadata <- base::list.files(exdir, pattern = "cldf-metadata.json", recursive = TRUE)
+  base::dirname(normalizePath(file.path(exdir, cldf_metadata)))
+}
