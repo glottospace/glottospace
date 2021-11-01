@@ -22,7 +22,7 @@ glottofilter(
 \code{\link{glottoget_glottolog}} or \code{\link{as_glot}}  or
 \code{\link{as_geoglot}}.}
 
-\item{isocodes}{A character vector of iso639P3codes}
+\item{isocodes}{A character vector of iso639p3codes}
 
 \item{glottocode}{A character vector of glottocodes}
 

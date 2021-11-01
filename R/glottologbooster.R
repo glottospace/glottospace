@@ -19,7 +19,7 @@ glottologbooster <- function(glottologdata, geoglot = TRUE){
   glottologdata <- glottolog_rmartifam(glottologdata)
   glottologdata <- glottolog_rmsignlangs(glottologdata)
 
-  glottologdata <- glottologdata %>% dplyr::rename("glottocode" = "id", "isocode" = "iso639P3code")
+  glottologdata <- glottologdata %>% dplyr::rename("glottocode" = "id", "isocode" = "iso639p3code")
 
   glottologdata <- glottologdata %>% dplyr::select(-c(level, description,
                                                       markup_description,

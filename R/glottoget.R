@@ -119,7 +119,7 @@ glottoget_path <- function(filepath = NULL, meta = FALSE, simplify = TRUE){
 #' @examples
 #' glottobase <- glottoget_glottobase()
 glottoget_glottobase <- function(){
-  glottolog <- glottoget_glottolog(data = "glottolog")
+  glottolog <- glottoget_glottolog()
   glottobase <- glottologbooster(glottologdata = glottolog)
   glottobase
 }
@@ -135,7 +135,7 @@ glottoget_glottobase <- function(){
 #' @examples
 #' glottospace <- glottoget_glottospace()
 glottoget_glottospace <- function(){
-  glottologdata <- glottoget_glottolog(data = "glottolog")
+  glottologdata <- glottoget_glottolog()
   glottologdata <- glottologdata %>% dplyr::rename("glottocode" = "id")
   glottospace <- glot2geoglot(glottologdata)
   glottospace <- glottospace[,c("glottocode")]
@@ -143,57 +143,51 @@ glottoget_glottospace <- function(){
 
 
 
-#' Download glottolog data
+
+
+#' Get glottolog data
 #'
-#' @param data One of \code{"glottolog"} or
-#'   \code{"glottolog_cldf"}.
+#' This function checks whether most recent version of glottolog is locally available. If local version is outdated, the newest version will be downloaded.
 #'
-#' @return Either a glot or geoglot object.
+#' @return
 #' @export
 #'
 #' @examples
-#' glottodata <- glottoget_glottolog()
-glottoget_glottolog <- function(data = NULL){
-  # TODO: build in fall back options, try one first, if that doesn't work, try next one.
-  # Check whether file exists locally
-  # Check local version
-  # Check remote version
-  # If newer version is available: ask user whether they want to download it
-  # If that doesn't work, use built-in glottobase
-  if(is.null(data) ){data <- "glottolog"}
-  if(data == "glottolog"){
-    glottodata <- glottolog_download()
-  } else if(data == "glottolog_cldf"){
-    cldfpath <- glottolog_download_cldf()
-    glottodata <- read_cldf(mdpath = cldfpath)
-  } else {
-    stop("Could not get glottolog data")
+#' glottoget_glottolog()
+glottoget_glottolog <- function(){
+  if(glottolog_version_remote() == glottolog_version_local()){
+    glottolog_loadlocal()
+  } else if(glottolog_version_remote() > glottolog_version_local()){
+    glottolog_download()
   }
-  return(glottodata)
+
 }
 
-glottoget_glottolog_v2 <- function(){
-  if(glottolog_version_remote() > glottolog_version_local()){
-  glottolog_download_cldf()
-  }
-}
-
+#' Download glottolog data
+#'
+#' This function tries to download glottolog data from zenodo in cldf format. If that fails, it tries to download from glottolog.org
+#' @noRd
+#' @return
+#' @export
+#'
 glottolog_download <- function(){
-  # FIXME: Now URL is fixed, which means that it doesn't update when newer version of glottolog becomes available.
-  # TODO: try other URL if first one fails.
-  # TODO: give message of which file version was downloaded, or loaded in case it was already available locally
-  # https://stackoverflow.com/questions/12193779/how-to-write-trycatch-in-r
-  # from glottolog website or from zenodo.
-
-  # https://github.com/cran/raster/blob/master/R/getData.R
-  # https://rdrr.io/github/inbo/inborutils/src/R/download_zenodo.R
-  base_url <- "https://cdstar.shh.mpg.de/bitstreams/EAEA0-E62D-ED67-FD05-0/"
-  filepath <- "glottolog_languoid.csv.zip"
-  url <- paste0(base_url, filepath)
-  if(!base::file.exists(filepath)){
-    utils::download.file(url = url, destfile = filepath)}
-  data <- utils::read.csv(unz(filepath, "languoid.csv"), header = TRUE, encoding = "UTF-8")
+  out <- try(
+    expr = glottolog_download_cldf(),
+    silent = TRUE
+  )
+  if(class(out) == "try-error"){
+    out <- try(
+      expr = glottolog_download_webpage(),
+      silent = TRUE
+    )
+  }
+  if(class(out) != "try-error"){
+    return(out)
+  } else {
+    message("Unable to download glottolog data, please check your internet connection")
+  }
 }
+
 
 
 
@@ -245,6 +239,11 @@ glottofiles_makedir <- function(dirname){
   dirpath
 }
 
+#' Check what's the most recent version of glottolog
+#'
+#' @return
+#' @export
+#'
 glottolog_version_remote <- function(){
   base_url <-  "https://zenodo.org/api/records/4762034"
   req <- curl::curl_fetch_memory(base_url)
@@ -253,26 +252,116 @@ glottolog_version_remote <- function(){
   as.numeric(gsub(pattern = "v", x = content$metadata$version, replacement = ""))
 }
 
+#' Check which version of glottolog is available on your computer
+#'
+#' @return
+#' @export
+#'
+#' @examples
 glottolog_version_local <- function(){
   dirs <- list.dirs(glottofiles_cachedir(), full.names = FALSE, recursive = FALSE)
-  glottologdirs <- dirs[grepl(pattern = "glottolog-cldf-v", x = dirs)]
-  # glottologdirs <- c("glottolog-cldf-v4.4", "glottolog-cldf-v4.5")
-  versions <- gsub(pattern = "glottolog-cldf-v", x = glottologdirs, replacement = "")
-  max(as.numeric(versions))
+  if(purrr::is_empty(dirs)){
+    return(0)
+  } else{
+    glottologdirs <- dirs[grepl(pattern = "glottolog-cldf-v", x = dirs)]
+    if(purrr::is_empty(glottologdirs)){
+      return(0)
+    } else{
+    versions <- gsub(pattern = "glottolog-cldf-v", x = glottologdirs, replacement = "")
+    return(max(as.numeric(versions)))
+    }
+  }
+
 }
 
+#' Download glottolog data from glottolog website
+#'
+#' @return
+#' @export
+#'
+glottolog_download_webpage <- function(){
+  base_url <- "https://cdstar.shh.mpg.de/bitstreams/EAEA0-E62D-ED67-FD05-0/" # Newest version is always uploaded here!
+  filename <- "glottolog_languoid.csv.zip"
+  url <- paste0(base_url, filename)
+  filepath <- glottofiles_makepath(filename)
+
+  utils::download.file(url = url, destfile = filepath) # always downloads newest version (overwrites previous one)
+  exdir <- glottofiles_makedir(tools::file_path_sans_ext(tools::file_path_sans_ext(filename)))
+  utils::unzip(zipfile = filepath, exdir = exdir)
+  glottologdata <- utils::read.csv(unz(filepath, "languoid.csv"), header = TRUE, encoding = "UTF-8")
+  colnames(glottologdata) <- base::tolower(colnames(glottologdata))
+  message("Glottolog data downloaded. This is the most recent version available from www.glottolog.org.")
+  invisible(glottologdata)
+}
+
+#' Download glottolog data from zenodo, and select relevant data from cldf data
+#'
+#' @return
+#' @export
+#'
+#' @examples
 glottolog_download_cldf <- function(){
-  base_url <-  "https://zenodo.org/api/records/4762034"
+  glottolog_download_zenodo()
+  glottolog_loadlocal()
+}
+
+#' Download most recent version of glottolog from zenodo (cldf format)
+#'
+#' @return
+#' @export
+#'
+glottolog_download_zenodo <- function(){
+  base_url <-  "https://zenodo.org/api/records/4762034" # Newest version is always uploaded here!
   req <- curl::curl_fetch_memory(base_url)
   content <- RJSONIO::fromJSON(rawToChar(req$content))
   url <- content$files[[1]]$links[[1]]
   filename <- base::basename(url)
   filepath <- glottofiles_makepath(filename)
   exdir <- glottofiles_makedir(tools::file_path_sans_ext(filename))
+
   utils::download.file(url = url, destfile = filepath )
   utils::unzip(zipfile = filepath, exdir = exdir)
-  message(paste(gsub(".*:", "", content$metadata$title), "downloaded"))
-  # FIXME: regex *-metadata.json
+  message(paste0("Glottolog data downloaded (glottolog ", content$metadata$version,"). This is the most recent version available from https://zenodo.org/record/4762034)") )
+}
+
+#' Load locally stored glottolog data
+#'
+#' @return
+#' @export
+#'
+glottolog_loadlocal <- function(){
+  exdir <- glottofiles_makedir(paste0("glottolog-cldf-v", glottolog_version_local()))
   cldf_metadata <- base::list.files(exdir, pattern = "cldf-metadata.json", recursive = TRUE)
-  base::dirname(normalizePath(file.path(exdir, cldf_metadata)))
+  mdpath <- normalizePath(file.path(exdir, cldf_metadata))
+  mddir <- normalizePath(base::dirname(mdpath))
+
+  # Load languages file
+  languoids <- normalizePath(file.path(mddir, "languages.csv"))
+  languoids <- utils::read.csv(languoids, header = TRUE, encoding = "UTF-8")
+  colnames(languoids) <- base::tolower(colnames(languoids))
+  colnames(languoids)[which(colnames(languoids) == "id")] <- "lang_id"
+
+
+  # Load values file
+  values <- normalizePath(file.path(mddir, "values.csv"))
+  values <- utils::read.csv(values, header = TRUE, encoding = "UTF-8")
+  colnames(values) <- base::tolower(colnames(values))
+  colnames(values)[colnames(values) == "language_id"] <- "lang_id"
+  values <- tidyr::pivot_wider(data = values, names_from = "parameter_id", values_from = "value")
+
+  levels <- values[!is.na(values$level), c("lang_id", "level")]
+  category <- values[!is.na(values$category), c("lang_id", "category")]
+  category$bookkeeping <- apply(classification[,"classification"], 1, function(x){ifelse(tolower(x) == "bookkeeping", TRUE, FALSE)})
+  classification <- values[!is.na(values$classification), c("lang_id", "classification")]
+  classification$parent_id <- apply(classification[,"classification"], 1, function(x){sub(".*/", "", x)})
+
+  glottologdata <- languoids %>% dplyr::left_join(levels, by = "lang_id") %>%
+    dplyr::left_join(category, by = "lang_id") %>%
+    dplyr::left_join(classification, by = "lang_id") %>%
+    dplyr::arrange(lang_id)
+
+  colnames(glottologdata)[which(colnames(glottologdata) == "lang_id")] <- "id"
+
+  message(paste0("Glottolog data loaded from local path (glottolog v", glottolog_version_local(),").") )
+  invisible(glottologdata)
 }

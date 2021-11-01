@@ -28,13 +28,6 @@ is_true <- function(x) {
     x == TRUE
 }
 
-glottodata <- glottofilter(country = c("Netherlands", "Belgium", "Germany"))
-spotcol <- "country"
-spotlight <- "Netherlands" # which rows should be put in the spotlights? Remaining rows are background
-
-  spotcontrast <- "name" # column where groups of spotlight can be found
-  bgcontrast <- NULL # Optional column where groups of background can be found
-
 #' Highlight certain data points in visualizations
 #'
 #' This function creates two separate color scales: one for points to highlight,

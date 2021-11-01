@@ -208,4 +208,63 @@ geomap <- function(geodata){
 #
 #
 #
+# From Oskar:
+# list.of.packages <-
+#   c("geosphere", # For spatial methods
+#     "threejs",   # threejs is used for 3-D interactive Earth Visualization
+#     "rworldmap", # For creating earth map
+#     "leaflet",   # Leaflet for R provides functions to control and integrate Leaflet, a JavaScript library for interactive maps, within R.
+#     "rgeos",      # Provides functions for handling operations on topologies.
+#     "raster",     # For raster image
+#     "DT",         # For creating interactive tables
+#     "ggplot2",
+#     "sp"   ,       # For Spatial processing of data
+#     "ggmap",       # To reverse geocode Long/Lat
+#     "knitr",        # TO enable 3-D visualization embedding in the HTML page
+#     "rglwidget",
+#     "rgl"
+#   )
+# lapply(list.of.packages,function(x){suppressMessages(suppressWarnings(library(x,character.only=TRUE)))})
+# knit_hooks$set(webgl = hook_webgl)
 #
+# ra <- rasterToPoints(rasta, spatial = TRUE)
+# # Then to a 'conventional' dataframe
+# df  <- data.frame(ra)
+#
+# worldmap <- ggplot() +
+#   geom_raster(data = df , aes(x = x, y = y, fill = X0)) +
+#   scale_fill_gradientn(colours = gen3sis::color_richness(10))+
+#   coord_quickmap()
+#
+# worldmap
+# worldmap + coord_polar()
+#
+#
+# wm <- ggplot(df, aes(x, y)) +
+#   geom_tile(aes(fill = X0), colour = "grey")+
+#   scale_fill_gradientn(colours = gen3sis::color_richness(10))
+#
+# wm <- ggplot(df, aes(x, y)) +
+#   geom_tile(aes(fill = X0))+
+#   scale_fill_gradientn(colours = gen3sis::color_richness(10))
+#
+# wm
+#
+#
+# wm +
+#   theme(panel.background = element_rect(fill = 'gray', colour = 'white'),
+#         panel.grid.major = element_line(color = "white"),
+#         panel.grid.minor = element_line(color = "white"))+
+#   coord_map("ortho", orientation=c(15, -10, 0))
+#
+# #load ocean
+# ocean <- readOGR("C:/VITAL LOCAL/Meus Documentos/ETH PhD/SecPapers/Hagen_MountainClimate&Cold-AdaptedPlants_JBI_2019/Data/Richness Patterns/ocean_layer/ocean.shp")
+#
+# wm+geom_polygon(data=ocean, aes(long, lat, group = group), colour = "black", size = 0.7)
+#
+# o <- fortify(ocean)
+#
+# wmn <- wm+geom_polygon(data=o, aes(long, lat, group = piece), colour = "black", fill = NA, size = 1.7)
+#
+# wmn + coord_map("ortho", orientation=c(15, -10, 0))
+

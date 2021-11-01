@@ -2,20 +2,16 @@
 % Please edit documentation in R/glottoget.R
 \name{glottoget_glottolog}
 \alias{glottoget_glottolog}
-\title{Download glottolog data}
+\title{Get glottolog data}
 \usage{
-glottoget_glottolog(data = NULL)
-}
-\arguments{
-\item{data}{One of \code{"glottolog"} or
-\code{"glottolog_cldf"}.}
+glottoget_glottolog()
 }
 \value{
-Either a glot or geoglot object.
+
 }
 \description{
-Download glottolog data
+This function checks whether most recent version of glottolog is locally available. If local version is outdated, the newest version will be downloaded.
 }
 \examples{
-glottodata <- glottoget_glottolog()
+glottoget_glottolog()
 }

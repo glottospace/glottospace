@@ -5,7 +5,7 @@
 #' @param glottodata glot or geoglot object obtained with
 #'   \code{\link{glottoget_glottolog}} or \code{\link{as_glot}}  or
 #'   \code{\link{as_geoglot}}.
-#' @param isocodes A character vector of iso639P3codes
+#' @param isocodes A character vector of iso639p3codes
 #' @param glottocode A character vector of glottocodes
 #' @param family A character vector of language families
 #' @param family_id A character vector of language family IDs
