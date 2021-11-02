@@ -4,18 +4,50 @@
 \alias{glottologbooster}
 \title{Glottologbooster: enhance glottolog data}
 \usage{
-glottologbooster(glottologdata, geoglot = TRUE)
+glottologbooster(
+  glottologdata = NULL,
+  space = TRUE,
+  addfamname = TRUE,
+  addisolates = TRUE,
+  rmdialects = TRUE,
+  rmfamilies = TRUE,
+  addfamsize = TRUE,
+  addfamsizerank = TRUE,
+  rmbookkeeping = TRUE,
+  rmartifam = TRUE,
+  rmsignlangs = TRUE
+)
 }
 \arguments{
-\item{glottologdata}{data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{glottoget_path("glottolog")}}}
+\item{glottologdata}{data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{glottoget_glottolog()}}}
+
+\item{space}{Return spatial object?}
+
+\item{addfamname}{Add column with familiy names?}
+
+\item{addisolates}{Add column to identify isolates?}
+
+\item{rmdialects}{Remove rows with dialects?}
+
+\item{rmfamilies}{Remove rows with families?}
+
+\item{addfamsize}{Add column with family size?}
+
+\item{addfamsizerank}{Add column with family size rank?}
+
+\item{rmbookkeeping}{Remove bookkeeping rows and delete bookkeeping column?}
+
+\item{rmartifam}{Remove rows that refer to artificial families?}
+
+\item{rmsignlangs}{Remove rows with sign languages?}
 }
 \value{
 
 }
 \description{
-Glottologbooster: enhance glottolog data
+Note that the different options are additional. For example, if you set rmfamilies to TRUE and space = TRUE, most families will still be removed since they lack spatial coordinates.
 }
 \examples{
-glottologdata <- glottoget_path("glottolog")
+glottologdata <- glottoget_glottolog()
 glottologdata <- glottologbooster(glottologdata)
 }

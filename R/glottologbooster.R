@@ -1,31 +1,47 @@
 #' Glottologbooster: enhance glottolog data
 #'
-#' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{glottoget_path("glottolog")}}
+#' Note that the different options are additional. For example, if you set rmfamilies to TRUE and space = TRUE, most families will still be removed since they lack spatial coordinates.
+#'
+#' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{glottoget_glottolog()}}
+#' @param space Return spatial object?
+#' @param addfamname Add column with familiy names?
+#' @param addisolates Add column to identify isolates?
+#' @param rmdialects Remove rows with dialects?
+#' @param rmfamilies Remove rows with families?
+#' @param addfamsize Add column with family size?
+#' @param addfamsizerank Add column with family size rank?
+#' @param rmbookkeeping Remove bookkeeping rows and delete bookkeeping column?
+#' @param rmartifam Remove rows that refer to artificial families?
+#' @param rmsignlangs Remove rows with sign languages?
 #'
 #' @return
 #' @export
 #'
 #' @examples
-#' glottologdata <- glottoget_path("glottolog")
+#' glottologdata <- glottoget_glottolog()
 #' glottologdata <- glottologbooster(glottologdata)
-glottologbooster <- function(glottologdata, geoglot = TRUE){
-  glottologdata <- glottolog_addfamilyname(glottologdata)
-  glottologdata <- glottolog_addisolates(glottologdata)
-  glottologdata <- glottolog_rmdialects(glottologdata)
-  glottologdata <- glottolog_rmfamilies(glottologdata)
-  glottologdata <- glottolog_addfamilysize(glottologdata)
-  glottologdata <- glottolog_addfamilysizerank(glottologdata)
-  glottologdata <- glottolog_rmbookkeeping(glottologdata)
-  glottologdata <- glottolog_rmartifam(glottologdata)
-  glottologdata <- glottolog_rmsignlangs(glottologdata)
+glottologbooster <- function(glottologdata = NULL, space = TRUE,
+                             addfamname = TRUE, addisolates = TRUE,
+                             rmdialects = TRUE, rmfamilies = TRUE,
+                             addfamsize = TRUE, addfamsizerank = TRUE,
+                             rmbookkeeping = TRUE, rmartifam = TRUE,
+                             rmsignlangs = TRUE){
+  if(is.null(glottologdata)){
+    glottologdata <- glottoget_glottolog()
+  }
+  if(addfamname == TRUE){glottologdata <- glottolog_addfamilyname(glottologdata) }
+  if(addisolates == TRUE){glottologdata <- glottolog_addisolates(glottologdata) }
+  if(rmdialects == TRUE){glottologdata <- glottolog_rmdialects(glottologdata) }
+  if(addfamsize == TRUE){glottologdata <- glottolog_addfamilysize(glottologdata) }
+  if(addfamsizerank == TRUE){glottologdata <- glottolog_addfamilysizerank(glottologdata) }
+  if(rmbookkeeping == TRUE){glottologdata <- glottolog_rmbookkeeping(glottologdata) }
+  if(rmartifam == TRUE){glottologdata <- glottolog_rmartifam(glottologdata) }
+  if(rmsignlangs == TRUE){glottologdata <- glottolog_rmsignlangs(glottologdata) }
+  if(rmfamilies == TRUE){glottologdata <- glottolog_rmfamilies(glottologdata) }
 
   glottologdata <- glottologdata %>% dplyr::rename("glottocode" = "id", "isocode" = "iso639p3code")
 
-  glottologdata <- glottologdata %>% dplyr::select(-c(level, description,
-                                                      markup_description,
-                                                      child_family_count,
-                                                      child_language_count))
-  if(geoglot == TRUE){
+  if(space == TRUE){
   glottologdata <- glot2geoglot(glottologdata)
   glottologdata <- glottodata_addcountries(glottologdata)
   }
@@ -99,7 +115,7 @@ glottolog_rmfamilies <- function(glottologdata){
 glottolog_rmbookkeeping <- function(glottologdata){
   # unique(glottologdata$bookkeeping)
   glottologdata %>%
-    dplyr::filter(bookkeeping == "False") %>%
+    dplyr::filter(bookkeeping == FALSE) %>%
     dplyr::select(-bookkeeping)
 }
 

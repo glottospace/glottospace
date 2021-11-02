@@ -4,7 +4,10 @@
 \alias{glottoget_glottobase}
 \title{Get glottobase reference data}
 \usage{
-glottoget_glottobase()
+glottoget_glottobase(...)
+}
+\arguments{
+\item{...}{Arguments to glottologbooster}
 }
 \value{
 

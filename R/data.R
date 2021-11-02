@@ -12,4 +12,16 @@
 #' }
 "glottobase"
 
-
+#' Load glottolog data
+#'
+#' This is an internally stored version of glottolog data. It is included in the package as a fall-back option in case there is no internet connection.
+#'
+#' @format A data frame with XX rows and XX variables:
+#' \describe{
+#'   \item{var1}{explain}
+#'   \item{var2}{explain}
+#'   ...
+#' }
+#' @source \url{http://www.glottolog.org/
+#' }
+"glottolog"

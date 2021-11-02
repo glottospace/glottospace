@@ -113,14 +113,16 @@ glottoget_path <- function(filepath = NULL, meta = FALSE, simplify = TRUE){
 #'
 #' Downloads most recent glottolog data and transforms it. This 'glottobase' is used as reference dataset in several functions.
 #'
+#' @param ... Arguments to glottologbooster
+#'
 #' @return
 #' @export
 #'
 #' @examples
 #' glottobase <- glottoget_glottobase()
-glottoget_glottobase <- function(){
+glottoget_glottobase <- function(...){
   glottolog <- glottoget_glottolog()
-  glottobase <- glottologbooster(glottologdata = glottolog)
+  glottobase <- glottologbooster(glottologdata = glottolog, ...)
   glottobase
 }
 
@@ -155,12 +157,24 @@ glottoget_glottospace <- function(){
 #' @examples
 #' glottoget_glottolog()
 glottoget_glottolog <- function(){
-  if(glottolog_version_remote() == glottolog_version_local()){
-    glottolog_loadlocal()
-  } else if(glottolog_version_remote() > glottolog_version_local()){
-    glottolog_download()
-  }
+  if(curl::has_internet()){
+    if(glottolog_version_remote() == glottolog_version_local()){
+      out <- glottolog_loadlocal()
+    } else if(glottolog_version_remote() > glottolog_version_local()){
+      out <- glottolog_download()
+    }
+  } else { # If there's no internet connection, try to load local data, or else load built-in data.
+    out <- try(
+      expr = glottolog_loadlocal(),
+      silent = TRUE
+    )
+    if(class(out) == "try-error"){
+      data("glottolog")
+      out <- glottolog
+    }
 
+  }
+return(out)
 }
 
 #' Download glottolog data
@@ -184,7 +198,7 @@ glottolog_download <- function(){
   if(class(out) != "try-error"){
     return(out)
   } else {
-    message("Unable to download glottolog data, please check your internet connection")
+    message("Unable to download glottolog data.")
   }
 }
 
@@ -257,7 +271,6 @@ glottolog_version_remote <- function(){
 #' @return
 #' @export
 #'
-#' @examples
 glottolog_version_local <- function(){
   dirs <- list.dirs(glottofiles_cachedir(), full.names = FALSE, recursive = FALSE)
   if(purrr::is_empty(dirs)){
@@ -290,6 +303,7 @@ glottolog_download_webpage <- function(){
   utils::unzip(zipfile = filepath, exdir = exdir)
   glottologdata <- utils::read.csv(unz(filepath, "languoid.csv"), header = TRUE, encoding = "UTF-8")
   colnames(glottologdata) <- base::tolower(colnames(glottologdata))
+  glottologdata$bookkeeping <- ifelse(glottologdata$bookkeeping == "True", TRUE, FALSE)
   message("Glottolog data downloaded. This is the most recent version available from www.glottolog.org.")
   invisible(glottologdata)
 }
@@ -299,7 +313,6 @@ glottolog_download_webpage <- function(){
 #' @return
 #' @export
 #'
-#' @examples
 glottolog_download_cldf <- function(){
   glottolog_download_zenodo()
   glottolog_loadlocal()
@@ -351,9 +364,9 @@ glottolog_loadlocal <- function(){
 
   levels <- values[!is.na(values$level), c("lang_id", "level")]
   category <- values[!is.na(values$category), c("lang_id", "category")]
-  category$bookkeeping <- apply(classification[,"classification"], 1, function(x){ifelse(tolower(x) == "bookkeeping", TRUE, FALSE)})
+  category$bookkeeping <- base::apply(category[,"category"], 1, function(x){ifelse(tolower(x) == "bookkeeping", TRUE, FALSE)})
   classification <- values[!is.na(values$classification), c("lang_id", "classification")]
-  classification$parent_id <- apply(classification[,"classification"], 1, function(x){sub(".*/", "", x)})
+  classification$parent_id <- base::apply(classification[,"classification"], 1, function(x){sub(".*/", "", x)})
 
   glottologdata <- languoids %>% dplyr::left_join(levels, by = "lang_id") %>%
     dplyr::left_join(category, by = "lang_id") %>%
@@ -361,7 +374,6 @@ glottolog_loadlocal <- function(){
     dplyr::arrange(lang_id)
 
   colnames(glottologdata)[which(colnames(glottologdata) == "lang_id")] <- "id"
-
-  message(paste0("Glottolog data loaded from local path (glottolog v", glottolog_version_local(),").") )
+  glottologdata <- base::subset(glottologdata, select = -c(glottocode, language_id, category))
   invisible(glottologdata)
 }
