@@ -1,6 +1,7 @@
 #' Glottologbooster: enhance glottolog data
 #'
 #' Note that the different options are additional. For example, if you set rmfamilies to TRUE and space = TRUE, most families will still be removed since they lack spatial coordinates.
+#' Another example, depending on whether artificial families are removed, the total number of families also increases/decreases.
 #'
 #' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{glottoget_glottolog()}}
 #' @param space Return spatial object?
@@ -31,13 +32,15 @@ glottologbooster <- function(glottologdata = NULL, space = TRUE,
   }
   if(addfamname == TRUE){glottologdata <- glottolog_addfamilyname(glottologdata) }
   if(addisolates == TRUE){glottologdata <- glottolog_addisolates(glottologdata) }
-  if(rmdialects == TRUE){glottologdata <- glottolog_rmdialects(glottologdata) }
-  if(addfamsize == TRUE){glottologdata <- glottolog_addfamilysize(glottologdata) }
-  if(addfamsizerank == TRUE){glottologdata <- glottolog_addfamilysizerank(glottologdata) }
+
   if(rmbookkeeping == TRUE){glottologdata <- glottolog_rmbookkeeping(glottologdata) }
   if(rmartifam == TRUE){glottologdata <- glottolog_rmartifam(glottologdata) }
   if(rmsignlangs == TRUE){glottologdata <- glottolog_rmsignlangs(glottologdata) }
+  if(rmdialects == TRUE){glottologdata <- glottolog_rmdialects(glottologdata) }
   if(rmfamilies == TRUE){glottologdata <- glottolog_rmfamilies(glottologdata) }
+
+  if(addfamsize == TRUE){glottologdata <- glottolog_addfamilysize(glottologdata) }
+  if(addfamsizerank == TRUE){glottologdata <- glottolog_addfamilysizerank(glottologdata) }
 
   glottologdata <- glottologdata %>% dplyr::rename("glottocode" = "id", "isocode" = "iso639p3code")
 
@@ -73,7 +76,7 @@ glottolog_addfamilyname <- function(glottologdata){
 glottolog_addisolates <- function(glottologdata){
 
     glottologdata$isolate <-   ifelse(
-      ( (glottologdata$family_id == "") & (glottologdata$level != "family") ),
+      ( (glottologdata$family_id == "") & (glottologdata$level != "family")  ),
       TRUE, FALSE)
     # # assign language name to family
     glottologdata[glottologdata$isolate == TRUE, "family"] <- glottologdata[glottologdata$isolate == TRUE, "name"]
