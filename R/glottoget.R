@@ -287,6 +287,23 @@ glottolog_version_local <- function(){
 
 }
 
+#' Check how long ago glottolog was downloaded
+#'
+#' @return Number of days passed since glottolog data was downloaded for the last time
+#' @export
+#'
+glottolog_date_local <- function(){
+  v <- glottolog_version_local()
+ if(v != 0){
+   newestdir <- glottofiles_makepath(paste0("glottolog-cldf-v", v))
+   glottolog_time <- file.info(newestdir)$ctime
+   daysago <- lubridate::as.duration(lubridate::interval(Sys.time(), glottolog_time)) %/% lubridate::as.duration(lubridate::days(1))
+   return(daysago)
+ } else{
+   return(-999999)
+ }
+}
+
 #' Download glottolog data from glottolog website
 #'
 #' @return

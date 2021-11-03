@@ -46,6 +46,7 @@ glottologbooster(
 }
 \description{
 Note that the different options are additional. For example, if you set rmfamilies to TRUE and space = TRUE, most families will still be removed since they lack spatial coordinates.
+Another example, depending on whether artificial families are removed, the total number of families also increases/decreases.
 }
 \examples{
 glottologdata <- glottoget_glottolog()
