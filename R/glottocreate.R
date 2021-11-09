@@ -271,25 +271,16 @@ glottocreate_demosubdata <- function(meta = TRUE){
   demo <- glottocreate_subdata(glottocodes = c("yucu1253", "tani1257"), variables = 3, groups = c("a", "b"), n = 5, meta = meta)
 
   if(meta == TRUE){
-    demodata <- demo$glottodata
     demo$structure[,"type"] <- c("symm", "factor", "symm")
-  } else{
-    demodata <- demo
   }
 
-  demodata[[1]][,"var001"] <- sample(c("Y", "N", NA), size = 10, replace = TRUE)
-  demodata[[1]][,"var002"] <- sample(c("a", "b", NA), size = 10, replace = TRUE)
-  demodata[[1]][,"var003"] <- sample(c("Y", "N", NA), size = 10, replace = TRUE)
+  demo[[1]][,"var001"] <- sample(c("Y", "N", NA), size = 10, replace = TRUE)
+  demo[[1]][,"var002"] <- sample(c("a", "b", NA), size = 10, replace = TRUE)
+  demo[[1]][,"var003"] <- sample(c("Y", "N", NA), size = 10, replace = TRUE)
 
-  demodata[[2]][,"var001"] <- sample(c("Y", "N", NA), size = 10, replace = TRUE)
-  demodata[[2]][,"var002"] <- sample(c("a", "b", NA), size = 10, replace = TRUE)
-  demodata[[2]][,"var003"] <- sample(c("Y", "N", NA), size = 10, replace = TRUE)
-
-  if(meta == TRUE){
-    demo$glottodata <- demodata
-  } else{
-    demo <- demodata
-  }
+  demo[[2]][,"var001"] <- sample(c("Y", "N", NA), size = 10, replace = TRUE)
+  demo[[2]][,"var002"] <- sample(c("a", "b", NA), size = 10, replace = TRUE)
+  demo[[2]][,"var003"] <- sample(c("Y", "N", NA), size = 10, replace = TRUE)
 
   demo
 }

@@ -92,7 +92,8 @@
 # use: coord_map(xlim = c(-180, 180)) or coord_map(xlim = c(0, 360)) instead of scale_x_continuous(limits = c(0, 360))
 # Plot on a sphere (Lambert Azimuthal Equal Area): # # https://proj.org/operations/projections/laea.html
 # # https://stackoverflow.com/questions/43207947/whole-earth-polygon-for-world-map-in-ggplot2-and-sf
-
+# Choose colors when plotting
+# Reorder legend (or more specifically, set apart one)
 # https://stackoverflow.com/questions/26102012/plotting-world-map-in-orthographic-projection-is-giving-non-finite-points
 
 # save & export -----------------------------------------------------------
