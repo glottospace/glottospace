@@ -75,6 +75,11 @@ glottocheck_data <- function(glottodata, diagnostic = TRUE){
 #'
 #' Better to glottojoin_data first, instead of the following approach (because checks only within each language for duplicates etc.)
 #' lapply(glottosubdata, glottocheck_subdata)
+#'
+#' In case you do have meta = TRUE
+#' glottocreate_demosubdata()
+#' glottosubdata <- gss[c(1,2)]
+#' lapply(glottosubdata, glottocheck_subdata)
 glottocheck_subdata <- function(glottosubdata, diagnostic = TRUE){
   id <- "glottosubcode"
   checkdata_glottosubcol(glottosubdata = glottosubdata)
