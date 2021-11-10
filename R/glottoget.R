@@ -22,7 +22,7 @@
 #' @return
 #' @export
 #' @examples
-#' glottoget()
+#' glottoget("glottolog")
 glottoget <- function(glottodata = NULL, meta = FALSE){
   if(is.null(glottodata)){
     glottodata <- glottoget_glottobase()
@@ -156,14 +156,18 @@ glottoget_glottospace <- function(){
 #'
 #' @examples
 #' glottoget_glottolog()
-glottoget_glottolog <- function(){
-  if(curl::has_internet()){
-    if(glottolog_version_remote() == glottolog_version_local()){
+glottoget_glottolog <- function(days = NULL){
+  if(is.null(days)){days <- 30}
+  if(curl::has_internet() & glottolog_date_local() < (-days) ){
+    message(paste("Your local version of glottolog was downloaded more than ", days, " days ago."))
+    vremote <- glottolog_version_remote()
+    vlocal <- glottolog_version_local()
+    if(vremote == vlocal){
       out <- glottolog_loadlocal()
-    } else if(glottolog_version_remote() > glottolog_version_local()){
+    } else if(vremote > vlocal){
       out <- glottolog_download()
     }
-  } else { # If there's no internet connection, try to load local data, or else load built-in data.
+  } else { # Try to load local data, or else load built-in data.
     out <- try(
       expr = glottolog_loadlocal(),
       silent = TRUE
@@ -260,6 +264,7 @@ glottofiles_makedir <- function(dirname){
 #'
 glottolog_version_remote <- function(){
   base_url <-  "https://zenodo.org/api/records/4762034"
+  message("Checking what's the most recent version of glottolog ... this might take a while")
   req <- curl::curl_fetch_memory(base_url)
   content <- RJSONIO::fromJSON(rawToChar(req$content))
   # title <- gsub(".*:", "", content$metadata$title)
@@ -271,7 +276,7 @@ glottolog_version_remote <- function(){
 #' @return
 #' @export
 #'
-glottolog_version_local <- function(){
+glottolog_version_localdir <- function(){
   dirs <- list.dirs(glottofiles_cachedir(), full.names = FALSE, recursive = FALSE)
   if(purrr::is_empty(dirs)){
     return(0)
@@ -282,6 +287,29 @@ glottolog_version_local <- function(){
     } else{
     versions <- gsub(pattern = "glottolog-cldf-v", x = glottologdirs, replacement = "")
     return(max(as.numeric(versions)))
+    }
+  }
+
+}
+
+#' Check which version of glottolog is available on your computer
+#'
+#' @return
+#' @export
+#'
+glottolog_version_local <- function(){
+  files <- base::list.files(glottofiles_cachedir(), full.names = FALSE, recursive = FALSE)
+  if(purrr::is_empty(files)){
+    return(0)
+  } else{
+    glottologfiles <- files[base::grepl(pattern = "glottolog-cldf-v", x = files)]
+    glottologzips <- glottologfiles[grepl(pattern = ".zip", x = glottologfiles)]
+    if(purrr::is_empty(glottologzips)){
+      return(0)
+    } else{
+      versionzips <- base::gsub(pattern = "glottolog-cldf-v", x = glottologzips, replacement = "")
+      versions <- tools::file_path_sans_ext(versionzips)
+      return(max(as.numeric(versions)))
     }
   }
 
@@ -349,7 +377,7 @@ glottolog_download_zenodo <- function(){
   filepath <- glottofiles_makepath(filename)
   exdir <- glottofiles_makedir(tools::file_path_sans_ext(filename))
 
-  utils::download.file(url = url, destfile = filepath )
+  utils::download.file(url = url, destfile = filepath ) # downloads and overwrites (i.e. changes date)
   utils::unzip(zipfile = filepath, exdir = exdir)
   message(paste0("Glottolog data downloaded (glottolog ", content$metadata$version,"). This is the most recent version available from https://zenodo.org/record/4762034)") )
 }
