@@ -23,8 +23,8 @@ Go through a user-provided glottodataset and check whether:
 - all glottocodes are valid
 }
 \examples{
-glottodata <- glottoget_glottodata(meta = FALSE)
-glottocheck_data(glottodata = glottodata)
+glottodata <- glottocreate_demodata()
+glottocheck_data(glottodata)
 }
 \seealso{
 Other <glottocheck>: 

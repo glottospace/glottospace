@@ -43,9 +43,10 @@ glottocheck <- function(glottodata, diagnostic = TRUE){
 #' @export
 #'
 #' @examples
-#' glottodata <- glottoget_glottodata(meta = FALSE)
-#' glottocheck_data(glottodata = glottodata)
+#' glottodata <- glottocreate_demodata()
+#' glottocheck_data(glottodata)
 glottocheck_data <- function(glottodata, diagnostic = TRUE){
+  glottodata <- glottodrop(glottodata)
   id <- "glottocode"
   checkdata_glottocol(glottodata = glottodata)
   checkdata_idmissing(data = glottodata, id = id)
@@ -69,18 +70,10 @@ glottocheck_data <- function(glottodata, diagnostic = TRUE){
 #' @export
 #' @family <glottocheck>
 #' @examples
-#' glottosubdata <- glottoget_glottodata(meta = FALSE, demo = "glottosubdata")
-#' glottosubdata <- glottojoin_data(glottosubdata)
+#' glottosubdata <- glottocreate_demosubdata()
 #' glottocheck_subdata(glottosubdata)
-#'
-#' Better to glottojoin_data first, instead of the following approach (because checks only within each language for duplicates etc.)
-#' lapply(glottosubdata, glottocheck_subdata)
-#'
-#' In case you do have meta = TRUE
-#' glottocreate_demosubdata()
-#' glottosubdata <- gss[c(1,2)]
-#' lapply(glottosubdata, glottocheck_subdata)
 glottocheck_subdata <- function(glottosubdata, diagnostic = TRUE){
+  glottosubdata <- glottodrop(glottosubdata)
   id <- "glottosubcode"
   checkdata_glottosubcol(glottosubdata = glottosubdata)
   checkdata_idmissing(data = glottosubdata, id = id)
@@ -113,7 +106,6 @@ glottocheck_metadata <- function(glottodata){
     glottocheck_metaweights(glottodata)
   } else {message("No structure table found in glottodata")}
 }
-
 
 #' Check whether glottodata contains metadata
 #'
@@ -271,7 +263,8 @@ checkdata_glottocodes <- function(glottodata){
 }
 
 checkdata_glottosubcodes <- function(glottosubdata){
-  glottosubcode_valid()
+  v <- glottosubcode_valid(glottosubdata$glottosubcode)
+  if(v == TRUE){message("All glottosubcodes are valid.")}
 }
 
 #' Check whether number of columns are identical across all glottodata objects in a list
@@ -376,14 +369,14 @@ naviewer <- function(data, id = NULL){
   datamissing <- datamissing %>%
     as.data.frame() %>%
     tibble::rownames_to_column(id) %>%
-    tidyr::pivot_longer(-c(glottocode), names_to = "variable", values_to = "coverage")
+    tidyr::pivot_longer(-c(id), names_to = "variable", values_to = "coverage")
 
-  ggplot2::ggplot(data = datamissing, ggplot2::aes(x=variable, y=glottocode, fill=coverage) ) +
+  ggplot2::ggplot(data = datamissing, ggplot2::aes_string(x="variable", y=id, fill="coverage") ) +
     ggplot2::geom_raster() +
     ggplot2::scale_fill_manual(labels = c("data", "NA"), values = c("navy", "darkred"))
 }
 
-#' Guess whether a list of glottodata tables is glottosubdata
+#' Guess whether a list of glottodata tables is glottosubdata (and not glottodata)
 #'
 #' @param glottodata User-provided glottodata
 #'
@@ -398,3 +391,17 @@ glottocheck_isglottosubdata <- function(glottodata){
     !purrr::is_empty(colnames(glottodata[[1]])[1] == "glottosubcode")
 }
 
+#' Guess whether a list of glottodata tables is glottodata (and not glottosubdata)
+#'
+#' @param glottodata User-provided glottodata
+#'
+#' @return
+#' @export
+#'
+#' @examples
+#' glottocheck_isglottodata(glottodata)
+glottocheck_isglottodata <- function(glottodata){
+  class(glottodata) == "list" &
+    any(names(glottodata) %in% "glottodata") &
+    !purrr::is_empty(colnames(glottodata[[1]])[1] == "glottocode")
+}

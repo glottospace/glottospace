@@ -10,7 +10,7 @@ glottosubcode_valid(glottosubcodes)
 \item{glottosubcodes}{Character vector of glottosubcodes}
 }
 \value{
-
+Gives warning in case there are issues, and invisibly returns TRUE otherwise.
 }
 \description{
 This function checks whether a vector of glottosubcodes adheres to the

@@ -20,12 +20,12 @@
 #' glottodatadist <- glottojoin(glottodata, with = dist)
 #'
 #' # Join a list of glottodata tables:
-#' glottodatalist <- glottocreate_subdata(glottocodes = c("yucu1253", "tani1257"), variables = 3, groups = c("a", "b"), n = 2, meta = FALSE)
-#' glottodatatable <- glottojoin(glottodata = glottodatalist)
+#' glottosubdata <- glottocreate_subdata(glottocodes = c("yucu1253", "tani1257"), variables = 3, groups = c("a", "b"), n = 2, meta = FALSE)
+#' glottodatatable <- glottojoin(glottodata = glottosubdata)
 #'
 glottojoin <- function(glottodata, with = NULL, id = NULL, rm.na = FALSE){
   if(is_list(glottodata) & is.null(with)){
-    joined <- glottojoin_datalist(glottodatalist = glottodata)
+    joined <- glottojoin_subdata(glottosubdata = glottodata)
   } else if(!is.null(with)){
     if(is_dist(with)){
     joined <- glottojoin_dist(glottodata = glottodata, id = id, dist = with, rm.na = rm.na)
@@ -128,17 +128,36 @@ glottojoin_space <- function(glottodata, id = NULL){
 #' Join glottosubdata (a list of glottodata tables for multiple languages) into a single glottodata object
 #'
 #'
-#' @param glottodatalist A list of glottodata objects. Column names across languages should be identical.
+#' @param glottosubdata A list of glottodata objects. Column names across languages should be identical.
 #'
 #' @return A single glottodata object
 #' @export
 #'
 #' @examples
-#' glottodatalist <- glottoget_glottodata("glottosubdata.xlsx", meta = FALSE)
-#' glottojoin_data(glottodatalist = glottodatalist)
-glottojoin_datalist <- function(glottodatalist){
-  checkdata_lscolcount(glottodatalist) # stops if number of columns is not identical
-  do.call("rbind", glottodatalist) # alternative approaches: data.table::rbindlist or plyr::rbind.fill
+#' glottosubdata <- glottocreate_demosubdata()
+#' glottojoin_data(glottosubdata = glottosubdata)
+glottojoin_subdata <- function(glottosubdata){
+
+  if(glottocheck_hasmeta(glottosubdata) ){
+    glottodata <- glottodrop_meta(glottosubdata)
+    glottometa <- glottodrop_langtabs(glottosubdata)
+    hadmeta <- TRUE
+  } else {
+    glottodata <- glottosubdata
+    hadmeta <- FALSE
+  }
+
+  checkdata_lscolcount(glottodata) # stops if number of columns is not identical
+  glottodata <- do.call("rbind", glottodata) # alternative approaches: data.table::rbindlist or plyr::rbind.fill
+  glottodata <- tibble::remove_rownames(glottodata)
+
+  if(hadmeta == TRUE){
+    glottodata <- glottojoin_meta(glottodata = glottodata, glottometa = glottometa)
+    return(glottodata)
+  } else {
+    return(glottodata)
+  }
+
 }
 
 #' Join two glottodata tables.

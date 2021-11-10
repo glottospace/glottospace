@@ -105,7 +105,7 @@ glottocode_online <- function(glottocode){
 #'
 #' @param glottosubcodes Character vector of glottosubcodes
 #' @family <glottocheck><glottosearch>
-#' @return
+#' @return Gives warning in case there are issues, and invisibly returns TRUE otherwise.
 #' @export
 #'
 #' @examples
@@ -132,7 +132,10 @@ glottosubcode_valid <- function(glottosubcodes){
   invalid <- gsc_df %>% dplyr::filter(dplyr::if_any( c(gc_exists, group_chr, n_num), is_false))
   invalidgcs <- paste(invalid[,"glottosubcode"], collapse = ", ")
 
-  if(nrow(invalid) != 0){message(paste("There are issues with the following glottosubcodes:", invalidgcs))}
+  if(nrow(invalid) != 0){message(paste("There are issues with the following glottosubcodes:", invalidgcs))
+  } else {
+      invisible(TRUE)
+    }
 
 
 }
