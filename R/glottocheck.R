@@ -254,7 +254,7 @@ checkdata_varlevels <- function(data){
 #'
 checkdata_glottocodes <- function(glottodata){
   glottodata <- glottodata[!is.na(glottodata[["glottocode"]]), ]
-  message("Checking", nrow(glottodata), "glottocodes...")
+  message("Checking ", nrow(glottodata), " glottocodes...")
   existing <- glottocode_exists(glottodata[["glottocode"]])
   if(sum(!existing) > 0){
     message("Not all IDs are valid glottocodes \n The following glottocodes are not found in glottolog: \n")
