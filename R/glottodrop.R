@@ -5,13 +5,19 @@
 #' @param dropmeta By default all metadata is dropped.
 #' @param dropspatial By default spatial properties are dropped.
 #' @param dropsub By default, glottosubdata tables are merged into a single glottodata table.
+#' @param droplist If glottodata is a list, should the glottodata table be returned?
+#' @param tbdf If glottodata is a tibble, should it be converted to a data.frame?
 #'
 #' @return
 #' @export
 #'
 #' @examples
 #' glottodrop(glottodata)
-glottodrop <- function(glottodata, dropmeta = TRUE, dropspatial = TRUE, dropsub = TRUE, droplist = TRUE){
+glottodrop <- function(glottodata, dropmeta = TRUE, dropspatial = TRUE, dropsub = TRUE, droplist = TRUE, tbdf = TRUE){
+
+  if(tibble::is_tibble(glottodata) & tbdf == TRUE){
+    glottodata <- as.data.frame(glottodata)
+  }
 
   if(glottocheck_hasmeta(glottodata) & dropmeta == TRUE){
     glottodata <- glottodrop_meta(glottodata)

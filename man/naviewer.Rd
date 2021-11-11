@@ -4,12 +4,14 @@
 \alias{naviewer}
 \title{Show data coverage (view NAs)}
 \usage{
-naviewer(data, id = NULL)
+naviewer(data, id = NULL, rm.na = TRUE)
 }
 \arguments{
 \item{data}{Any dataset}
 
 \item{id}{column name with IDs}
+
+\item{rm.na}{Whether rows without id should be removed.}
 }
 \value{
 

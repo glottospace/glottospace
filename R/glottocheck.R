@@ -120,7 +120,7 @@ glottocheck_metadata <- function(glottodata){
 #' @examples
 #' glottocheck_hasmeta(glottodata)
 glottocheck_hasmeta <- glottocheck_hasstructure <- function(glottodata){
-  is_list(glottodata) & any(names(glottodata) %in% "structure")
+  any(is_list(glottodata)) & any(names(glottodata) %in% "structure")
 }
 
 glottocheck_metatypes <- function(glottodata){
@@ -197,8 +197,9 @@ checkdata_idunique <- function(data, id){
 #' @examples
 #' suppressMessages(checkall_twolevels(data = data))
 checkdata_twolevels <- function(data){
+  data <- as.data.frame(data)
   lslevels <- lapply(data, unique)
-  lslevels <- lapply(lslevels, factor, exclude = "NA")
+  lslevels <- lapply(lslevels, factor, exclude = NA)
 
   # summary of data:
   lslevelsrmna <- lapply(lslevels, levels)
@@ -257,7 +258,8 @@ checkdata_glottocodes <- function(glottodata){
   message("Checking ", nrow(glottodata), " glottocodes...")
   existing <- glottocode_exists(glottodata[["glottocode"]])
   if(sum(!existing) > 0){
-    message("Not all IDs are valid glottocodes \n The following glottocodes are not found in glottolog: \n")
+    message("Not all IDs are valid glottocodes \n The following glottocodes are not found in glottolog (checked at the language level): \n")
+    print(glottodata[!existing,"glottocode", drop = TRUE])
   } else {
     message("All IDs are valid glottocodes")
   }
@@ -319,7 +321,20 @@ checkdata_glottosubcol <- function(glottosubdata){
   }
 }
 
-checkdata_rowmissing <- function(data, id, diagnostic = FALSE){
+#' Check whether rows have missing data
+#'
+#' Provides a message in case there are missing data, otherwise returns NULL
+#'
+#' @param data A dataset
+#' @param id Column name or index with unique id's
+#' @param diagnostic Whether diagnostic messages should be shown
+#' @param rm.na Whether rows without id should be removed.
+#'
+#' @return
+#' @export
+#'
+checkdata_rowmissing <- function(data, id, diagnostic = FALSE, rm.na = TRUE){
+  if(rm.na == TRUE){data <- data[!is.na(data[[id]]), ]}
   datamissing <- tibble::column_to_rownames(data, var = id)
   datamissing$count <- rowSums(is.na(datamissing) )
   if(any(datamissing$count != 0)){
@@ -328,7 +343,20 @@ checkdata_rowmissing <- function(data, id, diagnostic = FALSE){
   }
 }
 
-checkdata_colmissing <- function(data, id, diagnostic = FALSE){
+#' Check whether columns have missing data
+#'
+#' Provides a message in case there are missing data, otherwise returns NULL
+#'
+#' @param data A dataset
+#' @param id Column name or index with unique id's
+#' @param diagnostic Whether diagnostic messages should be shown
+#' @param rm.na Whether rows without id should be removed.
+#'
+#' @return
+#' @export
+#'
+checkdata_colmissing <- function(data, id, diagnostic = FALSE, rm.na = TRUE){
+  if(rm.na == TRUE){data <- data[!is.na(data[[id]]), ]}
   datamissing <- tibble::column_to_rownames(data, var = id)
   datamissing <- rbind(datamissing, "count" = colSums(is.na(datamissing) ) )
   if(any(datamissing["count", ] != 0)){
@@ -346,6 +374,7 @@ checkdata_colmissing <- function(data, id, diagnostic = FALSE){
 #'
 #' @param data Any dataset
 #' @param id column name with IDs
+#' @param rm.na Whether rows without id should be removed.
 #'
 #' @return
 #' @export
@@ -353,7 +382,9 @@ checkdata_colmissing <- function(data, id, diagnostic = FALSE){
 #' @examples
 #' data <- glottoget_glottodata(meta = FALSE)
 #' naviewer(data, id = "glottocode")
-naviewer <- function(data, id = NULL){
+naviewer <- function(data, id = NULL, rm.na = TRUE){
+  data <- as.data.frame(data)
+  if(rm.na == TRUE){data <- data[!is.na(data[[id]]), ]}
   if(!is.null(id)){
   datamissing <- data[,colnames(data) != id ]
   } else {
@@ -388,9 +419,9 @@ naviewer <- function(data, id = NULL){
 #' @examples
 #' glottocheck_isglottosubdata(glottodata)
 glottocheck_isglottosubdata <- function(glottodata){
-    class(glottodata) == "list" &
+    all(class(glottodata) == "list" &
     !any(names(glottodata) %in% "glottodata") &
-    !purrr::is_empty(colnames(glottodata[[1]])[1] == "glottosubcode")
+    !purrr::is_empty(colnames(glottodata[[1]])[1] == "glottosubcode"))
 }
 
 #' Guess whether a list of glottodata tables is glottodata (and not glottosubdata)
@@ -403,7 +434,7 @@ glottocheck_isglottosubdata <- function(glottodata){
 #' @examples
 #' glottocheck_isglottodata(glottodata)
 glottocheck_isglottodata <- function(glottodata){
-  class(glottodata) == "list" &
+  all(class(glottodata) == "list" &
     any(names(glottodata) %in% "glottodata") &
-    !purrr::is_empty(colnames(glottodata[[1]])[1] == "glottocode")
+    !purrr::is_empty(colnames(glottodata[[1]])[1] == "glottocode"))
 }
