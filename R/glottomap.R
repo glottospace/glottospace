@@ -4,8 +4,8 @@
 #' Create dynamic, static and interactive maps from glottodata.
 #'
 #' @param glottodata Optional, user-provided glottodata. In case no glottodata is provided, you can pass arguments directly to glottofilter.
-#' @param color column name or index to be used to color features (optional)
-#' @param label Column name or index to be used to label features (optional)
+#' @param color glottovar, column name, or column index to be used to color features (optional). Run glottovars() to see glottovars
+#' @param label glottovar, column name, or column index to be used to label features (optional). Run glottovars() to see glottovars
 #' @param type One of: "static", "dynamic", or "interactive". Defaults to
 #'   "static" if nothing is provided.
 #' @param ptsize Size of points between 0 and 1
@@ -56,11 +56,11 @@ glottomap <- function(glottodata = NULL, color = NULL, label = NULL, type = NULL
   if(is.null(color)){color <- "black"}
 
   if(type == "dynamic"){
-    map <- glottomap_dynamic(glottodata = glottodata, label = label, color = color, ptsize = ptsize, transparency = transparency)
+    map <- glottomap_dynamic(glottodata = glottodata, label = label, color = color, ptsize = ptsize, lbsize = lbsize, transparency = transparency)
   }
 
   if(type == "static"){
-    map <- glottomap_static(glottodata = glottodata, label = label, color = color, ptsize = ptsize, transparency = transparency)
+    map <- glottomap_static(glottodata = glottodata, label = label, color = color, ptsize = ptsize, lbsize = lbsize, transparency = transparency)
   }
 return(map)
 

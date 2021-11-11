@@ -53,6 +53,8 @@ geodata_rename_column <- function(geodata, oldname, newname){
   dplyr::rename(newname = oldname)
 }
 
-
+glottovars <- function(){
+  colnames(glottoget("glottobase"))
+}
 
 

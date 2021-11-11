@@ -1,20 +1,27 @@
 
 #' Visualize distances
 #'
-#' This function offers different types of visualizations to show linguistic distances.
+#' This function offers different types of visualizations for linguistic distances.
 #'
-#' @param type The type of plot: "heatmap", "nmds"
+#' @param type The type of plot: "heatmap", "nmds", or "stress". Default is heatmap if nothing is provided.
 #' @param glottodist A dist object created with \code{\link{glottodist}}
+#' @param k Number of dimensions. Either 2 or 3 for nmds.
+#' @param rm.na Whether na's should be removed (default is FALSE)
+#' @param color glottovar to be used to color features (optional). Run glottovars() to see the options.
+#' @param label glottovar to be used to label features (optional). Run glottovars() to see the options.
+#' @param ptsize Size of points between 0 and 1 (optional)
 #' @param filename Optional filename if output should be saved.
-#' @param ... Additional arguments passed to plotnmds (if type = "nmds").
 #'
 #' @return
 #' @export
 #'
 #' @examples
-#' glottodata <- glottoget_path(meta = TRUE)
+#' glottodata <- glottoget("demodata", meta = TRUE)
 #' glottodist <- glottodist(glottodata = glottodata)
-glottoplot <- function(glottodist, type = NULL, filename = NULL, ...){
+#'
+#' glottoplot(glottodist = glottodist, type = "nmds", k = 3, color = "family", label = "name")
+glottoplot <- function(glottodist, type = NULL, k = NULL, rm.na = FALSE,
+                       color = NULL, ptsize = NULL, label = NULL, filename = NULL){
   if(is.null(type)){type <- "heatmap"}
 
   if(type == "heatmap"){
@@ -22,7 +29,16 @@ glottoplot <- function(glottodist, type = NULL, filename = NULL, ...){
   }
 
   if(type == "nmds"){
+    if(is.null(k)){stop("Please specify k (number of dimensions)")}
+    glottonmds <- glottonmds(glottodist = glottodist, k = k, rm.na = rm.na)
+    scores <- glottonmds_scores(glottonmds)
+    scoresdata <- glottojoin_base(scores)
+    glottoplot_nmds(nmds = glottonmds, scoresdata = scoresdata,
+                    color = color, ptsize = ptsize, label = label, filename = filename)
+  }
 
+  if(type == "stress"){
+    glottoplot_nmds_stress(glottodist = glottodist, k = k)
   }
 }
 
@@ -37,13 +53,12 @@ glottoplot <- function(glottodist, type = NULL, filename = NULL, ...){
 #' @export
 #'
 #' @examples
-#' glottodata <- glottoget_glottodata()
-#' dist <- glottodist(glottodata = glottodata, structure = structure)
-#' nmds <- glottonmds(dist = dist, k = 2)
-glottonmds <- function(dist, k = 2, rm.na = FALSE){
-  distmat <- contransform_distmat(dist)
+#' glottodata <- glottoget("demodata", meta = TRUE)
+#' glottodist <- glottodist(glottodata = glottodata)
+#' glottonmds <- glottonmds(glottodist = glottodist, k = 2)
+glottonmds <- function(glottodist, k = 2, rm.na = FALSE){
+  distmat <- contransform_distmat(glottodist)
 
-  # Remove NAs!
   if(rm.na == TRUE){
     rowna <- rowSums(is.na(distmat))
     colna <- colSums(is.na(distmat))
@@ -76,80 +91,144 @@ glottonmds <- function(dist, k = 2, rm.na = FALSE){
 #' @examples
 #' glottonmds_scores(glottonmds)
 glottonmds_scores <- function(glottonmds){
-  scores <- as.data.frame(vegan::scores(nmds))
+  scores <- as.data.frame(vegan::scores(glottonmds))
   scores <- tibble::rownames_to_column(scores, "glottocode")
   scores
 }
 
-#' Plot nmds
+#' Plot nmds in 3d
 #'
 #' @param nmds An nmds object
 #' @param scoresdata scoresdata
-#' @param colorby colorby
-#' @param sizeby sizeby
-#' @param labelby label
+#' @param color color
+#' @param ptsize ptsize
+#' @param label label
 #' @param filename optional filename if output should be saved.
 #'
 #' @return
 #' @export
 #'
 #' @examples
-#' Join nmds scores with glottodata:
-#' nmds <- glottonmds(glottodata, k = 2)
+#' glottodata <- glottoget("demodata", meta = TRUE)
+#' glottodist <- glottodist(glottodata = glottodata)
+#' nmds <- glottonmds(glottodist, k = 2)
 #' scores <- glottonmds_scores(nmds)
 #' scoresdata <- glottojoin_base(scores)
 #'
-#' glottoplot_nmds(nmds = nmds, scoresdata = scoresdata, colorby = "family", sizeby = "isolate")
-#' glottoplot_nmds(nmds = nmds, scoresdata = scoresdata, colorby = "isolate")
-glottoplot_nmds <- function(nmds, scoresdata, colorby = NULL, sizeby = NULL, labelby = NULL, filename = NULL){
+#' glottoplot_nmds(nmds = nmds, scoresdata = scoresdata, color = "family", ptsize = "isolate")
+#' glottoplot_nmds(nmds = nmds, scoresdata = scoresdata, color = "isolate")
+glottoplot_nmds <- function(nmds, scoresdata, color = NULL, ptsize = NULL, label = NULL, filename = NULL){
 
   if(nmds$ndim == 2){
-    nmdsplot <- ggplot2::ggplot(data = scoresdata, ggplot2::aes_string(x="NMDS1",y="NMDS2", col = colorby, size = sizeby)) +
+    glottoplot_nmds_2d(nmds = nmds, scoresdata = scoresdata, color = color, ptsize = ptsize, label = label, filename = filename)
+  }
+
+  if(nmds$ndim == 3){
+    glottoplot_nmds_3d(nmds = nmds, scoresdata = scoresdata, color = color, ptsize = ptsize, label = label, filename = filename)
+  }
+}
+
+#' Plot nmds in 2d
+#'
+#' @param nmds An nmds object
+#' @param scoresdata scoresdata
+#' @param color color
+#' @param ptsize ptsize
+#' @param label label
+#' @param filename optional filename if output should be saved.
+#' @noRd
+#' @return
+#' @export
+#'
+#' @examples
+#' glottodata <- glottoget("demodata", meta = TRUE)
+#' glottodist <- glottodist(glottodata = glottodata)
+#' nmds <- glottonmds(glottodist, k = 2)
+#' scores <- glottonmds_scores(nmds)
+#' scoresdata <- glottojoin_base(scores)
+#'
+#' glottoplot_nmds_2d(nmds = nmds, scoresdata = scoresdata, color = "family", ptsize = "isolate")
+#' glottoplot_nmds_2d(nmds = nmds, scoresdata = scoresdata, color = "isolate")
+glottoplot_nmds_2d <- function(nmds, scoresdata, color = NULL, ptsize = NULL, label = NULL, filename = NULL){
+
+    nmdsplot <- ggplot2::ggplot(data = scoresdata, ggplot2::aes_string(x="NMDS1",y="NMDS2", col = color, size = ptsize)) +
       ggplot2::geom_point() +
-      {if(!is.null(labelby))ggplot2::geom_text(ggplot2::aes_string(label = labelby), hjust = 0, vjust = 0, show.legend = FALSE)} +
+      {if(!is.null(label))ggplot2::geom_text(ggplot2::aes_string(label = label), hjust = 0, vjust = 0, show.legend = FALSE)} +
       # {if(ellipse)ggplot2::stat_ellipse(type="t", level = 0.95, show.legend = FALSE, alpha = 0.5, size = 0.75, linetype = 2)} +
       ggplot2::coord_equal()+
       ggplot2::labs(title = paste0("NMDS (k = ", nmds$ndim, ", stress = ", round(nmds$stress, 2), ")"), x = "NMDS1", y = "NMDS2") +
       ggplot2::theme_bw()
 
-      if(!is.null(filename)){ggsave(plot = nmdsplot, filename = filename)}
+      if(!is.null(filename)){ggplot2::ggsave(plot = nmdsplot, filename = filename)}
 
       print(nmdsplot)
-    }
 
-  if(nmds$ndim == 3){
-    # update function with tilde ~ ... See isolates_anthrodata_V2 and isolates_anthrodata_dplace
-    # perhaps add functionality to save as movie:
-    # https://r-graphics.org/recipe-miscgraph-3d-animate
-    # http://www.sthda.com/english/wiki/a-complete-guide-to-3d-visualization-device-system-in-r-r-software-and-data-visualization#export-the-plot-into-an-interactive-html-file
-    nmdsplot <- plotly::plot_ly(data = scoresdata, x = ~NMDS1, y = ~NMDS2, z = ~NMDS3,
-                                type="scatter3d", mode="markers",
-                                color = {if(!is.null(colorby))~.data[[colorby]]},
-                                size = {if(!is.null(sizeby))~.data[[sizeby]]},
-                                hoverinfo = "text",
-                                text = {if(!is.null(labelby))~.data[[labelby]]})
-
-    nmdsplot <- nmdsplot %>% plotly::layout(
-      title = paste0("NMDS (k = ", nmds$ndim, ", stress = ", round(nmds$stress, 2), ")"),
-      scene = list(
-        xaxis = list(title = "NMDS1"),
-        yaxis = list(title = "NMDS2"),
-        zaxis = list(title = "NMDS3")
-      ))
-
-      nmdsplot
-      if(!is.null(filename)){htmlwidgets::saveWidget(nmdsplot, title = "NMDS 3D", filename)}
-      }
 }
 
-# if(view == "scree"){
-#   distmat <- as.matrix(dist)
-#   goeveg::dimcheckMDS(matrix = distmat)
-# }
-#
-# if(view == "stress"){
-#   stressplot(scores) # large scatter around line? Original dissimilarities not well preserved in reduced number of dimensions
-# }
+#' Plot nmds in 3d
+#'
+#' @param nmds An nmds object
+#' @param scoresdata scoresdata
+#' @param color color
+#' @param ptsize ptsize
+#' @param label label
+#' @param filename optional filename if output should be saved.
+#' @noRd
+#' @return
+#' @export
+#'
+#' @examples
+#' glottodata <- glottoget("demodata", meta = TRUE)
+#' glottodist <- glottodist(glottodata = glottodata)
+#' nmds <- glottonmds(glottodist, k = 3)
+#' scores <- glottonmds_scores(nmds)
+#' scoresdata <- glottojoin_base(scores)
+#'
+#' glottoplot_nmds_3d(nmds = nmds, scoresdata = scoresdata, color = "family", label = "name")
+#' glottoplot_nmds_3d(nmds = nmds, scoresdata = scoresdata, color = "isolate")
+glottoplot_nmds_3d <- function(nmds, scoresdata, color = NULL, ptsize = NULL, label = NULL, filename = NULL){
+  if(is.null(color)){
+    color <- "allsame"
+    scoresdata$allsame <- "allsame"
+  }
+
+  nmdsplot <- plotly::plot_ly(type="scatter3d", mode="markers")
+  for (i in unique(scoresdata[[color]])) {
+
+    nmdsplot <- plotly::add_trace(nmdsplot,
+                   data = scoresdata[scoresdata[[color]] == i,],
+                   legendgroup = i,
+                   x = ~NMDS1,
+                   y = ~NMDS2,
+                   z = ~NMDS3,
+                   type = 'scatter3d',
+                   mode = 'markers',
+                   size = ptsize,
+                   color = ~.data[[color]],
+                   hoverinfo = "text",
+                   text = {if(!is.null(label))~.data[[label]]},
+                   showlegend = ifelse(color == "allsame", FALSE, TRUE))
+  }
+
+   nmdsplot <- nmdsplot %>% plotly::layout(
+    title = paste0("NMDS (k = ", nmds$ndim, ", stress = ", round(nmds$stress, 2), ")"),
+    scene = list(
+      xaxis = list(title = "NMDS1"),
+      yaxis = list(title = "NMDS2"),
+      zaxis = list(title = "NMDS3")
+    ) )
+
+
+  if(!is.null(filename)){htmlwidgets::saveWidget(nmdsplot, title = "NMDS 3D", filename)}
+  print(nmdsplot)
+}
+
+
+glottoplot_nmds_stress <- function(glottodist, k = NULL){
+  if(is.null(k)){k <- 6}
+  distmat <- as.matrix(glottodist)
+  goeveg::dimcheckMDS(matrix = distmat, k = k)
+}
 
 #' Plot a heatmap of a distance matrix
 #'
