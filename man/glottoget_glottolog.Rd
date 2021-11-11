@@ -4,7 +4,7 @@
 \alias{glottoget_glottolog}
 \title{Get glottolog data}
 \usage{
-glottoget_glottolog()
+glottoget_glottolog(days = NULL)
 }
 \value{
 

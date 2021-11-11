@@ -18,9 +18,9 @@ glottomap(
 \arguments{
 \item{glottodata}{Optional, user-provided glottodata. In case no glottodata is provided, you can pass arguments directly to glottofilter.}
 
-\item{color}{column name or index to be used to color features (optional)}
+\item{color}{glottovar, column name, or column index to be used to color features (optional). Run glottovars() to see glottovars}
 
-\item{label}{Column name or index to be used to label features (optional)}
+\item{label}{glottovar, column name, or column index to be used to label features (optional). Run glottovars() to see glottovars}
 
 \item{type}{One of: "static", "dynamic", or "interactive". Defaults to
 "static" if nothing is provided.}

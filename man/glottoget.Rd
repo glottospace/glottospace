@@ -32,7 +32,7 @@ spatial coordinates.
 Load locally stored glottodata, download databases from online sources, or load built-in demo data
 }
 \examples{
-glottoget()
+glottoget("glottolog")
 }
 \seealso{
 Other <glottodata>: 

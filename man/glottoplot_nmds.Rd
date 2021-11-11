@@ -2,14 +2,14 @@
 % Please edit documentation in R/glottoplot.R
 \name{glottoplot_nmds}
 \alias{glottoplot_nmds}
-\title{Plot nmds}
+\title{Plot nmds in 3d}
 \usage{
 glottoplot_nmds(
   nmds,
   scoresdata,
-  colorby = NULL,
-  sizeby = NULL,
-  labelby = NULL,
+  color = NULL,
+  ptsize = NULL,
+  label = NULL,
   filename = NULL
 )
 }
@@ -18,11 +18,11 @@ glottoplot_nmds(
 
 \item{scoresdata}{scoresdata}
 
-\item{colorby}{colorby}
+\item{color}{color}
 
-\item{sizeby}{sizeby}
+\item{ptsize}{ptsize}
 
-\item{labelby}{label}
+\item{label}{label}
 
 \item{filename}{optional filename if output should be saved.}
 }
@@ -30,14 +30,15 @@ glottoplot_nmds(
 
 }
 \description{
-Plot nmds
+Plot nmds in 3d
 }
 \examples{
-Join nmds scores with glottodata:
-nmds <- glottonmds(glottodata, k = 2)
+glottodata <- glottoget("demodata", meta = TRUE)
+glottodist <- glottodist(glottodata = glottodata)
+nmds <- glottonmds(glottodist, k = 2)
 scores <- glottonmds_scores(nmds)
 scoresdata <- glottojoin_base(scores)
 
-glottoplot_nmds(nmds = nmds, scoresdata = scoresdata, colorby = "family", sizeby = "isolate")
-glottoplot_nmds(nmds = nmds, scoresdata = scoresdata, colorby = "isolate")
+glottoplot_nmds(nmds = nmds, scoresdata = scoresdata, color = "family", ptsize = "isolate")
+glottoplot_nmds(nmds = nmds, scoresdata = scoresdata, color = "isolate")
 }

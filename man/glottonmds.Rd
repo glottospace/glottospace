@@ -4,14 +4,14 @@
 \alias{glottonmds}
 \title{Nonmetric Multidimensional Scaling}
 \usage{
-glottonmds(dist, k = 2, rm.na = FALSE)
+glottonmds(glottodist, k = 2, rm.na = FALSE)
 }
 \arguments{
-\item{dist}{dist object or distance matrix}
-
 \item{k}{Number of dimensions}
 
 \item{rm.na}{Whether NAs should be removed (default is FALSE)}
+
+\item{dist}{dist object or distance matrix}
 }
 \value{
 
@@ -20,9 +20,9 @@ glottonmds(dist, k = 2, rm.na = FALSE)
 Nonmetric Multidimensional Scaling
 }
 \examples{
-glottodata <- glottoget_glottodata()
-dist <- glottodist(glottodata = glottodata, structure = structure)
-nmds <- glottonmds(dist = dist, k = 2)
+glottodata <- glottoget("demodata", meta = TRUE)
+glottodist <- glottodist(glottodata = glottodata)
+glottonmds <- glottonmds(glottodist = glottodist, k = 2)
 }
 \seealso{
 Other <glottoplot>: 

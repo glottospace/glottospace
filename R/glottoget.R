@@ -88,7 +88,7 @@ glottoget_path <- function(filepath = NULL, meta = FALSE, simplify = TRUE){
 
   metasheets <- c("structure",  "metadata",   "references", "readme",     "lookup" )
 
-  if(tools::file_ext(filepath) == ".xlsx" | tools::file_ext(filepath) == ".xls"){
+  if(tools::file_ext(filepath) == "xlsx" | tools::file_ext(filepath) == "xls"){
     sheetnames <- readxl::excel_sheets(filepath)
   if(meta == TRUE){
     sheetnames <- sheetnames
@@ -98,7 +98,7 @@ glottoget_path <- function(filepath = NULL, meta = FALSE, simplify = TRUE){
   glottodata <- base::lapply(X = sheetnames,
                          FUN = readxl::read_excel, path = filepath)
   names(glottodata) <- sheetnames
-    } else if(tools::file_ext(filepath) == ".gpkg" | tools::file_ext(filepath) == ".shp"){
+    } else if(tools::file_ext(filepath) == "gpkg" | tools::file_ext(filepath) == "shp"){
       glottodata <- sf::st_read(dsn = filepath)
     }
 

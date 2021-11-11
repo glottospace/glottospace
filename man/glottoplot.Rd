@@ -4,24 +4,43 @@
 \alias{glottoplot}
 \title{Visualize distances}
 \usage{
-glottoplot(glottodist, type = NULL, filename = NULL, ...)
+glottoplot(
+  glottodist,
+  type = NULL,
+  k = NULL,
+  rm.na = FALSE,
+  color = NULL,
+  ptsize = NULL,
+  label = NULL,
+  filename = NULL
+)
 }
 \arguments{
 \item{glottodist}{A dist object created with \code{\link{glottodist}}}
 
-\item{type}{The type of plot: "heatmap", "nmds"}
+\item{type}{The type of plot: "heatmap", "nmds", or "stress". Default is heatmap if nothing is provided.}
+
+\item{k}{Number of dimensions. Either 2 or 3 for nmds.}
+
+\item{rm.na}{Whether na's should be removed (default is FALSE)}
+
+\item{color}{glottovar to be used to color features (optional). Run glottovars() to see the options.}
+
+\item{ptsize}{Size of points between 0 and 1 (optional)}
+
+\item{label}{glottovar to be used to label features (optional). Run glottovars() to see the options.}
 
 \item{filename}{Optional filename if output should be saved.}
-
-\item{...}{Additional arguments passed to plotnmds (if type = "nmds").}
 }
 \value{
 
 }
 \description{
-This function offers different types of visualizations to show linguistic distances.
+This function offers different types of visualizations for linguistic distances.
 }
 \examples{
-glottodata <- glottoget_path(meta = TRUE)
+glottodata <- glottoget("demodata", meta = TRUE)
 glottodist <- glottodist(glottodata = glottodata)
+
+glottoplot(glottodist = glottodist, type = "nmds", k = 3, color = "family", label = "name")
 }
