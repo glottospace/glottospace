@@ -13,8 +13,9 @@
 #' @param alpha Transparency of points between 0 (very transparent) and 1 (not transparent)
 #' @param palette Color palette, see glottocolpal("all") for possible options, and run glottocolpal("turbo") to see what it looks like (replace it with palette name).
 #' Alternatively, you could also run tmaptools::palette_explorer(), RColorBrewer::display.brewer.all(), ?viridisLite::viridis, or scales::show_col(viridisLite::viridis(n=20))
-#' @param ... Arguments to pass to glottofilter in case glottodata is empty
 #' @param rivers Do you want to plot rivers (only for static maps)?
+#' @param nclass Preferred number of classes (default is 5)
+#' @param numcat Do numbers represent categories? For example, if your dataset consists of 0 and 1, you might want to set this to TRUE.
 #'
 #' @family <glottomap>
 #' @seealso geomap
@@ -40,7 +41,7 @@
 #' glottodata <- glottospotlight(glottodata = glottodata, spotcol =
 #' "family", spotlight = families$family[-c(1:10)], spotcontrast = "family", bgcontrast = "family")
 #' glottomap(glottodata, color = "color")
-glottomap <- function(glottodata = NULL, color = NULL, label = NULL, type = NULL, ptsize = NULL, alpha = NULL, lbsize = NULL, palette = NULL, rivers = FALSE, ...){
+glottomap <- function(glottodata = NULL, color = NULL, label = NULL, type = NULL, ptsize = NULL, alpha = NULL, lbsize = NULL, palette = NULL, rivers = FALSE, nclass = NULL, numcat = FALSE...){
   palette <- glottocolpal(palette = palette)
   if(is.null(type)){type <- "static"}
 
@@ -63,11 +64,11 @@ glottomap <- function(glottodata = NULL, color = NULL, label = NULL, type = NULL
   if(is.null(color)){color <- "black"}
 
   if(type == "dynamic"){
-    map <- glottomap_dynamic(glottodata = glottodata, label = label, color = color, ptsize = ptsize, alpha = alpha, palette = palette)
+    map <- glottomap_dynamic(glottodata = glottodata, label = label, color = color, ptsize = ptsize, alpha = alpha, palette = palette, nclass = nclass, numcat = numcat)
   }
 
   if(type == "static"){
-    map <- glottomap_static(glottodata = glottodata, label = label, color = color, ptsize = ptsize, lbsize = lbsize, alpha = alpha, palette = palette, rivers = rivers)
+    map <- glottomap_static(glottodata = glottodata, label = label, color = color, ptsize = ptsize, lbsize = lbsize, alpha = alpha, palette = palette, rivers = rivers, nclass = nclass, numcat = numcat)
   }
 return(map)
 
@@ -90,16 +91,18 @@ return(map)
 #' glottodata <- glottofilter(continent = "South America")
 #' glottodata <- glottofilter(country = "Netherlands")
 #' glottomap_dynamic(glottodata)
-glottomap_dynamic <- function(glottodata, label = NULL, color = NULL, ptsize = 1, alpha = 1, palette = NULL){
+glottomap_dynamic <- function(glottodata, label = NULL, color = NULL, ptsize = 1, alpha = 1, palette = NULL, nclass = NULL, numcat = FALSE){
     suppressMessages(tmap::tmap_mode("view"))
 
     tmap::tm_basemap("Esri.WorldTopoMap") +
         {if(is_polygon(glottodata))
         tmap::tm_shape(glottodata) +
-          tmap::tm_polygons(id = label, col = color, palette = palette)} +
+          tmap::tm_polygons(id = label, col = color, palette = palette,
+                            n = {ifelse(is.null(nclass), 5, nclass)}, style = {ifelse(numcat == TRUE, "cat", "pretty")})} +
       {if(is_point(glottodata))
         tmap::tm_shape(glottodata) +
-          tmap::tm_symbols(id = label, col = color, size = ptsize, alpha = alpha, palette = palette) } +
+          tmap::tm_symbols(id = label, col = color, size = ptsize, alpha = alpha, palette = palette,
+                           n = {ifelse(is.null(nclass), 5, nclass)}, style = {ifelse(numcat == TRUE, "cat", "pretty")}) } +
       {if(glottospotlight_legend(glottodata)[[1]]){tmap::tm_add_legend(col = glottospotlight_legend(glottodata)$col, labels = glottospotlight_legend(glottodata)$labels)} }
 
   }
@@ -125,7 +128,7 @@ glottomap_dynamic <- function(glottodata, label = NULL, color = NULL, ptsize = 1
 #' glottodata <- glottofilter(continent = "South America")
 #' glottodata <- glottofilter(country = c("Netherlands", "Germany", "Belgium") )
 #' glottomap_static(glottodata)
-glottomap_static <- function(glottodata, label = NULL, color = NULL, ptsize = 1, lbsize = NULL, alpha = 1, palette = NULL, rivers = FALSE){
+glottomap_static <- function(glottodata, label = NULL, color = NULL, ptsize = 1, lbsize = NULL, alpha = 1, palette = NULL, rivers = FALSE, nclass = NULL, numcat = FALSE){
   suppressMessages(tmap::tmap_mode("plot"))
 
   basemap <- rnaturalearth::ne_countries(scale = 50, returnclass = "sf")
@@ -152,10 +155,12 @@ glottomap_static <- function(glottodata, label = NULL, color = NULL, ptsize = 1,
         tmap::tm_lines(col = "lightblue")} } +
     {if(is_polygon(glottodata_proj))
       tmap::tm_shape(glottodata_proj) +
-        tmap::tm_polygons(col = color, palette = palette)} +
+        tmap::tm_polygons(col = color, palette = palette,
+                          n = {ifelse(is.null(nclass), 5, nclass)}, style = {ifelse(numcat == TRUE, "cat", "pretty")})} +
     {if(is_point(glottodata_proj))
       tmap::tm_shape(glottodata_proj) +
-        tmap::tm_symbols(col = color, size = ptsize, alpha = alpha, palette = palette) } +
+        tmap::tm_symbols(col = color, size = ptsize, alpha = alpha, palette = palette,
+                         n = {ifelse(is.null(nclass), 5, nclass)}, style = {ifelse(numcat == TRUE, "cat", "pretty")}) } +
     {if(!purrr::is_empty(label)) tmap::tm_text(text = label, size = lbsize, auto.placement = TRUE)} +
     tmap::tm_legend(legend.outside = TRUE) + tmap::tm_layout(bg.color = "grey85", inner.margins = c(0,0,0,0)) +
     {if(glottospotlight_legend(glottodata)[[1]]){tmap::tm_add_legend(col = glottospotlight_legend(glottodata)$col, labels = glottospotlight_legend(glottodata)$labels)} }

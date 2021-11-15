@@ -13,7 +13,9 @@ glottomap(
   alpha = NULL,
   lbsize = NULL,
   palette = NULL,
-  ...
+  rivers = FALSE,
+  nclass = NULL,
+  numcat = FALSE...
 )
 }
 \arguments{
@@ -32,12 +34,14 @@ glottomap(
 
 \item{lbsize}{Size of labels between 0 and 1}
 
-\item{palette}{Color palette, see glottocolpal("all") for possible options
-Run tmaptools::palette_explorer() to see which palettes are available.
-Alternatively, you could check palettes from RColorBrewer directly: RColorBrewer::display.brewer.all()
-Or you could use one of the following viridis palettes. Run ?viridisLite::viridis for palette names. To view one palette run: scales::show_col(viridisLite::viridis(n=20))}
+\item{palette}{Color palette, see glottocolpal("all") for possible options, and run glottocolpal("turbo") to see what it looks like (replace it with palette name).
+Alternatively, you could also run tmaptools::palette_explorer(), RColorBrewer::display.brewer.all(), ?viridisLite::viridis, or scales::show_col(viridisLite::viridis(n=20))}
 
-\item{...}{Arguments to pass to glottofilter in case glottodata is empty}
+\item{rivers}{Do you want to plot rivers (only for static maps)?}
+
+\item{nclass}{Preferred number of classes (default is 5)}
+
+\item{numcat}{Do numbers represent categories? For example, if your dataset consists of 0 and 1, you might want to set this to TRUE.}
 }
 \value{
 
@@ -51,8 +55,9 @@ glottomap(country = "Netherlands")
 glottopoints <- glottofilter(continent = "South America")
 glottopols <- glottospace(glottopoints, method = "voronoi", continent = "South America")
 glottomap(glottodata = glottopols, color = "family_size_rank")
+glottomap(glottodata = glottopols, color = "family", palette = "turbo", type = "dynamic", label = "name")
 
-glottodata <- glottoget_remote()
+glottodata <- glottoget()
 families <- glottodata \%>\% dplyr::count(family, sort = TRUE)
 
 # highlight 10 largest families:

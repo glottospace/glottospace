@@ -8,9 +8,11 @@ glottomap_dynamic(
   glottodata,
   label = NULL,
   color = NULL,
-  ptsize = NULL,
-  alpha = NULL,
-  palette = NULL
+  ptsize = 1,
+  alpha = 1,
+  palette = NULL,
+  nclass = NULL,
+  numcat = FALSE
 )
 }
 \arguments{

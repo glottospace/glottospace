@@ -9,7 +9,8 @@ glottospotlight(
   spotcol,
   spotlight,
   spotcontrast = NULL,
-  bgcontrast = NULL
+  bgcontrast = NULL,
+  palette = NULL
 )
 }
 \arguments{

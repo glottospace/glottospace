@@ -28,3 +28,4 @@ Other <glottocheck>:
 \code{\link{glottocheck}()}
 }
 \concept{<glottocheck>}
+\keyword{internal}

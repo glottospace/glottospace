@@ -8,10 +8,13 @@ glottomap_static(
   glottodata,
   label = NULL,
   color = NULL,
-  ptsize = NULL,
+  ptsize = 1,
   lbsize = NULL,
-  alpha = NULL,
-  palette = NULL
+  alpha = 1,
+  palette = NULL,
+  rivers = FALSE,
+  nclass = NULL,
+  numcat = FALSE
 )
 }
 \arguments{
@@ -24,6 +27,12 @@ glottomap_static(
 \item{ptsize}{Point size between 0 and 1}
 
 \item{lbsize}{Label size between 0 an 1}
+
+\item{alpha}{Transparency of points between 0 (very transparent) and 1 (not transparent)}
+
+\item{palette}{Color palette, see glottocolpal("all") for possible options}
+
+\item{rivers}{Do you want to plot rivers?}
 }
 \value{
 
@@ -33,7 +42,7 @@ This function returns a static map with glottodata. Data is projected using the 
 }
 \examples{
 glottodata <- glottofilter(continent = "South America")
-glottodata <- glottofilter(country = "Netherlands")
+glottodata <- glottofilter(country = c("Netherlands", "Germany", "Belgium") )
 glottomap_static(glottodata)
 }
 \keyword{internal}

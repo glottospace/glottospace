@@ -4,12 +4,12 @@
 \alias{glottocolpal}
 \title{Color palettes for maps and figures}
 \usage{
-glottocolpal(palette, ncol = NULL, rev = FALSE, alpha = NULL, show = FALSE)
+glottocolpal(palette, ncolr = NULL, rev = FALSE, alpha = NULL, show = FALSE)
 }
 \arguments{
 \item{palette}{Name of color palette, use glottocolpal("all") to see the options}
 
-\item{ncol}{Number of colors to be generated (optional)}
+\item{ncolr}{Number of colors to be generated (optional)}
 
 \item{rev}{Should the order of colors be reversed?}
 
