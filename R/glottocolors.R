@@ -1,7 +1,7 @@
 #' Color palettes for maps and figures
 #'
 #' @param palette Name of color palette, use glottocolpal("all") to see the options
-#' @param ncol Number of colors to be generated (optional)
+#' @param ncolr Number of colors to be generated (optional)
 #' @param rev Should the order of colors be reversed?
 #' @param alpha Values between 0 (transparent) and 1 (opaque)
 #' @param show Do you want to plot the color palette?
@@ -11,11 +11,12 @@
 #'
 #' @examples
 #' glottocolpal(palette = "turbo", show = TRUE)
-glottocolpal <- function(palette, ncol = NULL, rev = FALSE, alpha = NULL, show = FALSE){
+glottocolpal <- function(palette, ncolr = NULL, rev = FALSE, alpha = NULL, show = FALSE){
   viridispals <- c("viridis", "magma", "inferno", "plasma", "cividis", "rocket", "mako", "turbo")
   colorbrewerpals <- rownames(RColorBrewer::brewer.pal.info)
   grdevpals <- grDevices::hcl.pals()
   grdevpals <- grdevpals[order(grdevpals)]
+  grdevpals2 <- c("rainbow", "heat", "terrain", "topo", "cm")
 
   if(is.null(palette)){
     return(NULL)
@@ -26,15 +27,21 @@ glottocolpal <- function(palette, ncol = NULL, rev = FALSE, alpha = NULL, show =
   }
 
   if(palette %in% viridispals){
-    if(is.null(ncol)){ncol <- 20}
-    colpal <- viridisLite::viridis(n = ncol, option = palette, alpha = alpha, direction = {ifelse(rev == FALSE, 1, -1)})
+    if(is.null(ncolr)){ncolr <- 20}
+    colpal <- viridisLite::viridis(n = ncolr, option = palette, alpha = alpha, direction = {ifelse(rev == FALSE, 1, -1)})
   } else if(palette %in% grdevpals){ # contains palettes from RColorBrewer and viridis. grDevices is more flexible than RColorBrewer and therefore is prioritized
-    if(is.null(ncol)){ncol <- 20}
-    colpal <- grDevices::hcl.colors(n = ncol, palette = palette, rev = rev, alpha = alpha)
+    if(is.null(ncolr)){ncolr <- 20}
+    colpal <- grDevices::hcl.colors(n = ncolr, palette = palette, rev = rev, alpha = alpha)
   } else if(palette %in% colorbrewerpals){
-    if(is.null(ncol)){ncol <- RColorBrewer::brewer.pal.info[colorbrewerpals == palette, "maxcolors"]}
-    colpal <- RColorBrewer::brewer.pal(ncol, palette)
+    if(is.null(ncolr)){ncolr <- RColorBrewer::brewer.pal.info[colorbrewerpals == palette, "maxcolors"]}
+    colpal <- RColorBrewer::brewer.pal(ncolr, palette)
     if(rev == TRUE){colpal <- rev(colpal)}
+  } else if(palette %in% grdevpals2){
+      if(palette == "rainbow"){colpal <- grDevices::rainbow(n = ncolr, rev = rev, alpha = alpha)}
+      if(palette == "heat"){colpal <- grDevices::heat.colors(n = ncolr, rev = rev, alpha = alpha)}
+      if(palette == "terrain"){colpal <- grDevices::terrain.colors(n = ncolr, rev = rev, alpha = alpha)}
+      if(palette == "topo"){colpal <- grDevices::topo.colors(n = ncolr, rev = rev, alpha = alpha)}
+      if(palette == "cm"){colpal <- grDevices::cm.colors(n = ncolr, rev = rev, alpha = alpha)}
     }
 
   if(show == TRUE){
@@ -53,6 +60,7 @@ glottocolpal_options <- function(){
   colorbrewerpals <- rownames(RColorBrewer::brewer.pal.info)
   grdevpals <- grDevices::hcl.pals()
   grdevpals <- grdevpals[order(grdevpals)]
+  grdevpals2 <- c("rainbow", "heat", "terrain", "topo", "cm")
 
   cat("Viridis palettes: \n")
   print(viridispals)
@@ -60,6 +68,10 @@ glottocolpal_options <- function(){
 
   cat("grDevices palettes: \n")
   print(grdevpals)
+  cat("\n\n")
+
+  cat("Additional grDevices palettes: \n")
+  print(grdevpals2)
   cat("\n\n")
 
   cat("ColorBrewer palettes: \n")
