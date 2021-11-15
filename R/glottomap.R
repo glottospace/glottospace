@@ -11,11 +11,10 @@
 #' @param ptsize Size of points between 0 and 1
 #' @param lbsize Size of labels between 0 and 1
 #' @param alpha Transparency of points between 0 (very transparent) and 1 (not transparent)
-#' @param palette Color palette, see glottocolpal("all") for possible options
-#' Run tmaptools::palette_explorer() to see which palettes are available.
-#' Alternatively, you could check palettes from RColorBrewer directly: RColorBrewer::display.brewer.all()
-#' Or you could use one of the following viridis palettes. Run ?viridisLite::viridis for palette names. To view one palette run: scales::show_col(viridisLite::viridis(n=20))
+#' @param palette Color palette, see glottocolpal("all") for possible options, and run glottocolpal("turbo") to see what it looks like (replace it with palette name).
+#' Alternatively, you could also run tmaptools::palette_explorer(), RColorBrewer::display.brewer.all(), ?viridisLite::viridis, or scales::show_col(viridisLite::viridis(n=20))
 #' @param ... Arguments to pass to glottofilter in case glottodata is empty
+#' @param rivers Do you want to plot rivers (only for static maps)?
 #'
 #' @family <glottomap>
 #' @seealso geomap
@@ -41,7 +40,7 @@
 #' glottodata <- glottospotlight(glottodata = glottodata, spotcol =
 #' "family", spotlight = families$family[-c(1:10)], spotcontrast = "family", bgcontrast = "family")
 #' glottomap(glottodata, color = "color")
-glottomap <- function(glottodata = NULL, color = NULL, label = NULL, type = NULL, ptsize = NULL, alpha = NULL, lbsize = NULL, palette = NULL, ...){
+glottomap <- function(glottodata = NULL, color = NULL, label = NULL, type = NULL, ptsize = NULL, alpha = NULL, lbsize = NULL, palette = NULL, rivers = FALSE, ...){
   palette <- glottocolpal(palette = palette)
   if(is.null(type)){type <- "static"}
 
@@ -68,7 +67,7 @@ glottomap <- function(glottodata = NULL, color = NULL, label = NULL, type = NULL
   }
 
   if(type == "static"){
-    map <- glottomap_static(glottodata = glottodata, label = label, color = color, ptsize = ptsize, lbsize = lbsize, alpha = alpha, palette = palette)
+    map <- glottomap_static(glottodata = glottodata, label = label, color = color, ptsize = ptsize, lbsize = lbsize, alpha = alpha, palette = palette, rivers = rivers)
   }
 return(map)
 
@@ -114,6 +113,9 @@ glottomap_dynamic <- function(glottodata, label = NULL, color = NULL, ptsize = 1
 #' @param label Column name or index to be used to label features (optional)
 #' @param ptsize Point size between 0 and 1
 #' @param lbsize Label size between 0 an 1
+#' @param alpha Transparency of points between 0 (very transparent) and 1 (not transparent)
+#' @param palette Color palette, see glottocolpal("all") for possible options
+#' @param rivers Do you want to plot rivers?
 #'
 #' @return
 #' @keywords internal
@@ -121,9 +123,9 @@ glottomap_dynamic <- function(glottodata, label = NULL, color = NULL, ptsize = 1
 #'
 #' @examples
 #' glottodata <- glottofilter(continent = "South America")
-#' glottodata <- glottofilter(country = "Netherlands")
+#' glottodata <- glottofilter(country = c("Netherlands", "Germany", "Belgium") )
 #' glottomap_static(glottodata)
-glottomap_static <- function(glottodata, label = NULL, color = NULL, ptsize = 1, lbsize = NULL, alpha = 1, palette = NULL){
+glottomap_static <- function(glottodata, label = NULL, color = NULL, ptsize = 1, lbsize = NULL, alpha = 1, palette = NULL, rivers = FALSE){
   suppressMessages(tmap::tmap_mode("plot"))
 
   basemap <- rnaturalearth::ne_countries(scale = 50, returnclass = "sf")
@@ -136,11 +138,18 @@ glottomap_static <- function(glottodata, label = NULL, color = NULL, ptsize = 1,
   glottodata_wrap <- sf::st_wrap_dateline(glottodata, options = c("WRAPDATELINE=YES","DATELINEOFFSET=180"), quiet = TRUE)
   glottodata_proj <- sf::st_transform(glottodata_wrap, crs = "+proj=eck4")
 
+  if(rivers == TRUE){
+    rivers10 <- suppressWarnings(ne_download(scale = 10, type = 'rivers_lake_centerlines', category = 'physical', returnclass = "sf"))
+    rivers_proj <- sf::st_transform(rivers10, crs = "+proj=eck4")
+  }
+
   bbox <- sf::st_bbox(glottodata_proj)
   bboxe <- bbox_expand(bbox, f = 0.1)
   wrld_projbb <- sf::st_crop(wrld_proj, bboxe)
 
   tmap::tm_shape(wrld_projbb) + tmap::tm_fill(col = "white", alpha = 1) + tmap::tm_borders(lwd=1.2) +
+    {if(rivers == TRUE){tmap::tm_shape(rivers_proj) +
+        tmap::tm_lines(col = "blue")} } +
     {if(is_polygon(glottodata_proj))
       tmap::tm_shape(glottodata_proj) +
         tmap::tm_polygons(col = color, palette = palette)} +
