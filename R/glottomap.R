@@ -149,7 +149,7 @@ glottomap_static <- function(glottodata, label = NULL, color = NULL, ptsize = 1,
 
   tmap::tm_shape(wrld_projbb) + tmap::tm_fill(col = "white", alpha = 1) + tmap::tm_borders(lwd=1.2) +
     {if(rivers == TRUE){tmap::tm_shape(rivers_proj) +
-        tmap::tm_lines(col = "blue")} } +
+        tmap::tm_lines(col = "lightblue")} } +
     {if(is_polygon(glottodata_proj))
       tmap::tm_shape(glottodata_proj) +
         tmap::tm_polygons(col = color, palette = palette)} +
