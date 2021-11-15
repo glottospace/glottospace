@@ -15,7 +15,9 @@ glottomap(
   palette = NULL,
   rivers = FALSE,
   nclass = NULL,
-  numcat = FALSE...
+  numcat = FALSE,
+  filename = NULL,
+  ...
 )
 }
 \arguments{
@@ -42,6 +44,10 @@ Alternatively, you could also run tmaptools::palette_explorer(), RColorBrewer::d
 \item{nclass}{Preferred number of classes (default is 5)}
 
 \item{numcat}{Do numbers represent categories? For example, if your dataset consists of 0 and 1, you might want to set this to TRUE.}
+
+\item{filename}{Optional filename if you want to save resulting map}
+
+\item{...}{}
 }
 \value{
 

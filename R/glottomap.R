@@ -16,6 +16,8 @@
 #' @param rivers Do you want to plot rivers (only for static maps)?
 #' @param nclass Preferred number of classes (default is 5)
 #' @param numcat Do numbers represent categories? For example, if your dataset consists of 0 and 1, you might want to set this to TRUE.
+#' @param filename Optional filename if you want to save resulting map
+#' @param ...
 #'
 #' @family <glottomap>
 #' @seealso geomap
@@ -41,7 +43,7 @@
 #' glottodata <- glottospotlight(glottodata = glottodata, spotcol =
 #' "family", spotlight = families$family[-c(1:10)], spotcontrast = "family", bgcontrast = "family")
 #' glottomap(glottodata, color = "color")
-glottomap <- function(glottodata = NULL, color = NULL, label = NULL, type = NULL, ptsize = NULL, alpha = NULL, lbsize = NULL, palette = NULL, rivers = FALSE, nclass = NULL, numcat = FALSE, ...){
+glottomap <- function(glottodata = NULL, color = NULL, label = NULL, type = NULL, ptsize = NULL, alpha = NULL, lbsize = NULL, palette = NULL, rivers = FALSE, nclass = NULL, numcat = FALSE, filename = NULL, ...){
   palette <- glottocolpal(palette = palette)
   if(is.null(type)){type <- "static"}
 
@@ -70,6 +72,10 @@ glottomap <- function(glottodata = NULL, color = NULL, label = NULL, type = NULL
   if(type == "static"){
     map <- glottomap_static(glottodata = glottodata, label = label, color = color, ptsize = ptsize, lbsize = lbsize, alpha = alpha, palette = palette, rivers = rivers, nclass = nclass, numcat = numcat)
   }
+
+  if(!is.null(filename)){
+    glottosave(map, filename)
+  }
 return(map)
 
 }
@@ -85,6 +91,7 @@ return(map)
 #'
 #' @return
 #' @keywords internal
+#' @noRd
 #' @export
 #'
 #' @examples
@@ -123,6 +130,7 @@ glottomap_dynamic <- function(glottodata, label = NULL, color = NULL, ptsize = 1
 #' @return
 #' @keywords internal
 #' @export
+#' @noRd
 #'
 #' @examples
 #' glottodata <- glottofilter(continent = "South America")
