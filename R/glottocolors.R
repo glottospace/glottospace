@@ -88,7 +88,8 @@ glottocolpal_options <- function(){
 #' glottodata <- glottofilter(country = c("Netherlands", "Germany", "Belgium") )
 #' glottodata <- glottospotlight(glottodata = glottodata, spotcol = "country", spotlight = "Netherlands", spotcontrast = "name")
 #' glottomap(glottodata, color = "color")
-glottospotlight <- function(glottodata, spotcol, spotlight, spotcontrast = NULL, bgcontrast = NULL){
+glottospotlight <- function(glottodata, spotcol, spotlight, spotcontrast = NULL, bgcontrast = NULL, palette = NULL){
+  if(is.null(palette)){palette = "rainbow"}
   if(is_sf(glottodata)){
     data <- sf::st_drop_geometry(glottodata)
     was_sf <- TRUE
@@ -115,7 +116,7 @@ glottospotlight <- function(glottodata, spotcol, spotlight, spotcontrast = NULL,
 
   spotlightnames <- as.factor(data$legend[data$spotlight == TRUE])
   ncolrspot <- length(unique(spotlightnames))
-  colpalspot <- rainbow(ncolrspot)
+  colpalspot <- glottocolpal(palette = palette, ncolrspot)
 
   bgnames <- as.factor(data$legend[data$spotlight == FALSE])
   ncolrbg <- length(unique(bgnames))
@@ -130,4 +131,16 @@ glottospotlight <- function(glottodata, spotcol, spotlight, spotcontrast = NULL,
   } else {
     return(data)
   }
+}
+
+glottospotlight_legend <- function(glottodata){
+  if(all(c("spotlight", "legend", "color") %in% colnames(glottodata))){
+    legend <- list(
+      spotlight = TRUE,
+      labels = unique(glottodata[sf::st_drop_geometry(glottodata[,"spotlight"]) == TRUE,]$legend),
+      col = unique(glottodata[sf::st_drop_geometry(glottodata[,"spotlight"]) == TRUE,]$color))
+  } else {
+    legend <- list(spotlight = FALSE)
+  }
+  legend
 }

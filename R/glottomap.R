@@ -30,7 +30,7 @@
 #' glottomap(glottodata = glottopols, color = "family_size_rank")
 #' glottomap(glottodata = glottopols, color = "family", palette = "turbo", type = "dynamic", label = "name")
 #'
-#' glottodata <- glottoget_remote()
+#' glottodata <- glottoget()
 #' families <- glottodata %>% dplyr::count(family, sort = TRUE)
 #'
 #' # highlight 10 largest families:
@@ -91,7 +91,7 @@ return(map)
 #' glottodata <- glottofilter(continent = "South America")
 #' glottodata <- glottofilter(country = "Netherlands")
 #' glottomap_dynamic(glottodata)
-glottomap_dynamic <- function(glottodata, label = NULL, color = NULL, ptsize = NULL, alpha = NULL, palette = NULL){
+glottomap_dynamic <- function(glottodata, label = NULL, color = NULL, ptsize = 1, alpha = 1, palette = NULL){
     suppressMessages(tmap::tmap_mode("view"))
 
     tmap::tm_basemap("Esri.WorldTopoMap") +
@@ -100,7 +100,9 @@ glottomap_dynamic <- function(glottodata, label = NULL, color = NULL, ptsize = N
           tmap::tm_polygons(id = label, col = color, palette = palette)} +
       {if(is_point(glottodata))
         tmap::tm_shape(glottodata) +
-          tmap::tm_symbols(id = label, col = color, size = ptsize, alpha = alpha, palette = palette) }
+          tmap::tm_symbols(id = label, col = color, size = ptsize, alpha = alpha, palette = palette) } +
+      {if(glottospotlight_legend(glottodata)[[1]]){tmap::tm_add_legend(col = glottospotlight_legend(glottodata)$col, labels = glottospotlight_legend(glottodata)$labels)} }
+
   }
 
 #' Create a static map with glottodata
@@ -121,7 +123,7 @@ glottomap_dynamic <- function(glottodata, label = NULL, color = NULL, ptsize = N
 #' glottodata <- glottofilter(continent = "South America")
 #' glottodata <- glottofilter(country = "Netherlands")
 #' glottomap_static(glottodata)
-glottomap_static <- function(glottodata, label = NULL, color = NULL, ptsize = NULL, lbsize = NULL, alpha = NULL, palette = NULL){
+glottomap_static <- function(glottodata, label = NULL, color = NULL, ptsize = 1, lbsize = NULL, alpha = 1, palette = NULL){
   suppressMessages(tmap::tmap_mode("plot"))
 
   basemap <- rnaturalearth::ne_countries(scale = 50, returnclass = "sf")
@@ -146,7 +148,8 @@ glottomap_static <- function(glottodata, label = NULL, color = NULL, ptsize = NU
       tmap::tm_shape(glottodata_proj) +
         tmap::tm_symbols(col = color, size = ptsize, alpha = alpha, palette = palette) } +
     {if(!purrr::is_empty(label)) tmap::tm_text(text = label, size = lbsize, auto.placement = TRUE)} +
-    tmap::tm_legend(legend.outside = TRUE) + tmap::tm_layout(bg.color = "grey85", inner.margins = c(0,0,0,0))
+    tmap::tm_legend(legend.outside = TRUE) + tmap::tm_layout(bg.color = "grey85", inner.margins = c(0,0,0,0)) +
+    {if(glottospotlight_legend(glottodata)[[1]]){tmap::tm_add_legend(col = glottospotlight_legend(glottodata)$col, labels = glottospotlight_legend(glottodata)$labels)} }
 }
 
 
