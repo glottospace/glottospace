@@ -22,7 +22,7 @@
 # TODO: Replace 'User-provided glottodata' with 'A glottodata table' (or glottodata list in some cases)
 # xfun::gsub_dir(dir = "C:/Users/sjnor/surfdrive/PROJECTS_SN/SAPPHIRE/R/glottospace/R", pattern = "glottocreatesubdata", replacement = "glottocreate_subdata")
 
-# xfun::gsub_dir(dir = "C:/Users/sjnor/surfdrive/PROJECTS_SN/SAPPHIRE/R/glottospace/R", pattern = "glottodatalist", replacement = "glottosubdata")
+# xfun::gsub_dir(dir = "C:/Users/sjnor/surfdrive/PROJECTS_SN/SAPPHIRE/R/glottospace/R", pattern = "transparency", replacement = "alpha")
 
 
 # checkdata ---------------------------------------------------------------

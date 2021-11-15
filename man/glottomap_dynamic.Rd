@@ -4,7 +4,14 @@
 \alias{glottomap_dynamic}
 \title{Create a dynamic map with glottodata}
 \usage{
-glottomap_dynamic(glottodata, label, color, ptsize, transparency)
+glottomap_dynamic(
+  glottodata,
+  label = NULL,
+  color = NULL,
+  ptsize = NULL,
+  alpha = NULL,
+  palette = NULL
+)
 }
 \arguments{
 \item{glottodata}{User-provided glottodata (either glottopoints or glottopols)}
@@ -22,6 +29,8 @@ glottomap_dynamic(glottodata, label, color, ptsize, transparency)
 Create a dynamic map with glottodata
 }
 \examples{
+glottodata <- glottofilter(continent = "South America")
+glottodata <- glottofilter(country = "Netherlands")
 glottomap_dynamic(glottodata)
 }
 \keyword{internal}

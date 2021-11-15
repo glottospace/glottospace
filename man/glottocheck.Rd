@@ -19,11 +19,13 @@ This function first checks whether a dataset is glottodata or glottosubdata, and
 }
 \details{
 It subsequently checks whether:
-- one column exists with the name "glottocode"
-- there are rows without a glottocode  (missing IDs)
-- there are rows with duplicated glottocodes (duplicate IDs)
-- all variables have at least two levels
-- all glottocodes are valid
+\itemize{
+  \item one column exists with the name "glottocode"
+  \item there are rows without a glottocode  (missing IDs)
+  \item there are rows with duplicated glottocodes (duplicate IDs)
+  \item all variables have at least two levels
+  \item all glottocodes are valid
+}
 }
 \examples{
 glottocheck(glottodata)

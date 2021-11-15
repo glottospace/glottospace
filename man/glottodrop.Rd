@@ -9,7 +9,8 @@ glottodrop(
   dropmeta = TRUE,
   dropspatial = TRUE,
   dropsub = TRUE,
-  droplist = TRUE
+  droplist = TRUE,
+  tbdf = TRUE
 )
 }
 \arguments{
@@ -20,6 +21,10 @@ glottodrop(
 \item{dropspatial}{By default spatial properties are dropped.}
 
 \item{dropsub}{By default, glottosubdata tables are merged into a single glottodata table.}
+
+\item{droplist}{If glottodata is a list, should the glottodata table be returned?}
+
+\item{tbdf}{If glottodata is a tibble, should it be converted to a data.frame?}
 }
 \value{
 

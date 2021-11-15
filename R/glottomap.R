@@ -10,8 +10,13 @@
 #'   "static" if nothing is provided.
 #' @param ptsize Size of points between 0 and 1
 #' @param lbsize Size of labels between 0 and 1
-#' @param transparency Transparency of points between 0 (very transparent) and 1 (not transparent)
+#' @param alpha Transparency of points between 0 (very transparent) and 1 (not transparent)
+#' @param palette Color palette, see glottocolpal("all") for possible options
+#' Run tmaptools::palette_explorer() to see which palettes are available.
+#' Alternatively, you could check palettes from RColorBrewer directly: RColorBrewer::display.brewer.all()
+#' Or you could use one of the following viridis palettes. Run ?viridisLite::viridis for palette names. To view one palette run: scales::show_col(viridisLite::viridis(n=20))
 #' @param ... Arguments to pass to glottofilter in case glottodata is empty
+#'
 #' @family <glottomap>
 #' @seealso geomap
 #' @return
@@ -23,6 +28,7 @@
 #' glottopoints <- glottofilter(continent = "South America")
 #' glottopols <- glottospace(glottopoints, method = "voronoi", continent = "South America")
 #' glottomap(glottodata = glottopols, color = "family_size_rank")
+#' glottomap(glottodata = glottopols, color = "family", palette = "turbo", type = "dynamic", label = "name")
 #'
 #' glottodata <- glottoget_remote()
 #' families <- glottodata %>% dplyr::count(family, sort = TRUE)
@@ -35,7 +41,8 @@
 #' glottodata <- glottospotlight(glottodata = glottodata, spotcol =
 #' "family", spotlight = families$family[-c(1:10)], spotcontrast = "family", bgcontrast = "family")
 #' glottomap(glottodata, color = "color")
-glottomap <- function(glottodata = NULL, color = NULL, label = NULL, type = NULL, ptsize = NULL, transparency = NULL, lbsize = NULL, ...){
+glottomap <- function(glottodata = NULL, color = NULL, label = NULL, type = NULL, ptsize = NULL, alpha = NULL, lbsize = NULL, palette = NULL, ...){
+  palette <- glottocolpal(palette = palette)
   if(is.null(type)){type <- "static"}
 
   if(is.null(glottodata)){
@@ -47,20 +54,21 @@ glottomap <- function(glottodata = NULL, color = NULL, label = NULL, type = NULL
     }
 
   }
-  if(is.null(ptsize)){ptsize <- 0.35}
-  if(is.null(lbsize)){lbsize <- 0.75}
-  if(is.null(transparency)){transparency <- 0.65}
+  if(is.null(ptsize)){ptsize <- 1}
+  if(is.null(lbsize) & type == "static"){lbsize <- 0.75}
+  if(!is.null(lbsize) & type == "dynamic"){lbsize <- NULL}
+  if(is.null(alpha)){alpha <- 0.65}
   if(!is_sf(glottodata) ) {glottodata <- glottojoin_space(glottodata)}
 
 
   if(is.null(color)){color <- "black"}
 
   if(type == "dynamic"){
-    map <- glottomap_dynamic(glottodata = glottodata, label = label, color = color, ptsize = ptsize, lbsize = lbsize, transparency = transparency)
+    map <- glottomap_dynamic(glottodata = glottodata, label = label, color = color, ptsize = ptsize, alpha = alpha, palette = palette)
   }
 
   if(type == "static"){
-    map <- glottomap_static(glottodata = glottodata, label = label, color = color, ptsize = ptsize, lbsize = lbsize, transparency = transparency)
+    map <- glottomap_static(glottodata = glottodata, label = label, color = color, ptsize = ptsize, lbsize = lbsize, alpha = alpha, palette = palette)
   }
 return(map)
 
@@ -80,17 +88,19 @@ return(map)
 #' @export
 #'
 #' @examples
+#' glottodata <- glottofilter(continent = "South America")
+#' glottodata <- glottofilter(country = "Netherlands")
 #' glottomap_dynamic(glottodata)
-glottomap_dynamic <- function(glottodata, label, color, ptsize, transparency){
+glottomap_dynamic <- function(glottodata, label = NULL, color = NULL, ptsize = NULL, alpha = NULL, palette = NULL){
     suppressMessages(tmap::tmap_mode("view"))
 
     tmap::tm_basemap("Esri.WorldTopoMap") +
         {if(is_polygon(glottodata))
         tmap::tm_shape(glottodata) +
-          tmap::tm_polygons(id = label, col = color)} +
+          tmap::tm_polygons(id = label, col = color, palette = palette)} +
       {if(is_point(glottodata))
         tmap::tm_shape(glottodata) +
-          tmap::tm_symbols(id = label, col = color, scale = ptsize, alpha = transparency) }
+          tmap::tm_symbols(id = label, col = color, size = ptsize, alpha = alpha, palette = palette) }
   }
 
 #' Create a static map with glottodata
@@ -111,7 +121,7 @@ glottomap_dynamic <- function(glottodata, label, color, ptsize, transparency){
 #' glottodata <- glottofilter(continent = "South America")
 #' glottodata <- glottofilter(country = "Netherlands")
 #' glottomap_static(glottodata)
-glottomap_static <- function(glottodata, label, color, ptsize, lbsize, transparency){
+glottomap_static <- function(glottodata, label = NULL, color = NULL, ptsize = NULL, lbsize = NULL, alpha = NULL, palette = NULL){
   suppressMessages(tmap::tmap_mode("plot"))
 
   basemap <- rnaturalearth::ne_countries(scale = 50, returnclass = "sf")
@@ -131,10 +141,10 @@ glottomap_static <- function(glottodata, label, color, ptsize, lbsize, transpare
   tmap::tm_shape(wrld_projbb) + tmap::tm_fill(col = "white", alpha = 1) + tmap::tm_borders(lwd=1.2) +
     {if(is_polygon(glottodata_proj))
       tmap::tm_shape(glottodata_proj) +
-        tmap::tm_polygons(col = color)} +
+        tmap::tm_polygons(col = color, palette = palette)} +
     {if(is_point(glottodata_proj))
       tmap::tm_shape(glottodata_proj) +
-        tmap::tm_symbols(col = color, scale = ptsize, alpha = transparency) } +
+        tmap::tm_symbols(col = color, size = ptsize, alpha = alpha, palette = palette) } +
     {if(!purrr::is_empty(label)) tmap::tm_text(text = label, size = lbsize, auto.placement = TRUE)} +
     tmap::tm_legend(legend.outside = TRUE) + tmap::tm_layout(bg.color = "grey85", inner.margins = c(0,0,0,0))
 }

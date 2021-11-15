@@ -3,11 +3,13 @@
 #' This function first checks whether a dataset is glottodata or glottosubdata, and depending on the result calls glottocheck_data or glottocheck_subdata.
 #'
 #' It subsequently checks whether:
-#' - one column exists with the name "glottocode"
-#' - there are rows without a glottocode  (missing IDs)
-#' - there are rows with duplicated glottocodes (duplicate IDs)
-#' - all variables have at least two levels
-#' - all glottocodes are valid
+#' \itemize{
+#'   \item one column exists with the name "glottocode"
+#'   \item there are rows without a glottocode  (missing IDs)
+#'   \item there are rows with duplicated glottocodes (duplicate IDs)
+#'   \item all variables have at least two levels
+#'   \item all glottocodes are valid
+#' }
 #'
 #' @param glottodata User-provided glottodata
 #' @param diagnostic If TRUE (default) a data viewer will be opened to show the levels of each variable (including NAs), and a data coverage plot will be shown.
@@ -29,14 +31,17 @@ glottocheck <- function(glottodata, diagnostic = TRUE){
 #' Quality check of user-provided glottodata
 #'
 #' Go through a user-provided glottodataset and check whether:
-#' - one column exists with the name "glottocode"
-#' - there are rows without a glottocode  (missing IDs)
-#' - there are rows with duplicated glottocodes (duplicate IDs)
-#' - all variables have at least two levels
-#' - all glottocodes are valid
+#' \itemize{
+#'   \item one column exists with the name "glottocode"
+#'   \item there are rows without a glottocode  (missing IDs)
+#'   \item there are rows with duplicated glottocodes (duplicate IDs)
+#'   \item all variables have at least two levels
+#'   \item all glottocodes are valid
+#' }
 #'
 #' @param glottodata User-provided glottodata
 #' @param diagnostic If TRUE (default) a data viewer will be opened to show the levels of each variable (including NAs), and a data coverage plot will be shown.
+#' @keywords internal
 #'
 #' @family <glottocheck>
 #' @return
@@ -65,7 +70,7 @@ glottocheck_data <- function(glottodata, diagnostic = TRUE){
 #'
 #' @param glottosubdata User-provided glottosubdata
 #' @param diagnostic If TRUE (default) a data viewer will be opened to show the levels of each variable (including NAs), and a data coverage plot will be shown.
-#'
+#' @keywords internal
 #' @return
 #' @export
 #' @family <glottocheck>

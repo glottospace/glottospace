@@ -10,8 +10,9 @@ glottomap(
   label = NULL,
   type = NULL,
   ptsize = NULL,
-  transparency = NULL,
+  alpha = NULL,
   lbsize = NULL,
+  palette = NULL,
   ...
 )
 }
@@ -27,9 +28,14 @@ glottomap(
 
 \item{ptsize}{Size of points between 0 and 1}
 
-\item{transparency}{Transparency of points between 0 (very transparent) and 1 (not transparent)}
+\item{alpha}{Transparency of points between 0 (very transparent) and 1 (not transparent)}
 
 \item{lbsize}{Size of labels between 0 and 1}
+
+\item{palette}{Color palette, see glottocolpal("all") for possible options
+Run tmaptools::palette_explorer() to see which palettes are available.
+Alternatively, you could check palettes from RColorBrewer directly: RColorBrewer::display.brewer.all()
+Or you could use one of the following viridis palettes. Run ?viridisLite::viridis for palette names. To view one palette run: scales::show_col(viridisLite::viridis(n=20))}
 
 \item{...}{Arguments to pass to glottofilter in case glottodata is empty}
 }
