@@ -150,7 +150,7 @@ glottomap_static <- function(glottodata, label = NULL, color = NULL, ptsize = 1,
   glottodata_proj <- sf::st_transform(glottodata_wrap, crs = "+proj=eck4")
 
   if(rivers == TRUE){
-    rivers10 <- suppressWarnings(ne_download(scale = 10, type = 'rivers_lake_centerlines', category = 'physical', returnclass = "sf"))
+    rivers10 <- suppressWarnings(rnaturalearth::ne_download(scale = 10, type = 'rivers_lake_centerlines', category = 'physical', returnclass = "sf"))
     rivers_proj <- sf::st_transform(rivers10, crs = "+proj=eck4")
   }
 
