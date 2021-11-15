@@ -37,6 +37,7 @@ glottocolpal <- function(palette, ncolr = NULL, rev = FALSE, alpha = NULL, show 
     colpal <- RColorBrewer::brewer.pal(ncolr, palette)
     if(rev == TRUE){colpal <- rev(colpal)}
   } else if(palette %in% grdevpals2){
+    if(is.null(ncolr)){ncolr <- 20}
       if(palette == "rainbow"){colpal <- grDevices::rainbow(n = ncolr, rev = rev, alpha = alpha)}
       if(palette == "heat"){colpal <- grDevices::heat.colors(n = ncolr, rev = rev, alpha = alpha)}
       if(palette == "terrain"){colpal <- grDevices::terrain.colors(n = ncolr, rev = rev, alpha = alpha)}
