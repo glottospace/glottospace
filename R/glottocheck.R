@@ -429,9 +429,9 @@ glottocheck_isglottosubdata <- function(glottodata){
     !purrr::is_empty(colnames(glottodata[[1]])[1] == "glottosubcode"))
 }
 
-#' Guess whether a list of glottodata tables is glottodata (and not glottosubdata)
+#' Guess whether a table or list of tables is glottodata (and not glottosubdata)
 #'
-#' @param glottodata User-provided glottodata
+#' @param glottodata glottodata
 #'
 #' @return
 #' @export
@@ -439,7 +439,11 @@ glottocheck_isglottosubdata <- function(glottodata){
 #' @examples
 #' glottocheck_isglottodata(glottodata)
 glottocheck_isglottodata <- function(glottodata){
-  all(class(glottodata) == "list" &
-    any(names(glottodata) %in% "glottodata") &
-    !purrr::is_empty(colnames(glottodata[[1]])[1] == "glottocode"))
+  glottodata <- contrans_tb2df(glottodata)
+  if(any(class(glottodata) == "list" )){
+    return(all(any(names(glottodata) %in% "glottodata") &
+          !purrr::is_empty(colnames(glottodata[[1]])[1] == "glottocode")) )
+  } else {
+    return(!purrr::is_empty(colnames(glottodata)[1] == "glottocode"))
+  }
 }

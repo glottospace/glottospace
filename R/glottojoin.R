@@ -6,6 +6,8 @@
 #' @param with Optional: glottodata (class data.frame), a dist object (class dist), or the name of a glottodatabase ("glottobase" or "glottospace")
 #' @param id By default, data is joined by a column named "glottocode". If the glottocodes are in another column, the column name should be specified.
 #' @param rm.na Only used when joining with a dist object. By default NAs are kept.
+#' @param type In case two glottodata objects are joined, you can specify the type of join: "left" (default), "right", "full", or "inner"
+#' @param ... Additional arguments in case two glottodata objects are joined, see: ?dplyr::join
 #'
 #' @return
 #' @export
@@ -23,22 +25,24 @@
 #' glottosubdata <- glottocreate_subdata(glottocodes = c("yucu1253", "tani1257"), variables = 3, groups = c("a", "b"), n = 2, meta = FALSE)
 #' glottodatatable <- glottojoin(glottodata = glottosubdata)
 #'
-glottojoin <- function(glottodata, with = NULL, id = NULL, rm.na = FALSE){
-  if(is_list(glottodata) & is.null(with)){
+glottojoin <- function(glottodata, with = NULL, id = NULL, rm.na = FALSE, type = "left", ...){
+  if(glottocheck_isglottosubdata(glottodata) & is.null(with)){
     joined <- glottojoin_subdata(glottosubdata = glottodata)
   } else if(!is.null(with)){
-    if(is_dist(with)){
-    joined <- glottojoin_dist(glottodata = glottodata, id = id, dist = with, rm.na = rm.na)
-    } else if(is_list(with)){
-    joined <- glottojoin_meta(glottodata = glottodata, glottometa = with)
-  } else if(with == "glottobase"){
-    joined <- glottojoin_base(glottodata = glottodata, id = id)
-  } else if(with == "glottospace"){
-    joined <- glottojoin_space(glottodata = glottodata, id = id)
-  }  else if(is.data.frame(glottodata) & is.data.frame(with)){
-    joined <- glottojoin_data(glottodata = glottodata, with = with)
-  } else(message("Class of input data not supported.") )
-  }
+      if(is_dist(with)){
+      joined <- glottojoin_dist(glottodata = glottodata, id = id, dist = with, rm.na = rm.na)
+      } else if(glottocheck_hasmeta(with)){
+      joined <- glottojoin_meta(glottodata = glottodata, glottometa = with)
+      } else if(glottocheck_isglottodata(glottodata) & glottocheck_isglottodata(with)){
+        joined <- glottojoin_data(glottodata = glottodata, with = with, type = type)
+      } else if(is.character(with)){
+          if(with == "glottobase"){
+            joined <- glottojoin_base(glottodata = glottodata, id = id)
+          } else if(with == "glottospace"){
+            joined <- glottojoin_space(glottodata = glottodata, id = id)
+          }
+      } else(message("Class of input data not supported.") )
+      }
 return(joined)
 }
 
@@ -177,9 +181,21 @@ glottojoin_subdata <- function(glottosubdata){
 #' glottodatax <- glottoget_path(meta = FALSE)
 #' glottodatay <- glottoget_path(meta = FALSE)
 #' glottojoin_data(glottodatax, glottodatay)
-glottojoin_data <- function(glottodata, with, id = NULL){
+glottojoin_data <- function(glottodata, with, type = "left", id = NULL, ...){
   id <- contrans_id2gc(id)
-  dplyr::left_join(x = glottodata, y = with, by = id)
+  if(type == "left"){
+    joined <- dplyr::left_join(x = glottodata, y = with, by = id, ...)
+  }
+  if(type == "right"){
+    joined <- dplyr::right_join(x = glottodata, y = with, by = id, ...)
+  }
+  if(type == "inner"){
+    joined <- dplyr::inner_join(x = glottodata, y = with, by = id, ...)
+  }
+  if(type == "full"){
+    joined <- dplyr::full_join(x = glottodata, y = with, by = id, ...)
+  }
+  return(joined)
 }
 
 #' Join glottodata with glottometa

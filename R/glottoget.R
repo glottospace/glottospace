@@ -69,9 +69,9 @@ glottoget_remote <- function(glottodata = NULL){
 }
 
 
-#' Load user-provided glottodata
+#' Load glotto(sub)data from file
 #'
-#' Load glottodadata/glottosubdata from a file
+#' Load glottodata/glottosubdata from a file
 #'
 #' @param filepath Path to glottodata file with extension (.xlsx .xls .gpkg .shp). If no filepath is specified, an artificial demo dataset will be created.
 #' @param meta By default, meta sheets are not loaded. Use meta=TRUE if you want to include them.

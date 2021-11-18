@@ -37,3 +37,12 @@ is_dist <- function(object){
 is_list <- function(object){
   class(object) == "list"
 }
+
+contrans_tb2df <- function(glottodata){
+  if(tibble::is_tibble(glottodata)){
+    return(as.data.frame(glottodata))
+  } else {
+    return(glottodata)
+    }
+
+}
