@@ -2,16 +2,20 @@
 #'
 #' By default, the glottolog data will be used to filter from. But in case the user provides glottodata, this will be used.
 #'
-#' @param glottodata glot or geoglot object obtained with
-#'   \code{\link{glottoget_glottolog}} or \code{\link{as_glot}}  or
-#'   \code{\link{as_geoglot}}.
+#' @param glottodata A glottodata table
 #' @param isocodes A character vector of iso639p3codes
 #' @param glottocode A character vector of glottocodes
 #' @param family A character vector of language families
 #' @param family_id A character vector of language family IDs
 #' @param continent A character vector of continents
 #' @param country A character vector of countries
+#' @param name A character vector of language names
+#' @param region A character vector of regions
+#' @param colname A column name
+#' @param keep Character vector of things to keep (only if colname is provided)
+#' @param drop Character vector of things to keep (only if colname is provided)
 #' @param expression A regular expression
+#'
 #' @family <glottofilter><glottosearch>
 #' @return A subset of the original glottodata table  containing only filtered languages.
 #' @export
@@ -24,13 +28,14 @@
 #' # Filter glottodata
 #' points <- glottofilter(glottodata = glottodata, isocodes = colnames(distmat))
 #' points <- glottofilter(glottodata = glottodata, glottocode = "wari1268")
-#' points <- glottofilter(glottodata = glottodata, family = 'Indo-European')
+#' points <- glottofilter(glottodata = glottodata, family = "Indo-European")
 #' points <- glottofilter(glottodata = glottodata, continent = "South America")
+#' points <- glottofilter(glottodata = glottodata, family = "Indo-European", continent = "South America")
 #' points <- glottofilter(glottodata = glottodata, country = c("Colombia", "Venezuela"))
 #' points <- glottofilter(glottodata = glottodata, expression = family %in% c("Arawakan", "Tucanoan"))
 glottofilter <- function(glottodata = NULL, isocodes = NULL,
                       glottocode = NULL, name = NULL, family = NULL, family_id = NULL,
-                      continent = NULL, country = NULL, region = NULL, expression = NULL){
+                      continent = NULL, country = NULL, region = NULL, expression = NULL, colname = NULL, keep = NULL, drop = NULL){
 
   # filter glottolog data
   # isocodes: a character vector of isocodes
@@ -48,31 +53,31 @@ glottofilter <- function(glottodata = NULL, isocodes = NULL,
 
   # Filter by expression:
   expression <- base::substitute(expression)
-  if(!purrr::is_empty(as.character(expression))){
+  if(!purrr::is_empty(expression)){
     glottodata <- dplyr::filter(glottodata, eval(expression))
   }
 
-  if(!purrr::is_empty(isocodes)){
+  if(!purrr::is_empty(isocodes )){
     selection <- isocodes
     glottodata <- glottodata %>%
       dplyr::filter(isocode %in% selection)
   }
-  if(!purrr::is_empty(glottocode)){
+  if(!purrr::is_empty(glottocode )){
     selection <- glottocode
     glottodata <- glottodata %>%
       dplyr::filter(glottocode %in% selection)
   }
-  if(!purrr::is_empty(family)){
+  if(!purrr::is_empty(family )){
     selection <- family
     glottodata <- glottodata %>%
       dplyr::filter(family %in% selection)
   }
-  if(!purrr::is_empty(name)){
+  if(!purrr::is_empty(name )){
     selection <- name
     glottodata <- glottodata %>%
       dplyr::filter(name %in% selection)
   }
-  if(!purrr::is_empty(family_id)){
+  if(!purrr::is_empty(family_id )){
     selection <- family_id
     glottodata <- glottodata %>%
       dplyr::filter(family_id %in% selection)
@@ -80,20 +85,34 @@ glottofilter <- function(glottodata = NULL, isocodes = NULL,
   # if (sum( (!is.null(country)) + (!is.null(continent)) ) > 1) {
   #   stop("Please supply either country or continent, not both")
   # }
-  if(!purrr::is_empty(continent)){
+  if(!purrr::is_empty(continent )){
     selection <- continent
     glottodata <- glottodata %>%
       dplyr::filter(continent %in% selection)
   }
-  if(!purrr::is_empty(country)){
+  if(!purrr::is_empty(country )){
     selection <- country
     glottodata <- glottodata %>%
       dplyr::filter(country %in% selection)
   }
-  if(!purrr::is_empty(region)){
+  if(!purrr::is_empty(region )){
     selection <- region
     glottodata <- glottodata %>%
       dplyr::filter(region %in% selection)
+  }
+
+  if(!purrr::is_empty(colname) & !purrr::is_empty(keep) ){
+    # https://stackoverflow.com/questions/27197617/filter-data-frame-by-character-column-name-in-dplyr
+    selection <- keep
+    glottodata <- glottodata %>%
+      dplyr::filter(.[[colname]] %in% selection)
+  }
+
+  if(!purrr::is_empty(colname) & !purrr::is_empty(drop) ){
+    # https://stackoverflow.com/questions/27197617/filter-data-frame-by-character-column-name-in-dplyr
+    selection <- drop
+    glottodata <- glottodata %>%
+      dplyr::filter(.[[colname]] %nin% selection)
   }
 
   if(nrow(glottodata) == 0){
@@ -103,3 +122,39 @@ glottofilter <- function(glottodata = NULL, isocodes = NULL,
   }
 }
 
+
+# https://adv-r.hadley.nz/quasiquotation.html?q=sub#substitution
+# https://www.roelpeters.be/replace-or-remove-backslashes-in-a-string-in-r/
+#
+# arg <- base::quote("Indo-European") # works
+# arg <- base::quote(-"Indo-European") # works
+# arg <- base::quote(c("Germany", "Netherlands") ) # works
+# arg <- base::quote(-c("Germany", "Netherlands") ) # works
+
+# arg <- -c("Germany", "Netherlands")
+
+# glottofilter_bycol_exp <- function(glottodata, colname, select){
+#
+# arg <- base::quote(select)
+# char <- as.character(arg)
+#
+# if(char[1] == "-"){ # inverse
+#   if(substring(char[2], 1, 2) == "c("){ # inverse multiple
+#     selection <- gsub("[[:punct:]]", " ", char[2])
+#     selection <- stringr::str_split(selection, " ")
+#     selection <- selection[[1]]
+#     selection <- selection[selection %nin% c("c", "")]
+#   } else{ # inverse single
+#     selection <- char[2]
+#   }
+#   glottodata <- glottodata %>%
+#     dplyr::filter(.[[colname]] %nin% selection)
+# } else { # no inverse
+#   selection <- eval(arg)
+#   glottodata <- glottodata %>%
+#     dplyr::filter(.[[colname]] %in% selection)
+# }
+#
+# return(glottodata)
+#
+# }

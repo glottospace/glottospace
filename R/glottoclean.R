@@ -61,6 +61,8 @@ glottoclean_recodemissing <- function(glottodata, rec = NULL){
 #'
 glottoclean_recodelogical <- function(glottodata, structure){
   # maybe better to do with tribble lookup table https://r-pkgs.org/package-within.html
+  # tribble lookup could be used for a function recodefact (factors)
+  # other approach could be used for a funciton recodenum (numeric)
   types <- structure$type
   cbinary <- structure$varname[which(types == "asymm" | types == "symm")]
 
