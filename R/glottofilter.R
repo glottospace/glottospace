@@ -33,6 +33,7 @@
 #' points <- glottofilter(glottodata = glottodata, family = "Indo-European", continent = "South America")
 #' points <- glottofilter(glottodata = glottodata, country = c("Colombia", "Venezuela"))
 #' points <- glottofilter(glottodata = glottodata, expression = family %in% c("Arawakan", "Tucanoan"))
+#' points <- glottofilter(glottodata = glottodata, colname = "family", drop = "Indo-European")
 glottofilter <- function(glottodata = NULL, isocodes = NULL,
                       glottocode = NULL, name = NULL, family = NULL, family_id = NULL,
                       continent = NULL, country = NULL, region = NULL, expression = NULL, colname = NULL, keep = NULL, drop = NULL){
@@ -123,38 +124,52 @@ glottofilter <- function(glottodata = NULL, isocodes = NULL,
 }
 
 
-# https://adv-r.hadley.nz/quasiquotation.html?q=sub#substitution
-# https://www.roelpeters.be/replace-or-remove-backslashes-in-a-string-in-r/
-#
+
 # arg <- base::quote("Indo-European") # works
 # arg <- base::quote(-"Indo-European") # works
 # arg <- base::quote(c("Germany", "Netherlands") ) # works
 # arg <- base::quote(-c("Germany", "Netherlands") ) # works
 
-# arg <- -c("Germany", "Netherlands")
+#' glottofilter by column name
+#'
+#' This is a low-level function of glottofilter, allowing for negative selections
+#'
+#' @param glottodata glottodata table
+#' @param colname Character with a single column name
+#' @param select Things to be selected in that column
+#'
+#' @return
+#' @export
+#'
+#' @examples
+#' glottodata <- glottoget("glottobase")
+#' glottofilter_bycol(glottodata = glottodata, colname = "family", select = "Indo-European")
+#' glottofilter_bycol(glottodata = glottodata, colname = "family", select = -"Indo-European")
+#' glottofilter_bycol(glottodata = glottodata, colname = "country", select = c("Germany", "Netherlands") )
+#' glottofilter_bycol(glottodata = glottodata, colname = "country", select = -c("Germany", "Netherlands") )
+glottofilter_bycol <- function(glottodata, colname, select){
 
-# glottofilter_bycol_exp <- function(glottodata, colname, select){
-#
-# arg <- base::quote(select)
-# char <- as.character(arg)
-#
-# if(char[1] == "-"){ # inverse
-#   if(substring(char[2], 1, 2) == "c("){ # inverse multiple
-#     selection <- gsub("[[:punct:]]", " ", char[2])
-#     selection <- stringr::str_split(selection, " ")
-#     selection <- selection[[1]]
-#     selection <- selection[selection %nin% c("c", "")]
-#   } else{ # inverse single
-#     selection <- char[2]
-#   }
-#   glottodata <- glottodata %>%
-#     dplyr::filter(.[[colname]] %nin% selection)
-# } else { # no inverse
-#   selection <- eval(arg)
-#   glottodata <- glottodata %>%
-#     dplyr::filter(.[[colname]] %in% selection)
-# }
-#
-# return(glottodata)
-#
-# }
+arg <- base::substitute(select)
+char <- as.character(arg)
+
+if(char[1] == "-"){ # inverse
+  if(substring(char[2], 1, 2) == "c("){ # inverse multiple
+    selection <- gsub("[[:punct:]]", " ", char[2])
+    selection <- stringr::str_split(selection, " ")
+    selection <- selection[[1]]
+    selection <- selection[selection %nin% c("c", "")]
+  } else {
+    selection <- char[2]
+  }
+  glottodata <- glottodata %>%
+    dplyr::filter(.[[colname]] %nin% selection)
+} else { # no inverse
+  selection <- select
+  glottodata <- glottodata %>%
+    dplyr::filter(.[[colname]] %in% selection)
+}
+
+return(glottodata)
+}
+
+
