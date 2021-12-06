@@ -36,7 +36,7 @@
 #' points <- glottofilter(glottodata = glottodata, colname = "family", drop = "Indo-European")
 glottofilter <- function(glottodata = NULL, isocodes = NULL,
                       glottocode = NULL, name = NULL, family = NULL, family_id = NULL,
-                      continent = NULL, country = NULL, region = NULL, expression = NULL, colname = NULL, keep = NULL, drop = NULL){
+                      continent = NULL, country = NULL, region = NULL, expression = NULL, colname = NULL, keep = NULL, drop = NULL, select = NULL){
 
   # filter glottolog data
   # isocodes: a character vector of isocodes
@@ -115,6 +115,11 @@ glottofilter <- function(glottodata = NULL, isocodes = NULL,
     glottodata <- glottodata %>%
       dplyr::filter(.[[colname]] %nin% selection)
   }
+
+  # select <- base::substitute(select)
+  # if(!purrr::is_empty(colname) & !purrr::is_empty(select) ){
+  #   glottodata <- glottofilter_bycol(glottodata = glottodata, colname = colname, select = select)
+  # }
 
   if(nrow(glottodata) == 0){
     message("No search results. Use glottosearch() first to find what you're looking for")
