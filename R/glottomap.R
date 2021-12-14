@@ -56,7 +56,6 @@ glottomap <- function(glottodata = NULL, color = NULL, label = NULL, type = NULL
     }
 
   }
-  if(is.null(ptsize)){ptsize <- 0.02}
   if(is.null(lbsize) & type == "static"){lbsize <- 0.75}
   if(!is.null(lbsize) & type == "dynamic"){lbsize <- NULL}
   if(is.null(alpha)){alpha <- 0.65}
@@ -98,8 +97,9 @@ return(map)
 #' glottodata <- glottofilter(continent = "South America")
 #' glottodata <- glottofilter(country = "Netherlands")
 #' glottomap_dynamic(glottodata)
-glottomap_dynamic <- function(glottodata, label = NULL, color = NULL, ptsize = 1, alpha = 1, palette = NULL, nclass = NULL, numcat = FALSE){
+glottomap_dynamic <- function(glottodata, label = NULL, color = NULL, ptsize = NULL, alpha = 1, palette = NULL, nclass = NULL, numcat = FALSE){
     suppressMessages(tmap::tmap_mode("view"))
+  if(is.null(ptsize)){ptsize <- 0.05}
 
     tmap::tm_basemap("Esri.WorldTopoMap") +
         {if(is_polygon(glottodata))
@@ -138,6 +138,7 @@ glottomap_dynamic <- function(glottodata, label = NULL, color = NULL, ptsize = 1
 #' glottomap_static(glottodata)
 glottomap_static <- function(glottodata, label = NULL, color = NULL, ptsize = 1, lbsize = NULL, alpha = 1, palette = NULL, rivers = FALSE, nclass = NULL, numcat = FALSE){
   suppressMessages(tmap::tmap_mode("plot"))
+  if(is.null(ptsize)){ptsize <- 0.5}
 
   basemap <- rnaturalearth::ne_countries(scale = 50, returnclass = "sf")
   wrld_wrap <- sf::st_wrap_dateline(basemap, options = c("WRAPDATELINE=YES","DATELINEOFFSET=180"), quiet = TRUE)
