@@ -4,7 +4,7 @@
 \alias{glottojoin_data}
 \title{Join two glottodata tables.}
 \usage{
-glottojoin_data(glottodata, with, id = NULL)
+glottojoin_data(glottodata, with, type = "left", id = NULL, ...)
 }
 \arguments{
 \item{glottodata}{User-provided glottodata}

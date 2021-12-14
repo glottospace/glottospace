@@ -2,18 +2,18 @@
 % Please edit documentation in R/glottocheck.R
 \name{glottocheck_isglottodata}
 \alias{glottocheck_isglottodata}
-\title{Guess whether a list of glottodata tables is glottodata (and not glottosubdata)}
+\title{Guess whether a table or list of tables is glottodata (and not glottosubdata)}
 \usage{
 glottocheck_isglottodata(glottodata)
 }
 \arguments{
-\item{glottodata}{User-provided glottodata}
+\item{glottodata}{glottodata}
 }
 \value{
 
 }
 \description{
-Guess whether a list of glottodata tables is glottodata (and not glottosubdata)
+Guess whether a table or list of tables is glottodata (and not glottosubdata)
 }
 \examples{
 glottocheck_isglottodata(glottodata)

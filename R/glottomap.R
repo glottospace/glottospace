@@ -145,7 +145,7 @@ glottomap_static <- function(glottodata, label = NULL, color = NULL, ptsize = 1,
   wrld_proj <- sf::st_make_valid(wrld_proj)
   wrld_proj <- sf::st_geometry(wrld_proj)
 
-  glottodata <- sf::st_make_valid(glottodata)
+  # glottodata <- sf::st_make_valid(glottodata) # This converts some points to GEOMETRYCOLLECTION and therefore results in errors later on.
   glottodata_wrap <- sf::st_wrap_dateline(glottodata, options = c("WRAPDATELINE=YES","DATELINEOFFSET=180"), quiet = TRUE)
   glottodata_proj <- sf::st_transform(glottodata_wrap, crs = "+proj=eck4")
 

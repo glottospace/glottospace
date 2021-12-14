@@ -8,7 +8,8 @@
 #' .shp). See also: options meta and simplify.
 #' \item "glottobase" - Default option, an enhanced version of \href{https://glottolog.org/}{glottolog}. See
 #' \link{glottologbooster} for details.
-#' \item "glottolog" - This is the raw data downloaded from \href{https://glottolog.org/}{glottolog}
+#' \item "wals" - This is a spatial and enhanced version of \href{https://wals.info/}{WALS}.
+#' \item "glottolog" - This is the raw \href{https://glottolog.org/}{glottolog}.
 #' \item "glottospace" - A simple dataset with glottocodes and a geometry column. This
 #' is a subset of all languages in \href{https://glottolog.org/}{glottolog} with
 #' spatial coordinates.
@@ -36,6 +37,8 @@ glottoget <- function(glottodata = NULL, meta = FALSE){
     glottodata <- glottocreate_demodata(meta = meta)
   } else if(glottodata == "demosubdata"){
     glottodata <- glottocreate_demosubdata(meta = meta)
+  } else if(glottodata == "wals"){
+    glottodata <- glottoget_wals()
   } else if(tools::file_ext(glottodata) != ""){
     glottodata <- glottoget_path(filepath = glottodata, meta = meta)
   } else {message("Unable to load requested glottodata")}
@@ -164,6 +167,7 @@ glottoget_glottolog <- function(days = NULL){
     vlocal <- glottolog_version_local()
     if(vremote == vlocal){
       out <- glottolog_loadlocal()
+      message(paste("Glottolog is up-to-date. Version", vlocal, " loaded."))
     } else if(vremote > vlocal){
       out <- glottolog_download()
     }
@@ -180,6 +184,8 @@ glottoget_glottolog <- function(days = NULL){
   }
 return(out)
 }
+
+
 
 #' Download glottolog data
 #'
@@ -263,7 +269,7 @@ glottofiles_makedir <- function(dirname){
 #' @export
 #'
 glottolog_version_remote <- function(){
-  base_url <-  "https://zenodo.org/api/records/4762034"
+  base_url <-  "https://zenodo.org/api/records/3260727"
   message("Checking what's the most recent version of glottolog ... this might take a while")
   req <- curl::curl_fetch_memory(base_url)
   content <- RJSONIO::fromJSON(rawToChar(req$content))
@@ -369,7 +375,7 @@ glottolog_download_cldf <- function(){
 #' @export
 #'
 glottolog_download_zenodo <- function(){
-  base_url <-  "https://zenodo.org/api/records/4762034" # Newest version is always uploaded here!
+  base_url <-  "https://zenodo.org/api/records/3260727" # Newest version is always uploaded here!
   req <- curl::curl_fetch_memory(base_url)
   content <- RJSONIO::fromJSON(rawToChar(req$content))
   url <- content$files[[1]]$links[[1]]
@@ -379,7 +385,7 @@ glottolog_download_zenodo <- function(){
 
   utils::download.file(url = url, destfile = filepath ) # downloads and overwrites (i.e. changes date)
   utils::unzip(zipfile = filepath, exdir = exdir)
-  message(paste0("Glottolog data downloaded (glottolog ", content$metadata$version,"). This is the most recent version available from https://zenodo.org/record/4762034)") )
+  message(paste0("Glottolog data downloaded (glottolog ", content$metadata$version,"). This is the most recent version available from https://zenodo.org/record/3260727)") )
 }
 
 #' Load locally stored glottolog data

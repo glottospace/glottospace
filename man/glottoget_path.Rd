@@ -2,7 +2,7 @@
 % Please edit documentation in R/glottoget.R
 \name{glottoget_path}
 \alias{glottoget_path}
-\title{Load user-provided glottodata}
+\title{Load glotto(sub)data from file}
 \usage{
 glottoget_path(filepath = NULL, meta = FALSE, simplify = TRUE)
 }
@@ -17,7 +17,7 @@ glottoget_path(filepath = NULL, meta = FALSE, simplify = TRUE)
 
 }
 \description{
-Load glottodadata/glottosubdata from a file
+Load glottodata/glottosubdata from a file
 }
 \examples{
 glottoget_path()

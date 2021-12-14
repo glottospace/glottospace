@@ -14,17 +14,21 @@ glottofilter(
   continent = NULL,
   country = NULL,
   region = NULL,
-  expression = NULL
+  expression = NULL,
+  colname = NULL,
+  keep = NULL,
+  drop = NULL,
+  select = NULL
 )
 }
 \arguments{
-\item{glottodata}{glot or geoglot object obtained with
-\code{\link{glottoget_glottolog}} or \code{\link{as_glot}}  or
-\code{\link{as_geoglot}}.}
+\item{glottodata}{A glottodata table}
 
 \item{isocodes}{A character vector of iso639p3codes}
 
 \item{glottocode}{A character vector of glottocodes}
+
+\item{name}{A character vector of language names}
 
 \item{family}{A character vector of language families}
 
@@ -34,7 +38,15 @@ glottofilter(
 
 \item{country}{A character vector of countries}
 
+\item{region}{A character vector of regions}
+
 \item{expression}{A regular expression}
+
+\item{colname}{A column name}
+
+\item{keep}{Character vector of things to keep (only if colname is provided)}
+
+\item{drop}{Character vector of things to keep (only if colname is provided)}
 }
 \value{
 A subset of the original glottodata table  containing only filtered languages.
@@ -50,9 +62,11 @@ glottodata <- gs_upgrade(data = glottoraw)
 # Filter glottodata
 points <- glottofilter(glottodata = glottodata, isocodes = colnames(distmat))
 points <- glottofilter(glottodata = glottodata, glottocode = "wari1268")
-points <- glottofilter(glottodata = glottodata, family = 'Indo-European')
+points <- glottofilter(glottodata = glottodata, family = "Indo-European")
 points <- glottofilter(glottodata = glottodata, continent = "South America")
+points <- glottofilter(glottodata = glottodata, family = "Indo-European", continent = "South America")
 points <- glottofilter(glottodata = glottodata, country = c("Colombia", "Venezuela"))
 points <- glottofilter(glottodata = glottodata, expression = family \%in\% c("Arawakan", "Tucanoan"))
+points <- glottofilter(glottodata = glottodata, colname = "family", drop = "Indo-European")
 }
 \concept{<glottofilter><glottosearch>}

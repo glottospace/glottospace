@@ -4,7 +4,14 @@
 \alias{glottojoin}
 \title{Join glottodata with other objects, datasets, or databases.}
 \usage{
-glottojoin(glottodata, with = NULL, id = NULL, rm.na = FALSE)
+glottojoin(
+  glottodata,
+  with = NULL,
+  id = NULL,
+  rm.na = FALSE,
+  type = "left",
+  ...
+)
 }
 \arguments{
 \item{glottodata}{A glottodata table or glottodata list.}
@@ -14,6 +21,10 @@ glottojoin(glottodata, with = NULL, id = NULL, rm.na = FALSE)
 \item{id}{By default, data is joined by a column named "glottocode". If the glottocodes are in another column, the column name should be specified.}
 
 \item{rm.na}{Only used when joining with a dist object. By default NAs are kept.}
+
+\item{type}{In case two glottodata objects are joined, you can specify the type of join: "left" (default), "right", "full", or "inner"}
+
+\item{...}{Additional arguments in case two glottodata objects are joined, see: ?dplyr::join}
 }
 \value{
 

@@ -46,3 +46,33 @@ contrans_tb2df <- function(glottodata){
     }
 
 }
+
+#' Sum of vector elements
+#'
+#' Calculate sum of all vector elements that are not NA. If all elements are NA, NA will be returned (in contrast to sum).
+#'
+#' @param v
+#'
+sumna <- function(v){
+  if(all(is.na(v)) ){
+    return(NA)
+  } else {
+    return(sum(v, na.rm = TRUE))
+  }
+  # ifelse(all(is.na(v)), NA, sum(v, na.rm = TRUE))
+}
+
+#' Select non-NA elements from vector
+#'
+#' Select non-NA elements from vector. If all elements are NA, NA will be returned.
+#'
+#' @param v
+#'
+nonna <- function(v, max1 = FALSE){
+  sel <- v[!is.na(v)]
+  if(purrr::is_empty(sel)){sel <- NA}
+  if(length(sel) > 1 & max1 == TRUE){stop("More than one element is non-NA, specify max1 = FALSE if you want to allow for multiple matches.")}
+  return(sel)
+}
+
+

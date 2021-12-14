@@ -13,7 +13,8 @@ glottoget(glottodata = NULL, meta = FALSE)
 .shp). See also: options meta and simplify.
 \item "glottobase" - Default option, an enhanced version of \href{https://glottolog.org/}{glottolog}. See
 \link{glottologbooster} for details.
-\item "glottolog" - This is the raw data downloaded from \href{https://glottolog.org/}{glottolog}
+\item "wals" - This is a spatial and enhanced version of \href{https://wals.info/}{WALS}.
+\item "glottolog" - This is the raw \href{https://glottolog.org/}{glottolog}.
 \item "glottospace" - A simple dataset with glottocodes and a geometry column. This
 is a subset of all languages in \href{https://glottolog.org/}{glottolog} with
 spatial coordinates.
