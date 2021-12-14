@@ -114,7 +114,7 @@
 # TODO: glottoget_dplace: see isolates project
 # TODO: Does a language have a dictionary and a grammar, or multiple. From glottolog_source.bib.zip
 # TODO: Add data sources: ethnolog contains information on number of speakers
-# TODO: Add data sources: WALS contains information on language features.
+
 
 
 

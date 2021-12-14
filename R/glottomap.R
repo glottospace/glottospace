@@ -58,7 +58,7 @@ glottomap <- function(glottodata = NULL, color = NULL, label = NULL, type = NULL
   }
   if(is.null(lbsize) & type == "static"){lbsize <- 0.75}
   if(!is.null(lbsize) & type == "dynamic"){lbsize <- NULL}
-  if(is.null(alpha)){alpha <- 0.65}
+  if(is.null(alpha)){alpha <- 0.55}
   if(!is_sf(glottodata) ) {glottodata <- glottojoin_space(glottodata)}
 
 
@@ -99,7 +99,7 @@ return(map)
 #' glottomap_dynamic(glottodata)
 glottomap_dynamic <- function(glottodata, label = NULL, color = NULL, ptsize = NULL, alpha = 1, palette = NULL, nclass = NULL, numcat = FALSE){
     suppressMessages(tmap::tmap_mode("view"))
-  if(is.null(ptsize)){ptsize <- 0.05}
+  if(is.null(ptsize)){ptsize <- 0.08}
 
     tmap::tm_basemap("Esri.WorldTopoMap") +
         {if(is_polygon(glottodata))
