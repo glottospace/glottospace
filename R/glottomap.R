@@ -56,7 +56,7 @@ glottomap <- function(glottodata = NULL, color = NULL, label = NULL, type = NULL
     }
 
   }
-  if(is.null(ptsize)){ptsize <- 1}
+  if(is.null(ptsize)){ptsize <- 0.02}
   if(is.null(lbsize) & type == "static"){lbsize <- 0.75}
   if(!is.null(lbsize) & type == "dynamic"){lbsize <- NULL}
   if(is.null(alpha)){alpha <- 0.65}
@@ -108,7 +108,7 @@ glottomap_dynamic <- function(glottodata, label = NULL, color = NULL, ptsize = 1
                             n = {ifelse(is.null(nclass), 5, nclass)}, style = {ifelse(numcat == TRUE, "cat", "pretty")})} +
       {if(is_point(glottodata))
         tmap::tm_shape(glottodata) +
-          tmap::tm_symbols(id = label, col = color, size = ptsize, alpha = alpha, palette = palette,
+          tmap::tm_dots(id = label, col = color, size = ptsize, alpha = alpha, palette = palette,
                            n = {ifelse(is.null(nclass), 5, nclass)}, style = {ifelse(numcat == TRUE, "cat", "pretty")}) } +
       {if(glottospotlight_legend(glottodata)[[1]]){tmap::tm_add_legend(col = glottospotlight_legend(glottodata)$col, labels = glottospotlight_legend(glottodata)$labels)} }
 
@@ -167,7 +167,7 @@ glottomap_static <- function(glottodata, label = NULL, color = NULL, ptsize = 1,
                           n = {ifelse(is.null(nclass), 5, nclass)}, style = {ifelse(numcat == TRUE, "cat", "pretty")})} +
     {if(is_point(glottodata_proj))
       tmap::tm_shape(glottodata_proj) +
-        tmap::tm_symbols(col = color, size = ptsize, alpha = alpha, palette = palette,
+        tmap::tm_dots(col = color, size = ptsize, alpha = alpha, palette = palette,
                          n = {ifelse(is.null(nclass), 5, nclass)}, style = {ifelse(numcat == TRUE, "cat", "pretty")}) } +
     {if(!purrr::is_empty(label)) tmap::tm_text(text = label, size = lbsize, auto.placement = TRUE)} +
     tmap::tm_legend(legend.outside = TRUE) + tmap::tm_layout(bg.color = "grey85", inner.margins = c(0,0,0,0)) +
