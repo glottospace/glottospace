@@ -50,7 +50,6 @@
 # TODO: check whether glottodata has meta, if so only glottodata should be made spatial (not meta columns)
 
 # glottosimplify --------------------------------------------------------------
-# TODO: simplify structure
 
 
 # geodata & geotools -----------------------------------------------------------------
@@ -83,6 +82,7 @@
 # Choose colors when plotting
 # Reorder legend (or more specifically, set apart one)
 # https://stackoverflow.com/questions/26102012/plotting-world-map-in-orthographic-projection-is-giving-non-finite-points
+# Center map on Pacific (New Guinea) , or provide coordinates.
 
 # save & export -----------------------------------------------------------
 # TODO: overwrite = TRUE/FALSE
