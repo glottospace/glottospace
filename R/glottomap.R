@@ -56,6 +56,14 @@ glottomap <- function(glottodata = NULL, color = NULL, label = NULL, type = NULL
     }
 
   }
+
+  if(!is.null(color) ){
+    nrcat <- nrow(unique(glottosimplify(glottodata[,color])))
+    if(nrcat > 30){
+      tmap::tmap_options(max.categories = 32)
+    }
+  }
+
   if(is.null(lbsize) & type == "static"){lbsize <- 0.75}
   if(!is.null(lbsize) & type == "dynamic"){lbsize <- NULL}
   if(is.null(alpha)){alpha <- 0.55}
