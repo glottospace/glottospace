@@ -1,6 +1,8 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
+# glottospace <img src='man/figures/logo.png' align="right" height="139" />
+
 # glottospace: R package for the geospatial analysis of linguistic and cultural data.
 
 <!-- badges: start -->
@@ -12,16 +14,16 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 # Introduction
 
 The **glottospace** package facilitates the geospatial analysis of
-linguistic and cultural data. It does so by using data from
-[glottolog](https://glottolog.org/) and enhancing it spatially using a
-combination of [spatial packages](https://www.r-pkg.org/ctv/Spatial).
-With **glottospace** you can join your own data with an enhanced version
-of [glottolog](https://glottolog.org/) and explore your data on a map.
-With **glottospace** you can calculate and visualise geographic
-distances and linguistic distances. The aim of glottospace is to provide
-a streamlined workflow for working with spatio-linguistic data: from
-data import, data cleaning, data exploration to visualisation and data
-export.
+linguistic and cultural data. The aim of this package is to provide a
+streamlined workflow for working with spatio-linguistic data, including
+data import, cleaning, exploration, visualization and export. For
+example, with **glottospace** you can quickly match your own linguistic
+data to a location and plot it on a map. You can also calculate
+distances between languages based on their location or linguistic
+features and visualize those distances. In addition, with
+**glottospace** you can easily access global databases such as
+[glottolog](https://glottolog.org/) and [WALS](https://wals.info/) and
+integrate it with your own data.
 
 # Development
 
@@ -55,14 +57,16 @@ about it presenting its full functionality. If you find the
     #>   @Article{,
     #>     title = {glottospace: R package for the geospatial analysis of linguistic and cultural data},
     #>     author = {{Norder} and S.J. et al.},
-    #>     journal = {R package version 0.0.1},
+    #>     journal = {R package version 0.0.3},
     #>     year = {2021},
     #>     url = {https://github.com/SietzeN/glottospace},
     #>   }
 
-The package builds on the [glottolog](https://glottolog.org/) database
-and uses several rspatial packages, of which **sf**, **raster** and
-**tmap** are the most important ones. Please cite those as well.
+The package uses a combination of [spatial
+packages](https://www.r-pkg.org/ctv/Spatial) and builds on two global
+databases: [glottolog](https://glottolog.org/) and
+[WALS](https://wals.info/). If you use **glottospace** in one of your
+publications, please cite these sources as well.
 
 # Installation
 
@@ -71,7 +75,7 @@ You can install the development version of glottospace from
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("SietzeN/glottospace")
+devtools::install_github("SietzeN/glottospace", INSTALL_opts=c("--no-multiarch"))
 ```
 
 # Example
@@ -91,6 +95,8 @@ library(glottospace)
 
 ## Plot point data:
 glottomap(continent = "South America", color = "isolate")
+#> Warning: multiple methods tables found for 'crop'
+#> Warning: multiple methods tables found for 'extend'
 ```
 
 <img src="man/figures/README-example_glottomap-1.png" width="100%" />
@@ -118,19 +124,19 @@ add some contextual information.
 
 ``` r
 # Search languages:
-glottosearch(find = "chichom")[,c("name", "family_name")]
+glottosearch(find = "chichom")[,c("name", "family")]
 #> Simple feature collection with 6 features and 2 fields
 #> Geometry type: POINT
 #> Dimension:     XY
 #> Bounding box:  xmin: -100.524 ymin: -5.30044 xmax: -77.2641 ymax: 21.2943
 #> Geodetic CRS:  WGS 84
-#>                  name family_name                  geometry
-#> 1269    Chicomuceltec       Mayan  POINT (-91.2869 15.6078)
-#> 1270 Chichimeca-Jonaz Otomanguean  POINT (-100.524 21.2943)
+#>                  name      family                  geometry
+#> 1270    Chicomuceltec       Mayan  POINT (-91.2869 15.6078)
+#> 1271 Chichimeca-Jonaz Otomanguean  POINT (-100.524 21.2943)
 #> 37     Achuar-Shiwiar     Chicham POINT (-77.2641 -2.82646)
 #> 81           Aguaruna     Chicham POINT (-77.9218 -5.30044)
 #> 2388         Huambisa     Chicham POINT (-77.9797 -3.99109)
-#> 6072            Shuar     Chicham POINT (-78.1892 -3.45136)
+#> 6079            Shuar     Chicham POINT (-78.1892 -3.45136)
 ```
 
 There are 6 languages that resemble our search term, of which 4 belong
@@ -245,11 +251,11 @@ the data (‘glottolog’), or an enriched/boosted version (‘glottobase’):
 data("glottobase")
 glottobase <- glottoget("glottobase")
 colnames(glottobase)
-#>  [1] "glottocode"          "family_id"           "parent_id"          
-#>  [4] "name"                "isocode"             "child_dialect_count"
-#>  [7] "country_ids"         "family_name"         "isolate"            
-#> [10] "family_size"         "family_size_rank"    "country"            
-#> [13] "continent"           "region"              "geometry"
+#>  [1] "glottocode"       "name"             "macroarea"        "isocode"         
+#>  [5] "countries"        "family_id"        "level"            "classification"  
+#>  [9] "parent_id"        "family"           "isolate"          "family_size"     
+#> [13] "family_size_rank" "country"          "continent"        "region"          
+#> [17] "geometry"
 ```
 
 ## glottocreate
@@ -329,6 +335,7 @@ glottocheck(glottodata, diagnostic = FALSE)
 #> No missing IDs
 #> No duplicate IDs.
 #> All variables have two or more levels (excluding NA)
+#> Checking 6 glottocodes...
 #> All IDs are valid glottocodes
 #> Some columns have missing data.
 #> Some rows have missing data.
@@ -399,21 +406,21 @@ glottosearch(find = "yurakar")[,"name"]
 #> Bounding box:  xmin: -65.1224 ymin: -16.7479 xmax: -65.1224 ymax: -16.7479
 #> Geodetic CRS:  WGS 84
 #>          name                  geometry
-#> 7701 Yuracaré POINT (-65.1224 -16.7479)
+#> 7706 Yuracaré POINT (-65.1224 -16.7479)
 ```
 
 Or limit the search to specific columns:
 
 ``` r
-glottosearch(find = "Yucuni", columns = c("name", "family_name"))[,"name"]
+glottosearch(find = "Yucuni", columns = c("name", "family"))[,"name"]
 #> Simple feature collection with 2 features and 1 field
 #> Geometry type: POINT
 #> Dimension:     XY
 #> Bounding box:  xmin: -97.91818 ymin: -0.76075 xmax: -71.0033 ymax: 17.23743
 #> Geodetic CRS:  WGS 84
 #>                   name                   geometry
-#> 7687            Yucuna  POINT (-71.0033 -0.76075)
-#> 7688 Yucunicoco Mixtec POINT (-97.91818 17.23743)
+#> 7692            Yucuna  POINT (-71.0033 -0.76075)
+#> 7693 Yucunicoco Mixtec POINT (-97.91818 17.23743)
 ```
 
 Sometimes you don’t find a match:
@@ -438,7 +445,7 @@ glottosearch(find = "matsigenka", tolerance = 0.2)[,"name"]
 #> Bounding box:  xmin: -74.4371 ymin: -11.5349 xmax: -74.4371 ymax: -11.5349
 #> Geodetic CRS:  WGS 84
 #>               name                  geometry
-#> 4862 Nomatsiguenga POINT (-74.4371 -11.5349)
+#> 4867 Nomatsiguenga POINT (-74.4371 -11.5349)
 ```
 
 Aha! There it is: ‘Machiguenga’
@@ -452,16 +459,16 @@ glottosearch(find = "matsigenka", tolerance = 0.4)[,"name"]
 #> Geodetic CRS:  WGS 84
 #> First 10 features:
 #>                    name                   geometry
-#> 1735 Eastern Maninkakan   POINT (-10.5394 9.33048)
-#> 3121    Kita Maninkakan   POINT (-9.49151 13.1798)
-#> 3205   Konyanka Maninka   POINT (-8.89972 8.04788)
-#> 3791   Maasina Fulfulde   POINT (-3.64763 11.1324)
-#> 3808        Machiguenga  POINT (-72.5017 -12.1291)
-#> 3964           Mandinka POINT (-15.65395 12.81652)
-#> 4000          Mansoanka   POINT (-15.9202 12.8218)
-#> 4106  Matigsalug Manobo     POINT (125.16 7.72124)
-#> 4862      Nomatsiguenga  POINT (-74.4371 -11.5349)
-#> 5462         Piamatsina   POINT (166.738 -14.9959)
+#> 1736 Eastern Maninkakan   POINT (-10.5394 9.33048)
+#> 3123    Kita Maninkakan   POINT (-9.49151 13.1798)
+#> 3207   Konyanka Maninka   POINT (-8.89972 8.04788)
+#> 3792   Maasina Fulfulde   POINT (-3.64763 11.1324)
+#> 3809        Machiguenga  POINT (-72.5017 -12.1291)
+#> 3965           Mandinka POINT (-15.65395 12.81652)
+#> 4001          Mansoanka   POINT (-15.9202 12.8218)
+#> 4107  Matigsalug Manobo     POINT (125.16 7.72124)
+#> 4867      Nomatsiguenga  POINT (-74.4371 -11.5349)
+#> 5466         Piamatsina   POINT (166.738 -14.9959)
 ```
 
 ## glottofilter
@@ -471,10 +478,11 @@ filter, select, query
 ``` r
 eurasia <- glottofilter(continent = c("Europe", "Asia"))
 wari <- glottofilter(glottodata = glottodata, glottocode = "wari1268")
-indo_european <- glottofilter(glottodata = glottodata, family_name = 'Indo-European')
+#> No search results. Use glottosearch() first to find what you're looking for
+indo_european <- glottofilter(glottodata = glottodata, family = 'Indo-European')
 south_america <- glottofilter(glottodata = glottodata, continent = "South America")
 colovenz <- glottofilter(country = c("Colombia", "Venezuela"))
-# arawtuca <- glottofilter(glottodata = glottodata, expression = family_name %in% c("Arawakan", "Tucanoan"))
+# arawtuca <- glottofilter(glottodata = glottodata, expression = family %in% c("Arawakan", "Tucanoan"))
 ```
 
 ## glottodist
@@ -601,16 +609,16 @@ families
 
 ``` r
 glottodata <- glottoget()
-families <- glottodata %>% dplyr::count(family_name, sort = TRUE)
+families <- glottodata %>% dplyr::count(family, sort = TRUE)
 
 # highlight 10 largest families:
-glottodata <- glottospotlight(glottodata = glottodata, spotcol = "family_name", spotlight = families$family_name[1:10], spotcontrast = "family_name", bgcontrast = "family_name")
+glottodata <- glottospotlight(glottodata = glottodata, spotcol = "family", spotlight = families$family[1:10], spotcontrast = "family", bgcontrast = "family")
 
 # Create map
 glottomap(glottodata, color = "color")
 ```
 
-<img src="man/figures/README-glottoworldmap-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
 
 ## glottosave
 

@@ -6,11 +6,12 @@
 # library(devtools)
 # document()
 # load_all()
-# install(force = TRUE) # ALWAYS INSTALL FROM HERE (PACKAGE), NOT FROM OTHER SCRIPT.
+# install(force = TRUE, args=c("--no-multiarch")) # ALWAYS INSTALL FROM HERE (PACKAGE), NOT FROM OTHER SCRIPT.
+# knit README
 
 # glottoget -----------------------------------------------------------------
 
-# xfun::gsub_dir(dir = "C:/Users/sjnor/surfdrive/PROJECTS_SN/SAPPHIRE/R/glottospace/R", pattern = "transparency", replacement = "alpha")
+# xfun::gsub_dir(dir = "C:/Users/sjnor/surfdrive/PROJECTS_SN/SAPPHIRE/R/glottospace/R", pattern = "glottosimplify_meta", replacement = "glottosimplify_dropmeta")
 
 # glottocheck ---------------------------------------------------------------
 # TODO: Add high-level function glottocheck, first check: glottodata, glottosubdata, metadata
@@ -34,7 +35,7 @@
 # FIXME: error with expression
 
 
-# glottodrop --------------------------------------------------------------
+# glottosimplify --------------------------------------------------------------
 # TODO: drop languages based on conditions, for example, remove all Indo-European languages.
 
 

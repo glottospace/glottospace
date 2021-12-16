@@ -17,6 +17,7 @@ knitr::opts_chunk$set(
 )
 ```
 
+# glottospace <img src='man/figures/logo.png' align="right" height="139" />
 
 
 # glottospace: R package for the geospatial analysis of linguistic and cultural data. 
@@ -26,7 +27,7 @@ knitr::opts_chunk$set(
 <!-- badges: end -->
 
 # Introduction
-The **glottospace** package facilitates the geospatial analysis of linguistic and cultural data. It does so by using data from [glottolog](https://glottolog.org/) and enhancing it spatially using a combination of [spatial packages](https://www.r-pkg.org/ctv/Spatial). With **glottospace** you can join your own data with  an enhanced version of [glottolog](https://glottolog.org/) and explore your data on a map. With **glottospace** you can calculate and visualise geographic distances and linguistic distances. The aim of glottospace is to provide a streamlined workflow for working with spatio-linguistic data: from data import, data cleaning, data exploration to visualisation and data export. 
+The **glottospace** package facilitates the geospatial analysis of linguistic and cultural data. The aim of this package is to provide a streamlined workflow for working with spatio-linguistic data, including data import, cleaning, exploration, visualization and export. For example, with **glottospace** you can quickly match your own linguistic data to a location and plot it on a map. You can also calculate distances between languages based on their location or linguistic features and visualize those distances. In addition, with **glottospace** you can easily access global databases such as [glottolog](https://glottolog.org/) and [WALS](https://wals.info/) from R and integrate them with your own data. 
 
 # Development
 This package is still under active development. While the basic functionality has been implemented, we're still working on adding new functions and improving existing ones. While using **glottospace** you will certainly find bugs or encounter things you might find confusing. You can help me improve the package by:
@@ -40,7 +41,8 @@ Once there is a stable version of the package we intend to write a paper about i
 ```{r, echo = FALSE}
 citation("glottospace")
 ```
-The package builds on the [glottolog](https://glottolog.org/) database and uses several rspatial packages, of which **sf**, **raster** and **tmap** are the most important ones. Please cite those as well. 
+
+The package uses a combination of [spatial packages](https://www.r-pkg.org/ctv/Spatial) and builds on two global databases: [glottolog](https://glottolog.org/) and [WALS](https://wals.info/). If you use **glottospace** in one of your publications, please cite these sources as well. 
 
 # Installation
 
@@ -48,7 +50,7 @@ You can install the development version of glottospace from [GitHub](https://git
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("SietzeN/glottospace")
+devtools::install_github("SietzeN/glottospace", INSTALL_opts=c("--no-multiarch"))
 ```
 # Example
 Before describing the functionality of **glottospace**, I give a quick demonstration of a typical workflow. 
@@ -81,7 +83,7 @@ Imagine you are interested in a particular set of languages, and want to add som
 
 ```{r example_glottosearch}
 # Search languages:
-glottosearch(find = "chichom")[,c("name", "family_name")]
+glottosearch(find = "chichom")[,c("name", "family")]
 ```
 
 There are 6 languages that resemble our search term, of which 4 belong to the Chicham language family. Let's view one of them on [glottolog](https://glottolog.org/):
@@ -228,7 +230,7 @@ glottosearch(find = "yurakar")[,"name"]
 Or limit the search to specific columns:
 
 ``` {r glottosearch2}
-glottosearch(find = "Yucuni", columns = c("name", "family_name"))[,"name"]
+glottosearch(find = "Yucuni", columns = c("name", "family"))[,"name"]
 
 ```
 Sometimes you don't find a match:
@@ -253,10 +255,10 @@ filter, select, query
 ```{r glottofilter}
 eurasia <- glottofilter(continent = c("Europe", "Asia"))
 wari <- glottofilter(glottodata = glottodata, glottocode = "wari1268")
-indo_european <- glottofilter(glottodata = glottodata, family_name = 'Indo-European')
+indo_european <- glottofilter(glottodata = glottodata, family = 'Indo-European')
 south_america <- glottofilter(glottodata = glottodata, continent = "South America")
 colovenz <- glottofilter(country = c("Colombia", "Venezuela"))
-# arawtuca <- glottofilter(glottodata = glottodata, expression = family_name %in% c("Arawakan", "Tucanoan"))
+# arawtuca <- glottofilter(glottodata = glottodata, expression = family %in% c("Arawakan", "Tucanoan"))
 
 ```
 
@@ -336,10 +338,10 @@ However, you can also create maps with other glottodata. For example, we might w
 
 ```{r}
 glottodata <- glottoget()
-families <- glottodata %>% dplyr::count(family_name, sort = TRUE)
+families <- glottodata %>% dplyr::count(family, sort = TRUE)
 
 # highlight 10 largest families:
-glottodata <- glottospotlight(glottodata = glottodata, spotcol = "family_name", spotlight = families$family_name[1:10], spotcontrast = "family_name", bgcontrast = "family_name")
+glottodata <- glottospotlight(glottodata = glottodata, spotcol = "family", spotlight = families$family[1:10], spotcontrast = "family", bgcontrast = "family")
 
 # Create map
 glottomap(glottodata, color = "color")

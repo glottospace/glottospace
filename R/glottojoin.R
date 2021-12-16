@@ -143,8 +143,8 @@ glottojoin_space <- function(glottodata, id = NULL){
 glottojoin_subdata <- function(glottosubdata){
 
   if(glottocheck_hasmeta(glottosubdata) ){
-    glottodata <- glottodrop_meta(glottosubdata)
-    glottometa <- glottodrop_langtabs(glottosubdata)
+    glottodata <- glottosimplify_dropmeta(glottosubdata)
+    glottometa <- glottosimplify_langtabs(glottosubdata)
     hadmeta <- TRUE
   } else {
     glottodata <- glottosubdata

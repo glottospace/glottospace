@@ -51,7 +51,7 @@ glottocheck <- function(glottodata, diagnostic = TRUE){
 #' glottodata <- glottocreate_demodata()
 #' glottocheck_data(glottodata)
 glottocheck_data <- function(glottodata, diagnostic = TRUE){
-  glottodata <- glottodrop(glottodata)
+  glottodata <- glottosimplify(glottodata)
   id <- "glottocode"
   checkdata_glottocol(glottodata = glottodata)
   checkdata_idmissing(data = glottodata, id = id)
@@ -78,7 +78,7 @@ glottocheck_data <- function(glottodata, diagnostic = TRUE){
 #' glottosubdata <- glottocreate_demosubdata()
 #' glottocheck_subdata(glottosubdata)
 glottocheck_subdata <- function(glottosubdata, diagnostic = TRUE){
-  glottosubdata <- glottodrop(glottosubdata)
+  glottosubdata <- glottosimplify(glottosubdata)
   id <- "glottosubcode"
   checkdata_glottosubcol(glottosubdata = glottosubdata)
   checkdata_idmissing(data = glottosubdata, id = id)
