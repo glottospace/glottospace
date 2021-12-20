@@ -17,6 +17,7 @@ Glottolog: remove sign languages
 }
 \seealso{
 Other <glottolog>: 
+\code{\link{glottolog_L1only}()},
 \code{\link{glottolog_addfamilyname}()},
 \code{\link{glottolog_addfamilysizerank}()},
 \code{\link{glottolog_addfamilysize}()},

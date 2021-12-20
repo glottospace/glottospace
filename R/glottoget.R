@@ -6,10 +6,10 @@
 #' \itemize{
 #' \item A filepath to locally stored glottodata with file extension (.xlsx .xls .gpkg
 #' .shp). See also: options meta and simplify.
-#' \item "glottobase" - Default option, an enhanced version of \href{https://glottolog.org/}{glottolog}. See
+#' \item "glottobase" - Default option, an spatially enhanced version of \href{https://glottolog.org/}{glottolog}. See
 #' \link{glottologbooster} for details.
 #' \item "wals" - This is a spatial and enhanced version of \href{https://wals.info/}{WALS}.
-#' \item "glottolog" - This is the raw \href{https://glottolog.org/}{glottolog}.
+#' \item "glottolog" - This is a restructured (non-spatial) version of \href{https://glottolog.org/}{glottolog}.
 #' \item "glottospace" - A simple dataset with glottocodes and a geometry column. This
 #' is a subset of all languages in \href{https://glottolog.org/}{glottolog} with
 #' spatial coordinates.
@@ -425,6 +425,6 @@ glottolog_loadlocal <- function(){
     dplyr::arrange(lang_id)
 
   colnames(glottologdata)[which(colnames(glottologdata) == "lang_id")] <- "id"
-  glottologdata <- base::subset(glottologdata, select = -c(glottocode, language_id, category))
+  glottologdata <- base::subset(glottologdata, select = -c(glottocode, language_id))
   invisible(glottologdata)
 }

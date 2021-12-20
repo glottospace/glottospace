@@ -1,5 +1,45 @@
 #' Glottologbooster: enhance glottolog data
 #'
+#' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{glottoget_glottolog()}}
+#' @param space Return spatial object?
+#' @param addfamname Add column with familiy names?
+#' @param addisolates Add column to identify isolates?
+#' @param L1only Keep only L1 languages (remove bookkeeping, unclassifiable, sign languges, etc.). See glottologbooster_rm for more flexibility.
+#' @param addfamsize Add column with family size?
+#' @param addfamsizerank Add column with family size rank?
+#'
+#' @return
+#' @export
+#'
+#' @examples
+#' glottologdata <- glottoget("glottolog")
+#' glottologdata <- glottologbooster(glottologdata)
+glottologbooster <- function(glottologdata = NULL, space = TRUE,
+                                addfamname = TRUE, addisolates = TRUE,
+                                L1only = TRUE,
+                                addfamsize = TRUE, addfamsizerank = TRUE){
+  if(is.null(glottologdata)){
+    glottologdata <- glottoget_glottolog()
+  }
+  if(addfamname == TRUE){glottologdata <- glottolog_addfamilyname(glottologdata) }
+  if(addisolates == TRUE){glottologdata <- glottolog_addisolates(glottologdata) }
+
+  if(L1only == TRUE){glottologdata <- glottolog_L1only(glottologdata) }
+
+  if(addfamsize == TRUE){glottologdata <- glottolog_addfamilysize(glottologdata) }
+  if(addfamsizerank == TRUE){glottologdata <- glottolog_addfamilysizerank(glottologdata) }
+
+  glottologdata <- glottologdata %>% dplyr::rename("glottocode" = "id", "isocode" = "iso639p3code")
+
+  if(space == TRUE){
+    glottologdata <- glot2geoglot(glottologdata)
+    glottologdata <- glottodata_addcountries(glottologdata)
+  }
+  return(glottologdata)
+}
+
+#' glottologbooster_rm (superseded): enhance glottolog data
+#'
 #' Note that the different options are additional. For example, if you set rmfamilies to TRUE and space = TRUE, most families will still be removed since they lack spatial coordinates.
 #' Another example, depending on whether artificial families are removed, the total number of families also increases/decreases.
 #'
@@ -14,19 +54,20 @@
 #' @param rmbookkeeping Remove bookkeeping rows and delete bookkeeping column?
 #' @param rmartifam Remove rows that refer to artificial families?
 #' @param rmsignlangs Remove rows with sign languages?
-#'
+#' @keywords invisible
 #' @return
 #' @export
+#' @noRd
 #'
 #' @examples
 #' glottologdata <- glottoget_glottolog()
-#' glottologdata <- glottologbooster(glottologdata)
-glottologbooster <- function(glottologdata = NULL, space = TRUE,
+#' glottologdata <- glottologbooster_rm(glottologdata)
+glottologbooster_rm <- function(glottologdata = NULL, space = TRUE,
                              addfamname = TRUE, addisolates = TRUE,
                              rmdialects = TRUE, rmfamilies = TRUE,
-                             addfamsize = TRUE, addfamsizerank = TRUE,
                              rmbookkeeping = TRUE, rmartifam = TRUE,
-                             rmsignlangs = TRUE){
+                             rmsignlangs = TRUE,
+                             addfamsize = TRUE, addfamsizerank = TRUE){
   if(is.null(glottologdata)){
     glottologdata <- glottoget_glottolog()
   }
@@ -172,6 +213,18 @@ glottolog_addfamilysizerank <- function(glottologdata){
   glottologdata$family_size_rank  <- as.numeric(glottologdata$family_size_rank) # easier plotting than ordered levels
 
   glottologdata
+}
+
+#' Glottolog: keep only L1 languages
+#'
+#' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{glottoget_glottolog()}}
+#' @keywords internal
+#' @family <glottolog>
+#' @return
+#' @export
+glottolog_L1only <- function(glottologdata){
+  glottologdata %>%
+    dplyr::filter(category == "Spoken_L1_Language")
 }
 
 

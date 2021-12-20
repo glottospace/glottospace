@@ -9,13 +9,9 @@ glottologbooster(
   space = TRUE,
   addfamname = TRUE,
   addisolates = TRUE,
-  rmdialects = TRUE,
-  rmfamilies = TRUE,
+  L1only = TRUE,
   addfamsize = TRUE,
-  addfamsizerank = TRUE,
-  rmbookkeeping = TRUE,
-  rmartifam = TRUE,
-  rmsignlangs = TRUE
+  addfamsizerank = TRUE
 )
 }
 \arguments{
@@ -27,28 +23,19 @@ glottologbooster(
 
 \item{addisolates}{Add column to identify isolates?}
 
-\item{rmdialects}{Remove rows with dialects?}
-
-\item{rmfamilies}{Remove rows with families?}
+\item{L1only}{Keep only L1 languages (remove bookkeeping, unclassifiable, sign languges, etc.). See glottologbooster_rm for more flexibility.}
 
 \item{addfamsize}{Add column with family size?}
 
 \item{addfamsizerank}{Add column with family size rank?}
-
-\item{rmbookkeeping}{Remove bookkeeping rows and delete bookkeeping column?}
-
-\item{rmartifam}{Remove rows that refer to artificial families?}
-
-\item{rmsignlangs}{Remove rows with sign languages?}
 }
 \value{
 
 }
 \description{
-Note that the different options are additional. For example, if you set rmfamilies to TRUE and space = TRUE, most families will still be removed since they lack spatial coordinates.
-Another example, depending on whether artificial families are removed, the total number of families also increases/decreases.
+Glottologbooster: enhance glottolog data
 }
 \examples{
-glottologdata <- glottoget_glottolog()
+glottologdata <- glottoget("glottolog")
 glottologdata <- glottologbooster(glottologdata)
 }

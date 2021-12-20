@@ -17,6 +17,7 @@ Glottolog: add rank order of family size
 }
 \seealso{
 Other <glottolog>: 
+\code{\link{glottolog_L1only}()},
 \code{\link{glottolog_addfamilyname}()},
 \code{\link{glottolog_addfamilysize}()},
 \code{\link{glottolog_addisolates}()},
