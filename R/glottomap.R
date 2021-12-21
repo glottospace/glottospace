@@ -60,7 +60,7 @@ glottomap <- function(glottodata = NULL, color = NULL, label = NULL, type = NULL
   if(!is.null(color) ){
     nrcat <- nrow(unique(glottosimplify(glottodata[,color])))
     if(nrcat > 30){
-      tmap::tmap_options(max.categories = 32)
+      tmap::tmap_options(max.categories = nrcat)
     }
   }
 
@@ -108,6 +108,7 @@ return(map)
 glottomap_dynamic <- function(glottodata, label = NULL, color = NULL, ptsize = NULL, alpha = 1, palette = NULL, nclass = NULL, numcat = FALSE){
     suppressMessages(tmap::tmap_mode("view"))
   if(is.null(ptsize)){ptsize <- 0.08}
+  if(is.null(label)){label <- NA}
 
     tmap::tm_basemap("Esri.WorldTopoMap") +
         {if(is_polygon(glottodata))

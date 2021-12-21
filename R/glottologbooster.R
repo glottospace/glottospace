@@ -217,6 +217,8 @@ glottolog_addfamilysizerank <- function(glottologdata){
 
 #' Glottolog: keep only L1 languages
 #'
+#' Filter out only L1 languages and drop 'category' column.
+#'
 #' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{glottoget_glottolog()}}
 #' @keywords internal
 #' @family <glottolog>
@@ -224,7 +226,8 @@ glottolog_addfamilysizerank <- function(glottologdata){
 #' @export
 glottolog_L1only <- function(glottologdata){
   glottologdata %>%
-    dplyr::filter(category == "Spoken_L1_Language")
+    dplyr::filter(category == "Spoken_L1_Language") %>%
+    dplyr::select(-category)
 }
 
 
