@@ -113,7 +113,7 @@ glottomap_dynamic <- function(glottodata, label = NULL, color = NULL, ptsize = N
     tmap::tm_basemap("Esri.WorldTopoMap") +
         {if(is_polygon(glottodata))
         tmap::tm_shape(glottodata) +
-          tmap::tm_polygons(id = label, col = color, palette = palette,
+          tmap::tm_polygons(id = label, col = color, alpha = alpha, palette = palette,
                             n = {ifelse(is.null(nclass), 5, nclass)}, style = {ifelse(numcat == TRUE, "cat", "pretty")})} +
       {if(is_point(glottodata))
         tmap::tm_shape(glottodata) +
@@ -149,11 +149,7 @@ glottomap_static <- function(glottodata, label = NULL, color = NULL, ptsize = 1,
   suppressMessages(tmap::tmap_mode("plot"))
   if(is.null(ptsize)){ptsize <- 0.5}
 
-  basemap <- rnaturalearth::ne_countries(scale = 50, returnclass = "sf")
-  wrld_wrap <- sf::st_wrap_dateline(basemap, options = c("WRAPDATELINE=YES","DATELINEOFFSET=180"), quiet = TRUE)
-  wrld_proj <- sf::st_transform(wrld_wrap, "+proj=eck4")
-  wrld_proj <- sf::st_make_valid(wrld_proj)
-  wrld_proj <- sf::st_geometry(wrld_proj)
+  wrld_proj <- geoget_basemap(crs = "+proj=eck4", attributes = FALSE)
 
   # glottodata <- sf::st_make_valid(glottodata) # This converts some points to GEOMETRYCOLLECTION and therefore results in errors later on.
   glottodata_wrap <- sf::st_wrap_dateline(glottodata, options = c("WRAPDATELINE=YES","DATELINEOFFSET=180"), quiet = TRUE)
@@ -173,7 +169,7 @@ glottomap_static <- function(glottodata, label = NULL, color = NULL, ptsize = 1,
         tmap::tm_lines(col = "lightblue")} } +
     {if(is_polygon(glottodata_proj))
       tmap::tm_shape(glottodata_proj) +
-        tmap::tm_polygons(col = color, palette = palette,
+        tmap::tm_polygons(col = color, alpha = alpha, palette = palette,
                           n = {ifelse(is.null(nclass), 5, nclass)}, style = {ifelse(numcat == TRUE, "cat", "pretty")})} +
     {if(is_point(glottodata_proj))
       tmap::tm_shape(glottodata_proj) +

@@ -19,6 +19,7 @@ Download geodata
 }
 \seealso{
 Other <geodata>: 
+\code{\link{geoget_basemap}()},
 \code{\link{geoget_path}()},
 \code{\link{geoget}()}
 }

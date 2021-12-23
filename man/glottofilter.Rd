@@ -55,18 +55,14 @@ A subset of the original glottodata table  containing only filtered languages.
 By default, the glottolog data will be used to filter from. But in case the user provides glottodata, this will be used.
 }
 \examples{
-# Get data
-glottoraw <- gs_data(name = "glottolog")
-glottodata <- gs_upgrade(data = glottoraw)
-
-# Filter glottodata
-points <- glottofilter(glottodata = glottodata, isocodes = colnames(distmat))
-points <- glottofilter(glottodata = glottodata, glottocode = "wari1268")
-points <- glottofilter(glottodata = glottodata, family = "Indo-European")
-points <- glottofilter(glottodata = glottodata, continent = "South America")
-points <- glottofilter(glottodata = glottodata, family = "Indo-European", continent = "South America")
-points <- glottofilter(glottodata = glottodata, country = c("Colombia", "Venezuela"))
-points <- glottofilter(glottodata = glottodata, expression = family \%in\% c("Arawakan", "Tucanoan"))
-points <- glottofilter(glottodata = glottodata, colname = "family", drop = "Indo-European")
+points <- glottofilter(isocodes = colnames(distmat))
+points <- glottofilter(glottocode = "wari1268")
+points <- glottofilter(family = "Indo-European")
+points <- glottofilter(continent = "South America")
+points <- glottofilter(family = "Indo-European", continent = "South America")
+points <- glottofilter(country = c("Colombia", "Venezuela"))
+points <- glottofilter(expression = family \%in\% c("Arawakan", "Tucanoan"))
+points <- glottofilter(expression = family_size > 2)
+points <- glottofilter(colname = "family", drop = "Indo-European")
 }
 \concept{<glottofilter><glottosearch>}

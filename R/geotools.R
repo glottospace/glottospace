@@ -399,17 +399,21 @@ checkdata_crsmissing <- function(object){
 
 #' Check whether the geometry of a spatial object is POINT
 #'
+#' Check whether geometry type is one of: POINT, MULTIPOINT, or a combination thereof
+#'
 #' @param object any object
 #'
 #' @return TRUE/FALSE
 #' @noRd
 #'
 is_point <- function(object){
-  all(unique(sf::st_geometry_type(object)) == "POINT")
+  all(unique(sf::st_geometry_type(object)) %in% c("POINT", "MULTIPOINT"))
 }
 
 
 #' Check whether the geometry of a spatial object is POLYGON
+#'
+#' Check whether geometry type is on of: POLYGON, MULTIPOLYGON, or a combination thereof.
 #'
 #' @param object any object
 #'
@@ -417,7 +421,7 @@ is_point <- function(object){
 #' @noRd
 #'
 is_polygon <- function(object){
-  any(unique(sf::st_geometry_type(object)) == "POLYGON")
+  all(unique(sf::st_geometry_type(object)) %in% c("POLYGON", "MULTIPOLYGON"))
 }
 
 #' Expand bounding box

@@ -17,6 +17,7 @@ Open spatial data from a local path (supports both raster and vector formats).
 }
 \seealso{
 Other <geodata>: 
+\code{\link{geoget_basemap}()},
 \code{\link{geoget_remote}()},
 \code{\link{geoget}()}
 }

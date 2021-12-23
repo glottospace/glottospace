@@ -13,7 +13,7 @@ glottolog_L1only(glottologdata)
 
 }
 \description{
-Glottolog: keep only L1 languages
+Filter out only L1 languages and drop 'category' column.
 }
 \seealso{
 Other <glottolog>: 
