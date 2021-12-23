@@ -4,7 +4,7 @@
 #' formats), or download from remote server.
 #'
 #' @param geodata Either a filepath to locally stored geodata, or the name of geodata to download ("elevation", "basemap", or "climate").
-#' @param crs Coordinate Reference System, defaults to Eckert IV (equal area)
+#' @param crs Coordinate Reference System to transform to (default is Eckert IV).
 #' @param attributes Whether to keep polygon attributes, or return only geometries
 #' @param continent Optional filter by continent
 #' @param country Optional filter by country
@@ -30,7 +30,7 @@ geoget <- function(geodata, crs = NULL, attributes = FALSE, continent = NULL, co
   if(geodata %in% geodownload){
     geodata <- geoget_remote(download = geodata, country = country)
   } else if (geodata == "basemap") {
-    geodata <- geoget_basemap(crs = crs, attributes = attributes, continent = continent, country = country, region = region, union = union, plot = plot, antarctica = FALSE)
+    geodata <- geoget_basemap(crs = crs, attributes = attributes, continent = continent, country = country, region = region, union = union, plot = plot, antarctica = antarctica)
   } else {
     geodata <- geoget_path(filepath = geodata)
   }
@@ -110,7 +110,7 @@ geoget_remote <- function(download, country = NULL){
 #'
 #' Download, prepare and (optionally) filter Natural Earth data.
 #'
-#' @param crs Coordinate Reference System, defaults to Eckert IV (equal area)
+#' @param crs Coordinate Reference System to transform to (default is Eckert IV)
 #' @param attributes Whether to keep polygon attributes, or return only geometries
 #' @param continent Optional filter by continent
 #' @param country Optional filter by country
@@ -126,11 +126,14 @@ geoget_remote <- function(download, country = NULL){
 #' @examples
 #' geoget_basemap(plot = TRUE, union = TRUE)
 geoget_basemap <- function(crs = NULL, attributes = FALSE, continent = NULL, country = NULL, region = NULL, union = FALSE, plot = FALSE, antarctica = FALSE){
-  if(is.null(crs)){crs <- "+proj=eck4"}
+
   wrld_basemap <- rnaturalearth::ne_countries(scale = 50, returnclass = "sf")
   wrld_wrap <- sf::st_wrap_dateline(wrld_basemap, options = c("WRAPDATELINE=YES","DATELINEOFFSET=180"), quiet = TRUE)
-  wrld_proj <- sf::st_transform(wrld_wrap, crs = crs) %>% sf::st_make_valid()
-  basemap <- wrld_proj
+
+  if(is.null(crs)){crs <- "+proj=eck4"}
+  wrld_proj <- sf::st_transform(wrld_wrap, crs = crs)
+
+  basemap <- wrld_proj %>% sf::st_make_valid()
 
   if(!purrr::is_empty(continent )){
     selection <- continent
@@ -140,7 +143,7 @@ geoget_basemap <- function(crs = NULL, attributes = FALSE, continent = NULL, cou
   if(!purrr::is_empty(country )){
     selection <- country
     basemap <- basemap %>%
-      dplyr::filter(country %in% selection)
+      dplyr::filter(name %in% selection)
   }
   if(!purrr::is_empty(region )){
     selection <- region

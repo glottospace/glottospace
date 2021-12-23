@@ -19,7 +19,7 @@ geoget(
 \arguments{
 \item{geodata}{Either a filepath to locally stored geodata, or the name of geodata to download ("elevation", "basemap", or "climate").}
 
-\item{crs}{Coordinate Reference System, defaults to Eckert IV (equal area)}
+\item{crs}{Coordinate Reference System to transform to (default is Eckert IV).}
 
 \item{attributes}{Whether to keep polygon attributes, or return only geometries}
 
