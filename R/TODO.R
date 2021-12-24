@@ -9,9 +9,16 @@
 # install(force = TRUE, args=c("--no-multiarch")) # ALWAYS INSTALL FROM HERE (PACKAGE), NOT FROM OTHER SCRIPT.
 # knit README
 
-# glottoget -----------------------------------------------------------------
-
 # xfun::gsub_dir(dir = "C:/Users/sjnor/surfdrive/PROJECTS_SN/SAPPHIRE/R/glottospace/R", pattern = "glottosimplify_meta", replacement = "glottosimplify_dropmeta")
+
+
+# General tasks:
+# Migrate functions to geospace
+# Remove functions from index with @NoRd and @keywords internal : https://community.rstudio.com/t/keywords-internal-vs-nord/35119
+
+# glottoget -----------------------------------------------------------------
+# wals: labels of variables
+# wals is rarely updated, so no need to check for updates as regularly as glottolog.
 
 # glottocheck ---------------------------------------------------------------
 # TODO: Add high-level function glottocheck, first check: glottodata, glottosubdata, metadata
@@ -48,15 +55,16 @@
 
 # glottospace -------------------------------------------------------------
 # TODO: check whether glottodata has meta, if so only glottodata should be made spatial (not meta columns)
+# FIXME: Was it in glottospace function that active geometry is changed? Should not be duplicated, one should be removed, or active should be set to appropriate geom
+
 
 # glottosimplify --------------------------------------------------------------
-
-
-# geodata & geotools -----------------------------------------------------------------
-# FIXME: After rasterextraction, active geometry is set to points, this should remain polygons.
 # TODO: glottodata_dropspatial: drop spatial and drop units (for statistical/non-spatial analyses, see isolates script STAT preparation)
-# mergevec: overwrite = FALSE
 
+
+# glottospace -------------------------------------------------------------
+# Clean-up script and simplify.
+# What can be move to geospace?
 # TODO: points2pols: Make more flexible country or continent, if user specifies country = "South America" this should also work.
 # Or would it be possible to do that automatically: check unique values in country and continent.
 # If there are many countries and one continent, mask by continent.
@@ -69,6 +77,8 @@
 # buffer should be equal area, not necessarily equidistant.
 
 
+# glottospotlight ---------------------------------------------------------
+# Unnessecarily complicated. Would be much easier to assign NA to all languages that are not the focus.
 
 
 # glottomap & glottoplot ---------------------------------------------------------------
@@ -83,6 +93,12 @@
 # Reorder legend (or more specifically, set apart one)
 # https://stackoverflow.com/questions/26102012/plotting-world-map-in-orthographic-projection-is-giving-non-finite-points
 # Center map on Pacific (New Guinea) , or provide coordinates.
+# rivers, check whether file exists locally and store in package folder.
+
+
+# If user specifies a country/continent that's not in the database, give a more informative error message. For example, show a list of continents.
+# Example: country = Australia, continent = "Oceania".
+# Typing glottomap(continent = "Oceania") is not really pretty because spans 180.
 
 # save & export -----------------------------------------------------------
 # TODO: overwrite = TRUE/FALSE

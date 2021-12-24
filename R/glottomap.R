@@ -149,7 +149,13 @@ glottomap_static <- function(glottodata, label = NULL, color = NULL, ptsize = 1,
   suppressMessages(tmap::tmap_mode("plot"))
   if(is.null(ptsize)){ptsize <- 0.5}
 
-  wrld_proj <- geoget_basemap(crs = "+proj=eck4", attributes = FALSE)
+  # wrld_proj <- geoget_basemap(crs = "+proj=eck4", attributes = FALSE) # function migrated to geospace package
+  wrld_basemap <- rnaturalearth::ne_countries(scale = 50, returnclass = "sf")
+  wrld_wrap <- sf::st_wrap_dateline(wrld_basemap, options = c("WRAPDATELINE=YES","DATELINEOFFSET=180"), quiet = TRUE)
+  wrld_proj <- sf::st_transform(wrld_wrap, crs = "+proj=eck4")
+  wrld_proj <- wrld_proj %>% sf::st_make_valid()
+  wrld_proj <- wrld_proj %>% sf::st_geometry()
+
 
   # glottodata <- sf::st_make_valid(glottodata) # This converts some points to GEOMETRYCOLLECTION and therefore results in errors later on.
   glottodata_wrap <- sf::st_wrap_dateline(glottodata, options = c("WRAPDATELINE=YES","DATELINEOFFSET=180"), quiet = TRUE)
