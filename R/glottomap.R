@@ -186,28 +186,25 @@ glottomap_static <- function(glottodata, label = NULL, color = NULL, ptsize = 1,
     {if(glottospotlight_legend(glottodata)[[1]]){tmap::tm_add_legend(col = glottospotlight_legend(glottodata)$col, labels = glottospotlight_legend(glottodata)$labels)} }
 }
 
+glottomap_select <- function(glottodata, mode){
+  # or should this be glottofilter_map
+  glottodata <- glottoget()
 
+  selected <- mapedit::selectFeatures(glottodata, mode = 'click')
+  # selected2 <- mapedit::selectFeatures(glottodata, mode = 'draw')
 
-#' Map environmental data
-#'
-#' @param geodata
-#'
-#' @return
-#' @keywords internal
-#' @export
-#' @family <geodata><glottomap><geotools>
-#'
-#' @examples
-#' nl <- geoget(download = "elevation", country = c("Netherlands"))
-#' plotgeodata(nl)
-geomap <- function(geodata){
-  if(is_raster(geodata) ){
-    raster::plot(geodata)
-  }
-  if(is_sf(geodata) ){
-    sf::plot(geodata)
-  }
+  # library(mapview)
+# library(mapedit)
+# library(sf)
+#
+# nc <- st_read(system.file("shape/nc.shp", package="sf"))
+# selected <- selectFeatures(nc, mode = 'click')
+# selected2 <- selectFeatures(nc, mode = 'draw')
 }
+
+
+
+
 
 
 
