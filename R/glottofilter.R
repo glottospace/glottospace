@@ -17,6 +17,7 @@
 #' @param expression A regular expression
 #'
 #' @family <glottofilter><glottosearch>
+#' @seealso glottofiltermap()
 #' @return A subset of the original glottodata table  containing only filtered languages.
 #' @export
 #'
@@ -124,6 +125,32 @@ glottofilter <- function(glottodata = NULL, isocodes = NULL,
   }
 }
 
+#' Filter languages by location
+#'
+#' With glottofiltermap you can select languages by drawing or clicking on a map
+#'
+#' @param glottodata Spatial glottodata object
+#' @param mode Either "draw" or "click"
+#' @param ... Additional arguments to pass to glottofilter
+#'
+#' @return
+#' @export
+#'
+#' @examples
+#' selected <- glottofiltermap()
+#' glottomap(selected)
+#'
+#' glottofiltermap(continent = "South America")
+#' glottofiltermap(country = "Netherlands")
+glottofiltermap <- function(glottodata = NULL, mode = NULL, ...){
+  if(purrr::is_empty(glottodata)){
+    glottodata <- glottofilter(...)
+  }
+
+  if(is.null(mode)){mode <- "draw"}
+
+  suppressMessages(mapedit::selectFeatures(glottodata, mode = mode, title = "Select languages", color = "red"))
+}
 
 
 # arg <- base::quote("Indo-European") # works

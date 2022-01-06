@@ -27,8 +27,7 @@ glottomap(
 
 \item{label}{glottovar, column name, or column index to be used to label features (optional). Run glottovars() to see glottovars}
 
-\item{type}{One of: "static", "dynamic", or "interactive". Defaults to
-"static" if nothing is provided.}
+\item{type}{One of: "static" or "dynamic". Default is "static".}
 
 \item{ptsize}{Size of points between 0 and 1}
 
@@ -47,7 +46,7 @@ Alternatively, you could also run tmaptools::palette_explorer(), RColorBrewer::d
 
 \item{filename}{Optional filename if you want to save resulting map}
 
-\item{...}{}
+\item{...}{Additional parameters to glottofilter}
 }
 \value{
 
@@ -74,8 +73,5 @@ glottodata <- glottospotlight(glottodata = glottodata, spotcol =
 glottodata <- glottospotlight(glottodata = glottodata, spotcol =
 "family", spotlight = families$family[-c(1:10)], spotcontrast = "family", bgcontrast = "family")
 glottomap(glottodata, color = "color")
-}
-\seealso{
-geomap
 }
 \concept{<glottomap>}

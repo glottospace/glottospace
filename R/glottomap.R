@@ -6,8 +6,7 @@
 #' @param glottodata Optional, user-provided glottodata. In case no glottodata is provided, you can pass arguments directly to glottofilter.
 #' @param color glottovar, column name, or column index to be used to color features (optional). Run glottovars() to see glottovars
 #' @param label glottovar, column name, or column index to be used to label features (optional). Run glottovars() to see glottovars
-#' @param type One of: "static", "dynamic", or "interactive". Defaults to
-#'   "static" if nothing is provided.
+#' @param type One of: "static" or "dynamic". Default is "static".
 #' @param ptsize Size of points between 0 and 1
 #' @param lbsize Size of labels between 0 and 1
 #' @param alpha Transparency of points between 0 (very transparent) and 1 (not transparent)
@@ -17,10 +16,9 @@
 #' @param nclass Preferred number of classes (default is 5)
 #' @param numcat Do numbers represent categories? For example, if your dataset consists of 0 and 1, you might want to set this to TRUE.
 #' @param filename Optional filename if you want to save resulting map
-#' @param ...
+#' @param ... Additional parameters to glottofilter
 #'
 #' @family <glottomap>
-#' @seealso geomap
 #' @return
 #' @export
 #'
@@ -186,21 +184,6 @@ glottomap_static <- function(glottodata, label = NULL, color = NULL, ptsize = 1,
     {if(glottospotlight_legend(glottodata)[[1]]){tmap::tm_add_legend(col = glottospotlight_legend(glottodata)$col, labels = glottospotlight_legend(glottodata)$labels)} }
 }
 
-glottomap_select <- function(glottodata, mode){
-  # or should this be glottofilter_map
-  glottodata <- glottoget()
-
-  selected <- mapedit::selectFeatures(glottodata, mode = 'click')
-  # selected2 <- mapedit::selectFeatures(glottodata, mode = 'draw')
-
-  # library(mapview)
-# library(mapedit)
-# library(sf)
-#
-# nc <- st_read(system.file("shape/nc.shp", package="sf"))
-# selected <- selectFeatures(nc, mode = 'click')
-# selected2 <- selectFeatures(nc, mode = 'draw')
-}
 
 
 

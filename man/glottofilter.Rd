@@ -65,4 +65,7 @@ points <- glottofilter(expression = family \%in\% c("Arawakan", "Tucanoan"))
 points <- glottofilter(expression = family_size > 2)
 points <- glottofilter(colname = "family", drop = "Indo-European")
 }
+\seealso{
+glottofiltermap()
+}
 \concept{<glottofilter><glottosearch>}
