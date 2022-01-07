@@ -1,7 +1,7 @@
 
-#' glottomap
+#' Create static and dynamic maps from glottodata
 #'
-#' Create dynamic, static and interactive maps from glottodata.
+#' Create static and dynamic maps from glottodata
 #'
 #' @param glottodata Optional, user-provided glottodata. In case no glottodata is provided, you can pass arguments directly to glottofilter.
 #' @param color glottovar, column name, or column index to be used to color features (optional). Run glottovars() to see glottovars

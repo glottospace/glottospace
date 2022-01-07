@@ -13,6 +13,7 @@
 #'
 #' @param glottodata User-provided glottodata
 #' @param diagnostic If TRUE (default) a data viewer will be opened to show the levels of each variable (including NAs), and a data coverage plot will be shown.
+#' @param checkmeta Should metadata be checked as well?
 #'
 #' @family <glottocheck>
 #' @return
@@ -20,12 +21,21 @@
 #'
 #' @examples
 #' glottocheck(glottodata)
-glottocheck <- function(glottodata, diagnostic = TRUE){
+glottocheck <- function(glottodata, diagnostic = TRUE, checkmeta = FALSE){
   if(glottocheck_isglottosubdata(glottodata) == FALSE){
     glottocheck_data(glottodata = glottodata, diagnostic = diagnostic)
   } else{
     glottocheck_subdata(glottosubdata = glottodata, diagnostic = diagnostic)
   }
+
+  if(checkmeta == TRUE){
+    if(glottocheck_hasmeta(glottodata)){
+      glottocheck_metadata(glottodata)
+    } else {
+      message("glottodata does not contain metadata")
+    }
+  }
+
 }
 
 #' Quality check of user-provided glottodata
@@ -95,13 +105,14 @@ glottocheck_subdata <- function(glottosubdata, diagnostic = TRUE){
 
 #' Check metadata of glottodata
 #'
-#' @param glottodata
+#' @param glottodata glottodata
 #'
 #' @return
 #' @export
-#'
+#' @keywords internal
 #' @examples
-#' glottodata <- glottoget_glottodata()
+#' glottodata <- glottoget("demodata", meta = TRUE)
+#' glottocheck_metadata(glottodata)
 glottocheck_metadata <- function(glottodata){
   tablenames <- paste(names(glottodata), collapse = ", ")
   message( paste("This glottodataset contains the folowing tables:", tablenames) )
@@ -116,11 +127,12 @@ glottocheck_metadata <- function(glottodata){
 #'
 #' In fact, this function only checks whether glottodata contains a structure table, because the structure table is the only table that is required by some glottospace functions. All other tables are for humans, not computers;-).
 #'
-#' @param glottodata
+#' @param glottodata glottodata
 #'
 #' @return
 #' @export
 #' @aliases glottocheck_hasstructure
+#' @keywords internal
 #' @family <glottocheck>
 #' @examples
 #' glottocheck_hasmeta(glottodata)
@@ -271,6 +283,15 @@ checkdata_glottocodes <- function(glottodata){
   invisible(all(existing))
 }
 
+#' Check whether all IDs are valid glottosubcodes.
+#'
+#' This is a wrapper around glottosubcode_valid
+#'
+#' @param glottosubdata glottosubdata
+#'
+#' @return
+#' @export
+#' @keywords internal
 checkdata_glottosubcodes <- function(glottosubdata){
   v <- glottosubcode_valid(glottosubdata$glottosubcode)
   if(v == TRUE){message("All glottosubcodes are valid.")}
@@ -302,6 +323,13 @@ checkdata_lscolcount <- function(langlist){
 
 }
 
+#' Check whether there is one column named 'glottocode'
+#'
+#' @param glottodata A glottodata table
+#' @keywords internal
+#' @return
+#' @export
+#'
 checkdata_glottocol <- function(glottodata){
   n <- sum(colnames(glottodata) == "glottocode")
   if(n == 1){
@@ -314,6 +342,13 @@ checkdata_glottocol <- function(glottodata){
     }
 }
 
+#' Check whether there is one column named 'glottosubcode'
+#'
+#' @param glottosubdata A glottodata list
+#' @keywords internal
+#' @return
+#' @export
+#'
 checkdata_glottosubcol <- function(glottosubdata){
   n <- sum(colnames(glottosubdata) == "glottosubcode")
   if(n == 1){
@@ -334,6 +369,7 @@ checkdata_glottosubcol <- function(glottosubdata){
 #' @param id Column name or index with unique id's
 #' @param diagnostic Whether diagnostic messages should be shown
 #' @param rm.na Whether rows without id should be removed.
+#' @keywords internal
 #'
 #' @return
 #' @export
@@ -356,6 +392,7 @@ checkdata_rowmissing <- function(data, id, diagnostic = FALSE, rm.na = TRUE){
 #' @param id Column name or index with unique id's
 #' @param diagnostic Whether diagnostic messages should be shown
 #' @param rm.na Whether rows without id should be removed.
+#' @keywords internal
 #'
 #' @return
 #' @export
@@ -380,12 +417,14 @@ checkdata_colmissing <- function(data, id, diagnostic = FALSE, rm.na = TRUE){
 #' @param data Any dataset
 #' @param id column name with IDs
 #' @param rm.na Whether rows without id should be removed.
-#'
+#' @keywords internal
 #' @return
 #' @export
 #'
 #' @examples
-#' data <- glottoget_glottodata(meta = FALSE)
+#' glottodata <- glottoget("demodata", meta = TRUE)
+#' glottodata <- glottoclean(glottodata = glottodata)
+#' data <- glottodata[[1]]
 #' naviewer(data, id = "glottocode")
 naviewer <- function(data, id = NULL, rm.na = TRUE){
   data <- as.data.frame(data)
@@ -420,7 +459,7 @@ naviewer <- function(data, id = NULL, rm.na = TRUE){
 #'
 #' @return
 #' @export
-#'
+#' @keywords internal
 #' @examples
 #' glottocheck_isglottosubdata(glottodata)
 glottocheck_isglottosubdata <- function(glottodata){
@@ -435,7 +474,7 @@ glottocheck_isglottosubdata <- function(glottodata){
 #'
 #' @return
 #' @export
-#'
+#' @keywords internal
 #' @examples
 #' glottocheck_isglottodata(glottodata)
 glottocheck_isglottodata <- function(glottodata){

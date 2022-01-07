@@ -23,3 +23,4 @@ of countries, continents, and regions.
 glottodata <- glottoget_glottodata(meta = FALSE)
 glottodata_addcountries(glottodata)
 }
+\keyword{internal}

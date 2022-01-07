@@ -2,7 +2,7 @@
 % Please edit documentation in R/glottosearch.R
 \name{glot_exists}
 \alias{glot_exists}
-\title{Check whether a glot or vector of glots exist in glottolog}
+\title{Check whether a keyword or vector of keywords exist in glottolog}
 \usage{
 glot_exists(find, columns)
 }
@@ -19,7 +19,7 @@ This function checks for exact matches, and returns TRUE/FALSE. In case you
 want a more flexible search, you can use
 \code{\link[=glottosearch]{glottosearch()}}, in case you want to check
 whether glottocodes exist/are valid, use
-\code{\link[=glottocodes_exist]{glottocodes_exist()}}
+\code{\link[=glottocode_exists]{glottocode_exists()}}
 }
 \examples{
 glot_exists(find = c("yucu1253", "abcd1234"), columns = "glottocode")
@@ -31,3 +31,4 @@ Other <glottocheck><glottosearch>:
 \code{\link{glottosubcode_valid}()}
 }
 \concept{<glottocheck><glottosearch>}
+\keyword{internal}

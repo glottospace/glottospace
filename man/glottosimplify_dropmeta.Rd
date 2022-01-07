@@ -15,3 +15,4 @@ glottosimplify_dropmeta(glottodata)
 \description{
 Drop metadata tables from glottodata
 }
+\keyword{internal}

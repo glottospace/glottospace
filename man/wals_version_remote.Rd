@@ -12,3 +12,4 @@ wals_version_remote()
 \description{
 Check what's the most recent version of WALS
 }
+\keyword{internal}

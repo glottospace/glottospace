@@ -12,3 +12,4 @@ Number of days passed since glottolog data was downloaded for the last time
 \description{
 Check how long ago glottolog was downloaded
 }
+\keyword{internal}

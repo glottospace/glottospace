@@ -4,7 +4,7 @@
 #'
 #' @return
 #' @export
-#'
+#' @keywords internal
 #' @examples
 #' glottoget_wals()
 glottoget_wals <- function(days = NULL){
@@ -34,7 +34,7 @@ glottoget_wals <- function(days = NULL){
 }
 
 #' Check how long ago WALS data was downloaded
-#'
+#' @keywords internal
 #' @return Number of days passed since WALS data was downloaded for the last time
 #' @export
 #'
@@ -54,6 +54,7 @@ wals_date_local <- function(){
 #'
 #' @return
 #' @export
+#' @keywords internal
 #'
 wals_version_remote <- function(){
   base_url <-  "https://zenodo.org/api/records/596476"
@@ -68,6 +69,7 @@ wals_version_remote <- function(){
 #'
 #' @return
 #' @export
+#' @keywords internal
 #'
 wals_download_cldf <- function(){
   wals_download_zenodo()
@@ -78,6 +80,7 @@ wals_download_cldf <- function(){
 #'
 #' @return
 #' @export
+#' @keywords internal
 #'
 wals_download_zenodo <- function(){
   base_url <-  "https://zenodo.org/api/records/596476" # Newest version is always uploaded here!
@@ -97,6 +100,7 @@ wals_download_zenodo <- function(){
 #'
 #' @return
 #' @export
+#' @keywords internal
 #'
 wals_version_local <- function(){
   files <- base::list.files(glottofiles_cachedir(), full.names = FALSE, recursive = FALSE)
@@ -116,6 +120,12 @@ wals_version_local <- function(){
 
 }
 
+#' Load locally stored WALS data and join with glottolog
+#'
+#' @return
+#' @export
+#' @keywords internal
+#'
 wals_loadlocal <- function(){
   walsdata <- wals_loadlocal_raw()
   glottojoin_base(walsdata)
@@ -125,7 +135,7 @@ wals_loadlocal <- function(){
 #'
 #' @return
 #' @export
-#'
+#' @keywords internal
 wals_loadlocal_raw <- function(){
   exdir <- glottofiles_makedir(paste0("wals-v", wals_version_local()))
   cldf_metadata <- base::list.files(exdir, pattern = "-metadata.json", recursive = TRUE)

@@ -42,3 +42,4 @@ scoresdata <- glottojoin_base(scores)
 glottoplot_nmds(nmds = nmds, scoresdata = scoresdata, color = "family", ptsize = "isolate")
 glottoplot_nmds(nmds = nmds, scoresdata = scoresdata, color = "isolate")
 }
+\keyword{internal}

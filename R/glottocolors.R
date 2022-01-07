@@ -8,7 +8,7 @@
 #'
 #' @return
 #' @export
-#'
+#' @keywords internal
 #' @examples
 #' glottocolpal(palette = "turbo", show = TRUE)
 glottocolpal <- function(palette, ncolr = NULL, rev = FALSE, alpha = NULL, show = FALSE){

@@ -21,3 +21,4 @@ checkdata_colmissing(data, id, diagnostic = FALSE, rm.na = TRUE)
 \description{
 Provides a message in case there are missing data, otherwise returns NULL
 }
+\keyword{internal}

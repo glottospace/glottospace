@@ -2,7 +2,7 @@
 % Please edit documentation in R/glottomap.R
 \name{glottomap}
 \alias{glottomap}
-\title{glottomap}
+\title{Create static and dynamic maps from glottodata}
 \usage{
 glottomap(
   glottodata = NULL,
@@ -52,7 +52,7 @@ Alternatively, you could also run tmaptools::palette_explorer(), RColorBrewer::d
 
 }
 \description{
-Create dynamic, static and interactive maps from glottodata.
+Create static and dynamic maps from glottodata
 }
 \examples{
 glottomap(country = "Netherlands")

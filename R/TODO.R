@@ -9,12 +9,13 @@
 # install(force = TRUE, args=c("--no-multiarch")) # ALWAYS INSTALL FROM HERE (PACKAGE), NOT FROM OTHER SCRIPT.
 # knit README
 
-# xfun::gsub_dir(dir = "C:/Users/sjnor/surfdrive/PROJECTS_SN/SAPPHIRE/R/glottospace/R", pattern = "glottosimplify_meta", replacement = "glottosimplify_dropmeta")
+# xfun::gsub_dir(dir = "C:/Users/sjnor/surfdrive/PROJECTS_SN/Rpackages/glottospace/R", pattern = "glottocode_exists", replacement = "glottocode_exists")
 
 
 # General tasks:
-# Migrate functions to geospace
 # Remove functions from index with @NoRd and @keywords internal : https://community.rstudio.com/t/keywords-internal-vs-nord/35119
+# TODO: argument matching of functions (indicate choices): https://cran.r-project.org/web/packages/strex/vignettes/argument-matching.html
+
 
 # glottoget -----------------------------------------------------------------
 # wals: labels of variables
@@ -23,8 +24,8 @@
 # glottocheck ---------------------------------------------------------------
 # TODO: Add high-level function glottocheck, first check: glottodata, glottosubdata, metadata
 
-# cleandata ---------------------------------------------------------------
-# FIXME: glottoclean_recodemissing replace naniar, results in errors when building
+# glottoclean ---------------------------------------------------------------
+# FIXME: glottorecode_missing replace naniar, results in errors when building
 
 # glottocreate ------------------------------------------------------------
 # TODO: write wrapper: glottocreate (glottosubdata or glottodata)
@@ -35,22 +36,17 @@
 
 
 # glottofilter --------------------------------------------------------------
-# TODO: glottofilter: by location (bbox and drawing on plot)
 # TODO: make more tolerant: if no country/continent/region found, message did you mean: country?
 # make sure that's not case-senisitive 'Europe' vs. 'europe'
 # TODO: glottofilter: Make more flexible country or continent, if user specifies country = "South America" this should also work.
 # FIXME: error with expression
 
-
 # glottosimplify --------------------------------------------------------------
-# TODO: drop languages based on conditions, for example, remove all Indo-European languages.
-
 
 # glottosearch ------------------------------------------------------------
 
 
 # glottodistance ----------------------------------------------------------
-# featuredist (can be used to calculate environmental or linguistic distances)
 # FIXME: currently colnames is hardcoded, perhaps it should be the first column by default, unless a name is provided. Create clear error message to indicate this.
 
 # glottospace -------------------------------------------------------------
@@ -59,22 +55,15 @@
 
 
 # glottosimplify --------------------------------------------------------------
-# TODO: glottodata_dropspatial: drop spatial and drop units (for statistical/non-spatial analyses, see isolates script STAT preparation)
-
 
 # glottospace -------------------------------------------------------------
 # Clean-up script and simplify.
-# What can be move to geospace?
 # TODO: points2pols: Make more flexible country or continent, if user specifies country = "South America" this should also work.
 # Or would it be possible to do that automatically: check unique values in country and continent.
 # If there are many countries and one continent, mask by continent.
 # If there is one or a few countries, mask by country
 
-# geodistance -------------------------------------------------------------
-# FIXME: Write wrapper geodist (i.e. make sure it works for points and lines, etc.)
-# FIXME: geodist, save by default as dist, not as 'units'.
-# geodist only relevant between points and lines, not pols and lines
-# buffer should be equal area, not necessarily equidistant.
+
 
 
 # glottospotlight ---------------------------------------------------------
@@ -82,7 +71,7 @@
 
 
 # glottomap & glottoplot ---------------------------------------------------------------
-# FIXME: 3d plot nmds
+# add naviewer (glottocheck) to glottoplot?
 # bbox expansion: default true, but optional.
 # administrative units of lower level
 # Center map: https://stackoverflow.com/questions/10620862/use-different-center-than-the-prime-meridian-in-plotting-a-world-map
@@ -102,27 +91,6 @@
 
 # save & export -----------------------------------------------------------
 # TODO: overwrite = TRUE/FALSE
-
-# general -----------------------------------------------------------------
-# TODO: add a logo: https://rdrr.io/github/r-lib/usethis/man/use_logo.html
-# TODO: argument matching of functions (indicate choices): https://cran.r-project.org/web/packages/strex/vignettes/argument-matching.html
-# TODO: normalize path. Change backward slashes to forward slashes, make platform independent.
-
-# optional extensions ---------------------------------------------------
-# circles function from dismo package (similar to buffer, but overlapping and raster output)
-# For presence absence data (e.g. isolates), package gstat provides functions: geoIDW and voronoiHull %>%
-
-# Quote from https://rspatial.org/raster/sdm/4_sdm_envdata.html:
-# Extract multiple points in a radius as a potential means for dealing with mismatch between location accuracy and grid cell size.
-# If one would make 10 datasets that represent 10 equally valid “samples” of the environment in that radius,
-# that could be then used to fit 10 models and explore the effect of uncertainty in location.
-
-# Points to raster:
-# Density/richness interpolation, number of languages in a grid cell.Fig 1b: interpolated richness: https://zenodo.org/record/821360
-# point density analysis: https://rspatial.org/raster/analysis/8-pointpat.html
-# point density: https://cran.r-project.org/web/packages/pointdensityP/pointdensityP.pdf
-# spatial interpolation (kriging?)
-# see also: https://geocompr.github.io/geocompkg/articles/point-pattern.html
 
 
 # REQUESTS ----------------------------------------------------------------

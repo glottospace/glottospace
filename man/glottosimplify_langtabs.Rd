@@ -15,3 +15,4 @@ glottosimplify_langtabs(glottodata)
 \description{
 Drop language tables from glottodata (keep only meta tables)
 }
+\keyword{internal}

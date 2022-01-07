@@ -12,3 +12,4 @@ Number of days passed since WALS data was downloaded for the last time
 \description{
 Check how long ago WALS data was downloaded
 }
+\keyword{internal}

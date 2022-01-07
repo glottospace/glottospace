@@ -15,3 +15,4 @@ This function checks whether most recent version of glottolog is locally availab
 \examples{
 glottoget_glottolog()
 }
+\keyword{internal}

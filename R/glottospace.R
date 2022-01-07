@@ -46,7 +46,7 @@ return(glottodata)
 #'
 #' @return
 #' @export
-#'
+#' @keywords internal
 #' @examples
 #' gb <- glottologbooster(glottologdata = glottobase)
 #' gbsa <- glottofilter(glottodata = gb, continent = "South America")
@@ -127,7 +127,7 @@ return(glottodata)
 #'
 #' @return A spatial (sf) object
 #' @export
-#'
+#' @keywords internal
 #' @examples
 #' glottodata <- glottoget_glottodata(meta = FALSE)
 #' glottodata_addcountries(glottodata)
@@ -153,7 +153,7 @@ glottodata_addcountries <- function(glottodata){
 #' @aliases glottodata_addcoords
 #' @return glottodata with a GEOMETRY column
 #' @export
-#'
+#' @keywords internal
 #' @examples
 #' glottodata <- glottoget_path()
 #' glottodata_makespatial(glottodata)

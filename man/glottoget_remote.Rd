@@ -28,3 +28,4 @@ Other <glottodata>:
 \code{\link{glottosave}()}
 }
 \concept{<glottodata>}
+\keyword{internal}

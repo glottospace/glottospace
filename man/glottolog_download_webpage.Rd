@@ -12,3 +12,4 @@ glottolog_download_webpage()
 \description{
 Download glottolog data from glottolog website
 }
+\keyword{internal}

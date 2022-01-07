@@ -20,3 +20,4 @@ Plot a heatmap of a distance matrix
 \examples{
 glottoplot_heatmap(glottodist)
 }
+\keyword{internal}

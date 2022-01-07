@@ -15,3 +15,4 @@ glottosimplify_submerge(glottosubdata)
 \description{
 Check whether input is glottosubdata and merge tables if TRUE.
 }
+\keyword{internal}

@@ -15,3 +15,4 @@ glottosimplify_dropspatial(glottodata)
 \description{
 Drop spatial properties from glottodata
 }
+\keyword{internal}

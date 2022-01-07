@@ -23,6 +23,9 @@ like some more advanced ways of handling NAs, you might check out the
 \code{naniar} package.
 }
 \examples{
-data <- glottoget_glottodata(meta = FALSE)
+glottodata <- glottoget("demodata", meta = TRUE)
+glottodata <- glottoclean(glottodata = glottodata)
+data <- glottodata[[1]]
 naviewer(data, id = "glottocode")
 }
+\keyword{internal}

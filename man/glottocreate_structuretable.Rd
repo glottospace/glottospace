@@ -2,7 +2,7 @@
 % Please edit documentation in R/glottocreate.R
 \name{glottocreate_structuretable}
 \alias{glottocreate_structuretable}
-\title{create structure table for glottodata}
+\title{Create structure table for glottodata}
 \usage{
 glottocreate_structuretable(glottocodes, varnames = NULL)
 }
@@ -15,7 +15,7 @@ glottocreate_structuretable(glottocodes, varnames = NULL)
 
 }
 \description{
-create structure table for glottodata
+This function creates a new structure table, it can be added to glottodata using glottodata_addtable()
 }
 \examples{
 glottocreate_structuretable(glottocodes = c("yucu1253", "tani1257"), varnames = c("var001", "var002", "var003"))

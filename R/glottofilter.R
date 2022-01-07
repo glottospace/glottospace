@@ -149,7 +149,7 @@ glottofiltermap <- function(glottodata = NULL, mode = NULL, ...){
 
   if(is.null(mode)){mode <- "draw"}
 
-  suppressMessages(mapedit::selectFeatures(glottodata, mode = mode, title = "Select languages", color = "red"))
+  suppressMessages(mapedit::selectFeatures(glottodata, mode = mode, title = "Select languages"))
 }
 
 
@@ -168,7 +168,7 @@ glottofiltermap <- function(glottodata = NULL, mode = NULL, ...){
 #'
 #' @return
 #' @export
-#'
+#' @keywords internal
 #' @examples
 #' glottodata <- glottoget("glottobase")
 #' glottofilter_bycol(glottodata = glottodata, colname = "family", select = "Indo-European")

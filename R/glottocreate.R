@@ -134,6 +134,14 @@ glottocreate_subdata <- function(glottocodes, variables, filename = NULL, groups
 
 
 
+#' Create glottotable for glottodata
+#'
+#' @param glottocodes Character vector of glottocodes
+#' @param varnames Character vector of variable names
+#'
+#' @return
+#' @export
+#' @keywords internal
 glottocreate_glottotable <- function(glottocodes, varnames){
   colnames <- c("glottocode", varnames)
   glottodata <- data.frame(matrix(nrow=length(glottocodes),ncol=length(colnames))) # alternative: tbl <- colnames %>% purrr::map_dfc(setNames, object = list(character()))
@@ -142,14 +150,15 @@ glottocreate_glottotable <- function(glottocodes, varnames){
   glottodata
 }
 
-#' create structure table for glottodata
+#' Create structure table for glottodata
+#'
+#' This function creates a new structure table, it can be added to glottodata using glottodata_addtable()
 #'
 #' @param glottocodes Character vector of glottocodes
 #' @param varnames Character vector of variable names
 #'
 #' @return
 #' @export
-#'
 #' @examples
 #' glottocreate_structuretable(glottocodes = c("yucu1253", "tani1257"), varnames = c("var001", "var002", "var003"))
 glottocreate_structuretable <- function(glottocodes, varnames = NULL){
@@ -162,6 +171,13 @@ structure[,"weight"] <- 1
 structure
 }
 
+#' create metatable for glottodata
+#'
+#' @param varnames Character vector of variable names
+#'
+#' @return
+#' @export
+#' @keywords internal
 glottocreate_metatable <- function(varnames){
   metadata <- data.frame(matrix(nrow = length(varnames), ncol = 6) )
   colnames(metadata) <- c("varname", "description", "reference", "page", "contributor", "remarks")
@@ -169,6 +185,14 @@ glottocreate_metatable <- function(varnames){
   metadata
 }
 
+#' create reference table for glottodata
+#'
+#' @param glottocodes Character vector of glottocodes
+#' @param varnames Character vector of variable names
+#'
+#' @return
+#' @export
+#' @keywords internal
 glottocreate_reftable <- function(glottocodes, varnames){
   references <- data.frame(matrix(nrow = length(glottocodes), ncol = (length(varnames)*2)+1 ) )
   colnames(references) <- c("glottocode", paste(rep(varnames, each = 2) , c("ref", "page"), sep = "_") )
@@ -176,6 +200,16 @@ glottocreate_reftable <- function(glottocodes, varnames){
   references
 }
 
+#' Create readme table for glottodata
+#'
+#' @param maintainer maintainer of the data
+#' @param email email address of maintainer
+#' @param citation how to cite the data
+#' @param url url with background information on the data
+#'
+#' @return
+#' @export
+#' @keywords internal
 glottocreate_readmetable <- function(maintainer = NULL, email = NULL, citation = NULL, url = NULL ){
   readme <- data.frame(matrix(nrow = 5, ncol = 2) )
   readme[,1] <- c("maintainer", "email", "citation", "url", "This database was created using the glottospace R package")
@@ -188,6 +222,11 @@ glottocreate_readmetable <- function(maintainer = NULL, email = NULL, citation =
   readme
 }
 
+#' Create lookup table for glottodata
+#'
+#' @return
+#' @export
+#' @keywords internal
 glottocreate_lookuptable <- function(){
   lookup <- data.frame(matrix(nrow = 7, ncol = 2) )
   lookup[,1] <- c("symm",
@@ -217,7 +256,6 @@ glottocreate_lookuptable <- function(){
 #'
 #' @return
 #' @export
-#'
 #' @examples
 #' glottocreate_glottosubcodes(glottocode = "yucu1253", groups = c("a", "b"), n = 5)
 glottocreate_glottosubcodes <- function(glottocode, groups = NULL, n){
@@ -239,7 +277,7 @@ glottocreate_glottosubcodes <- function(glottocode, groups = NULL, n){
 #'
 #' @return
 #' @export
-#'
+#' @noRd
 glottocreate_demodata <- function(meta = TRUE){
   demo <- glottocreate_data(glottocodes = c("yucu1253", "tani1257", "ticu1245", "orej1242", "nade1244", "mara1409"), variables = 3, meta = meta)
   if(meta == TRUE){
@@ -266,7 +304,7 @@ glottocreate_demodata <- function(meta = TRUE){
 #'
 #' @return
 #' @export
-#'
+#' @noRd
 glottocreate_demosubdata <- function(meta = TRUE){
   demo <- glottocreate_subdata(glottocodes = c("yucu1253", "tani1257"), variables = 3, groups = c("a", "b"), n = 5, meta = meta)
 

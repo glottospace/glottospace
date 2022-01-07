@@ -104,7 +104,7 @@ glottonmds_scores <- function(glottonmds){
 #' @param ptsize ptsize
 #' @param label label
 #' @param filename optional filename if output should be saved.
-#'
+#' @keywords internal
 #' @return
 #' @export
 #'
@@ -237,6 +237,7 @@ glottoplot_nmds_stress <- function(glottodist, k = NULL){
 #'
 #' @return
 #' @export
+#' @keywords internal
 #'
 #' @examples
 #' glottoplot_heatmap(glottodist)

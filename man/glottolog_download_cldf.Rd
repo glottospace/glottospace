@@ -12,3 +12,4 @@ glottolog_download_cldf()
 \description{
 Download glottolog data from zenodo, and select relevant data from cldf data
 }
+\keyword{internal}

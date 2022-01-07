@@ -2,7 +2,7 @@
 % Please edit documentation in R/glottosave.R
 \name{glottosave}
 \alias{glottosave}
-\title{Save glottodata in relevant format}
+\title{Save glottodata, maps and plots}
 \usage{
 glottosave(glottodata, filename = NULL)
 }

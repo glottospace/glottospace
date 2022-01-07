@@ -11,7 +11,7 @@
 #' @export
 #'
 #' @examples
-#' glottodata <- glottoget_path(meta = TRUE)
+#' glottodata <- glottoget("demodata", meta = TRUE)
 #' glottodist <- glottodist(glottodata = glottodata)
 glottodist <- function(glottodata, structure = NULL){
   if(glottocheck_hasmeta(glottodata) & is.null(structure)){
@@ -81,7 +81,20 @@ glottodist <- function(glottodata, structure = NULL){
                          weights = weights)
 }
 
-gs_langdist <- function(data = NULL, index = "constructions", glottocodes = NULL, aggregate = "mean", structure = NULL){
+
+
+#' Calculate distances between languages based on constructions
+#'
+#' @param data data
+#' @param index index
+#' @param glottocodes glottocodes
+#' @param aggregate aggregate
+#' @param structure structure
+#'
+#' @return
+#' @export
+#' @noRd
+glottocondist <- function(data = NULL, index = "constructions", glottocodes = NULL, aggregate = "mean", structure = NULL){
 
 
 
@@ -98,9 +111,19 @@ gs_langdist <- function(data = NULL, index = "constructions", glottocodes = NULL
   return(outmatlang)
 }
 
-gs_condistagg <- function(condist, glottocodes, aggregation){
-  #' Aggregate distances between constructions per language
-  #' #' @param aggregate One of c('mean', 'min', 'sum') indicating how distances should be aggregated to language level.('min' returns best match)
+
+
+
+
+#' Aggregate distances between constructions per language
+#'
+#' @param condist distance matrix based on constructions
+#' @param glottocodes Vector of glottocodes
+#' @param aggregation One of c('mean', 'min', 'sum') indicating how distances should be aggregated to language level.('min' returns best match)
+#' @noRd
+#' @return
+#' @export
+glottocondist_agg <- function(condist, glottocodes, aggregation){
 
   if(any(class(condist) == "dist")){
     distmat <- as.matrix(condist)
@@ -144,11 +167,21 @@ gs_condistagg <- function(condist, glottocodes, aggregation){
   return(outmatlang)
 }
 
-gs_condistconvert <- function(condist, glottocodes, groups = NULL, thresval = NULL, threstype = "absolute"){
-  #' Convert distances between constructions per language
-  #' @param groups Vector of two groups (e.g. language families) for which average should be calculated.
-  #' Default is to use all pairwise distances to calculate average.
-  #'
+#' Convert distances between constructions per language
+#'
+#' Default is to use all pairwise distances to calculate average.
+#'
+#' @param condist Distance matrix
+#' @param glottocodes Vector of glottocodes
+#' @param groups Vector of two groups (e.g. language families) for which average should be calculated.
+#' @param thresval Threshold value
+#' @param threstype Threshold type
+#' @noRd
+#' @return
+#' @export
+#'
+glottocondist_con2lang <- function(condist, glottocodes, groups = NULL, thresval = NULL, threstype = "absolute"){
+
   distmat <- as.matrix(condist)
 
   if(is.null(groups) & is.null(thresval)){

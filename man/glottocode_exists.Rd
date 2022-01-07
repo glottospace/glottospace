@@ -2,7 +2,6 @@
 % Please edit documentation in R/glottosearch.R
 \name{glottocode_exists}
 \alias{glottocode_exists}
-\alias{glottocodes_exist}
 \title{Check whether glottocodes exist in glottolog}
 \usage{
 glottocode_exists(glottocode)

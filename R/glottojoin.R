@@ -52,7 +52,7 @@ return(joined)
 #' @param dist A dist object
 #' @param rm.na Default is to keep NAs.
 #' @param id Column with IDs in \code{glottodata} that match names of dist object. By default, the "glottocode" column is used.
-#'
+#' @keywords internal
 #' @return Data frame
 #' @export
 #'
@@ -93,7 +93,7 @@ glottojoin_dist <- function(glottodata, id = NULL, dist, rm.na = FALSE){
 #'
 #' @param glottodata User-provided glottodata
 #' @param id Optional, name of column with glottocodes
-#'
+#' @keywords internal
 #' @return
 #' @export
 #'
@@ -136,7 +136,7 @@ glottojoin_space <- function(glottodata, id = NULL){
 #'
 #' @return A single glottodata object
 #' @export
-#'
+#' @keywords internal
 #' @examples
 #' glottosubdata <- glottocreate_demosubdata()
 #' glottojoin_data(glottosubdata = glottosubdata)
@@ -202,13 +202,13 @@ glottojoin_data <- function(glottodata, with, type = "left", id = NULL, ...){
 #'
 #' @param glottodata A glottodata table, or a glottodata list with one table.
 #' @param glottometa A glottometa table, or a glottometa list
-#' @param name
-#'
+#' @param name Optional name(s) of glottometa tables
+#' @keywords internal
 #' @return
 #' @export
 #'
 #' @examples
-#' glottodata <- glottoget_path(meta = TRUE)
+#' glottodata <- glottoget("demodata", meta = TRUE)
 #' glottometa <- glottodata[-1]
 #' glottodata <- glottodata[[1]]
 #' glottojoin_meta(glottodata, glottometa)

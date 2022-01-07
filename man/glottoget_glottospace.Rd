@@ -18,3 +18,4 @@ glottospace <- glottoget_glottospace()
 \seealso{
 glottodata_addcoords
 }
+\keyword{internal}

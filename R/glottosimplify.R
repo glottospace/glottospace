@@ -8,13 +8,14 @@
 #' @param dropspatial By default spatial properties are removed.
 #' @param submerge By default, glottosubdata tables are merged into a single glottodata table.
 #' @param list2tab By default if glottodata is a list of tables, only the glottodata table is returned.
+#' @param dropunits By default units are kept.
 #'
 #' @return
 #' @export
 #'
 #' @examples
 #' glottosimplify(glottodata)
-glottosimplify <- function(glottodata, dropmeta = TRUE, dropspatial = TRUE, submerge = TRUE, list2tab = TRUE){
+glottosimplify <- function(glottodata, dropmeta = TRUE, dropspatial = TRUE, submerge = TRUE, list2tab = TRUE, dropunits = FALSE){
 
   glottodata <- contrans_tb2df(glottodata)
 
@@ -34,13 +35,18 @@ glottosimplify <- function(glottodata, dropmeta = TRUE, dropspatial = TRUE, subm
   if(dropspatial == TRUE){
     glottodata <- glottosimplify_dropspatial(glottodata)
   }
+
+  if(dropunits == TRUE){
+    glottodata <- glottosimplify_dropunits(glottodata)
+  }
+
   return(glottodata)
 }
 
 #' Drop metadata tables from glottodata
 #'
 #' @param glottodata Either glottodata or glottosubdata
-#'
+#' @keywords internal
 #' @return
 #' @export
 #'
@@ -55,7 +61,7 @@ glottosimplify_dropmeta <- function(glottodata){
 #' Drop language tables from glottodata (keep only meta tables)
 #'
 #' @param glottodata Either glottodata or glottosubdata
-#'
+#' @keywords internal
 #' @return
 #' @export
 #'
@@ -66,7 +72,7 @@ glottosimplify_langtabs <- function(glottodata){
 #' Select glottodatatable from a glottodatalist
 #'
 #' @param glottodata glottodatalist
-#'
+#' @keywords internal
 #' @return
 #' @export
 #'
@@ -81,7 +87,7 @@ glottosimplify_list2tab <- function(glottodata){
 #' Drop spatial properties from glottodata
 #'
 #' @param glottodata Either glottodata or glottosubdata
-#'
+#' @keywords internal
 #' @return
 #' @export
 #'
@@ -93,12 +99,24 @@ glottosimplify_dropspatial <- function(glottodata){
   }
 }
 
+#' Drop units from glottodata
+#'
+#' @param glottodata Either glottodata or glottosubdata
+#' @keywords internal
+#' @return
+#' @export
+#'
+glottosimplify_dropunits <- function(glottodata){
+  units::drop_units(glottodata)
+}
+
+
 #' Conditionally merge tables from glottosubdata
 #'
 #' Check whether input is glottosubdata and merge tables if TRUE.
 #'
 #' @param glottosubdata glottosubdata.
-#'
+#' @keywords internal
 #' @return
 #' @export
 #'

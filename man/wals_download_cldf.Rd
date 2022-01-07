@@ -12,3 +12,4 @@ wals_download_cldf()
 \description{
 Download WALS data from zenodo, and select relevant data from cldf data
 }
+\keyword{internal}

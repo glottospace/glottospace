@@ -1,24 +1,3 @@
-# TODO: is_path # check whether something is a character string and path exists (platform independent)
-
-
-
-unpack <- function(path = NULL){
-  ftar <- list.files(path = path, pattern = ".tar", full.names = TRUE)
-  if(!purrr::is_empty(ftar)){
-    lapply(ftar, untar, exdir = path)
-    f <- ftar
-    ext <- ".tar"
-  }
-
-  fzip <- list.files(path = path, pattern = ".zip", full.names = TRUE)
-  if(!purrr::is_empty(fzip)){
-    lapply(fzip, unzip, exdir = path)
-    f <- fzip
-    ext <- ".zip"
-  }
-
-  message(paste(length(f), ext, " files unpacked to:", path))
-}
 
 
 #' Create empty distance matrix
@@ -27,7 +6,7 @@ unpack <- function(path = NULL){
 #'
 #' @return
 #' @export
-#'
+#' @noRd
 #' @examples
 #' gs_emptydistmat(names = glottocodes)
 gs_emptydistmat <- function(names){
@@ -55,6 +34,15 @@ geodata_rename_column <- function(geodata, oldname, newname){
 
 glottovars <- function(){
   colnames(glottoget("glottobase"))
+}
+
+recode_df <- function(data, old, new){
+  apply(data, MARGIN = 2, FUN = recode_vector, old = old, new = new)
+}
+
+recode_vector <- function(vector, old, new){
+  vector[which(vector %in% old)] <- new
+  return(vector)
 }
 
 

@@ -12,3 +12,4 @@ wals_version_local()
 \description{
 Check which version of WALS is available on your computer
 }
+\keyword{internal}

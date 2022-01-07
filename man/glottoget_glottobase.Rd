@@ -18,3 +18,4 @@ Downloads most recent glottolog data and transforms it. This 'glottobase' is use
 \examples{
 glottobase <- glottoget_glottobase()
 }
+\keyword{internal}

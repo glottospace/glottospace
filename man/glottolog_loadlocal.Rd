@@ -12,3 +12,4 @@ glottolog_loadlocal()
 \description{
 Load locally stored glottolog data
 }
+\keyword{internal}

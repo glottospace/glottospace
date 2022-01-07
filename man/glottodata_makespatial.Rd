@@ -21,3 +21,4 @@ If glottodata does not contain a geometry column, it will be added.
 glottodata <- glottoget_path()
 glottodata_makespatial(glottodata)
 }
+\keyword{internal}

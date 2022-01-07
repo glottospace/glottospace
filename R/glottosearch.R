@@ -33,7 +33,7 @@ glottosearch <- function(find, glottodata = NULL, partialmatch = TRUE, columns =
 
 }
 
-#' Check whether one glot exists in glottolog.
+#' Check whether a single keyword exists in glottolog.
 #'
 #' @param find Glottocode, name of language, family, etc.
 #' @param columns In which column should be searched
@@ -45,20 +45,20 @@ glot_exists_one <- function(find, columns){
   nrow(existsdf) == 1
 }
 
-#' Check whether a glot or vector of glots exist in glottolog
+#' Check whether a keyword or vector of keywords exist in glottolog
 #'
 #' This function checks for exact matches, and returns TRUE/FALSE. In case you
 #' want a more flexible search, you can use
 #' \code{\link[=glottosearch]{glottosearch()}}, in case you want to check
 #' whether glottocodes exist/are valid, use
-#' \code{\link[=glottocodes_exist]{glottocodes_exist()}}
+#' \code{\link[=glottocode_exists]{glottocode_exists()}}
 #'
 #' @param find Glottocode, name of language, family, etc.
 #' @param columns In which column should be searched
 #' @family <glottocheck><glottosearch>
 #' @return Logical: TRUE/FALSE
 #' @export
-#'
+#' @keywords internal
 #' @examples
 #' glot_exists(find = c("yucu1253", "abcd1234"), columns = "glottocode")
 glot_exists <- function(find, columns){
@@ -71,12 +71,11 @@ purrr::map2_lgl(.x = find, .y = columns, .f = glot_exists_one)
 #'
 #' @return A logical vector
 #' @export
-#' @aliases glottocodes_exist
 #' @family <glottocheck><glottosearch>
 #' @examples
 #' glottocode_exists(c("yucu1253"))
 #' glottocode_exists(c("yucu1253", "abcd1234"))
-glottocode_exists <- glottocodes_exist <- function(glottocode){
+glottocode_exists <- function(glottocode){
   glot_exists(find = glottocode, columns = "glottocode")
 }
 

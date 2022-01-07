@@ -12,3 +12,4 @@ glottolog_download_zenodo()
 \description{
 Download most recent version of glottolog from zenodo (cldf format)
 }
+\keyword{internal}

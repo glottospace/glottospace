@@ -15,3 +15,4 @@ glottosimplify_list2tab(glottodata)
 \description{
 Select glottodatatable from a glottodatalist
 }
+\keyword{internal}

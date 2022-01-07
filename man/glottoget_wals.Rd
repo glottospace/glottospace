@@ -15,3 +15,4 @@ This function checks whether most recent version of WALS is locally available. I
 \examples{
 glottoget_wals()
 }
+\keyword{internal}

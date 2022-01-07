@@ -4,12 +4,14 @@
 \alias{glottocheck}
 \title{Quality check of user-provided glottodata or glottosubdata}
 \usage{
-glottocheck(glottodata, diagnostic = TRUE)
+glottocheck(glottodata, diagnostic = TRUE, checkmeta = FALSE)
 }
 \arguments{
 \item{glottodata}{User-provided glottodata}
 
 \item{diagnostic}{If TRUE (default) a data viewer will be opened to show the levels of each variable (including NAs), and a data coverage plot will be shown.}
+
+\item{checkmeta}{Should metadata be checked as well?}
 }
 \value{
 

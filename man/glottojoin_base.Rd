@@ -21,3 +21,4 @@ Keeps all rows from glottodata. Can be used to add features from glottobase.
 glottodata <- glottoget_path(meta = FALSE)
 glottojoin_base(glottodata)
 }
+\keyword{internal}

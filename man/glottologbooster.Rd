@@ -39,3 +39,4 @@ Glottologbooster: enhance glottolog data
 glottologdata <- glottoget("glottolog")
 glottologdata <- glottologbooster(glottologdata)
 }
+\keyword{internal}

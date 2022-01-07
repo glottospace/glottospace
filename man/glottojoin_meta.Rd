@@ -11,7 +11,7 @@ glottojoin_meta(glottodata, glottometa, name = NULL)
 
 \item{glottometa}{A glottometa table, or a glottometa list}
 
-\item{name}{}
+\item{name}{Optional name(s) of glottometa tables}
 }
 \value{
 
@@ -20,8 +20,9 @@ glottojoin_meta(glottodata, glottometa, name = NULL)
 Join glottodata with glottometa
 }
 \examples{
-glottodata <- glottoget_path(meta = TRUE)
+glottodata <- glottoget("demodata", meta = TRUE)
 glottometa <- glottodata[-1]
 glottodata <- glottodata[[1]]
 glottojoin_meta(glottodata, glottometa)
 }
+\keyword{internal}

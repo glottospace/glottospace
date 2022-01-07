@@ -19,3 +19,4 @@ Join glottosubdata (a list of glottodata tables for multiple languages) into a s
 glottosubdata <- glottocreate_demosubdata()
 glottojoin_data(glottosubdata = glottosubdata)
 }
+\keyword{internal}

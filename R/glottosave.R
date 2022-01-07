@@ -1,4 +1,4 @@
-#' Save glottodata in relevant format
+#' Save glottodata, maps and plots
 #'
 #' If no file extention is provided, a sensible default is chosen. Dynamic maps
 #' (tmap) are saved in .html format, static maps (tmap) are saved as .png.

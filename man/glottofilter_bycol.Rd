@@ -26,3 +26,4 @@ glottofilter_bycol(glottodata = glottodata, colname = "family", select = -"Indo-
 glottofilter_bycol(glottodata = glottodata, colname = "country", select = c("Germany", "Netherlands") )
 glottofilter_bycol(glottodata = glottodata, colname = "country", select = -c("Germany", "Netherlands") )
 }
+\keyword{internal}

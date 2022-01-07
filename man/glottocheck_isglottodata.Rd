@@ -18,3 +18,4 @@ Guess whether a table or list of tables is glottodata (and not glottosubdata)
 \examples{
 glottocheck_isglottodata(glottodata)
 }
+\keyword{internal}

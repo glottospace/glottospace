@@ -7,7 +7,7 @@
 glottocheck_metadata(glottodata)
 }
 \arguments{
-\item{glottodata}{}
+\item{glottodata}{glottodata}
 }
 \value{
 
@@ -16,5 +16,7 @@ glottocheck_metadata(glottodata)
 Check metadata of glottodata
 }
 \examples{
-glottodata <- glottoget_glottodata()
+glottodata <- glottoget("demodata", meta = TRUE)
+glottocheck_metadata(glottodata)
 }
+\keyword{internal}

@@ -1,80 +1,133 @@
+
 #' Clean glottodata
 #'
-#' @param glottodata User-provided glottodata (list or data.frame)
-#' @family <glottoclean>
+#' This function is a wrapper around glottorecode. This function has some built in default values that are being recoded.
+#' For example, "No" is recoded to FALSE and "?" is recoded to NA.
+#' Use glottorecode directly if you don't want to use these defaults.
+#'
+#' @param glottodata glottodata list
+#' @param tona Optional additional values to recode to NA (besides default)
+#' @param tofalse Optional additional values to recode to FALSE (besides default)
+#' @param totrue Optional additional values to recode to TRUE (besides default)
+#'
 #' @return
 #' @export
 #'
 #' @examples
-#' # list:
-#' glottodata_list <- glottoget_path()
-#' glottodata_list <- glottoclean(glottodata_list)
-#' glottodata_list[[1]] <- glottoclean(glottodata_list[[1]])
-#'
-#' # data.frame:
-#' glottodata <- glottoget_path(meta = TRUE)
+#' glottodata <- glottoget("demodata", meta = TRUE)
 #' glottodata <- glottoclean(glottodata)
-glottoclean <- function(glottodata, structure = NULL){
-  if(glottocheck_hasstructure(glottodata) ){
-    # glottodata[["glottodata"]] <- glottoclean_recodemissing(glottodata[["glottodata"]])
-    glottodata[["glottodata"]] <- glottoclean_recodelogical(glottodata = glottodata[["glottodata"]], structure = glottodata[["structure"]])
-    glottodata
+glottoclean <- function(glottodata, tona = NULL, tofalse = NULL, totrue = NULL){
 
-  } else {
-    if(is.null(structure)){stop("Please provide a structure table with at least a type column. Run glottocreate_structuretable() to create it.")}
-        # glottodata <- glottoclean_recodemissing(glottodata)
-        glottodata <- glottoclean_recodelogical(glottodata, structure)
-        glottodata
-    }
+  all2false <- c("n", "N", "No", "no", "NO", 0)
+  all2true <- c("y", "Y", "Yes", "yes", "YES", 1)
+  all2na <- c("NA", "N A", "N/A", "#N/A", "NA ", " NA", "N /A", "N / A", " N / A", "N / A ", "na", "n a", "n/a",
+                  "na ", " na", "n /a", "n / a", " a / a", "n / a ", "NULL", "null", "", "\\?", "\\*", "\\.")
+
+  if(!is.null(tona)){all2na <- c(all2na, tona)}
+  if(!is.null(tofalse)){all2false <- c(all2false, tofalse)}
+  if(!is.null(totrue)){all2true <- c(all2true, totrue)}
+
+  glottodata <- glottorecode(glottodata = glottodata,
+                tofalse = all2false,
+                totrue = all2true,
+                tona = all2na)
+
+  return(glottodata)
 }
 
+#' Recode values across a glottodataset
+#'
+#' This function recodes values within a glottodataset to NA or TRUE/FALSE. Recoding is done based on column types in the structure table. Run glottocreate_structuretable() to create one.
+#'
+#' @param glottodata glottodata list
+#' @param tona Values to recode to NA
+#' @param tofalse Values to recode to FALSE
+#' @param totrue Values to recode to TRUE
+#'
+#' @family <glottorecode><glottoclean>
+#' @return
+#' @export
+#' @examples
+#' glottodata <- glottoget("demodata", meta = TRUE)
+#' glottodata <- glottorecode(glottodata, tona = c("?", "missing"))
+glottorecode <- function(glottodata, tofalse = NULL, totrue = NULL, tona = NULL){
 
+  if(!is.null(tona)){
+    glottodata <- glottorecode_missing(glottodata, tona = tona)
+  }
+
+  if(!is.null(tofalse) | !is.null(totrue)){
+    glottodata <- glottorecode_logical(glottodata = glottodata, tofalse = tofalse, totrue = totrue)
+  }
+ glottodata
+}
 
 #' Recode missing values to NA
 #'
 #' @param glottodata User-provided glottodata
-#' @param rec Optional, additional values to recode to NA
-#' @family <glottoclean>
+#' @param tona Optional, additional values to recode to NA
+#' @family <glottorecode>
 #' @return
 #' @export
 #'
+#' @keywords internal
 #' @examples
-#' glottodata <- glottoget_path()
-#' glottoclean_recodemissing(glottodata, rec = "N")
-glottoclean_recodemissing <- function(glottodata, rec = NULL){
-  # maybe better to do with tribble lookup table https://r-pkgs.org/package-within.html
-  data <- glottodata[,-1]
-  na_strings <- c(naniar::common_na_strings, "?", rec)
-  data <- data %>%
-    naniar::replace_with_na_all(condition = ~. %in% na_strings)
+#' glottodata <- glottoget("demodata", meta = TRUE)
+#' glottorecode_missing(glottodata, tona = "?")
+glottorecode_missing <- function(glottodata, tona){
+
+
+  if(glottocheck_hasstructure(glottodata) ){
+    data <- glottodata[["glottodata"]]
+    hasstructure <- TRUE
+  } else {
+    data <- glottodata
+  }
+
+  data <- data %>% naniar::replace_with_na_all(condition = ~. %in% tona)
+  # data <- recode_df(data = data, old = tona, new = NA)
   message("Missing values recoded to NA \n")
-  cbind(glottodata[,1, drop = FALSE], data)
+
+  if(hasstructure == TRUE){glottodata[["glottodata"]] <- data
+  } else {
+    glottodata <- data
+  }
+  glottodata
 }
 
-#' Recode logical columns to TRUE/FALSE
+#' Recode character columns to TRUE/FALSE
 #'
-#' @param glottodata User-provided glottodata
-#' @param structure A glottodata structure table
+#' @param glottodata glottodata list
 #' @keywords internal
 #' @return
 #' @export
-#'
-glottoclean_recodelogical <- function(glottodata, structure){
+#' @examples
+#' glottorecode_logical(glottodata, totrue = c("y", "Y", 1), tofalse = c("n", "N", 0))
+glottorecode_logical <- function(glottodata, totrue = NULL, tofalse = NULL){
   # maybe better to do with tribble lookup table https://r-pkgs.org/package-within.html
   # tribble lookup could be used for a function recodefact (factors)
   # other approach could be used for a funciton recodenum (numeric)
+
+  if(!glottocheck_hasstructure(glottodata) ){
+    stop("Please provide a structure table with at least a type column. Run glottocreate_structuretable() to create it.")
+  }
+
+  structure <- glottodata[["structure"]]
   types <- structure$type
   cbinary <- structure$varname[which(types == "asymm" | types == "symm")]
 
+  data <- glottodata[["glottodata"]]
+
   if(!is.null(cbinary)){
-    bindat <- glottodata[, cbinary]
-    bindat[bindat == "Y" | bindat == "y" | bindat == 1] <- TRUE
-    bindat[bindat == "N" | bindat == "n" | bindat == 0] <- FALSE
-    glottodata[, cbinary] <- bindat
+    bindat <- data[, cbinary]
+    if(!is.null(totrue)){bindat <- recode_df(data = bindat, old = totrue, new = TRUE) }
+    if(!is.null(tofalse)){bindat <- recode_df(data = bindat, old = tofalse, new = FALSE) }
+    bindat <- apply(bindat, 2, as.logical)
+    data[, cbinary] <- bindat
     message("Values in binary columns (symm/asymm) recoded to TRUE/FALSE \n")
   }
-glottodata
+  glottodata[["glottodata"]] <- data
+  glottodata
 }
-
 
 

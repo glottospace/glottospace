@@ -8,7 +8,7 @@
 glottocheck_hasmeta(glottodata)
 }
 \arguments{
-\item{glottodata}{}
+\item{glottodata}{glottodata}
 }
 \value{
 
@@ -26,3 +26,4 @@ Other <glottocheck>:
 \code{\link{glottocheck}()}
 }
 \concept{<glottocheck>}
+\keyword{internal}

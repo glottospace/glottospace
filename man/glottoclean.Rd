@@ -4,29 +4,26 @@
 \alias{glottoclean}
 \title{Clean glottodata}
 \usage{
-glottoclean(glottodata, structure = NULL)
+glottoclean(glottodata, tona = NULL, tofalse = NULL, totrue = NULL)
 }
 \arguments{
-\item{glottodata}{User-provided glottodata (list or data.frame)}
+\item{glottodata}{glottodata list}
+
+\item{tona}{Optional additional values to recode to NA (besides default)}
+
+\item{tofalse}{Optional additional values to recode to FALSE (besides default)}
+
+\item{totrue}{Optional additional values to recode to TRUE (besides default)}
 }
 \value{
 
 }
 \description{
-Clean glottodata
+This function is a wrapper around glottorecode. This function has some built in default values that are being recoded.
+For example, "No" is recoded to FALSE and "?" is recoded to NA.
+Use glottorecode directly if you don't want to use these defaults.
 }
 \examples{
-# list:
-glottodata_list <- glottoget_path()
-glottodata_list <- glottoclean(glottodata_list)
-glottodata_list[[1]] <- glottoclean(glottodata_list[[1]])
-
-# data.frame:
-glottodata <- glottoget_path(meta = TRUE)
+glottodata <- glottoget("demodata", meta = TRUE)
 glottodata <- glottoclean(glottodata)
 }
-\seealso{
-Other <glottoclean>: 
-\code{\link{glottoclean_recodemissing}()}
-}
-\concept{<glottoclean>}

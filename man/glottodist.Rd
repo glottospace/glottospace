@@ -18,6 +18,6 @@ object of class \code{dist}
 Calculate distances between languages
 }
 \examples{
-glottodata <- glottoget_path(meta = TRUE)
+glottodata <- glottoget("demodata", meta = TRUE)
 glottodist <- glottodist(glottodata = glottodata)
 }

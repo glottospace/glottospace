@@ -12,3 +12,4 @@ glottolog_version_localdir()
 \description{
 Check which version of glottolog is available on your computer
 }
+\keyword{internal}

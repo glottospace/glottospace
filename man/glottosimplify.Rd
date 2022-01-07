@@ -9,7 +9,8 @@ glottosimplify(
   dropmeta = TRUE,
   dropspatial = TRUE,
   submerge = TRUE,
-  list2tab = TRUE
+  list2tab = TRUE,
+  dropunits = FALSE
 )
 }
 \arguments{
@@ -22,6 +23,8 @@ glottosimplify(
 \item{submerge}{By default, glottosubdata tables are merged into a single glottodata table.}
 
 \item{list2tab}{By default if glottodata is a list of tables, only the glottodata table is returned.}
+
+\item{dropunits}{By default units are kept.}
 }
 \value{
 

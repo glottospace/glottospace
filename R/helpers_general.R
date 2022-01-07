@@ -28,8 +28,6 @@ is_true <- function(x) {
     x == TRUE
 }
 
-# xfun::gsub_dir(dir = "C:/Users/sjnor/surfdrive/PROJECTS_SN/SAPPHIRE/R/glottospace/R", pattern = "dummy", replacement = "demo")
-
 is_dist <- function(object){
   any(class(object) == "dist")
 }
@@ -51,8 +49,8 @@ contrans_tb2df <- function(glottodata){
 #'
 #' Calculate sum of all vector elements that are not NA. If all elements are NA, NA will be returned (in contrast to sum).
 #'
-#' @param v
-#'
+#' @param v A vector
+#' @noRd
 sumna <- function(v){
   if(all(is.na(v)) ){
     return(NA)
@@ -65,7 +63,7 @@ sumna <- function(v){
 #' Select non-NA elements from vector
 #'
 #' Select non-NA elements from vector. If all elements are NA, NA will be returned.
-#'
+#' @noRd
 #' @param v
 #'
 nonna <- function(v, max1 = FALSE){
@@ -75,4 +73,21 @@ nonna <- function(v, max1 = FALSE){
   return(sel)
 }
 
+unpack <- function(path = NULL){
+  ftar <- list.files(path = path, pattern = ".tar", full.names = TRUE)
+  if(!purrr::is_empty(ftar)){
+    lapply(ftar, untar, exdir = path)
+    f <- ftar
+    ext <- ".tar"
+  }
+
+  fzip <- list.files(path = path, pattern = ".zip", full.names = TRUE)
+  if(!purrr::is_empty(fzip)){
+    lapply(fzip, unzip, exdir = path)
+    f <- fzip
+    ext <- ".zip"
+  }
+
+  message(paste(length(f), ext, " files unpacked to:", path))
+}
 

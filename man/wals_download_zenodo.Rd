@@ -12,3 +12,4 @@ wals_download_zenodo()
 \description{
 Download most recent version of WALS from zenodo (cldf format)
 }
+\keyword{internal}

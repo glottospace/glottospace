@@ -55,6 +55,7 @@ return(glottodata)
 #' "glottospace" - a simple dataset with glottocodes and a geometry column. This is a subset of all languages in href{https://glottolog.org/}{glottolog} with spatial coordinates.
 #'
 #' @family <glottodata>
+#' @keywords internal
 #' @return
 #' @export
 #' @examples
@@ -82,6 +83,7 @@ glottoget_remote <- function(glottodata = NULL){
 #' @family <glottodata>
 #' @return
 #' @export
+#' @keywords internal
 #' @seealso glottosave
 #' @examples
 #' glottoget_path()
@@ -120,6 +122,7 @@ glottoget_path <- function(filepath = NULL, meta = FALSE, simplify = TRUE){
 #'
 #' @return
 #' @export
+#' @keywords internal
 #'
 #' @examples
 #' glottobase <- glottoget_glottobase()
@@ -136,6 +139,7 @@ glottoget_glottobase <- function(...){
 #' @return
 #' @export
 #' @seealso glottodata_addcoords
+#' @keywords internal
 #'
 #' @examples
 #' glottospace <- glottoget_glottospace()
@@ -156,6 +160,7 @@ glottoget_glottospace <- function(){
 #'
 #' @return
 #' @export
+#' @keywords internal
 #'
 #' @examples
 #' glottoget_glottolog()
@@ -193,6 +198,7 @@ return(out)
 #' @noRd
 #' @return
 #' @export
+#' @keywords internal
 #'
 glottolog_download <- function(){
   out <- try(
@@ -223,7 +229,7 @@ glottolog_download <- function(){
 #'
 #' @return
 #' @export
-#'
+#' @noRd
 glottofiles_cachedir <- function(){
   cachedir <- base::normalizePath(rappdirs::user_data_dir("glottospace"), winslash = "\\", mustWork = FALSE)
   if(!base::dir.exists(cachedir)){
@@ -234,8 +240,8 @@ glottofiles_cachedir <- function(){
 
 #' Create local path for a filename
 #'
-#' @param filename
-#'
+#' @param filename filename
+#' @noRd
 #' @return
 #' @export
 #'
@@ -248,8 +254,8 @@ glottofiles_makepath <- function(filename){
 
 #' Create local directory for a dirname
 #'
-#' @param dirname
-#'
+#' @param dirname dirname
+#' @noRd
 #' @return
 #' @export
 #'
@@ -267,7 +273,7 @@ glottofiles_makedir <- function(dirname){
 #'
 #' @return
 #' @export
-#'
+#' @keywords internal
 glottolog_version_remote <- function(){
   base_url <-  "https://zenodo.org/api/records/3260727"
   message("Checking what's the most recent version of glottolog ... this might take a while")
@@ -281,7 +287,7 @@ glottolog_version_remote <- function(){
 #'
 #' @return
 #' @export
-#'
+#' @keywords internal
 glottolog_version_localdir <- function(){
   dirs <- list.dirs(glottofiles_cachedir(), full.names = FALSE, recursive = FALSE)
   if(purrr::is_empty(dirs)){
@@ -302,7 +308,7 @@ glottolog_version_localdir <- function(){
 #'
 #' @return
 #' @export
-#'
+#' @keywords internal
 glottolog_version_local <- function(){
   files <- base::list.files(glottofiles_cachedir(), full.names = FALSE, recursive = FALSE)
   if(purrr::is_empty(files)){
@@ -325,7 +331,7 @@ glottolog_version_local <- function(){
 #'
 #' @return Number of days passed since glottolog data was downloaded for the last time
 #' @export
-#'
+#' @keywords internal
 glottolog_date_local <- function(){
   v <- glottolog_version_local()
  if(v != 0){
@@ -342,7 +348,7 @@ glottolog_date_local <- function(){
 #'
 #' @return
 #' @export
-#'
+#' @keywords internal
 glottolog_download_webpage <- function(){
   base_url <- "https://cdstar.shh.mpg.de/bitstreams/EAEA0-E62D-ED67-FD05-0/" # Newest version is always uploaded here!
   filename <- "glottolog_languoid.csv.zip"
@@ -363,7 +369,7 @@ glottolog_download_webpage <- function(){
 #'
 #' @return
 #' @export
-#'
+#' @keywords internal
 glottolog_download_cldf <- function(){
   glottolog_download_zenodo()
   glottolog_loadlocal()
@@ -373,7 +379,7 @@ glottolog_download_cldf <- function(){
 #'
 #' @return
 #' @export
-#'
+#' @keywords internal
 glottolog_download_zenodo <- function(){
   base_url <-  "https://zenodo.org/api/records/3260727" # Newest version is always uploaded here!
   req <- curl::curl_fetch_memory(base_url)
@@ -392,7 +398,7 @@ glottolog_download_zenodo <- function(){
 #'
 #' @return
 #' @export
-#'
+#' @keywords internal
 glottolog_loadlocal <- function(){
   exdir <- glottofiles_makedir(paste0("glottolog-cldf-v", glottolog_version_local()))
   cldf_metadata <- base::list.files(exdir, pattern = "cldf-metadata.json", recursive = TRUE)

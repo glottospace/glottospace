@@ -36,3 +36,4 @@ gbsa <- glottofilter(glottodata = gb, continent = "South America")
 pols <- points2pols(glottopoints = gbsa, method = "thiessen", continent = "South America")
 plot(pols[,"family_size"])
 }
+\keyword{internal}

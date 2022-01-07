@@ -12,3 +12,4 @@ wals_loadlocal_raw()
 \description{
 Load locally stored WALS data (without joining with glottolog)
 }
+\keyword{internal}
