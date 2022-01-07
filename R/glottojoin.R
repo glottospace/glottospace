@@ -118,7 +118,7 @@ glottojoin_base <- function(glottodata, id = NULL){
 #' @keywords internal
 #' @return
 #' @export
-#' @seealso glottodata_makespatial glottodata_addcoords
+#' @seealso glottospace_addcoords glottospace_addcoords
 #' @examples
 #' glottodata <- glottoget_path(meta = FALSE)
 #' glottojoin_space(glottodata)
@@ -176,7 +176,7 @@ glottojoin_subdata <- function(glottosubdata){
 #' @keywords internal
 #' @return
 #' @export
-#' @seealso glottodata_makespatial glottodata_addcoords
+#' @seealso glottospace_addcoords glottospace_addcoords
 #' @examples
 #' glottodatax <- glottoget_path(meta = FALSE)
 #' glottodatay <- glottoget_path(meta = FALSE)

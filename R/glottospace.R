@@ -23,11 +23,11 @@ glottospace <- function(glottodata, method = NULL, radius = NULL, country = NULL
     # glottodata <- glottodata[[1]]
     # hasmeta <- TRUE
     #   }
-    glottodata <- glottodata_makespatial(glottodata)
+    glottodata <- glottospace_addcoords(glottodata)
   }
 
   if(any( c(!is.null(method), !is.null(radius), !is.null(country), !is.null(continent) ) ) ){
-    glottodata <- points2pols(glottopoints = glottodata, method = method, radius = radius, country = country, continent = continent)
+    glottodata <- glottospace_points2pols(glottopoints = glottodata, method = method, radius = radius, country = country, continent = continent)
   }
 
   # if(hasmeta){
@@ -48,12 +48,12 @@ return(glottodata)
 #' @export
 #' @keywords internal
 #' @examples
-#' gb <- glottologbooster(glottologdata = glottobase)
+#' gb <- glottobooster(glottologdata = glottobase)
 #' gbsa <- glottofilter(glottodata = gb, continent = "South America")
 #'
-#' pols <- points2pols(glottopoints = gbsa, method = "thiessen", continent = "South America")
+#' pols <- glottospace_points2pols(glottopoints = gbsa, method = "thiessen", continent = "South America")
 #' plot(pols[,"family_size"])
-points2pols <- function(glottopoints, method = NULL, radius = NULL, country = NULL, continent = NULL){
+glottospace_points2pols <- function(glottopoints, method = NULL, radius = NULL, country = NULL, continent = NULL){
   if(is.null(method)){method <- "buffer"}
   # FIXME: area of buffers is not equal!
   # sf::st_area(glottodata)
@@ -102,7 +102,18 @@ points2pols <- function(glottopoints, method = NULL, radius = NULL, country = NU
 }
 
 
-glot2geoglot <- function(glottodata, lon = "longitude", lat = "latitude"){
+#' Convert glottodata with lat/lon columns to simple feature class
+#'
+#' This function is used by glottobooster().
+#'
+#' @param glottodata glottodata table
+#' @param lon Column name containing longitude
+#' @param lat Column name containing latitude
+#'
+#' @return
+#' @export
+#' @keywords internal
+glottospace_coords2sf <- function(glottodata, lon = "longitude", lat = "latitude"){
   if(class(glottodata)[1] == "sf"){stop("glottodata is already a spatial object")}
   glottolatlon <- glottodata %>%
     dplyr::filter(!is.na(!!as.symbol(lon))) %>%
@@ -130,15 +141,15 @@ return(glottodata)
 #' @keywords internal
 #' @examples
 #' glottodata <- glottoget_glottodata(meta = FALSE)
-#' glottodata_addcountries(glottodata)
-glottodata_addcountries <- function(glottodata){
-  glottodata <- glottodata_makespatial(glottodata)
+#' glottospace_addcountries(glottodata)
+glottospace_addcountries <- function(glottodata){
+  glottodata <- glottospace_addcoords(glottodata)
 
   # Adding names of countries and continents
   world <- rnaturalearth::ne_countries(returnclass = "sf", scale = "medium")
-  world <- world[, c("name", "continent", "subregion")]
+  world <- world[, c("admin", "continent", "sovereignt")]
   names(world)[1] <- "country"
-  names(world)[3] <- "region"
+  names(world)[3] <- "sovereignty"
 
   world <- sf::st_make_valid(world)
   sf::st_join(x = glottodata, y = world, left = TRUE)
@@ -146,18 +157,16 @@ glottodata_addcountries <- function(glottodata){
 
 #' Make glottodata spatial
 #'
-#' Adds coordinates to glottodata.
+#' Adds coordinates from glottolog to user-provided glottodata.
 #' If glottodata does not contain a geometry column, it will be added.
 #'
 #' @param glottodata User-provided glottodata
-#' @aliases glottodata_addcoords
 #' @return glottodata with a GEOMETRY column
 #' @export
-#' @keywords internal
 #' @examples
-#' glottodata <- glottoget_path()
-#' glottodata_makespatial(glottodata)
-glottodata_makespatial <- glottodata_addcoords <- function(glottodata){
+#' glottodata <- glottoget("demodata")
+#' glottospace_addcoords(glottodata)
+glottospace_addcoords <- function(glottodata){
   if(class(glottodata)[1] != "sf") {
     glottodata <- glottojoin_space(glottodata)
     glottodata <- sf::st_sf(glottodata)

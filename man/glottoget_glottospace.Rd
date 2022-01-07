@@ -16,6 +16,6 @@ Get most recent glottolog data and turn it into the most elemental geoglot objec
 glottospace <- glottoget_glottospace()
 }
 \seealso{
-glottodata_addcoords
+glottospace_addcoords
 }
 \keyword{internal}

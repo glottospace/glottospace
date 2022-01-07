@@ -12,7 +12,7 @@ glottoget(glottodata = NULL, meta = FALSE)
 \item A filepath to locally stored glottodata with file extension (.xlsx .xls .gpkg
 .shp). See also: options meta and simplify.
 \item "glottobase" - Default option, an spatially enhanced version of \href{https://glottolog.org/}{glottolog}. See
-\link{glottologbooster} for details.
+\link{glottobooster} for details.
 \item "wals" - This is a spatial and enhanced version of \href{https://wals.info/}{WALS}.
 \item "glottolog" - This is a restructured (non-spatial) version of \href{https://glottolog.org/}{glottolog}.
 \item "glottospace" - A simple dataset with glottocodes and a geometry column. This

@@ -10,11 +10,12 @@
 #' @param continent A character vector of continents
 #' @param country A character vector of countries
 #' @param name A character vector of language names
-#' @param region A character vector of regions
 #' @param colname A column name
 #' @param keep Character vector of things to keep (only if colname is provided)
 #' @param drop Character vector of things to keep (only if colname is provided)
 #' @param expression A regular expression
+#' @param sovereignty Sovereignty
+#' @param macroarea Glottolog macroarea
 #'
 #' @family <glottofilter><glottosearch>
 #' @seealso glottofiltermap()
@@ -33,17 +34,7 @@
 #' points <- glottofilter(colname = "family", drop = "Indo-European")
 glottofilter <- function(glottodata = NULL, isocodes = NULL,
                       glottocode = NULL, name = NULL, family = NULL, family_id = NULL,
-                      continent = NULL, country = NULL, region = NULL, expression = NULL, colname = NULL, keep = NULL, drop = NULL, select = NULL){
-
-  # filter glottolog data
-  # isocodes: a character vector of isocodes
-  # macroarea: a character vector of macroarea(s)
-  # ifelse(!is_empty(continent) | !is_empty(country), spatial <- TRUE, spatial <- FALSE)
-  # if(spatial == TRUE){
-  #   if (!require(rnaturalearth)) {install.packages('rnaturalearth')}
-  #   library(rnaturalearth)
-  #   # TO ADD: check CRS identical
-  #   }
+                      continent = NULL, country = NULL, sovereignty = NULL, macroarea = NULL, expression = NULL, colname = NULL, keep = NULL, drop = NULL){
 
   if(purrr::is_empty(glottodata)){
     glottodata <- glottoget_glottobase()
@@ -66,14 +57,14 @@ glottofilter <- function(glottodata = NULL, isocodes = NULL,
       dplyr::filter(glottocode %in% selection)
   }
   if(!purrr::is_empty(family )){
-    selection <- family
+    selection <- tolower(family)
     glottodata <- glottodata %>%
-      dplyr::filter(family %in% selection)
+      dplyr::filter(tolower(family) %in% selection)
   }
   if(!purrr::is_empty(name )){
-    selection <- name
+    selection <- tolower(name)
     glottodata <- glottodata %>%
-      dplyr::filter(name %in% selection)
+      dplyr::filter(tolower(name) %in% selection)
   }
   if(!purrr::is_empty(family_id )){
     selection <- family_id
@@ -82,21 +73,28 @@ glottofilter <- function(glottodata = NULL, isocodes = NULL,
   }
   # if (sum( (!is.null(country)) + (!is.null(continent)) ) > 1) {
   #   stop("Please supply either country or continent, not both")
+  # https://stackoverflow.com/questions/43938863/dplyr-filter-with-condition-on-multiple-columns
+  # FILTER ACROSS
   # }
-  if(!purrr::is_empty(continent )){
-    selection <- continent
+  if(!purrr::is_empty(macroarea )){
+    selection <- tolower(macroarea)
     glottodata <- glottodata %>%
-      dplyr::filter(continent %in% selection)
+      dplyr::filter(tolower(macroarea) %in% selection)
+  }
+  if(!purrr::is_empty(continent )){
+    selection <- tolower(continent)
+    glottodata <- glottodata %>%
+      dplyr::filter(tolower(continent) %in% selection)
   }
   if(!purrr::is_empty(country )){
-    selection <- country
+    selection <- tolower(country)
     glottodata <- glottodata %>%
-      dplyr::filter(country %in% selection)
+      dplyr::filter(tolower(country) %in% selection)
   }
-  if(!purrr::is_empty(region )){
-    selection <- region
+  if(!purrr::is_empty(sovereignty )){
+    selection <- tolower(sovereignty)
     glottodata <- glottodata %>%
-      dplyr::filter(region %in% selection)
+      dplyr::filter(tolower(sovereignty) %in% selection)
   }
 
   if(!purrr::is_empty(colname) & !purrr::is_empty(keep) ){
@@ -112,11 +110,6 @@ glottofilter <- function(glottodata = NULL, isocodes = NULL,
     glottodata <- glottodata %>%
       dplyr::filter(.[[colname]] %nin% selection)
   }
-
-  # select <- base::substitute(select)
-  # if(!purrr::is_empty(colname) & !purrr::is_empty(select) ){
-  #   glottodata <- glottofilter_bycol(glottodata = glottodata, colname = colname, select = select)
-  # }
 
   if(nrow(glottodata) == 0){
     message("No search results. Use glottosearch() first to find what you're looking for")
@@ -152,12 +145,6 @@ glottofiltermap <- function(glottodata = NULL, mode = NULL, ...){
   suppressMessages(mapedit::selectFeatures(glottodata, mode = mode, title = "Select languages"))
 }
 
-
-# arg <- base::quote("Indo-European") # works
-# arg <- base::quote(-"Indo-European") # works
-# arg <- base::quote(c("Germany", "Netherlands") ) # works
-# arg <- base::quote(-c("Germany", "Netherlands") ) # works
-
 #' glottofilter by column name
 #'
 #' This is a low-level function of glottofilter, allowing for negative selections
@@ -175,7 +162,12 @@ glottofiltermap <- function(glottodata = NULL, mode = NULL, ...){
 #' glottofilter_bycol(glottodata = glottodata, colname = "family", select = -"Indo-European")
 #' glottofilter_bycol(glottodata = glottodata, colname = "country", select = c("Germany", "Netherlands") )
 #' glottofilter_bycol(glottodata = glottodata, colname = "country", select = -c("Germany", "Netherlands") )
+#' glottofilter_bycol(glottodata = glottodata, colname = "continent", select = -c("North America", "Europe", "Asia", "Oceania", "Africa") )
 glottofilter_bycol <- function(glottodata, colname, select){
+
+  # dataset %>%
+  #   filter(across(c(father, mother), ~ !is.na(.x))) %>%
+  #   filter(across(c(-father, -mother), is.na))
 
 arg <- base::substitute(select)
 char <- as.character(arg)

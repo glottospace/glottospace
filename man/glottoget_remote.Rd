@@ -8,7 +8,7 @@ glottoget_remote(glottodata = NULL)
 }
 \arguments{
 \item{glottodata}{options are:
-"glottobase" - default option, an enhanced version of href{https://glottolog.org/}{glottolog}. See \link{glottologbooster} for details.
+"glottobase" - default option, an enhanced version of href{https://glottolog.org/}{glottolog}. See \link{glottobooster} for details.
 "glottolog" - this is the raw data downloaded from \href{https://glottolog.org/}{glottolog}
 "glottospace" - a simple dataset with glottocodes and a geometry column. This is a subset of all languages in href{https://glottolog.org/}{glottolog} with spatial coordinates.}
 }

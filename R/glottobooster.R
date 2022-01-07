@@ -4,7 +4,7 @@
 #' @param space Return spatial object?
 #' @param addfamname Add column with familiy names?
 #' @param addisolates Add column to identify isolates?
-#' @param L1only Keep only L1 languages (remove bookkeeping, unclassifiable, sign languges, etc.). See glottologbooster_rm for more flexibility.
+#' @param L1only Keep only L1 languages (remove bookkeeping, unclassifiable, sign languges, etc.). See glottobooster_rm for more flexibility.
 #' @param addfamsize Add column with family size?
 #' @param addfamsizerank Add column with family size rank?
 #'
@@ -13,8 +13,8 @@
 #' @keywords internal
 #' @examples
 #' glottologdata <- glottoget("glottolog")
-#' glottologdata <- glottologbooster(glottologdata)
-glottologbooster <- function(glottologdata = NULL, space = TRUE,
+#' glottologdata <- glottobooster(glottologdata)
+glottobooster <- function(glottologdata = NULL, space = TRUE,
                                 addfamname = TRUE, addisolates = TRUE,
                                 L1only = TRUE,
                                 addfamsize = TRUE, addfamsizerank = TRUE){
@@ -32,8 +32,8 @@ glottologbooster <- function(glottologdata = NULL, space = TRUE,
   glottologdata <- glottologdata %>% dplyr::rename("glottocode" = "id", "isocode" = "iso639p3code")
 
   if(space == TRUE){
-    glottologdata <- glot2geoglot(glottologdata)
-    glottologdata <- glottodata_addcountries(glottologdata)
+    glottologdata <- glottospace_coords2sf(glottologdata)
+    glottologdata <- glottospace_addcountries(glottologdata)
   }
   return(glottologdata)
 }

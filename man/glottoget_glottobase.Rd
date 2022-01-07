@@ -7,7 +7,7 @@
 glottoget_glottobase(...)
 }
 \arguments{
-\item{...}{Arguments to glottologbooster}
+\item{...}{Arguments to glottobooster}
 }
 \value{
 

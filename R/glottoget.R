@@ -7,7 +7,7 @@
 #' \item A filepath to locally stored glottodata with file extension (.xlsx .xls .gpkg
 #' .shp). See also: options meta and simplify.
 #' \item "glottobase" - Default option, an spatially enhanced version of \href{https://glottolog.org/}{glottolog}. See
-#' \link{glottologbooster} for details.
+#' \link{glottobooster} for details.
 #' \item "wals" - This is a spatial and enhanced version of \href{https://wals.info/}{WALS}.
 #' \item "glottolog" - This is a restructured (non-spatial) version of \href{https://glottolog.org/}{glottolog}.
 #' \item "glottospace" - A simple dataset with glottocodes and a geometry column. This
@@ -50,7 +50,7 @@ return(glottodata)
 #' Get glottodata from online sources
 #'
 #' @param glottodata options are:
-#' "glottobase" - default option, an enhanced version of href{https://glottolog.org/}{glottolog}. See \link{glottologbooster} for details.
+#' "glottobase" - default option, an enhanced version of href{https://glottolog.org/}{glottolog}. See \link{glottobooster} for details.
 #' "glottolog" - this is the raw data downloaded from \href{https://glottolog.org/}{glottolog}
 #' "glottospace" - a simple dataset with glottocodes and a geometry column. This is a subset of all languages in href{https://glottolog.org/}{glottolog} with spatial coordinates.
 #'
@@ -118,7 +118,7 @@ glottoget_path <- function(filepath = NULL, meta = FALSE, simplify = TRUE){
 #'
 #' Downloads most recent glottolog data and transforms it. This 'glottobase' is used as reference dataset in several functions.
 #'
-#' @param ... Arguments to glottologbooster
+#' @param ... Arguments to glottobooster
 #'
 #' @return
 #' @export
@@ -128,7 +128,7 @@ glottoget_path <- function(filepath = NULL, meta = FALSE, simplify = TRUE){
 #' glottobase <- glottoget_glottobase()
 glottoget_glottobase <- function(...){
   glottolog <- glottoget_glottolog()
-  glottobase <- glottologbooster(glottologdata = glottolog, ...)
+  glottobase <- glottobooster(glottologdata = glottolog, ...)
   glottobase
 }
 
@@ -138,7 +138,7 @@ glottoget_glottobase <- function(...){
 #'
 #' @return
 #' @export
-#' @seealso glottodata_addcoords
+#' @seealso glottospace_addcoords
 #' @keywords internal
 #'
 #' @examples
@@ -146,7 +146,7 @@ glottoget_glottobase <- function(...){
 glottoget_glottospace <- function(){
   glottologdata <- glottoget_glottolog()
   glottologdata <- glottologdata %>% dplyr::rename("glottocode" = "id")
-  glottospace <- glot2geoglot(glottologdata)
+  glottospace <- glottospace_coords2sf(glottologdata)
   glottospace <- glottospace[,c("glottocode")]
 }
 

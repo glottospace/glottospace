@@ -25,6 +25,6 @@ glottodatay <- glottoget_path(meta = FALSE)
 glottojoin_data(glottodatax, glottodatay)
 }
 \seealso{
-glottodata_makespatial glottodata_addcoords
+glottospace_addcoords glottospace_addcoords
 }
 \keyword{internal}

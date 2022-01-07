@@ -26,3 +26,4 @@ Color palettes for maps and figures
 \examples{
 glottocolpal(palette = "turbo", show = TRUE)
 }
+\keyword{internal}
