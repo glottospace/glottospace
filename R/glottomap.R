@@ -160,8 +160,18 @@ glottomap_static <- function(glottodata, label = NULL, color = NULL, ptsize = 1,
   glottodata_proj <- sf::st_transform(glottodata_wrap, crs = "+proj=eck4")
 
   if(rivers == TRUE){
-    rivers10 <- suppressWarnings(rnaturalearth::ne_download(scale = 10, type = 'rivers_lake_centerlines', category = 'physical', returnclass = "sf"))
-    rivers_proj <- sf::st_transform(rivers10, crs = "+proj=eck4")
+    rivers_name <- 'ne_10m_rivers_lake_centerlines'
+    rivers_path <- glottofiles_makepath(paste0(rivers_name, ".shp"))
+    if(file.exists(rivers_path)){
+      rivers10 <- rnaturalearth::ne_load(scale = 10, type = 'rivers_lake_centerlines',
+                                                              category = 'physical', returnclass = "sf",
+                                                              destdir = glottofiles_cachedir())
+    } else {
+      rivers10 <- rnaturalearth::ne_download(scale = 10, type = 'rivers_lake_centerlines',
+                                                            category = 'physical', returnclass = "sf",
+                                                            destdir = glottofiles_cachedir())
+    }
+     rivers_proj <- sf::st_transform(rivers10, crs = "+proj=eck4")
   }
 
   bbox <- sf::st_bbox(glottodata_proj)
