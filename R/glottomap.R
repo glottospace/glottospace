@@ -15,6 +15,7 @@
 #' @param rivers Do you want to plot rivers (only for static maps)?
 #' @param nclass Preferred number of classes (default is 5)
 #' @param numcat Do numbers represent categories? For example, if your dataset consists of 0 and 1, you might want to set this to TRUE.
+#' @param crs Coordinate Reference System (only for static maps). Default is World Eckert IV (https://epsg.io/54012)
 #' @param filename Optional filename if you want to save resulting map
 #' @param ... Additional parameters to glottofilter
 #'
@@ -41,7 +42,7 @@
 #' glottodata <- glottospotlight(glottodata = glottodata, spotcol =
 #' "family", spotlight = families$family[-c(1:10)], spotcontrast = "family", bgcontrast = "family")
 #' glottomap(glottodata, color = "color")
-glottomap <- function(glottodata = NULL, color = NULL, label = NULL, type = NULL, ptsize = NULL, alpha = NULL, lbsize = NULL, palette = NULL, rivers = FALSE, nclass = NULL, numcat = FALSE, filename = NULL, ...){
+glottomap <- function(glottodata = NULL, color = NULL, label = NULL, type = NULL, ptsize = NULL, alpha = NULL, lbsize = NULL, palette = NULL, rivers = FALSE, nclass = NULL, numcat = FALSE, filename = NULL, crs = NULL, ...){
   palette <- glottocolpal(palette = palette)
   if(is.null(type)){type <- "static"}
 
@@ -75,7 +76,7 @@ glottomap <- function(glottodata = NULL, color = NULL, label = NULL, type = NULL
   }
 
   if(type == "static"){
-    map <- glottomap_static(glottodata = glottodata, label = label, color = color, ptsize = ptsize, lbsize = lbsize, alpha = alpha, palette = palette, rivers = rivers, nclass = nclass, numcat = numcat)
+    map <- glottomap_static(glottodata = glottodata, label = label, color = color, ptsize = ptsize, lbsize = lbsize, alpha = alpha, palette = palette, rivers = rivers, nclass = nclass, numcat = numcat, crs = crs)
   }
 
   if(!is.null(filename)){
@@ -133,6 +134,9 @@ glottomap_dynamic <- function(glottodata, label = NULL, color = NULL, ptsize = N
 #' @param alpha Transparency of points between 0 (very transparent) and 1 (not transparent)
 #' @param palette Color palette, see glottocolpal("all") for possible options
 #' @param rivers Do you want to plot rivers?
+#' @param nclass Preferred number of classes (default is 5)
+#' @param numcat Do numbers represent categories? For example, if your dataset consists of 0 and 1, you might want to set this to TRUE.
+#' @param crs Coordinate Reference System, specified using an EPSG code (https://epsg.io/). Default is World Eckert IV (https://epsg.io/54012)
 #'
 #' @return
 #' @keywords internal
@@ -143,21 +147,22 @@ glottomap_dynamic <- function(glottodata, label = NULL, color = NULL, ptsize = N
 #' glottodata <- glottofilter(continent = "South America")
 #' glottodata <- glottofilter(country = c("Netherlands", "Germany", "Belgium") )
 #' glottomap_static(glottodata)
-glottomap_static <- function(glottodata, label = NULL, color = NULL, ptsize = 1, lbsize = NULL, alpha = 1, palette = NULL, rivers = FALSE, nclass = NULL, numcat = FALSE){
+glottomap_static <- function(glottodata, label = NULL, color = NULL, ptsize = 1, lbsize = NULL, alpha = 1, palette = NULL, rivers = FALSE, nclass = NULL, numcat = FALSE, crs = NULL){
   suppressMessages(tmap::tmap_mode("plot"))
   if(is.null(ptsize)){ptsize <- 0.5}
+  if(is.null(crs)){crs <- "ESRI:54012"} # https://epsg.io/54012
 
   # wrld_proj <- geoget_basemap(crs = "+proj=eck4", attributes = FALSE) # function migrated to geospace package
   wrld_basemap <- rnaturalearth::ne_countries(scale = 50, returnclass = "sf")
   wrld_wrap <- sf::st_wrap_dateline(wrld_basemap, options = c("WRAPDATELINE=YES","DATELINEOFFSET=180"), quiet = TRUE)
-  wrld_proj <- sf::st_transform(wrld_wrap, crs = "+proj=eck4")
+  wrld_proj <- sf::st_transform(wrld_wrap, crs = crs)
   wrld_proj <- wrld_proj %>% sf::st_make_valid()
   wrld_proj <- wrld_proj %>% sf::st_geometry()
 
 
   # glottodata <- sf::st_make_valid(glottodata) # This converts some points to GEOMETRYCOLLECTION and therefore results in errors later on.
   glottodata_wrap <- sf::st_wrap_dateline(glottodata, options = c("WRAPDATELINE=YES","DATELINEOFFSET=180"), quiet = TRUE)
-  glottodata_proj <- sf::st_transform(glottodata_wrap, crs = "+proj=eck4")
+  glottodata_proj <- sf::st_transform(glottodata_wrap, crs = crs)
 
   if(rivers == TRUE){
     rivers_name <- 'ne_10m_rivers_lake_centerlines'
@@ -171,7 +176,7 @@ glottomap_static <- function(glottodata, label = NULL, color = NULL, ptsize = 1,
                                                             category = 'physical', returnclass = "sf",
                                                             destdir = glottofiles_cachedir())
     }
-     rivers_proj <- sf::st_transform(rivers10, crs = "+proj=eck4")
+     rivers_proj <- sf::st_transform(rivers10, crs = crs)
   }
 
   bbox <- sf::st_bbox(glottodata_proj)
@@ -194,114 +199,68 @@ glottomap_static <- function(glottodata, label = NULL, color = NULL, ptsize = 1,
     {if(glottospotlight_legend(glottodata)[[1]]){tmap::tm_add_legend(col = glottospotlight_legend(glottodata)$col, labels = glottospotlight_legend(glottodata)$labels)} }
 }
 
+glottomap_focus <- function(glottocode){
+  language <- glottofilter(glottocode = glottocode)
+  wrld_basemap <- rnaturalearth::ne_countries(scale = 50, returnclass = "sf")
+
+  lat0 = st_coordinates(language)[2]
+  lon0 = st_coordinates(language)[1]
+
+  # newcrs <- paste0("+proj=laea +y_0=0 +lon_0=", lon0, "+lat_0=", lat0, "+ellps=WGS84 +no_defs")
+  # newcrs <- paste0("+proj=laea +lat_0=52 +lon_0=10 +x_0=4321000 +y_0=3210000 +datum=WGS84 +units=m +no_defs")
+  # newcrs <- "+proj=laea +y_0=0 +lon_0=155 +lat_0=-90 +ellps=WGS84 +no_defs"
+  newcrs <- "+proj=laea"
+  # newcrs <- "EPSG:9820"
+
+  world2 <- sf::st_transform(wrld_basemap, crs = newcrs)
+
+  ocean <- st_graticule(ndiscr = 10000, margin = 10e-6) %>%
+    st_transform(crs = newcrs) %>%
+    st_convex_hull() %>%
+    dplyr::summarise(geometry = st_union(geometry))
+
+  ggplot() +
+    geom_sf(data = ocean, fill = "lightblue", alpha = 0.7) +
+    geom_sf(data = world2, fill = "grey", alpha = 0.7) +
+    geom_sf(data = language, color = "darkgreen")
+
+  # ggplot2::ggplot() +
+  #   ggplot2::geom_sf(data = wrld_basemap) +
+  #   ggplot2::geom_sf(data = language, ggplot2::aes()) +
+  #   ggplot2::coord_sf(lims_method = "orthogonal")
+
+
+}
+
+glottomap_center <- function(glottocode){
+
+  language <- glottofilter(glottocode = glottocode)
+  # wrld_basemap <- rnaturalearth::ne_countries(scale = 50, returnclass = "sf")
+
+  lat0 = st_coordinates(language)[2]
+  lon0 = st_coordinates(language)[1]
+
+  world <- map_data("world")
+  worldmap <- ggplot(world, aes(x = long, y = lat, group = group)) +
+    geom_path() +
+    scale_y_continuous(breaks = (-2:2) * 30) +
+    scale_x_continuous(breaks = (-4:4) * 45)
+
+  worldmap +
+    coord_map("ortho", orientation = c(lat0, lon0, 0))
+
+
+  # https://stackoverflow.com/questions/10620862/use-different-center-than-the-prime-meridian-in-plotting-a-world-map
+# mp1 <- fortify(map(fill=TRUE, plot=FALSE))
+# mp2 <- mp1
+# mp2$long <- mp2$long + 360
+# mp2$group <- mp2$group + max(mp2$group) + 1
+# mp <- rbind(mp1, mp2)
+# ggplot(aes(x = long, y = lat, group = group), data = mp) +
+#   geom_path() +
+#   coord_map(xlim = c(0, 360))
+}
 
 
 
-
-
-
-
-#
-#   if(map == "measure"){
-#     if (!require(leaflet)) {install.packages('leaflet')}
-#     library(leaflet)
-#     if(!is.null(points) & is.null(pols)){
-#       out <- leaflet() %>%
-#         addTiles() %>%
-#         addMeasure(primaryLengthUnit = "kilometers") %>%
-#         addMarkers(data = points)
-#     }
-#     if(is.null(points) & !is.null(pols)){
-#       out <- leaflet() %>%
-#         addTiles() %>%
-#         addMeasure(primaryLengthUnit = "kilometers") %>%
-#         addPolygons(data = pols)
-#     }
-#     if(!is.null(points) & !is.null(pols)){
-#       out <- leaflet() %>%
-#         addTiles() %>%
-#         addMeasure(primaryLengthUnit = "kilometers") %>%
-#         addMarkers(data = points) %>%
-#         addPolygons(data = pols)
-#     }
-#
-#   }
-#
-#   return(out)
-# }
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-# From Oskar:
-# list.of.packages <-
-#   c("geosphere", # For spatial methods
-#     "threejs",   # threejs is used for 3-D interactive Earth Visualization
-#     "rworldmap", # For creating earth map
-#     "leaflet",   # Leaflet for R provides functions to control and integrate Leaflet, a JavaScript library for interactive maps, within R.
-#     "rgeos",      # Provides functions for handling operations on topologies.
-#     "raster",     # For raster image
-#     "DT",         # For creating interactive tables
-#     "ggplot2",
-#     "sp"   ,       # For Spatial processing of data
-#     "ggmap",       # To reverse geocode Long/Lat
-#     "knitr",        # TO enable 3-D visualization embedding in the HTML page
-#     "rglwidget",
-#     "rgl"
-#   )
-# lapply(list.of.packages,function(x){suppressMessages(suppressWarnings(library(x,character.only=TRUE)))})
-# knit_hooks$set(webgl = hook_webgl)
-#
-# ra <- rasterToPoints(rasta, spatial = TRUE)
-# # Then to a 'conventional' dataframe
-# df  <- data.frame(ra)
-#
-# worldmap <- ggplot() +
-#   geom_raster(data = df , aes(x = x, y = y, fill = X0)) +
-#   scale_fill_gradientn(colours = gen3sis::color_richness(10))+
-#   coord_quickmap()
-#
-# worldmap
-# worldmap + coord_polar()
-#
-#
-# wm <- ggplot(df, aes(x, y)) +
-#   geom_tile(aes(fill = X0), colour = "grey")+
-#   scale_fill_gradientn(colours = gen3sis::color_richness(10))
-#
-# wm <- ggplot(df, aes(x, y)) +
-#   geom_tile(aes(fill = X0))+
-#   scale_fill_gradientn(colours = gen3sis::color_richness(10))
-#
-# wm
-#
-#
-# wm +
-#   theme(panel.background = element_rect(fill = 'gray', colour = 'white'),
-#         panel.grid.major = element_line(color = "white"),
-#         panel.grid.minor = element_line(color = "white"))+
-#   coord_map("ortho", orientation=c(15, -10, 0))
-#
-# #load ocean
-# ocean <- readOGR("C:/VITAL LOCAL/Meus Documentos/ETH PhD/SecPapers/Hagen_MountainClimate&Cold-AdaptedPlants_JBI_2019/Data/Richness Patterns/ocean_layer/ocean.shp")
-#
-# wm+geom_polygon(data=ocean, aes(long, lat, group = group), colour = "black", size = 0.7)
-#
-# o <- fortify(ocean)
-#
-# wmn <- wm+geom_polygon(data=o, aes(long, lat, group = piece), colour = "black", fill = NA, size = 1.7)
-#
-# wmn + coord_map("ortho", orientation=c(15, -10, 0))
 
