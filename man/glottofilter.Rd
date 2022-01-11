@@ -13,12 +13,12 @@ glottofilter(
   family_id = NULL,
   continent = NULL,
   country = NULL,
-  region = NULL,
+  sovereignty = NULL,
+  macroarea = NULL,
   expression = NULL,
   colname = NULL,
   keep = NULL,
-  drop = NULL,
-  select = NULL
+  drop = NULL
 )
 }
 \arguments{
@@ -38,7 +38,9 @@ glottofilter(
 
 \item{country}{A character vector of countries}
 
-\item{region}{A character vector of regions}
+\item{sovereignty}{Sovereignty}
+
+\item{macroarea}{Glottolog macroarea}
 
 \item{expression}{A regular expression}
 

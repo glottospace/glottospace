@@ -10,7 +10,10 @@ glottocreate_data(
   filename = NULL,
   meta = TRUE,
   simplify = TRUE,
-  ...
+  maintainer = NULL,
+  email = NULL,
+  citation = NULL,
+  url = NULL
 )
 }
 \arguments{
@@ -23,6 +26,14 @@ glottocreate_data(
 \item{meta}{By default, meta tables are created. Use meta=FALSE to exclude them.}
 
 \item{simplify}{By default, if only one table is loaded, the data will be returned as a data.frame (instead of placing the data inside a list of length 1)}
+
+\item{maintainer}{Name of the person/organization maintaining the data (optional)}
+
+\item{email}{Email address of maintainer/contact person (optional)}
+
+\item{citation}{How to cite the data (optional)}
+
+\item{url}{Optional url linking to a webpage.}
 
 \item{...}{Other parameters passed to glottocreate_readmetable(maintainer, email, citation, url)}
 }
@@ -37,3 +48,4 @@ glottocreate_data(glottocodes = c("yucu1253", "tani1257"), variables = 3, filena
 glottocreate_data(glottocodes = c("yucu1253", "tani1257"), variables = 3, filename = "glottodata_simple.xlsx", meta = FALSE)
 }
 \concept{<glottocreate><glottodata>}
+\keyword{internal}

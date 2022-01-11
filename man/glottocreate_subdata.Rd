@@ -11,7 +11,10 @@ glottocreate_subdata(
   groups,
   n = NULL,
   meta = TRUE,
-  ...
+  maintainer = NULL,
+  email = NULL,
+  citation = NULL,
+  url = NULL
 )
 }
 \arguments{
@@ -27,10 +30,18 @@ glottocreate_subdata(
 
 \item{meta}{Should metatables be created?}
 
+\item{maintainer}{Name of the person/organization maintaining the data (optional)}
+
+\item{email}{Email address of maintainer/contact person (optional)}
+
+\item{citation}{How to cite the data (optional)}
+
+\item{url}{Optional url linking to a webpage.}
+
 \item{...}{Other parameters passed to glottocreate_readmetable(maintainer, email, citation, url)}
 }
 \value{
-A list with a data.frame for each languages (and metadata if meta = TRUE)
+A table or list of tables
 }
 \description{
 glottosubcodes are created in the following form: glottocode_group_record.
@@ -43,3 +54,4 @@ Output is a list with one data.frame per language (and a number of metatables if
 glottocreate_subdata(glottocodes = c("yucu1253", "tani1257"), variables = 3, groups = c("a", "b"), n = 5, filename = "glottosubdata.xlsx")
 }
 \concept{<glottoget_path><glottocreate>}
+\keyword{internal}

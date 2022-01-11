@@ -1,4 +1,61 @@
+#' Generate empty glottodata or glottosubdata for a set of glottocodes.
+#'
+#' By default, glottodata will be created. In case a groups argument is provided, glottosubdata will be created.
+#'
+#' glottodata has one table for all languages (and a number of metatables if meta = TRUE), with one row per glottocode.
+#' glottosubdata has one table for each language (and a number of metatables if meta = TRUE), with one row per glottosubcode.
+#'
+#' Run glottoget("demodata") or glottoget("demosubdata") to see examples.
+#'
+#' @param glottocodes Character vector of glottocodes
+#' @param variables Either a vector with variable names, or a single number indicating the total number of variable columns to be generated
+#' @param meta Should metatables be created?
+#' @param filename  Optional name of excel file where to store glottodata
+#' @param simplify By default, if a glottodata table is created without metadata, the data will be returned as a data.frame (instead of placing the data inside a list of length 1)
+#' @param groups Character vector of group names (only for glottosubdata)
+#' @param n Optional, number of records to be assigned to each group (only for glottosubdata)
+#' @param maintainer Name of the person/organization maintaining the data (optional)
+#' @param email Email address of maintainer/contact person (optional)
+#' @param citation How to cite the data (optional)
+#' @param url Optional url linking to a webpage.
+#'
+#' @return A table or list of tables.
+#' @export
+#'
+#' @family <glottoget><glottocreate>
+#'
+#' @examples
+#' Creates glottodata table without metadata tables
+#' glottocreate(glottocodes = c("yucu1253", "tani1257"), variables = 3, meta = FALSE)
+#'
+#' Creates glottodata table with metadata tables (stored in a list):
+#' glottocreate(glottocodes = c("yucu1253", "tani1257"), variables = 3)
+#'
+#'
+#' Creates glottosubdata table (stored in a list)
+#' glottocreate(glottocodes = c("yucu1253", "tani1257"), variables = 3, groups = c("a", "b") )
+#'
+#' Creates glottodata and save as excel:
+#' glottocreate(glottocodes = c("yucu1253", "tani1257"), variables = 3, filename = "glottodata.xlsx")
+glottocreate <- function(glottocodes, variables,
+                         meta = TRUE, filename = NULL,
+                         simplify = TRUE,
+                         groups = NULL, n = NULL,
+                         maintainer = NULL, email = NULL, citation = NULL, url = NULL){
 
+  if(is.null(groups)){
+    glottocreate_data(glottocodes = glottocodes, variables = variables,
+                      filename = filename, meta = meta,
+                      simplify = simplify,
+                      maintainer = maintainer, email = email, citation = citation, url = url)
+  } else {
+    glottocreate_subdata(glottocodes = glottocodes, variables = variables,
+                         filename = filename, meta = meta,
+                         groups = groups, n = n,
+                         maintainer = maintainer, email = email, citation = citation, url = url)
+  }
+
+}
 
 
 #' Create empty glottodata for specified glottocodes and variables.
@@ -11,6 +68,12 @@
 #' @param glottocodes Character vector of glottocodes
 #' @param meta By default, meta tables are created. Use meta=FALSE to exclude them.
 #' @param simplify By default, if only one table is loaded, the data will be returned as a data.frame (instead of placing the data inside a list of length 1)
+#' @param maintainer Name of the person/organization maintaining the data (optional)
+#' @param email Email address of maintainer/contact person (optional)
+#' @param citation How to cite the data (optional)
+#' @param url Optional url linking to a webpage.
+#'
+#' @keywords internal
 #'
 #' @return
 #' @export
@@ -18,7 +81,7 @@
 #' @examples
 #' glottocreate_data(glottocodes = c("yucu1253", "tani1257"), variables = 3, filename = "glottodata.xlsx")
 #' glottocreate_data(glottocodes = c("yucu1253", "tani1257"), variables = 3, filename = "glottodata_simple.xlsx", meta = FALSE)
-glottocreate_data <- function(glottocodes, variables, filename = NULL, meta = TRUE, simplify = TRUE, ...){
+glottocreate_data <- function(glottocodes, variables, filename = NULL, meta = TRUE, simplify = TRUE, maintainer = NULL, email = NULL, citation = NULL, url = NULL){
  if(!all(glottocode_exists(glottocodes)) ){stop("Not all glottocodes are valid. Use glottocode_exists() to check which ones. ")}
 
   if(is.numeric(variables) & length(variables) == 1){
@@ -32,7 +95,8 @@ glottocreate_data <- function(glottocodes, variables, filename = NULL, meta = TR
   structure <- glottocreate_structuretable(glottocodes = glottocodes, varnames = varnames)
   metadata <- glottocreate_metatable(varnames = varnames)
   references <- glottocreate_reftable(glottocodes = glottocodes, varnames = varnames)
-  readme <- glottocreate_readmetable(...) # for testing remove ... readme <- glottocreate_readmetable()
+  remarks <- glottocreate_remarkstable(glottocodes = glottocodes, varnames = varnames)
+  readme <- glottocreate_readmetable(maintainer = maintainer, email = email, citation = citation, url = url)
 
   lookup <- glottocreate_lookuptable()
 
@@ -40,6 +104,7 @@ glottocreate_data <- function(glottocodes, variables, filename = NULL, meta = TR
                     "structure" = structure,
                     "metadata" = metadata,
                     "references" = references,
+                    "remarks" = remarks,
                     "readme" = readme,
                     "lookup" = lookup)
   } else {
@@ -75,15 +140,21 @@ glottocreate_data <- function(glottocodes, variables, filename = NULL, meta = TR
 #' @param groups Character vector of group names
 #' @param n Number of records to be assigned to each group
 #' @param meta Should metatables be created?
+#' @param maintainer Name of the person/organization maintaining the data (optional)
+#' @param email Email address of maintainer/contact person (optional)
+#' @param citation How to cite the data (optional)
+#' @param url Optional url linking to a webpage.
 #'
-#' @return A list with a data.frame for each languages (and metadata if meta = TRUE)
+#' @keywords internal
+#'
+#' @return A table or list of tables
 #' @export
 #'
 #' @family <glottoget_path><glottocreate>
 #'
 #' @examples
 #' glottocreate_subdata(glottocodes = c("yucu1253", "tani1257"), variables = 3, groups = c("a", "b"), n = 5, filename = "glottosubdata.xlsx")
-glottocreate_subdata <- function(glottocodes, variables, filename = NULL, groups, n = NULL, meta = TRUE, ...){
+glottocreate_subdata <- function(glottocodes, variables, filename = NULL, groups, n = NULL, meta = TRUE, maintainer = NULL, email = NULL, citation = NULL, url = NULL){
   if(!all(glottocode_exists(glottocodes)) ){stop("Not all glottocodes are valid. Use glottocode_exists() to check which ones. ")}
 
   if(is.numeric(variables) & length(variables) == 1){
@@ -91,6 +162,8 @@ glottocreate_subdata <- function(glottocodes, variables, filename = NULL, groups
   } else {
     varnames <- variables
   }
+
+  if(is.null(n)){n <- 1}
 
   glottosublist <- vector(mode='list', length= length(glottocodes))
 
@@ -106,14 +179,16 @@ glottocreate_subdata <- function(glottocodes, variables, filename = NULL, groups
   structure <- glottocreate_structuretable(glottocodes = glottocodes, varnames = varnames)
   metadata <- glottocreate_metatable(varnames = varnames)
   references <- glottocreate_reftable(glottocodes = glottocodes, varnames = varnames)
+  remarks <- glottocreate_remarkstable(glottocodes = glottocodes, varnames = varnames)
 
-  readme <- glottocreate_readmetable(...) # for testing remove ... readme <- glottocreate_readmetable()
+  readme <- glottocreate_readmetable(maintainer = maintainer, email = email, citation = citation, url = url)
 
   lookup <- glottocreate_lookuptable()
 
   tablelist <- list("structure" = structure,
                     "metadata" = metadata,
                     "references" = references,
+                    "remarks" = remarks,
                     "readme" = readme,
                     "lookup" = lookup)
 
@@ -198,6 +273,21 @@ glottocreate_reftable <- function(glottocodes, varnames){
   colnames(references) <- c("glottocode", paste(rep(varnames, each = 2) , c("ref", "page"), sep = "_") )
   references[,"glottocode"] <- glottocodes
   references
+}
+
+#' create remarks table for glottodata
+#'
+#' @param glottocodes Character vector of glottocodes
+#' @param varnames Character vector of variable names
+#'
+#' @return
+#' @export
+#' @keywords internal
+glottocreate_remarkstable <- function(glottocodes, varnames){
+  remarks <- data.frame(matrix(nrow = length(glottocodes), ncol = length(varnames)+1  ) )
+  colnames(remarks) <- c("glottocode", paste(varnames, c("remark"), sep = "_") )
+  remarks[,"glottocode"] <- glottocodes
+  remarks
 }
 
 #' Create readme table for glottodata
