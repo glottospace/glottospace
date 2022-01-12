@@ -42,7 +42,7 @@
 #' glottodata <- glottospotlight(glottodata = glottodata, spotcol =
 #' "family", spotlight = families$family[-c(1:10)], spotcontrast = "family", bgcontrast = "family")
 #' glottomap(glottodata, color = "color")
-glottomap <- function(glottodata = NULL, color = NULL, label = NULL, type = NULL, ptsize = NULL, alpha = NULL, lbsize = NULL, palette = NULL, rivers = FALSE, nclass = NULL, numcat = FALSE, filename = NULL, crs = NULL, ...){
+glottomap <- function(glottodata = NULL, color = NULL, label = NULL, type = NULL, ptsize = NULL, alpha = NULL, lbsize = NULL, palette = NULL, rivers = FALSE, nclass = NULL, numcat = FALSE, filename = NULL, crs = NULL, shiftrussia = FALSE, ...){
   palette <- glottocolpal(palette = palette)
   if(is.null(type)){type <- "static"}
 
@@ -199,67 +199,128 @@ glottomap_static <- function(glottodata, label = NULL, color = NULL, ptsize = 1,
     {if(glottospotlight_legend(glottodata)[[1]]){tmap::tm_add_legend(col = glottospotlight_legend(glottodata)$col, labels = glottospotlight_legend(glottodata)$labels)} }
 }
 
-glottomap_focus <- function(glottocode){
-  language <- glottofilter(glottocode = glottocode)
-  wrld_basemap <- rnaturalearth::ne_countries(scale = 50, returnclass = "sf")
-
-  lat0 = st_coordinates(language)[2]
-  lon0 = st_coordinates(language)[1]
-
-  # newcrs <- paste0("+proj=laea +y_0=0 +lon_0=", lon0, "+lat_0=", lat0, "+ellps=WGS84 +no_defs")
-  # newcrs <- paste0("+proj=laea +lat_0=52 +lon_0=10 +x_0=4321000 +y_0=3210000 +datum=WGS84 +units=m +no_defs")
-  # newcrs <- "+proj=laea +y_0=0 +lon_0=155 +lat_0=-90 +ellps=WGS84 +no_defs"
-  newcrs <- "+proj=laea"
-  # newcrs <- "EPSG:9820"
-
-  world2 <- sf::st_transform(wrld_basemap, crs = newcrs)
-
-  ocean <- st_graticule(ndiscr = 10000, margin = 10e-6) %>%
-    st_transform(crs = newcrs) %>%
-    st_convex_hull() %>%
-    dplyr::summarise(geometry = st_union(geometry))
-
-  ggplot() +
-    geom_sf(data = ocean, fill = "lightblue", alpha = 0.7) +
-    geom_sf(data = world2, fill = "grey", alpha = 0.7) +
-    geom_sf(data = language, color = "darkgreen")
-
-  # ggplot2::ggplot() +
-  #   ggplot2::geom_sf(data = wrld_basemap) +
-  #   ggplot2::geom_sf(data = language, ggplot2::aes()) +
-  #   ggplot2::coord_sf(lims_method = "orthogonal")
-
-
-}
-
-glottomap_center <- function(glottocode){
+glottocode_location3 <- function(glottocode){
 
   language <- glottofilter(glottocode = glottocode)
-  # wrld_basemap <- rnaturalearth::ne_countries(scale = 50, returnclass = "sf")
-
-  lat0 = st_coordinates(language)[2]
   lon0 = st_coordinates(language)[1]
+  lat0 = st_coordinates(language)[2]
 
   world <- map_data("world")
-  worldmap <- ggplot(world, aes(x = long, y = lat, group = group)) +
-    geom_path() +
-    scale_y_continuous(breaks = (-2:2) * 30) +
-    scale_x_continuous(breaks = (-4:4) * 45)
+
+  ocean <- st_graticule(ndiscr = 10000, margin = 10e-6) %>%
+    st_transform(crs = 4326) %>%
+    st_convex_hull() %>%
+    summarise(geometry = st_union(geometry)) %>%
+    st_coordinates()
+
+  worldmap <- ggplot() +
+    geom_polygon(data = ocean, aes(x = X, y = Y), fill = "pink", color = "pink") +
+    geom_polygon(data = world, aes(x = long, y = lat, group = group), fill = "grey", color = "darkgrey") +
+    geom_point(data = language, aes(x = lon0, y = lat0), color = "darkgreen", size = 5)
 
   worldmap +
-    coord_map("ortho", orientation = c(lat0, lon0, 0))
-
-
-  # https://stackoverflow.com/questions/10620862/use-different-center-than-the-prime-meridian-in-plotting-a-world-map
-# mp1 <- fortify(map(fill=TRUE, plot=FALSE))
-# mp2 <- mp1
-# mp2$long <- mp2$long + 360
-# mp2$group <- mp2$group + max(mp2$group) + 1
-# mp <- rbind(mp1, mp2)
-# ggplot(aes(x = long, y = lat, group = group), data = mp) +
-#   geom_path() +
-#   coord_map(xlim = c(0, 360))
+    coord_map("ortho", orientation = c(lat0, lon0, 0)) +
+    theme(plot.background = element_rect(color = "white")) +
+    theme(panel.background = element_rect(fill = "#D3E0F8", color = "black"))+
+    theme(
+      panel.grid = element_line(colour = 'transparent'),
+      line = element_blank(),
+      rect = element_blank())
 }
+
+glottocode_location2(glottocode){
+  # using sf and ggplot
+  # https://gist.github.com/rafapereirabr/26965dd851debad32ad2e659024ba451
+  # https://stackoverflow.com/questions/43207947/whole-earth-polygon-for-world-map-in-ggplot2-and-sf
+  world <- rnaturalearth::ne_countries(scale = 50, returnclass = "sf")
+  world <- world %>% st_make_valid()
+
+  language <- glottofilter(glottocode = glottocode)
+  lon0 = st_coordinates(language)[1]
+  lat0 = st_coordinates(language)[2]
+
+  # # Fix polygons to ortho projection, following from @fzenoni: https://github.com/r-spatial/sf/issues/1050
+  # world  <- st_cast(world, 'MULTILINESTRING') %>%
+  #   st_cast('LINESTRING', do_split=TRUE) %>%
+  #   mutate(npts = mapview::npts(geometry, by_feature = TRUE)) %>%
+  #   st_cast('POLYGON')
+
+  # Orthogonal with focus:  # doesn't work
+  # crs <- paste0('+proj=ortho +lat_0=', lat0, ' +lon_0=', lon0, ' +x_0=0 +y_0=0 +a=6371000 +b=6371000 +units=m +no_defs')
+  # crs <- paste0("+proj=ortho +lat_0=",lat0, " +lon_0=",lon0)
+  # Lambert Azimuthal Equal Area:
+  # crs <- "+proj=laea +lat_0=52 +lon_0=10 +x_0=4321000 +y_0=3210000
+  #       +datum=WGS84 +units=m +no_defs"
+
+  # Lambert Azimuthal Equal Area, focus # this works
+  crs <- paste0("+proj=laea +lat_0=", lat0, " +lon_0=", lon0, " +x_0=4321000 +y_0=3210000
+        +datum=WGS84 +units=m +no_defs")
+
+  # ocean <- st_graticule(ndiscr = 10000, margin = 10e-6) %>%
+  #   st_transform(crs = crs) %>%
+  #   st_convex_hull() %>%
+  #   summarise(geometry = st_union(geometry))
+
+  ocean <- st_graticule(st_transform(world, crs = crs, ndiscr = 10000, margin = 10e-6)) %>%
+    st_convex_hull() %>%
+    summarise(geometry = st_union(geometry))
+
+  ggplot() +
+    geom_sf(data=ocean, fill="lightblue", color="lightblue") +
+    geom_sf(data=world, fill="gray90", color="gray80") +
+    geom_sf(data=language, fill="darkgreen", color="darkgreen", size = 5)
+
+}
+
+glottocode_location <- function(glottocode){
+
+  language <- glottofilter(glottocode = glottocode)
+  lon0 = st_coordinates(language)[1]
+  lat0 = st_coordinates(language)[2]
+  language <- as_s2_geography(paste0("POINT(", lon0, " ", lat0, ")") )
+
+  earth = s2::as_s2_geography(TRUE)
+  continents = s2::s2_data_countries()
+  oceans = s2::s2_difference(earth, s2_union_agg(continents))
+  b = s2::s2_buffer_cells(language, 9800000) # visible half
+  i = s2::s2_intersection(b, oceans) # visible ocean
+  continents = s2::s2_intersection(b, continents)
+  plot(sf::st_transform(sf::st_as_sfc(i), paste0("+proj=ortho +lat_0=",lat0, " +lon_0=",lon0) ), col = 'lightblue')
+  plot(sf::st_transform(sf::st_as_sfc(continents), paste0("+proj=ortho +lat_0=",lat0, " +lon_0=",lon0) ), col = "lightgrey", add = TRUE)
+  plot(sf::st_transform(sf::st_as_sfc(language), paste0("+proj=ortho +lat_0=",lat0, " +lon_0=",lon0) ), col = "darkgreen", pch = 1, cex = 3, lwd = 2, add = TRUE)
+}
+
+glottomap_static2 <- function(){
+  world <- rnaturalearth::ne_countries(scale = 50, returnclass = "sf")
+  world <- world %>% st_make_valid()
+
+  # From here: https://stackoverflow.com/questions/56146735/visual-bug-when-changing-robinson-projections-central-meridian-with-ggplot2
+  # define a long & slim polygon that overlaps the meridian line & set its CRS to match
+  # that of world
+  polygon <- st_polygon(x = list(rbind(c(-0.0001, 90),
+                                       c(0, 90),
+                                       c(0, -90),
+                                       c(-0.0001, -90),
+                                       c(-0.0001, 90)))) %>%
+    st_sfc() %>%
+    st_set_crs(4326)
+
+  # modify world dataset to remove overlapping portions with world's polygons
+  world2 <- world %>% st_difference(polygon)
+
+  # perform transformation on modified version of world dataset
+  # Note +lon_0=180 instead of 0
+  world_robinson <- st_transform(world2,
+                                 crs = '+proj=robin +lon_0=180 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs')
+
+  # plot
+  ggplot() +
+    geom_sf(data = world_robinson) +
+    geom_sf(data = glottodata, aes(color = family))
+
+
+}
+
 
 
 
