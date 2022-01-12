@@ -25,8 +25,8 @@ glottosubcode_valid(c("yucu1253_aaa_0002", "abcd1234_aaa_0001"))
 }
 \seealso{
 Other <glottocheck><glottosearch>: 
-\code{\link{glot_exists}()},
 \code{\link{glottocode_exists}()},
-\code{\link{glottocode_online}()}
+\code{\link{glottocode_online}()},
+\code{\link{glottosearch_exist}()}
 }
 \concept{<glottocheck><glottosearch>}

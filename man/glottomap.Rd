@@ -17,6 +17,8 @@ glottomap(
   nclass = NULL,
   numcat = FALSE,
   filename = NULL,
+  crs = NULL,
+  shiftrussia = FALSE,
   ...
 )
 }
@@ -45,6 +47,8 @@ Alternatively, you could also run tmaptools::palette_explorer(), RColorBrewer::d
 \item{numcat}{Do numbers represent categories? For example, if your dataset consists of 0 and 1, you might want to set this to TRUE.}
 
 \item{filename}{Optional filename if you want to save resulting map}
+
+\item{crs}{Coordinate Reference System (only for static maps). Default is World Eckert IV (https://epsg.io/54012)}
 
 \item{...}{Additional parameters to glottofilter}
 }

@@ -5,7 +5,7 @@
 \title{Search within glottodata for languages, glottocodes, etc.}
 \usage{
 glottosearch(
-  find,
+  search,
   glottodata = NULL,
   partialmatch = TRUE,
   columns = NULL,
@@ -13,7 +13,7 @@ glottosearch(
 )
 }
 \arguments{
-\item{find}{Character string to search for, this can be the name of a language, a family, a dialect, a glottocode, isocode.}
+\item{search}{Character string to search for, this can be the name of a language, a family, a dialect, a glottocode, isocode.}
 
 \item{glottodata}{Any linguistic or cultural dataset. Default is to search within glottolog.}
 
@@ -30,8 +30,8 @@ glottosearch(
 Search within glottodata for languages, glottocodes, etc.
 }
 \examples{
-glottosearch(find = "Yucuni")
-glottosearch(find = "Yucuni", columns = "name")
-glottosearch(find = "Yucuni", columns = c("name", "family"))
+glottosearch(search = "Yucuni")
+glottosearch(search = "Yucuni", columns = "name")
+glottosearch(search = "Yucuni", columns = c("name", "family"))
 }
 \concept{<glottosearch><glottofilter>}

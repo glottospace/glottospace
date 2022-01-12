@@ -1,7 +1,7 @@
 #' Search within glottodata for languages, glottocodes, etc.
 #'
 #' @param glottodata Any linguistic or cultural dataset. Default is to search within glottolog.
-#' @param find Character string to search for, this can be the name of a language, a family, a dialect, a glottocode, isocode.
+#' @param search Character string to search for, this can be the name of a language, a family, a dialect, a glottocode, isocode.
 #' @param partialmatch By default, partial matches will be returned as well. In case you only want exact matches, this argument should be set to FALSE.
 #' @param columns By default, the entire dataset is searched, but optionally the search can be limited to specific columns.
 #' @param tolerance In case partialmatch is TRUE: what is the maximum difference between search term and match? Default is 0.1
@@ -10,15 +10,15 @@
 #' @export
 #' @family <glottosearch><glottofilter>
 #' @examples
-#' glottosearch(find = "Yucuni")
-#' glottosearch(find = "Yucuni", columns = "name")
-#' glottosearch(find = "Yucuni", columns = c("name", "family"))
-glottosearch <- function(find, glottodata = NULL, partialmatch = TRUE, columns = NULL, tolerance = NULL){
+#' glottosearch(search = "Yucuni")
+#' glottosearch(search = "Yucuni", columns = "name")
+#' glottosearch(search = "Yucuni", columns = c("name", "family"))
+glottosearch <- function(search, glottodata = NULL, partialmatch = TRUE, columns = NULL, tolerance = NULL){
   if(is.null(tolerance)){tolerance <- 0.1}
 
  if(is.null(glottodata) ){glottodata <- glottoget_glottobase()}
-  if(missing(find)){stop("No search term provided, please indicate what you want to search for.")}
-  if(length(find) > 1){stop("More than one search term provided, please provide a single term.",
+  if(missing(search)){stop("No search term provided, please indicate what you want to search for.")}
+  if(length(search) > 1){stop("More than one search term provided, please provide a single term.",
                             call. = FALSE)}
   ifelse(partialmatch == TRUE, ldist <- tolerance, ldist <- 0)
 
@@ -27,7 +27,7 @@ glottosearch <- function(find, glottodata = NULL, partialmatch = TRUE, columns =
   } else{ glottodata_sel <- dplyr::select(glottodata, all_of(columns))}
 
     found <- base::apply(glottodata_sel, MARGIN = 2,
-                   FUN = base::agrep, pattern = find, ignore.case = T, value = FALSE, max.distance = ldist)
+                   FUN = base::agrep, pattern = search, ignore.case = T, value = FALSE, max.distance = ldist)
     rowid <- base::unique(unlist(found))
     glottodata[rowid, ]
 
@@ -35,13 +35,13 @@ glottosearch <- function(find, glottodata = NULL, partialmatch = TRUE, columns =
 
 #' Check whether a single keyword exists in glottolog.
 #'
-#' @param find Glottocode, name of language, family, etc.
+#' @param search Glottocode, name of language, family, etc.
 #' @param columns In which column should be searched
 #' @family <glottocheck><glottosearch>
 #' @return Logical: TRUE/FALSE
 #' @noRd
-glot_exists_one <- function(find, columns){
-  existsdf <- glottosearch(glottodata = glottoget_glottobase(), find = find, partialmatch = FALSE, columns = columns)
+glottosearch_1valid <- function(search, columns){
+  existsdf <- glottosearch(glottodata = glottoget_glottobase(), search = search, partialmatch = FALSE, columns = columns)
   nrow(existsdf) == 1
 }
 
@@ -53,45 +53,19 @@ glot_exists_one <- function(find, columns){
 #' whether glottocodes exist/are valid, use
 #' \code{\link[=glottocode_exists]{glottocode_exists()}}
 #'
-#' @param find Glottocode, name of language, family, etc.
+#' @param search Glottocode, name of language, family, etc.
 #' @param columns In which column should be searched
 #' @family <glottocheck><glottosearch>
 #' @return Logical: TRUE/FALSE
 #' @export
 #' @keywords internal
 #' @examples
-#' glot_exists(find = c("yucu1253", "abcd1234"), columns = "glottocode")
-glot_exists <- function(find, columns){
-purrr::map2_lgl(.x = find, .y = columns, .f = glot_exists_one)
+#' glottosearch_exist(search = c("yucu1253", "abcd1234"), columns = "glottocode")
+glottosearch_exist <- function(search, columns){
+purrr::map2_lgl(.x = search, .y = columns, .f = glottosearch_1valid)
 }
 
-#' Check whether glottocodes exist in glottolog
-#'
-#' @param glottocode A glottocode or character vector of glottocodes
-#'
-#' @return A logical vector
-#' @export
-#' @family <glottocheck><glottosearch>
-#' @examples
-#' glottocode_exists(c("yucu1253"))
-#' glottocode_exists(c("yucu1253", "abcd1234"))
-glottocode_exists <- function(glottocode){
-  glot_exists(find = glottocode, columns = "glottocode")
-}
 
-#' Open url in web browser for glottocode
-#'
-#' @param glottocode
-#'
-#' @return
-#' @export
-#' @family <glottocheck><glottosearch>
-#' @examples
-#' glottocode_online("yucu1253")
-glottocode_online <- function(glottocode){
-  url <- paste0("https://glottolog.org/resource/languoid/id/", glottocode)
-  utils::browseURL(url)
-}
 
 #' Check whether glottosubcodes are valid.
 #'
