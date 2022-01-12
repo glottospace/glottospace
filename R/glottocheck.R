@@ -262,7 +262,7 @@ checkdata_varlevels <- function(data){
 
 #' Check whether all IDs are valid glottocodes.
 #'
-#' This is a wrapper around glottocodes_exist
+#' This is a wrapper around glottocode_exists
 #'
 #' @param glottodata User-provided glottodata
 #'
@@ -273,7 +273,7 @@ checkdata_varlevels <- function(data){
 checkdata_glottocodes <- function(glottodata){
   glottodata <- glottodata[!is.na(glottodata[["glottocode"]]), ]
   message("Checking ", nrow(glottodata), " glottocodes...")
-  existing <- glottocodes_exist(glottodata[["glottocode"]])
+  existing <- glottocode_exists(glottodata[["glottocode"]])
   if(sum(!existing) > 0){
     message("Not all IDs are valid glottocodes \n The following glottocodes are not found in glottolog (checked at the language level): \n")
     print(glottodata[!existing,"glottocode", drop = TRUE])

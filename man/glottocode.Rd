@@ -14,9 +14,9 @@ glottocode(glottocode)
 }
 \description{
 This function does three things for a glottocode:
-- It plots its location on the globe
-- It opens the associated webpage on www.glottolog.org
-- It checks whether it exists in glottolog.
+- Plot its location on the Earth
+- Open the associated webpage on www.glottolog.org
+- Check whether it exists in glottolog
 }
 \examples{
 glottocode("yucu1253")

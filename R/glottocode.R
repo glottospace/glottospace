@@ -14,7 +14,7 @@
 #' glottocode("yucu1253")
 glottocode <- function(glottocode){
   if(length(glottocode) > 1){stop("Please provide a single glottocode")}
-  if(glottocodes_exist(glottocode)){
+  if(glottocode_exists(glottocode)){
     message("glottocode is valid")
     glottocode_location(glottocode)
     glottocode_online(glottocode)
@@ -60,9 +60,9 @@ glottocode_location <- function(glottocode){
 #' @export
 #' @family <glottocheck><glottosearch>
 #' @examples
-#' glottocodes_exist(c("yucu1253"))
-#' glottocodes_exist(c("yucu1253", "abcd1234"))
-glottocodes_exist <- function(glottocode){
+#' glottocode_exists(c("yucu1253"))
+#' glottocode_exists(c("yucu1253", "abcd1234"))
+glottocode_exists <- function(glottocode){
   glottosearch_exist(search = glottocode, columns = "glottocode")
 }
 

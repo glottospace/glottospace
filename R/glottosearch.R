@@ -51,7 +51,7 @@ glottosearch_1valid <- function(search, columns){
 #' want a more flexible search, you can use
 #' \code{\link[=glottosearch]{glottosearch()}}, in case you want to check
 #' whether glottocodes exist/are valid, use
-#' \code{\link[=glottocodes_exist]{glottocodes_exist()}}
+#' \code{\link[=glottocode_exists]{glottocode_exists()}}
 #'
 #' @param search Glottocode, name of language, family, etc.
 #' @param columns In which column should be searched
@@ -95,8 +95,8 @@ glottosubcode_valid <- function(glottosubcodes){
   gsc_df[i, "n"] <- strsplit(glottosubcodes, split = "_")[[i]][3]
   }
 
-  glottocodes <- unique(gsc_df[,"glottocode"]) # I use unique here because glottocodes_exist is slow, I match values later with %in%
-  gc_exists <- glottocodes_exist(glottocodes)
+  glottocodes <- unique(gsc_df[,"glottocode"]) # I use unique here because glottocode_exists is slow, I match values later with %in%
+  gc_exists <- glottocode_exists(glottocodes)
   gsc_df[,"gc_exists"] <- gsc_df[,"glottocode"] %in% glottocodes[gc_exists]
 
   gsc_df[,"group_chr"] <- suppressWarnings(is.na(as.numeric(gsc_df[,"group"])))
