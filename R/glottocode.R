@@ -1,9 +1,9 @@
 #' Get detailed info for a specific glottocode
 #'
 #' This function does three things for a glottocode:
-#' - It plots its location on the globe
-#' - It opens the associated webpage on www.glottolog.org
-#' - It checks whether it exists in glottolog.
+#' - Plot its location on the Earth
+#' - Open the associated webpage on www.glottolog.org
+#' - Check whether it exists in glottolog
 #'
 #' @param glottocode
 #'
@@ -14,7 +14,7 @@
 #' glottocode("yucu1253")
 glottocode <- function(glottocode){
   if(length(glottocode) > 1){stop("Please provide a single glottocode")}
-  if(glottocode_exists(glottocode)){
+  if(glottocodes_exist(glottocode)){
     message("glottocode is valid")
     glottocode_location(glottocode)
     glottocode_online(glottocode)
@@ -60,9 +60,9 @@ glottocode_location <- function(glottocode){
 #' @export
 #' @family <glottocheck><glottosearch>
 #' @examples
-#' glottocode_exists(c("yucu1253"))
-#' glottocode_exists(c("yucu1253", "abcd1234"))
-glottocode_exists <- function(glottocode){
+#' glottocodes_exist(c("yucu1253"))
+#' glottocodes_exist(c("yucu1253", "abcd1234"))
+glottocodes_exist <- function(glottocode){
   glottosearch_exist(search = glottocode, columns = "glottocode")
 }
 

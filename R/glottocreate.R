@@ -82,7 +82,7 @@ glottocreate <- function(glottocodes, variables,
 #' glottocreate_data(glottocodes = c("yucu1253", "tani1257"), variables = 3, filename = "glottodata.xlsx")
 #' glottocreate_data(glottocodes = c("yucu1253", "tani1257"), variables = 3, filename = "glottodata_simple.xlsx", meta = FALSE)
 glottocreate_data <- function(glottocodes, variables, filename = NULL, meta = TRUE, simplify = TRUE, maintainer = NULL, email = NULL, citation = NULL, url = NULL){
- if(!all(glottocode_exists(glottocodes)) ){stop("Not all glottocodes are valid. Use glottocode_exists() to check which ones. ")}
+ if(!all(glottocodes_exist(glottocodes)) ){stop("Not all glottocodes are valid. Use glottocodes_exist() to check which ones. ")}
 
   if(is.numeric(variables) & length(variables) == 1){
     varnames <- paste0("var", sprintf("%03d", seq(1,variables)))
@@ -155,7 +155,7 @@ glottocreate_data <- function(glottocodes, variables, filename = NULL, meta = TR
 #' @examples
 #' glottocreate_subdata(glottocodes = c("yucu1253", "tani1257"), variables = 3, groups = c("a", "b"), n = 5, filename = "glottosubdata.xlsx")
 glottocreate_subdata <- function(glottocodes, variables, filename = NULL, groups, n = NULL, meta = TRUE, maintainer = NULL, email = NULL, citation = NULL, url = NULL){
-  if(!all(glottocode_exists(glottocodes)) ){stop("Not all glottocodes are valid. Use glottocode_exists() to check which ones. ")}
+  if(!all(glottocodes_exist(glottocodes)) ){stop("Not all glottocodes are valid. Use glottocodes_exist() to check which ones. ")}
 
   if(is.numeric(variables) & length(variables) == 1){
     varnames <- paste0("var", sprintf("%03d", seq(1,variables)))
