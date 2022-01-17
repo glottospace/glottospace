@@ -138,9 +138,10 @@ glottofiltermap <- function(glottodata = NULL, mode = NULL, ...){
   suppressMessages(mapedit::selectFeatures(glottodata, mode = mode, title = "Select languages"))
 }
 
-#' glottofilter by column name
+#' Flexible version of glottofilter
 #'
-#' This is a low-level function of glottofilter, allowing for negative selections
+#' This is a more flexible alternative to glottofilter, allowing for negative selections.
+#'
 #'
 #' @param glottodata glottodata table
 #' @param colname Character with a single column name
@@ -151,12 +152,12 @@ glottofiltermap <- function(glottodata = NULL, mode = NULL, ...){
 #' @keywords internal
 #' @examples
 #' glottodata <- glottoget("glottobase")
-#' glottofilter_bycol(glottodata = glottodata, colname = "family", select = "Indo-European")
-#' glottofilter_bycol(glottodata = glottodata, colname = "family", select = -"Indo-European")
-#' glottofilter_bycol(glottodata = glottodata, colname = "country", select = c("Germany", "Netherlands") )
-#' glottofilter_bycol(glottodata = glottodata, colname = "country", select = -c("Germany", "Netherlands") )
-#' glottofilter_bycol(glottodata = glottodata, colname = "continent", select = -c("South America", "Europe", "Asia", "Oceania", "Africa") )
-glottofilter_bycol <- function(glottodata, colname, select){
+#' glottofilter_flex(glottodata = glottodata, colname = "family", select = "Indo-European")
+#' glottofilter_flex(glottodata = glottodata, colname = "family", select = -"Indo-European")
+#' glottofilter_flex(glottodata = glottodata, colname = "country", select = c("Germany", "Netherlands") )
+#' glottofilter_flex(glottodata = glottodata, colname = "country", select = -c("Germany", "Netherlands") )
+#' glottofilter_flex(glottodata = glottodata, colname = "continent", select = -c("South America", "Europe", "Asia", "Oceania", "Africa") )
+glottofilter_flex <- function(glottodata, colname, select){
 
   if(purrr::is_empty(glottodata)){
     glottodata <- glottofilter(...)
