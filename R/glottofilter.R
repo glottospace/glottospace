@@ -11,8 +11,8 @@
 #' @param country A character vector of countries
 #' @param name A character vector of language names
 #' @param colname A column name
-#' @param keep Character vector of things to keep (only if colname is provided)
-#' @param drop Character vector of things to keep (only if colname is provided)
+#' @param select Character vector of things to select (only if colname is provided)
+#' @param drop Character vector of things to drop (only if colname is provided)
 #' @param expression A regular expression
 #' @param sovereignty Sovereignty
 #' @param macroarea Glottolog macroarea
@@ -34,7 +34,7 @@
 #' points <- glottofilter(colname = "family", drop = "Indo-European")
 glottofilter <- function(glottodata = NULL, isocodes = NULL,
                       glottocode = NULL, name = NULL, family = NULL, family_id = NULL,
-                      continent = NULL, country = NULL, sovereignty = NULL, macroarea = NULL, expression = NULL, colname = NULL, keep = NULL, drop = NULL){
+                      continent = NULL, country = NULL, sovereignty = NULL, macroarea = NULL, expression = NULL, colname = NULL, select = NULL, drop = NULL){
 
   if(purrr::is_empty(glottodata)){
     glottodata <- glottoget_glottobase()
@@ -71,11 +71,6 @@ glottofilter <- function(glottodata = NULL, isocodes = NULL,
     glottodata <- glottodata %>%
       dplyr::filter(family_id %in% selection)
   }
-  # if (sum( (!is.null(country)) + (!is.null(continent)) ) > 1) {
-  #   stop("Please supply either country or continent, not both")
-  # https://stackoverflow.com/questions/43938863/dplyr-filter-with-condition-on-multiple-columns
-  # FILTER ACROSS
-  # }
   if(!purrr::is_empty(macroarea )){
     selection <- tolower(macroarea)
     glottodata <- glottodata %>%
@@ -97,15 +92,13 @@ glottofilter <- function(glottodata = NULL, isocodes = NULL,
       dplyr::filter(tolower(sovereignty) %in% selection)
   }
 
-  if(!purrr::is_empty(colname) & !purrr::is_empty(keep) ){
-    # https://stackoverflow.com/questions/27197617/filter-data-frame-by-character-column-name-in-dplyr
-    selection <- keep
+  if(!purrr::is_empty(colname) & !purrr::is_empty(select) ){
+    selection <- select
     glottodata <- glottodata %>%
       dplyr::filter(.[[colname]] %in% selection)
   }
 
   if(!purrr::is_empty(colname) & !purrr::is_empty(drop) ){
-    # https://stackoverflow.com/questions/27197617/filter-data-frame-by-character-column-name-in-dplyr
     selection <- drop
     glottodata <- glottodata %>%
       dplyr::filter(.[[colname]] %nin% selection)
@@ -162,22 +155,22 @@ glottofiltermap <- function(glottodata = NULL, mode = NULL, ...){
 #' glottofilter_bycol(glottodata = glottodata, colname = "family", select = -"Indo-European")
 #' glottofilter_bycol(glottodata = glottodata, colname = "country", select = c("Germany", "Netherlands") )
 #' glottofilter_bycol(glottodata = glottodata, colname = "country", select = -c("Germany", "Netherlands") )
-#' glottofilter_bycol(glottodata = glottodata, colname = "continent", select = -c("North America", "Europe", "Asia", "Oceania", "Africa") )
+#' glottofilter_bycol(glottodata = glottodata, colname = "continent", select = -c("South America", "Europe", "Asia", "Oceania", "Africa") )
 glottofilter_bycol <- function(glottodata, colname, select){
 
-  # dataset %>%
-  #   filter(across(c(father, mother), ~ !is.na(.x))) %>%
-  #   filter(across(c(-father, -mother), is.na))
+  if(purrr::is_empty(glottodata)){
+    glottodata <- glottofilter(...)
+  }
 
 arg <- base::substitute(select)
 char <- as.character(arg)
 
 if(char[1] == "-"){ # inverse
   if(substring(char[2], 1, 2) == "c("){ # inverse multiple
-    selection <- gsub("[[:punct:]]", " ", char[2])
-    selection <- stringr::str_split(selection, " ")
+    selection <- gsub(pattern = "[[:punct:]]", replacement = ",", x = char[2])
+    selection <- stringr::str_split(selection, ",")
     selection <- selection[[1]]
-    selection <- selection[selection %nin% c("c", "")]
+    selection <- selection[selection %nin% c("c", " ", "")]
   } else {
     selection <- char[2]
   }

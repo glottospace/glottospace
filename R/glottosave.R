@@ -38,7 +38,8 @@ glottosave <- function(glottodata, filename = NULL){
     if(tools::file_ext(filename) != ".xlsx"){
       filename <- tools::file_path_sans_ext(filename)
       filename <- paste0(filename, ".xlsx")
-      }
+    }
+    # if(file.exists(filename) & overwrite == FALSE){stop("File already exists, use overwrite = TRUE")}
     writexl::write_xlsx(glottodata, path = filename) # works better than openxlsx, which omitted some columns..
     message(paste("Glottodata (glottodata) saved as", filename))
   } else if(glottocheck_isglottosubdata(glottodata)){
@@ -55,7 +56,6 @@ glottosave <- function(glottodata, filename = NULL){
     tmap::tmap_save(glottodata, filename = filename)
     message(paste0("Map (tmap object) saved as ", filename))
   } else if( is_sf(glottodata) ){
-    # if no file extension: gpkg
     if( tools::file_ext(filename) == "" ){
       sf::st_write(obj = glottodata, dsn = paste0(filename, ".gpkg"),
                append = FALSE)
