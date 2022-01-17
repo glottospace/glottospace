@@ -1,6 +1,8 @@
 #' Save glottodata, maps and plots
 #'
-#' If no file extention is provided, a sensible default is chosen. Dynamic maps
+#' If no filename is provided, the name of the glottodata object will be used.
+#'
+#' If no file extension is provided, a sensible default file extension is chosen. Dynamic maps
 #' (tmap) are saved in .html format, static maps (tmap) are saved as .png.
 #' Spatial data (sf) are saved as geopackage (.GPKG) by default, but .shp is
 #' also possible.
@@ -32,7 +34,21 @@ glottosave <- function(glottodata, filename = NULL){
 
   if(is.null(filename)){filename <- deparse(substitute(glottodata))}
 
-  if((class(glottodata) == "tmap")[1]){
+  if(glottocheck_isglottodata(glottodata)){
+    if(tools::file_ext(filename) != ".xlsx"){
+      filename <- tools::file_path_sans_ext(filename)
+      filename <- paste0(filename, ".xlsx")
+      }
+    writexl::write_xlsx(glottodata, path = filename) # works better than openxlsx, which omitted some columns..
+    message(paste("Glottodata (glottodata) saved as", filename))
+  } else if(glottocheck_isglottosubdata(glottodata)){
+      if(tools::file_ext(filename) != ".xlsx"){
+        filename <- tools::file_path_sans_ext(filename)
+        filename <- paste0(filename, ".xlsx")
+      }
+      writexl::write_xlsx(glottodata, path = filename) # works better than openxlsx, which omitted some columns..
+      message(paste("Glottodata (glottodata) saved as", filename))
+  } else if((class(glottodata) == "tmap")[1]){
     if( tools::file_ext(filename) == "" ){
     ifelse(getOption("tmap.mode") == "plot", filename <- paste0(filename, ".png"), filename <- paste0(filename, ".html"))
     }

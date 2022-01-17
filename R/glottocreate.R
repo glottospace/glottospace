@@ -35,8 +35,9 @@
 #' Creates glottosubdata table (stored in a list)
 #' glottocreate(glottocodes = c("yucu1253", "tani1257"), variables = 3, groups = c("a", "b") )
 #'
-#' Creates glottodata and save as excel:
+#' Creates glottodata/glottosubdata and save as excel:
 #' glottocreate(glottocodes = c("yucu1253", "tani1257"), variables = 3, filename = "glottodata.xlsx")
+#' glottocreate(glottocodes = c("yucu1253", "tani1257"), variables = 3, groups = c("a", "b"), filename = "glottosubdata.xlsx" )
 glottocreate <- function(glottocodes, variables,
                          meta = TRUE, filename = NULL,
                          simplify = TRUE,
@@ -113,9 +114,7 @@ glottocreate_data <- function(glottocodes, variables, filename = NULL, meta = TR
 
 
   if(!is.null(filename)){
-    if(tools::file_ext(filename) == ""){filename <- paste0(filename, ".xlsx")}
-    writexl::write_xlsx(tablelist, path = filename) # works better than openxlsx, which omitted some columns..
-    message(paste("Glottodata saved: ", filename))
+    glottosave(glottodata = tablelist, filename = filename)
   }
 
   if(simplify == TRUE & length(tablelist) == 1 & any(class(tablelist) == "list") ){
@@ -197,10 +196,7 @@ glottocreate_subdata <- function(glottocodes, variables, filename = NULL, groups
   }
 
   if(!is.null(filename)){
-    # check if path exists, if subfolder doesn't exist, it doesn't write.
-    if(tools::file_ext(filename) == ""){filename <- paste0(filename, ".xlsx")}
-    writexl::write_xlsx(glottosubtables, path = filename) # works better than openxlsx, which omitted some columns..
-    message(paste("Glottosubdata saved: ", filename))
+    glottosave(glottodata = glottosubtables, filename = filename)
   }
 
   glottosubtables
