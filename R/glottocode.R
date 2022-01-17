@@ -15,11 +15,10 @@
 glottocode <- function(glottocode){
   if(length(glottocode) > 1){stop("Please provide a single glottocode")}
   if(glottocode_exists(glottocode)){
-    message("glottocode is valid")
     glottocode_location(glottocode)
     glottocode_online(glottocode)
   } else{
-    message("glottocode not found")
+    message("glottocode not found. You may use glottosearch() to search for it. ")
   }
 }
 
@@ -36,13 +35,13 @@ glottocode <- function(glottocode){
 glottocode_location <- function(glottocode){
 
   language <- glottofilter(glottocode = glottocode)
-  lon0 = st_coordinates(language)[1]
-  lat0 = st_coordinates(language)[2]
-  language <- as_s2_geography(paste0("POINT(", lon0, " ", lat0, ")") )
+  lon0 = sf::st_coordinates(language)[1]
+  lat0 = sf::st_coordinates(language)[2]
+  language <- s2::as_s2_geography(paste0("POINT(", lon0, " ", lat0, ")") )
 
   earth = s2::as_s2_geography(TRUE)
   continents = s2::s2_data_countries()
-  oceans = s2::s2_difference(earth, s2_union_agg(continents))
+  oceans = s2::s2_difference(earth, s2::s2_union_agg(continents))
   b = s2::s2_buffer_cells(language, 9800000) # visible half
   i = s2::s2_intersection(b, oceans) # visible ocean
   continents = s2::s2_intersection(b, continents)

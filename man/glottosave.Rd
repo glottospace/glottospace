@@ -22,7 +22,7 @@ also possible.
 }
 \examples{
 
-glottodata <- glottoget_path(meta = FALSE)
+glottodata <- glottoget("demodata", meta = FALSE)
 Saves as .xlsx
 glottosave(glottodata, filename = "glottodata")
 

@@ -8,8 +8,8 @@
 
 # xfun::gsub_dir(dir = "C:/Users/sjnor/surfdrive/PROJECTS_SN/Rpackages/glottospace/R", pattern = "glottocode_exists", replacement = "glottocode_exists")
 
-
-
+# Add test for each user function.
+# https://r-pkgs.org/tests.html
 
 
 

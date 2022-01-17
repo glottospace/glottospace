@@ -172,6 +172,7 @@ glottoget_glottolog <- function(days = NULL){
     vlocal <- glottolog_version_local()
     if(vremote == vlocal){
       out <- glottolog_loadlocal()
+      glottolog_version_localdatereset()
       message(paste("Glottolog is up-to-date. Version", vlocal, " loaded."))
     } else if(vremote > vlocal){
       out <- glottolog_download()
@@ -276,7 +277,19 @@ glottolog_version_local <- function(){
 
 }
 
-#' Check how long ago glottolog was downloaded
+#' Reset last modified date of glottolog
+#'
+#' @return
+#' @export
+#' @keywords internal
+glottolog_version_localdatereset <- function(){
+  v <- glottolog_version_local()
+  newestpath <- glottofiles_makepath(paste0("glottolog-cldf-v", version, ".zip"))
+  file.info(newestpath)$mtime
+  Sys.setFileTime(newestpath, Sys.time())
+}
+
+#' Check how long ago glottolog was last downloaded
 #'
 #' @return Number of days passed since glottolog data was downloaded for the last time
 #' @export
@@ -284,8 +297,8 @@ glottolog_version_local <- function(){
 glottolog_date_local <- function(){
   v <- glottolog_version_local()
  if(v != 0){
-   newestdir <- glottofiles_makepath(paste0("glottolog-cldf-v", v))
-   glottolog_time <- file.info(newestdir)$ctime
+   newestpath <- glottofiles_makepath(paste0("glottolog-cldf-v", v, ".zip"))
+   glottolog_time <- file.info(newestpath)$mtime
    daysago <- lubridate::as.duration(lubridate::interval(Sys.time(), glottolog_time)) %/% lubridate::as.duration(lubridate::days(1))
    return(daysago)
  } else{

@@ -113,7 +113,6 @@ glottocreate_data <- function(glottocodes, variables, filename = NULL, meta = TR
 
 
   if(!is.null(filename)){
-    # check if path exists, if subfolder doesn't exist, it doesn't write.
     if(tools::file_ext(filename) == ""){filename <- paste0(filename, ".xlsx")}
     writexl::write_xlsx(tablelist, path = filename) # works better than openxlsx, which omitted some columns..
     message(paste("Glottodata saved: ", filename))
