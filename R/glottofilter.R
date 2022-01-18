@@ -74,12 +74,12 @@ glottofilter <- function(glottodata = NULL,
   }
   if(!purrr::is_empty(location )){
     selection <- tolower(location)
-
-    glottospacedata_lc <- glottodata %>% dplyr::select(c(glottocode, continent, macroarea, country, sovereignty)) %>%
+    # lower case:
+    glottodatalower <- glottodata %>% dplyr::select(c(glottocode, continent, macroarea, country, sovereignty)) %>%
       sf::st_drop_geometry() %>%
       dplyr::mutate(dplyr::across(dplyr::everything(), tolower))
 
-    glottocodesel <- glottospacedata_lc %>%
+    glottocodesel <- glottodatalower %>%
       dplyr::filter(
         dplyr::if_any(
           dplyr::everything(),

@@ -24,7 +24,6 @@
 #'
 #' # Plot missing data:
 #' glottodata <- glottoget("demodata", meta = TRUE)
-#' glottodata <- glottoclean(glottodata = glottodata)
 #' glottodata <- glottosimplify(glottodata)
 #' glottoplot(glottodata = glottodata, type = "missing")
 #'
