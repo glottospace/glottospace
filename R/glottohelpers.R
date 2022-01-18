@@ -1,5 +1,3 @@
-
-
 #' Create empty distance matrix
 #'
 #' @param names

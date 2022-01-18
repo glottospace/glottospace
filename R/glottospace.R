@@ -13,16 +13,19 @@
 #' @export
 #'
 #' @examples
-#' glottodata <- glottoget_path()
+#' glottodata <- glottoget("demodata", meta = TRUE)
 #' glottospacedata <- glottospace(glottodata)
 #'
 glottospace <- function(glottodata, method = NULL, radius = NULL, country = NULL, continent = NULL){
+
+  stopifnot(glottocheck_isglottodata(glottodata))
+
   if(!is_sf(glottodata)){
-    #   if(glottocheck_hasmeta(glottodata) ){
-    # glottometa <- glottodata[-1]
-    # glottodata <- glottodata[[1]]
-    # hasmeta <- TRUE
-    #   }
+      if(glottocheck_hasmeta(glottodata) ){
+          glottometa <- glottodata[names(glottodata) != "glottodata"]
+          glottodata <- glottodata[["glottodata"]]
+          hasmeta <- TRUE
+      }
     glottodata <- glottospace_addcoords(glottodata)
   }
 
@@ -30,9 +33,9 @@ glottospace <- function(glottodata, method = NULL, radius = NULL, country = NULL
     glottodata <- glottospace_points2pols(glottopoints = glottodata, method = method, radius = radius, country = country, continent = continent)
   }
 
-  # if(hasmeta){
-  #   glottodata <- glottojoin_meta(glottodata = glottodata, glottometa = glottometa)
-  # }
+  if(hasmeta){
+    glottodata <- glottojoin_meta(glottodata = glottodata, glottometa = glottometa)
+  }
 return(glottodata)
 }
 

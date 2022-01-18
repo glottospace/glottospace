@@ -76,21 +76,20 @@ glottorecode <- function(glottodata, tofalse = NULL, totrue = NULL, tona = NULL)
 #' glottorecode_missing(glottodata, tona = "?")
 glottorecode_missing <- function(glottodata, tona){
 
+  stopifnot(glottocheck_isglottodata(glottodata))
 
-  if(glottocheck_hasstructure(glottodata) ){
-    data <- glottodata[["glottodata"]]
-    hasstructure <- TRUE
-  } else {
-    data <- glottodata
+  if(glottocheck_hasmeta(glottodata) ){
+    glottometa <- glottodata[names(glottodata) != "glottodata"]
+    glottodata <- glottodata[["glottodata"]]
+    hasmeta <- TRUE
   }
 
-  data <- data %>% naniar::replace_with_na_all(condition = ~. %in% tona)
+  glottodata <- glottodata %>% naniar::replace_with_na_all(condition = ~. %in% tona)
   # data <- recode_df(data = data, old = tona, new = NA)
   message("Missing values recoded to NA \n")
 
-  if(hasstructure == TRUE){glottodata[["glottodata"]] <- data
-  } else {
-    glottodata <- data
+  if(hasmeta){
+    glottodata <- glottojoin_meta(glottodata = glottodata, glottometa = glottometa)
   }
   glottodata
 }
