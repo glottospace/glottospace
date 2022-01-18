@@ -4,25 +4,33 @@
 
 #' Calculate distances between languages
 #'
-#' @param glottodata A glottodata table, or a list with a glottodata table and a structure table.
-#' @param structure If glottodata is a table without metadata, a structure table should be provided. You can create it with glottocreate_structuretable() and add it with glottodata_addtable()
-#'
+#' @param glottodata A glottodata table, either with or without structure table.
+#' @param structure If glottodata is a table without a structure table, you can add it separately. To create a structure table, you should run glottocreate_structuretable() and you can add it with glottodata_addtable()
+#' @param id By default, glottodist looks for a column named 'glottocode', if the id is in a different column, this should be specified.
 #' @return object of class \code{dist}
 #' @export
 #'
 #' @examples
 #' glottodata <- glottoget("demodata", meta = TRUE)
 #' glottodist <- glottodist(glottodata = glottodata)
-glottodist <- function(glottodata, structure = NULL){
+glottodist <- function(glottodata, structure = NULL, id = NULL){
+
+  if(!glottocheck_isglottodata(glottodata)){message("glottodata object does not adhere to glottodata format. Use glottocreate() to create it.")}
+
   if(glottocheck_hasmeta(glottodata) & is.null(structure)){
     structure <- glottodata[["structure"]]
     glottodata <- glottodata[["glottodata"]]
+  } else if(glottocheck_hasmeta(glottodata) & !is.null(structure)){
+    glottodata <- glottodata[["glottodata"]]
+  } else if(!glottocheck_hasmeta(glottodata) & is.null(structure)){
+    stop("structure table not found, please add one to glottodata or provide it separately.")
   }
 
   # glottodata:
-  glottodata <- tibble::column_to_rownames(glottodata, "glottocode")
+  if(is.null(id)){id <- "glottocode"}
+  glottodata <- tibble::column_to_rownames(glottodata, id)
 
-  # structure:
+  # structure table:
   if(!("varname" %in% colnames(structure) ) ){
     colnames(structure)[1] <- "varname"
     message("The structure table does not contain a 'varname' column, trying with the first column instead.")

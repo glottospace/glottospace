@@ -4,12 +4,14 @@
 \alias{glottodist}
 \title{Calculate distances between languages}
 \usage{
-glottodist(glottodata, structure = NULL)
+glottodist(glottodata, structure = NULL, id = NULL)
 }
 \arguments{
-\item{glottodata}{A glottodata table, or a list with a glottodata table and a structure table.}
+\item{glottodata}{A glottodata table, either with or without structure table.}
 
-\item{structure}{If glottodata is a table without metadata, a structure table should be provided. You can create it with glottocreate_structuretable() and add it with glottodata_addtable()}
+\item{structure}{If glottodata is a table without a structure table, you can add it separately. To create a structure table, you should run glottocreate_structuretable() and you can add it with glottodata_addtable()}
+
+\item{id}{By default, glottodist looks for a column named 'glottocode', if the id is in a different column, this should be specified.}
 }
 \value{
 object of class \code{dist}
