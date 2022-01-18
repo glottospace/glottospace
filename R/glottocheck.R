@@ -72,7 +72,7 @@ glottocheck_data <- function(glottodata, diagnostic = TRUE){
     checkdata_rowmissing(data = glottodata, id = id, diagnostic = diagnostic)
   if(diagnostic == TRUE){
     checkdata_varlevels(data = glottodata)
-    naviewer(data = glottodata, id = id)
+    glottoplot_naviewer(data = glottodata, id = id)
   }
 }
 
@@ -99,7 +99,7 @@ glottocheck_subdata <- function(glottosubdata, diagnostic = TRUE){
   checkdata_rowmissing(data = glottosubdata, id = id, diagnostic = diagnostic)
   if(diagnostic == TRUE){
     checkdata_varlevels(data = glottosubdata)
-    naviewer(data = glottosubdata, id = id)
+    glottoplot_naviewer(data = glottosubdata, id = id)
   }
 }
 
@@ -405,52 +405,6 @@ checkdata_colmissing <- function(data, id, diagnostic = FALSE, rm.na = TRUE){
     message("Some columns have missing data.")
   if(diagnostic == TRUE){print(datamissing["count", datamissing["count", ] != 0, drop = FALSE])}
   }
-}
-
-#' Show data coverage (view NAs)
-#'
-#' This function plots the NAs in a dataset. If you used another coding to
-#' specify missing data, you should run \code{cleandata_recodemissing} or \code{cleanglottodata} first. If you'd
-#' like some more advanced ways of handling NAs, you might check out the
-#' \code{naniar} package.
-#'
-#' @param data Any dataset
-#' @param id column name with IDs
-#' @param rm.na Whether rows without id should be removed.
-#' @keywords internal
-#' @return
-#' @export
-#'
-#' @examples
-#' glottodata <- glottoget("demodata", meta = TRUE)
-#' glottodata <- glottoclean(glottodata = glottodata)
-#' data <- glottodata[[1]]
-#' naviewer(data, id = "glottocode")
-naviewer <- function(data, id = NULL, rm.na = TRUE){
-  data <- as.data.frame(data)
-  if(rm.na == TRUE){data <- data[!is.na(data[[id]]), ]}
-  if(!is.null(id)){
-  datamissing <- data[,colnames(data) != id ]
-  } else {
-    datamissing <- data
-  }
-  datamissing[is.na(datamissing)] <- "nodata"
-
-  datamissing[datamissing != "nodata" ] <- "data"
-  datamissing[datamissing == "nodata" ] <- "NA"
-
-
-  datamissing <- as.matrix(sapply(datamissing, as.character))
-  rownames(datamissing) <- data[,id]
-
-  datamissing <- datamissing %>%
-    as.data.frame() %>%
-    tibble::rownames_to_column(id) %>%
-    tidyr::pivot_longer(-c(id), names_to = "variable", values_to = "coverage")
-
-  ggplot2::ggplot(data = datamissing, ggplot2::aes_string(x="variable", y=id, fill="coverage") ) +
-    ggplot2::geom_raster() +
-    ggplot2::scale_fill_manual(labels = c("data", "NA"), values = c("navy", "darkred"))
 }
 
 #' Guess whether an object is glottosubdata (and not glottodata)

@@ -6,8 +6,8 @@
 \usage{
 glottofilter(
   glottodata = NULL,
-  isocodes = NULL,
   glottocode = NULL,
+  location = NULL,
   name = NULL,
   family = NULL,
   family_id = NULL,
@@ -16,6 +16,7 @@ glottofilter(
   sovereignty = NULL,
   macroarea = NULL,
   expression = NULL,
+  isocodes = NULL,
   colname = NULL,
   select = NULL,
   drop = NULL
@@ -24,9 +25,9 @@ glottofilter(
 \arguments{
 \item{glottodata}{A glottodata table}
 
-\item{isocodes}{A character vector of iso639p3codes}
-
 \item{glottocode}{A character vector of glottocodes}
+
+\item{location}{A character vector with a location (either a continent, country, macroarea, or sovereignty)}
 
 \item{name}{A character vector of language names}
 
@@ -44,6 +45,8 @@ glottofilter(
 
 \item{expression}{A regular expression}
 
+\item{isocodes}{A character vector of iso639p3codes}
+
 \item{colname}{A column name}
 
 \item{select}{Character vector of things to select (only if colname is provided)}
@@ -58,6 +61,7 @@ By default, the glottolog data will be used to filter from. But in case the user
 }
 \examples{
 points <- glottofilter(isocodes = colnames(distmat))
+points <- glottofilter(location = "Australia")
 points <- glottofilter(glottocode = "wari1268")
 points <- glottofilter(family = "Indo-European")
 points <- glottofilter(continent = "South America")

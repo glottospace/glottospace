@@ -2,7 +2,7 @@
 % Please edit documentation in R/glottofilter.R
 \name{glottofiltermap}
 \alias{glottofiltermap}
-\title{Filter languages by location}
+\title{Filter languages from a map}
 \usage{
 glottofiltermap(glottodata = NULL, mode = NULL, ...)
 }
@@ -17,7 +17,7 @@ glottofiltermap(glottodata = NULL, mode = NULL, ...)
 
 }
 \description{
-With glottofiltermap you can select languages by drawing or clicking on a map
+Select languages by drawing or clicking on a map
 }
 \examples{
 selected <- glottofiltermap()

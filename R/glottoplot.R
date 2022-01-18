@@ -4,6 +4,7 @@
 #' This function offers different types of visualizations for linguistic distances.
 #'
 #' @param type The type of plot: "heatmap", "nmds", or "stress". Default is heatmap if nothing is provided.
+#' @param glottodata glottodata table
 #' @param glottodist A dist object created with \code{\link{glottodist}}
 #' @param k Number of dimensions. Either 2 or 3 for nmds.
 #' @param rm.na Whether na's should be removed (default is FALSE)
@@ -16,11 +17,18 @@
 #' @export
 #'
 #' @examples
+#' Plot glottodist as nmds:
 #' glottodata <- glottoget("demodata", meta = TRUE)
 #' glottodist <- glottodist(glottodata = glottodata)
-#'
 #' glottoplot(glottodist = glottodist, type = "nmds", k = 3, color = "family", label = "name")
-glottoplot <- function(glottodist, type = NULL, k = NULL, rm.na = FALSE,
+#'
+#' # Plot missing data:
+#' glottodata <- glottoget("demodata", meta = TRUE)
+#' glottodata <- glottoclean(glottodata = glottodata)
+#' glottodata <- glottosimplify(glottodata)
+#' glottoplot(glottodata = glottodata, type = "missing")
+#'
+glottoplot <- function(glottodata = NULL, glottodist = NULL, type = NULL, k = NULL, rm.na = FALSE,
                        color = NULL, ptsize = NULL, label = NULL, filename = NULL){
   if(is.null(type)){type <- "heatmap"}
 
@@ -40,6 +48,11 @@ glottoplot <- function(glottodist, type = NULL, k = NULL, rm.na = FALSE,
   if(type == "stress"){
     glottoplot_nmds_stress(glottodist = glottodist, k = k)
   }
+
+  if(type == "missing"){
+    glottoplot_naviewer(data = glottodata, id = "glottocode")
+  }
+
 }
 
 #' Nonmetric Multidimensional Scaling
@@ -262,6 +275,50 @@ glottoplot_heatmap <- function(glottodist, filename = NULL){
 
 }
 
+#' Show data coverage (view NAs)
+#'
+#' This function plots the NAs in a dataset. If you used another coding to
+#' specify missing data, you should run \code{cleandata_recodemissing} or \code{cleanglottodata} first. If you'd
+#' like some more advanced ways of handling NAs, you might check out the
+#' \code{naniar} package.
+#'
+#' @param data Any dataset
+#' @param id column name with IDs
+#' @param rm.na Whether rows without id should be removed.
+#' @keywords internal
+#' @return
+#' @export
+#'
+#' @examples
+#' glottodata <- glottoget("demodata", meta = TRUE)
+#' glottodata <- glottoclean(glottodata = glottodata)
+#' data <- glottodata[[1]]
+#' glottoplot_naviewer(data, id = "glottocode")
+glottoplot_naviewer <- function(data, id = NULL, rm.na = TRUE){
+  data <- as.data.frame(data)
+  if(rm.na == TRUE){data <- data[!is.na(data[[id]]), ]}
+  if(!is.null(id)){
+    datamissing <- data[,colnames(data) != id ]
+  } else {
+    datamissing <- data
+  }
+  datamissing[is.na(datamissing)] <- "nodata"
 
+  datamissing[datamissing != "nodata" ] <- "data"
+  datamissing[datamissing == "nodata" ] <- "NA"
+
+
+  datamissing <- as.matrix(sapply(datamissing, as.character))
+  rownames(datamissing) <- data[,id]
+
+  datamissing <- datamissing %>%
+    as.data.frame() %>%
+    tibble::rownames_to_column(id) %>%
+    tidyr::pivot_longer(-c(id), names_to = "variable", values_to = "coverage")
+
+  ggplot2::ggplot(data = datamissing, ggplot2::aes_string(x="variable", y=id, fill="coverage") ) +
+    ggplot2::geom_raster() +
+    ggplot2::scale_fill_manual(labels = c("data", "NA"), values = c("navy", "darkred"))
+}
 
 

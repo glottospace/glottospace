@@ -5,7 +5,8 @@
 \title{Visualize distances}
 \usage{
 glottoplot(
-  glottodist,
+  glottodata = NULL,
+  glottodist = NULL,
   type = NULL,
   k = NULL,
   rm.na = FALSE,
@@ -16,6 +17,8 @@ glottoplot(
 )
 }
 \arguments{
+\item{glottodata}{glottodata table}
+
 \item{glottodist}{A dist object created with \code{\link{glottodist}}}
 
 \item{type}{The type of plot: "heatmap", "nmds", or "stress". Default is heatmap if nothing is provided.}
@@ -39,8 +42,15 @@ glottoplot(
 This function offers different types of visualizations for linguistic distances.
 }
 \examples{
+Plot glottodist as nmds:
 glottodata <- glottoget("demodata", meta = TRUE)
 glottodist <- glottodist(glottodata = glottodata)
-
 glottoplot(glottodist = glottodist, type = "nmds", k = 3, color = "family", label = "name")
+
+# Plot missing data:
+glottodata <- glottoget("demodata", meta = TRUE)
+glottodata <- glottoclean(glottodata = glottodata)
+glottodata <- glottosimplify(glottodata)
+glottoplot(glottodata = glottodata, type = "missing")
+
 }
