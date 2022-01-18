@@ -30,7 +30,7 @@ glottospace(
 This function takes glottodata (either with or without metadata) and turns it into spatial points or polygons.
 }
 \examples{
-glottodata <- glottoget_path()
+glottodata <- glottoget("demodata", meta = TRUE)
 glottospacedata <- glottospace(glottodata)
 
 }

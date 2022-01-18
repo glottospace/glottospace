@@ -4,7 +4,7 @@
 \alias{glottojoin_meta}
 \title{Join glottodata with glottometa}
 \usage{
-glottojoin_meta(glottodata, glottometa, name = NULL)
+glottojoin_meta(glottodata, glottometa)
 }
 \arguments{
 \item{glottodata}{A glottodata table, or a glottodata list with one table.}

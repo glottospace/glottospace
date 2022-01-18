@@ -453,7 +453,7 @@ naviewer <- function(data, id = NULL, rm.na = TRUE){
     ggplot2::scale_fill_manual(labels = c("data", "NA"), values = c("navy", "darkred"))
 }
 
-#' Guess whether a list of glottodata tables is glottosubdata (and not glottodata)
+#' Guess whether an object is glottosubdata (and not glottodata)
 #'
 #' @param glottodata User-provided glottodata
 #'
@@ -468,7 +468,7 @@ glottocheck_isglottosubdata <- function(glottodata){
     !purrr::is_empty(colnames(glottodata[[1]])[1] == "glottosubcode"))
 }
 
-#' Guess whether a table or list of tables is glottodata (and not glottosubdata)
+#' Guess whether an object is glottodata (and not glottosubdata)
 #'
 #' @param glottodata glottodata
 #'
@@ -479,10 +479,14 @@ glottocheck_isglottosubdata <- function(glottodata){
 #' glottocheck_isglottodata(glottodata)
 glottocheck_isglottodata <- function(glottodata){
   glottodata <- contrans_tb2df(glottodata)
-  if(any(class(glottodata) == "list" )){
+  if(is_list(glottodata)){
     return(all(any(names(glottodata) %in% "glottodata") &
           !purrr::is_empty(colnames(glottodata[[1]])[1] == "glottocode")) )
   } else {
     return(!purrr::is_empty(colnames(glottodata)[1] == "glottocode"))
   }
 }
+
+
+
+

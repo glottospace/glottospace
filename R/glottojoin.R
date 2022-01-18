@@ -212,18 +212,16 @@ glottojoin_data <- function(glottodata, with, type = "left", id = NULL, ...){
 #' glottometa <- glottodata[-1]
 #' glottodata <- glottodata[[1]]
 #' glottojoin_meta(glottodata, glottometa)
-glottojoin_meta <- function(glottodata, glottometa, name = NULL){
+glottojoin_meta <- function(glottodata, glottometa){
+
+  stopifnot(glottocheck_isglottodata(glottodata))
+  stopifnot(glottocheck_hasmeta(glottometa))
 
   if(is_sf(glottodata)){
     glottodata <- list("glottodata" = glottodata)
   } else if(!is_list(glottodata)){
     glottodata <- list("glottodata" = glottodata)
     names(glottodata) <- "glottodata"
-  }
-
-  if(!is_list(glottometa)){
-    glottometa <- list(glottometa)
-    names(glottometa) <- name
   }
 
   c(glottodata, glottometa)

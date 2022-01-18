@@ -7,7 +7,7 @@
 #' @param dropmeta By default all metadata is removed.
 #' @param dropspatial By default spatial properties are removed.
 #' @param submerge By default, glottosubdata tables are merged into a single glottodata table.
-#' @param list2tab By default if glottodata is a list of tables, only the glottodata table is returned.
+#' @param droplist By default if glottodata is a list of tables, only the glottodata table is returned.
 #' @param dropunits By default units are kept.
 #'
 #' @return
@@ -15,17 +15,16 @@
 #'
 #' @examples
 #' glottosimplify(glottodata)
-glottosimplify <- function(glottodata, dropmeta = TRUE, dropspatial = TRUE, submerge = TRUE, list2tab = TRUE, dropunits = FALSE){
+glottosimplify <- function(glottodata, droplist = TRUE, dropmeta = TRUE, dropspatial = TRUE, submerge = TRUE, dropunits = FALSE){
 
   glottodata <- contrans_tb2df(glottodata)
 
+  if(droplist == TRUE){
+    glottodata <- glottosimplify_droplist(glottodata)
+  }
 
   if(dropmeta == TRUE){
     glottodata <- glottosimplify_dropmeta(glottodata)
-  }
-
-  if(list2tab == TRUE){
-    glottodata <- glottosimplify_list2tab(glottodata)
   }
 
   if(submerge == TRUE){
@@ -69,6 +68,8 @@ glottosimplify_langtabs <- function(glottodata){
   glottodata[(names(glottodata) %in% c("structure", "metadata",  "references", "readme", "lookup"))]
 }
 
+#' Drop list structure of glottodata
+#'
 #' Select glottodatatable from a glottodatalist
 #'
 #' @param glottodata glottodatalist
@@ -76,8 +77,8 @@ glottosimplify_langtabs <- function(glottodata){
 #' @return
 #' @export
 #'
-glottosimplify_list2tab <- function(glottodata){
-  if(glottocheck_isglottodata(glottodata) & any(class(glottodata) == "list" )){
+glottosimplify_droplist <- function(glottodata){
+  if(glottocheck_isglottodata(glottodata) & is_list(glottodata)){
     return(glottodata$glottodata)
     } else {
     return(glottodata)

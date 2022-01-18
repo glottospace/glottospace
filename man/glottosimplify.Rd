@@ -6,23 +6,23 @@
 \usage{
 glottosimplify(
   glottodata,
+  droplist = TRUE,
   dropmeta = TRUE,
   dropspatial = TRUE,
   submerge = TRUE,
-  list2tab = TRUE,
   dropunits = FALSE
 )
 }
 \arguments{
 \item{glottodata}{glottodata or glottosubdata.}
 
+\item{droplist}{By default if glottodata is a list of tables, only the glottodata table is returned.}
+
 \item{dropmeta}{By default all metadata is removed.}
 
 \item{dropspatial}{By default spatial properties are removed.}
 
 \item{submerge}{By default, glottosubdata tables are merged into a single glottodata table.}
-
-\item{list2tab}{By default if glottodata is a list of tables, only the glottodata table is returned.}
 
 \item{dropunits}{By default units are kept.}
 }
