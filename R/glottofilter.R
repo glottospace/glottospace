@@ -6,6 +6,7 @@
 #' @param isocodes A character vector of iso639p3codes
 #' @param glottocode A character vector of glottocodes
 #' @param family A character vector of language families
+#' @param location A character vector with a location (either a continent, country, macroarea, or sovereignty)
 #' @param family_id A character vector of language family IDs
 #' @param continent A character vector of continents
 #' @param country A character vector of countries
@@ -24,6 +25,7 @@
 #'
 #' @examples
 #' points <- glottofilter(isocodes = colnames(distmat))
+#' points <- glottofilter(location = "Australia")
 #' points <- glottofilter(glottocode = "wari1268")
 #' points <- glottofilter(family = "Indo-European")
 #' points <- glottofilter(continent = "South America")
@@ -32,15 +34,14 @@
 #' points <- glottofilter(expression = family %in% c("Arawakan", "Tucanoan"))
 #' points <- glottofilter(expression = family_size > 2)
 #' points <- glottofilter(colname = "family", drop = "Indo-European")
-glottofilter <- function(glottodata = NULL, isocodes = NULL,
-                      glottocode = NULL, name = NULL, family = NULL, family_id = NULL,
-                      continent = NULL, country = NULL, sovereignty = NULL, macroarea = NULL, expression = NULL, colname = NULL, select = NULL, drop = NULL){
+glottofilter <- function(glottodata = NULL,
+                      glottocode = NULL, location = NULL, name = NULL, family = NULL, family_id = NULL,
+                      continent = NULL, country = NULL, sovereignty = NULL, macroarea = NULL, expression = NULL, isocodes = NULL,colname = NULL, select = NULL, drop = NULL){
 
   if(purrr::is_empty(glottodata)){
     glottodata <- glottoget_glottobase()
   }
 
-  # Filter by expression:
   expression <- base::substitute(expression)
   if(!purrr::is_empty(expression)){
     glottodata <- dplyr::filter(glottodata, eval(expression))
@@ -70,6 +71,23 @@ glottofilter <- function(glottodata = NULL, isocodes = NULL,
     selection <- family_id
     glottodata <- glottodata %>%
       dplyr::filter(family_id %in% selection)
+  }
+  if(!purrr::is_empty(location )){
+    selection <- tolower(location)
+
+    glottospacedata_lc <- glottodata %>% dplyr::select(c(glottocode, continent, macroarea, country, sovereignty)) %>%
+      sf::st_drop_geometry() %>%
+      dplyr::mutate(dplyr::across(dplyr::everything(), tolower))
+
+    glottocodesel <- glottospacedata_lc %>%
+      dplyr::filter(
+        dplyr::if_any(
+          dplyr::everything(),
+          ~ .x %in% selection)) %>%
+      dplyr::select(glottocode)
+
+    glottodata <- glottodata %>%
+      dplyr::filter(glottocode %in% glottocodesel[,])
   }
   if(!purrr::is_empty(macroarea )){
     selection <- tolower(macroarea)
@@ -105,15 +123,16 @@ glottofilter <- function(glottodata = NULL, isocodes = NULL,
   }
 
   if(nrow(glottodata) == 0){
-    message("No search results. Use glottosearch() first to find what you're looking for")
+    message("No search results. You might consider using glottosearch() first")
+    if(purrr::is_empty(location) & !purrr::is_empty(c(country, continent, macroarea, sovereignty) )){message("or use glottofilter(location= )")}
   } else{
   return(glottodata)
   }
 }
 
-#' Filter languages by location
+#' Filter languages from a map
 #'
-#' With glottofiltermap you can select languages by drawing or clicking on a map
+#' Select languages by drawing or clicking on a map
 #'
 #' @param glottodata Spatial glottodata object
 #' @param mode Either "draw" or "click"

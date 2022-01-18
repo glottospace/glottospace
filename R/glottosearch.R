@@ -31,6 +31,15 @@ glottosearch <- function(search, glottodata = NULL, partialmatch = TRUE, columns
     rowid <- base::unique(unlist(found))
     glottodata[rowid, ]
 
+    # Alternative approach could have been:
+    # glottodata %>%
+    #   dplyr::filter(
+    #     dplyr::if_any(
+    #       dplyr::everything(),
+    #       ~ .x %in% search))
+
+
+
 }
 
 #' Check whether a single keyword exists in glottolog.
