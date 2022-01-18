@@ -15,7 +15,10 @@ glottosave(glottodata, filename = NULL)
 
 }
 \description{
-If no file extention is provided, a sensible default is chosen. Dynamic maps
+If no filename is provided, the name of the glottodata object will be used.
+}
+\details{
+If no file extension is provided, a sensible default file extension is chosen. Dynamic maps
 (tmap) are saved in .html format, static maps (tmap) are saved as .png.
 Spatial data (sf) are saved as geopackage (.GPKG) by default, but .shp is
 also possible.

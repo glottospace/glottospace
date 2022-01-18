@@ -1,13 +1,16 @@
-#' Glottologbooster: enhance glottolog data
+#' Enhance glottolog data
+#'
+#' This function restructures glottolog data, and optionally adds/removes data. If you want more flexibility in choosing which data to add/remove, you can use glottoboosterflex().
 #'
 #' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{glottoget_glottolog()}}
 #' @param space Return spatial object?
 #' @param addfamname Add column with familiy names?
 #' @param addisolates Add column to identify isolates?
-#' @param L1only Keep only L1 languages (remove bookkeeping, unclassifiable, sign languges, etc.). See glottobooster_rm for more flexibility.
+#' @param L1only Keep only L1 languages (remove bookkeeping, unclassifiable, sign languges, etc.).
 #' @param addfamsize Add column with family size?
 #' @param addfamsizerank Add column with family size rank?
 #'
+#' @family <glottobooster>
 #' @return
 #' @export
 #' @keywords internal
@@ -21,13 +24,68 @@ glottobooster <- function(glottologdata = NULL, space = TRUE,
   if(is.null(glottologdata)){
     glottologdata <- glottoget_glottolog()
   }
-  if(addfamname == TRUE){glottologdata <- glottolog_addfamilyname(glottologdata) }
-  if(addisolates == TRUE){glottologdata <- glottolog_addisolates(glottologdata) }
+  if(addfamname == TRUE){glottologdata <- glottobooster_addfamilyname(glottologdata) }
+  if(addisolates == TRUE){glottologdata <- glottobooster_addisolates(glottologdata) }
 
-  if(L1only == TRUE){glottologdata <- glottolog_L1only(glottologdata) }
+  if(L1only == TRUE){glottologdata <- glottobooster_L1only(glottologdata) }
 
-  if(addfamsize == TRUE){glottologdata <- glottolog_addfamilysize(glottologdata) }
-  if(addfamsizerank == TRUE){glottologdata <- glottolog_addfamilysizerank(glottologdata) }
+  if(addfamsize == TRUE){glottologdata <- glottobooster_addfamilysize(glottologdata) }
+  if(addfamsizerank == TRUE){glottologdata <- glottobooster_addfamilysizerank(glottologdata) }
+
+  glottologdata <- glottologdata %>% dplyr::rename("glottocode" = "id", "isocode" = "iso639p3code")
+
+  if(space == TRUE){
+    glottologdata <- glottospace_coords2sf(glottologdata)
+    glottologdata <- glottospace_addcountries(glottologdata)
+  }
+  return(glottologdata)
+}
+
+#' Enhance glottolog data (flexible options)
+#'
+#' It is recommended to use glottobooster, but this function is more flexible in removing/adding columns.
+#'
+#' Note that the different options are additional. For example, if you set rmfamilies to TRUE and space = TRUE, most families will still be removed since they lack spatial coordinates.
+#' Another example, depending on whether artificial families are removed, the total number of families also increases/decreases.
+#'
+#' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{glottoget_glottolog()}}
+#' @param space Return spatial object?
+#' @param addfamname Add column with familiy names?
+#' @param addisolates Add column to identify isolates?
+#' @param rmdialects Remove rows with dialects?
+#' @param rmfamilies Remove rows with families?
+#' @param addfamsize Add column with family size?
+#' @param addfamsizerank Add column with family size rank?
+#' @param rmbookkeeping Remove bookkeeping rows and delete bookkeeping column?
+#' @param rmartifam Remove rows that refer to artificial families?
+#' @param rmsignlangs Remove rows with sign languages?
+#' @family <glottobooster>
+#' @return
+#' @export
+#'
+#' @examples
+#' glottologdata <- glottoget("glottolog")
+#' glottologdata <- glottologboosterflex(glottologdata)
+glottoboosterflex <- function(glottologdata = NULL, space = TRUE,
+                             addfamname = TRUE, addisolates = TRUE,
+                             rmdialects = TRUE, rmfamilies = TRUE,
+                             addfamsize = TRUE, addfamsizerank = TRUE,
+                             rmbookkeeping = TRUE, rmartifam = TRUE,
+                             rmsignlangs = TRUE){
+  if(is.null(glottologdata)){
+    glottologdata <- glottoget_glottolog()
+  }
+  if(addfamname == TRUE){glottologdata <- glottobooster_addfamilyname(glottologdata) }
+  if(addisolates == TRUE){glottologdata <- glottobooster_addisolates(glottologdata) }
+
+  if(rmbookkeeping == TRUE){glottologdata <- glottobooster_rmbookkeeping(glottologdata) }
+  if(rmartifam == TRUE){glottologdata <- glottobooster_rmartifam(glottologdata) }
+  if(rmsignlangs == TRUE){glottologdata <- glottobooster_rmsignlangs(glottologdata) }
+  if(rmdialects == TRUE){glottologdata <- glottobooster_rmdialects(glottologdata) }
+  if(rmfamilies == TRUE){glottologdata <- glottobooster_rmfamilies(glottologdata) }
+
+  if(addfamsize == TRUE){glottologdata <- glottobooster_addfamilysize(glottologdata) }
+  if(addfamsizerank == TRUE){glottologdata <- glottobooster_addfamilysizerank(glottologdata) }
 
   glottologdata <- glottologdata %>% dplyr::rename("glottocode" = "id", "isocode" = "iso639p3code")
 
@@ -42,10 +100,10 @@ glottobooster <- function(glottologdata = NULL, space = TRUE,
 #'
 #' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{glottoget_glottolog()}}
 #' @keywords internal
-#' @family <glottolog>
+#' @family <glottobooster>
 #' @return
 #' @export
-glottolog_addfamilyname <- function(glottologdata){
+glottobooster_addfamilyname <- function(glottologdata){
     families <- glottologdata %>%
       dplyr::filter(level == "family") %>%
       dplyr::transmute(family_id = id, family = name)
@@ -57,10 +115,10 @@ glottolog_addfamilyname <- function(glottologdata){
 #'
 #' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{glottoget_glottolog()}}
 #' @keywords internal
-#' @family <glottolog>
+#' @family <glottobooster>
 #' @return
 #' @export
-glottolog_addisolates <- function(glottologdata){
+glottobooster_addisolates <- function(glottologdata){
 
     glottologdata$isolate <-   ifelse(
       ( (glottologdata$family_id == "") & (glottologdata$level != "family")  ),
@@ -77,10 +135,10 @@ glottologdata
 #'
 #' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{glottoget_glottolog()}}
 #' @keywords internal
-#' @family <glottolog>
+#' @family <glottobooster>
 #' @return
 #' @export
-glottolog_rmdialects <- function(glottologdata){
+glottobooster_rmdialects <- function(glottologdata){
   glottologdata %>% dplyr::filter(level != "dialect")
 }
 
@@ -88,10 +146,10 @@ glottolog_rmdialects <- function(glottologdata){
 #'
 #' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{glottoget_glottolog()}}
 #' @keywords internal
-#' @family <glottolog>
+#' @family <glottobooster>
 #' @return
 #' @export
-glottolog_rmfamilies <- function(glottologdata){
+glottobooster_rmfamilies <- function(glottologdata){
   glottologdata %>% dplyr::filter(level != "family")
 }
 
@@ -99,10 +157,10 @@ glottolog_rmfamilies <- function(glottologdata){
 #'
 #' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{glottoget_glottolog()}}
 #' @keywords internal
-#' @family <glottolog>
+#' @family <glottobooster>
 #' @return
 #' @export
-glottolog_rmbookkeeping <- function(glottologdata){
+glottobooster_rmbookkeeping <- function(glottologdata){
   # unique(glottologdata$bookkeeping)
   glottologdata %>%
     dplyr::filter(bookkeeping == FALSE) %>%
@@ -113,10 +171,10 @@ glottolog_rmbookkeeping <- function(glottologdata){
 #'
 #' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{glottoget_glottolog()}}
 #' @keywords internal
-#' @family <glottolog>
+#' @family <glottobooster>
 #' @return
 #' @export
-glottolog_rmartifam <- function(glottologdata){
+glottobooster_rmartifam <- function(glottologdata){
   glottologdata %>%
     dplyr::filter(family_id != "arti1236")
 }
@@ -125,10 +183,10 @@ glottolog_rmartifam <- function(glottologdata){
 #'
 #' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{glottoget_glottolog()}}
 #' @keywords internal
-#' @family <glottolog>
+#' @family <glottobooster>
 #' @return
 #' @export
-glottolog_rmsignlangs <- function(glottologdata){
+glottobooster_rmsignlangs <- function(glottologdata){
   glottologdata %>%
     dplyr::filter(family_id != "sign1238")
 }
@@ -137,10 +195,10 @@ glottolog_rmsignlangs <- function(glottologdata){
 #'
 #' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{glottoget_glottolog()}}
 #' @keywords internal
-#' @family <glottolog>
+#' @family <glottobooster>
 #' @return
 #' @export
-glottolog_addfamilysize <- function(glottologdata){
+glottobooster_addfamilysize <- function(glottologdata){
 glottologdata %>%
     dplyr::group_by(family_id) %>%
     dplyr::mutate(family_size = dplyr::n())
@@ -150,10 +208,10 @@ glottologdata %>%
 #'
 #' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{glottoget_glottolog()}}
 #' @keywords internal
-#' @family <glottolog>
+#' @family <glottobooster>
 #' @return
 #' @export
-glottolog_addfamilysizerank <- function(glottologdata){
+glottobooster_addfamilysizerank <- function(glottologdata){
   glottologdata$family_size_rank <- as.factor(glottologdata$family_size)
   levels(glottologdata$family_size_rank) <- seq(1:length(levels(glottologdata$family_size_rank)))
   glottologdata$family_size_rank  <- as.numeric(glottologdata$family_size_rank) # easier plotting than ordered levels
@@ -167,13 +225,13 @@ glottolog_addfamilysizerank <- function(glottologdata){
 #'
 #' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{glottoget_glottolog()}}
 #' @keywords internal
-#' @family <glottolog>
+#' @family <glottobooster>
 #' @return
 #' @export
-glottolog_L1only <- function(glottologdata){
+glottobooster_L1only <- function(glottologdata){
   glottologdata %>%
     dplyr::filter(category == "Spoken_L1_Language") %>%
-    dplyr::select(-category)
+    dplyr::select(-category, -bookkeeping, -level)
 }
 
 

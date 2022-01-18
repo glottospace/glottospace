@@ -17,7 +17,7 @@ glottofilter(
   macroarea = NULL,
   expression = NULL,
   colname = NULL,
-  keep = NULL,
+  select = NULL,
   drop = NULL
 )
 }
@@ -46,9 +46,9 @@ glottofilter(
 
 \item{colname}{A column name}
 
-\item{keep}{Character vector of things to keep (only if colname is provided)}
+\item{select}{Character vector of things to select (only if colname is provided)}
 
-\item{drop}{Character vector of things to keep (only if colname is provided)}
+\item{drop}{Character vector of things to drop (only if colname is provided)}
 }
 \value{
 A subset of the original glottodata table  containing only filtered languages.

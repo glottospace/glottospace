@@ -2,7 +2,7 @@
 % Please edit documentation in R/glottoget.R
 \name{glottolog_date_local}
 \alias{glottolog_date_local}
-\title{Check how long ago glottolog was downloaded}
+\title{Check how long ago glottolog was last downloaded}
 \usage{
 glottolog_date_local()
 }
@@ -10,6 +10,6 @@ glottolog_date_local()
 Number of days passed since glottolog data was downloaded for the last time
 }
 \description{
-Check how long ago glottolog was downloaded
+Check how long ago glottolog was last downloaded
 }
 \keyword{internal}
