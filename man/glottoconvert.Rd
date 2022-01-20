@@ -7,10 +7,11 @@
 glottoconvert(
   data,
   glottocode = NULL,
+  var,
   table = NULL,
-  var = NULL,
   ref = NULL,
   page = NULL,
+  com = NULL,
   position = NULL
 )
 }
@@ -19,9 +20,9 @@ glottoconvert(
 
 \item{glottocode}{column name or column id with glottocodes}
 
-\item{table}{In case dataset consists of multiple tables, indicate which table contains the data that should be converted.}
-
 \item{var}{Character string that distinguishes those columns which contain variable names.}
+
+\item{table}{In case dataset consists of multiple tables, indicate which table contains the data that should be converted.}
 
 \item{ref}{Character string that distinguishes those columns which contain references.}
 
@@ -37,5 +38,5 @@ glottoconvert
 }
 \examples{
 # Load data from path:
-# data <- glottoget("C:/Users/sjnor/surfdrive/Projecten en schrijfsels/Papers in progress/Yucuna-Tanimuca/data/testdata linguistics/2022_01_16_basic_data.xlsx")
+data <- glottoget("C:/Users/sjnor/surfdrive/Projecten en schrijfsels/Papers in progress/Yucuna-Tanimuca/data/testdata linguistics/2022_01_16_basic_data.xlsx")
 }

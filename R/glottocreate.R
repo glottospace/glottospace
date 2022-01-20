@@ -106,7 +106,7 @@ glottocreate_data <- function(glottocodes, variables, filename = NULL, meta = TR
   structure <- glottocreate_structuretable(glottocodes = glottocodes, varnames = varnames)
   description <- glottocreate_descriptiontable(varnames = varnames, levels = levels)
   references <- glottocreate_reftable(glottocodes = glottocodes, varnames = varnames)
-  remarks <- glottocreate_remarkstable(glottocodes = glottocodes, varnames = varnames)
+  comments <- glottocreate_commentstable(glottocodes = glottocodes, varnames = varnames)
   contributors <- glottocreate_contributorstable(glottocodes = glottocodes, varnames = varnames)
   readme <- glottocreate_readmetable(maintainer = maintainer, email = email, citation = citation, url = url)
 
@@ -116,7 +116,7 @@ glottocreate_data <- function(glottocodes, variables, filename = NULL, meta = TR
                     "structure" = structure,
                     "description" = description,
                     "references" = references,
-                    "remarks" = remarks,
+                    "comments" = comments,
                     "contributors" = contributors,
                     "readme" = readme,
                     "lookup" = lookup)
@@ -192,7 +192,7 @@ glottocreate_subdata <- function(glottocodes, variables, groups, filename = NULL
   structure <- glottocreate_structuretable(glottocodes = glottocodes, varnames = varnames)
   description <- glottocreate_descriptiontable(varnames = varnames, levels = levels)
   references <- glottocreate_reftable(glottocodes = glottocodes, varnames = varnames)
-  remarks <- glottocreate_remarkstable(glottocodes = glottocodes, varnames = varnames)
+  comments <- glottocreate_commentstable(glottocodes = glottocodes, varnames = varnames)
   contributors <- glottocreate_contributorstable(glottocodes = glottocodes, varnames = varnames)
 
   readme <- glottocreate_readmetable(maintainer = maintainer, email = email, citation = citation, url = url)
@@ -202,7 +202,7 @@ glottocreate_subdata <- function(glottocodes, variables, groups, filename = NULL
   tablelist <- list("structure" = structure,
                     "description" = description,
                     "references" = references,
-                    "remarks" = remarks,
+                    "comments" = comments,
                     "contributors" = contributors,
                     "readme" = readme,
                     "lookup" = lookup)
@@ -268,7 +268,7 @@ structure
 glottocreate_descriptiontable <- function(varnames, levels = NULL){
   if(is.null(levels)){levels <- c("Y", "N", NA, "A", "B", "C", "D")}
   description <- data.frame(matrix(nrow = length(varnames), ncol = 4 + length(levels)) )
-  colnames(description) <- c("varname", "description", "reference", "remarks", paste0("lev_", levels) )
+  colnames(description) <- c("varname", "description", "reference", "comments", paste0("lev_", levels) )
   description[,"varname"] <- varnames
   description
 }
@@ -288,7 +288,7 @@ glottocreate_reftable <- function(glottocodes, varnames){
   references
 }
 
-#' create remarks table for glottodata
+#' create comments table for glottodata
 #'
 #' @param glottocodes Character vector of glottocodes
 #' @param varnames Character vector of variable names
@@ -296,11 +296,11 @@ glottocreate_reftable <- function(glottocodes, varnames){
 #' @return
 #' @export
 #' @keywords internal
-glottocreate_remarkstable <- function(glottocodes, varnames){
-  remarks <- data.frame(matrix(nrow = length(glottocodes), ncol = length(varnames)+2  ) )
-  colnames(remarks) <- c("glottocode", "remark", paste(varnames, c("remark"), sep = "_") )
-  remarks[,"glottocode"] <- glottocodes
-  remarks
+glottocreate_commentstable <- function(glottocodes, varnames){
+  comments <- data.frame(matrix(nrow = length(glottocodes), ncol = length(varnames)+2  ) )
+  colnames(comments) <- c("glottocode", "comment", paste(varnames, c("com"), sep = "_") )
+  comments[,"glottocode"] <- glottocodes
+  comments
 }
 
 #' create contributors table for glottodata
