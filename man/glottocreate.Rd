@@ -12,6 +12,7 @@ glottocreate(
   simplify = TRUE,
   groups = NULL,
   n = NULL,
+  levels = NULL,
   maintainer = NULL,
   email = NULL,
   citation = NULL,
@@ -32,6 +33,8 @@ glottocreate(
 \item{groups}{Character vector of group names (only for glottosubdata)}
 
 \item{n}{Optional, number of records to be assigned to each group (only for glottosubdata)}
+
+\item{levels}{Optional character vector with levels across all variables}
 
 \item{maintainer}{Name of the person/organization maintaining the data (optional)}
 

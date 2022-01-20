@@ -18,6 +18,7 @@
 #' @param email Email address of maintainer/contact person (optional)
 #' @param citation How to cite the data (optional)
 #' @param url Optional url linking to a webpage.
+#' @param levels Optional character vector with levels across all variables
 #'
 #' @return A table or list of tables.
 #' @export
@@ -42,17 +43,20 @@ glottocreate <- function(glottocodes, variables,
                          meta = TRUE, filename = NULL,
                          simplify = TRUE,
                          groups = NULL, n = NULL,
+                         levels = NULL,
                          maintainer = NULL, email = NULL, citation = NULL, url = NULL){
 
   if(is.null(groups)){
     glottocreate_data(glottocodes = glottocodes, variables = variables,
                       filename = filename, meta = meta,
                       simplify = simplify,
+                      levels = levels,
                       maintainer = maintainer, email = email, citation = citation, url = url)
   } else {
     glottocreate_subdata(glottocodes = glottocodes, variables = variables,
                          filename = filename, meta = meta,
                          groups = groups, n = n,
+                         levels = levels,
                          maintainer = maintainer, email = email, citation = citation, url = url)
   }
 
@@ -82,7 +86,7 @@ glottocreate <- function(glottocodes, variables,
 #' @examples
 #' glottocreate_data(glottocodes = c("yucu1253", "tani1257"), variables = 3, filename = "glottodata.xlsx")
 #' glottocreate_data(glottocodes = c("yucu1253", "tani1257"), variables = 3, filename = "glottodata_simple.xlsx", meta = FALSE)
-glottocreate_data <- function(glottocodes, variables, filename = NULL, meta = TRUE, simplify = TRUE, maintainer = NULL, email = NULL, citation = NULL, url = NULL){
+glottocreate_data <- function(glottocodes, variables, filename = NULL, meta = TRUE, simplify = TRUE, levels = NULL, maintainer = NULL, email = NULL, citation = NULL, url = NULL){
  if(!all(glottocode_exists(glottocodes)) ){stop("Not all glottocodes are valid. Use glottocode_exists() to check which ones. ")}
 
   if(is.numeric(variables) & length(variables) == 1){
@@ -94,18 +98,20 @@ glottocreate_data <- function(glottocodes, variables, filename = NULL, meta = TR
   glottodata <- glottocreate_glottotable(glottocodes = glottocodes, varnames = varnames)
   if(meta == TRUE){
   structure <- glottocreate_structuretable(glottocodes = glottocodes, varnames = varnames)
-  metadata <- glottocreate_metatable(varnames = varnames)
+  description <- glottocreate_descriptiontable(varnames = varnames, levels = levels)
   references <- glottocreate_reftable(glottocodes = glottocodes, varnames = varnames)
   remarks <- glottocreate_remarkstable(glottocodes = glottocodes, varnames = varnames)
+  contributors <- glottocreate_contributorstable(glottocodes = glottocodes, varnames = varnames)
   readme <- glottocreate_readmetable(maintainer = maintainer, email = email, citation = citation, url = url)
 
   lookup <- glottocreate_lookuptable()
 
   tablelist <- list("glottodata" = glottodata,
                     "structure" = structure,
-                    "metadata" = metadata,
+                    "description" = description,
                     "references" = references,
                     "remarks" = remarks,
+                    "contributors" = contributors,
                     "readme" = readme,
                     "lookup" = lookup)
   } else {
@@ -152,7 +158,7 @@ glottocreate_data <- function(glottocodes, variables, filename = NULL, meta = TR
 #'
 #' @examples
 #' glottocreate_subdata(glottocodes = c("yucu1253", "tani1257"), variables = 3, groups = c("a", "b"), n = 5, filename = "glottosubdata.xlsx")
-glottocreate_subdata <- function(glottocodes, variables, filename = NULL, groups, n = NULL, meta = TRUE, maintainer = NULL, email = NULL, citation = NULL, url = NULL){
+glottocreate_subdata <- function(glottocodes, variables, groups, filename = NULL, levels = NULL, n = NULL, meta = TRUE, maintainer = NULL, email = NULL, citation = NULL, url = NULL){
   if(!all(glottocode_exists(glottocodes)) ){stop("Not all glottocodes are valid. Use glottocode_exists() to check which ones. ")}
 
   if(is.numeric(variables) & length(variables) == 1){
@@ -175,18 +181,20 @@ glottocreate_subdata <- function(glottocodes, variables, filename = NULL, groups
 
   if(meta == TRUE){
   structure <- glottocreate_structuretable(glottocodes = glottocodes, varnames = varnames)
-  metadata <- glottocreate_metatable(varnames = varnames)
+  description <- glottocreate_descriptiontable(varnames = varnames, levels = levels)
   references <- glottocreate_reftable(glottocodes = glottocodes, varnames = varnames)
   remarks <- glottocreate_remarkstable(glottocodes = glottocodes, varnames = varnames)
+  contributors <- glottocreate_contributorstable(glottocodes = glottocodes, varnames = varnames)
 
   readme <- glottocreate_readmetable(maintainer = maintainer, email = email, citation = citation, url = url)
 
   lookup <- glottocreate_lookuptable()
 
   tablelist <- list("structure" = structure,
-                    "metadata" = metadata,
+                    "description" = description,
                     "references" = references,
                     "remarks" = remarks,
+                    "contributors" = contributors,
                     "readme" = readme,
                     "lookup" = lookup)
 
@@ -241,18 +249,19 @@ structure[,"weight"] <- 1
 structure
 }
 
-#' create metatable for glottodata
+#' create descriptiontable for glottodata
 #'
 #' @param varnames Character vector of variable names
 #'
 #' @return
 #' @export
 #' @keywords internal
-glottocreate_metatable <- function(varnames){
-  metadata <- data.frame(matrix(nrow = length(varnames), ncol = 6) )
-  colnames(metadata) <- c("varname", "description", "reference", "page", "contributor", "remarks")
-  metadata[,"varname"] <- varnames
-  metadata
+glottocreate_descriptiontable <- function(varnames, levels = NULL){
+  if(is.null(levels)){levels <- c("Y", "N", NA, "A", "B", "C", "D")}
+  description <- data.frame(matrix(nrow = length(varnames), ncol = 4 + length(levels)) )
+  colnames(description) <- c("varname", "description", "reference", "remarks", paste0("lev_", levels) )
+  description[,"varname"] <- varnames
+  description
 }
 
 #' create reference table for glottodata
@@ -264,8 +273,8 @@ glottocreate_metatable <- function(varnames){
 #' @export
 #' @keywords internal
 glottocreate_reftable <- function(glottocodes, varnames){
-  references <- data.frame(matrix(nrow = length(glottocodes), ncol = (length(varnames)*2)+1 ) )
-  colnames(references) <- c("glottocode", paste(rep(varnames, each = 2) , c("ref", "page"), sep = "_") )
+  references <- data.frame(matrix(nrow = length(glottocodes), ncol = (length(varnames)*2)+3 ) )
+  colnames(references) <- c("glottocode", "reference", "page", paste(rep(varnames, each = 2) , c("ref", "page"), sep = "_") )
   references[,"glottocode"] <- glottocodes
   references
 }
@@ -279,10 +288,25 @@ glottocreate_reftable <- function(glottocodes, varnames){
 #' @export
 #' @keywords internal
 glottocreate_remarkstable <- function(glottocodes, varnames){
-  remarks <- data.frame(matrix(nrow = length(glottocodes), ncol = length(varnames)+1  ) )
-  colnames(remarks) <- c("glottocode", paste(varnames, c("remark"), sep = "_") )
+  remarks <- data.frame(matrix(nrow = length(glottocodes), ncol = length(varnames)+2  ) )
+  colnames(remarks) <- c("glottocode", "remark", paste(varnames, c("remark"), sep = "_") )
   remarks[,"glottocode"] <- glottocodes
   remarks
+}
+
+#' create contributors table for glottodata
+#'
+#' @param glottocodes Character vector of glottocodes
+#' @param varnames Character vector of variable names
+#'
+#' @return
+#' @export
+#' @keywords internal
+glottocreate_contributorstable <- function(glottocodes, varnames){
+  contributors <- data.frame(matrix(nrow = length(glottocodes), ncol = length(varnames)+2  ) )
+  colnames(contributors) <- c("glottocode", "contributor", paste(varnames, c("contributor"), sep = "_") )
+  contributors[,"glottocode"] <- glottocodes
+  contributors
 }
 
 #' Create readme table for glottodata

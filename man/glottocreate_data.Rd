@@ -10,6 +10,7 @@ glottocreate_data(
   filename = NULL,
   meta = TRUE,
   simplify = TRUE,
+  levels = NULL,
   maintainer = NULL,
   email = NULL,
   citation = NULL,

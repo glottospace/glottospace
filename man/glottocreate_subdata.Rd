@@ -7,8 +7,9 @@
 glottocreate_subdata(
   glottocodes,
   variables,
-  filename = NULL,
   groups,
+  filename = NULL,
+  levels = NULL,
   n = NULL,
   meta = TRUE,
   maintainer = NULL,
@@ -22,9 +23,9 @@ glottocreate_subdata(
 
 \item{variables}{Either a vector with variable names, or a single number indicating the total number of variable columns to be generated}
 
-\item{filename}{Optional name of excel file where to store glottodata}
-
 \item{groups}{Character vector of group names}
+
+\item{filename}{Optional name of excel file where to store glottodata}
 
 \item{n}{Number of records to be assigned to each group}
 
