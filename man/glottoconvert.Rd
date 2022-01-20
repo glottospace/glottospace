@@ -4,18 +4,30 @@
 \alias{glottoconvert}
 \title{glottoconvert}
 \usage{
-glottoconvert(data, glottocode, var = NULL, ref = NULL, page)
+glottoconvert(
+  data,
+  glottocode = NULL,
+  table = NULL,
+  var = NULL,
+  ref = NULL,
+  page = NULL,
+  position = NULL
+)
 }
 \arguments{
-\item{data}{Dataset to be transformed into glottodata}
+\item{data}{Dataset to be transformed to glottodata}
 
 \item{glottocode}{column name or column id with glottocodes}
 
-\item{var}{Unique character string that distinguishes columns with variable names.}
+\item{table}{In case dataset consists of multiple tables, indicate which table contains the data that should be converted.}
 
-\item{ref}{Unique character string that distinguishes columns with references.}
+\item{var}{Character string that distinguishes those columns which contain variable names.}
 
-\item{page}{Unique character string that distinguishes columns with page numbers.}
+\item{ref}{Character string that distinguishes those columns which contain references.}
+
+\item{page}{Character string that distinguishes those columns which contain page numbers.}
+
+\item{position}{Optional position of distinguishing character string, either "start" or "end"}
 }
 \value{
 
@@ -25,5 +37,5 @@ glottoconvert
 }
 \examples{
 # Load data from path:
-# testdata <- glottoget("C:/Users/sjnor/surfdrive/Projecten en schrijfsels/Papers in progress/Yucuna-Tanimuca/data/testdata linguistics/2022_01_16_basic_data.xlsx")
+# data <- glottoget("C:/Users/sjnor/surfdrive/Projecten en schrijfsels/Papers in progress/Yucuna-Tanimuca/data/testdata linguistics/2022_01_16_basic_data.xlsx")
 }

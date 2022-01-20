@@ -19,6 +19,7 @@
 #' @param citation How to cite the data (optional)
 #' @param url Optional url linking to a webpage.
 #' @param levels Optional character vector with levels across all variables
+#' @param check Should glottocodes be checked? Default is FALSE because takes much time to run.
 #'
 #' @return A table or list of tables.
 #' @export
@@ -44,6 +45,7 @@ glottocreate <- function(glottocodes, variables,
                          simplify = TRUE,
                          groups = NULL, n = NULL,
                          levels = NULL,
+                         check = FALSE,
                          maintainer = NULL, email = NULL, citation = NULL, url = NULL){
 
   if(is.null(groups)){
@@ -51,12 +53,14 @@ glottocreate <- function(glottocodes, variables,
                       filename = filename, meta = meta,
                       simplify = simplify,
                       levels = levels,
+                      check = check,
                       maintainer = maintainer, email = email, citation = citation, url = url)
   } else {
     glottocreate_subdata(glottocodes = glottocodes, variables = variables,
                          filename = filename, meta = meta,
                          groups = groups, n = n,
                          levels = levels,
+                         check = check,
                          maintainer = maintainer, email = email, citation = citation, url = url)
   }
 
@@ -69,7 +73,6 @@ glottocreate <- function(glottocodes, variables,
 #'
 #' @param variables Either a vector with variable names, or a single number indicating the total number of variable columns to be generated
 #' @param filename Optional name of excel file where to store glottodata
-#' @param ... Other parameters passed to glottocreate_readmetable(maintainer, email, citation, url)
 #' @param glottocodes Character vector of glottocodes
 #' @param meta By default, meta tables are created. Use meta=FALSE to exclude them.
 #' @param simplify By default, if only one table is loaded, the data will be returned as a data.frame (instead of placing the data inside a list of length 1)
@@ -77,6 +80,8 @@ glottocreate <- function(glottocodes, variables,
 #' @param email Email address of maintainer/contact person (optional)
 #' @param citation How to cite the data (optional)
 #' @param url Optional url linking to a webpage.
+#' @param check Should glottocodes be checked? Default is FALSE because takes much time to run.
+#' @param levels Optional character vector with levels across all variables
 #'
 #' @keywords internal
 #'
@@ -86,9 +91,10 @@ glottocreate <- function(glottocodes, variables,
 #' @examples
 #' glottocreate_data(glottocodes = c("yucu1253", "tani1257"), variables = 3, filename = "glottodata.xlsx")
 #' glottocreate_data(glottocodes = c("yucu1253", "tani1257"), variables = 3, filename = "glottodata_simple.xlsx", meta = FALSE)
-glottocreate_data <- function(glottocodes, variables, filename = NULL, meta = TRUE, simplify = TRUE, levels = NULL, maintainer = NULL, email = NULL, citation = NULL, url = NULL){
- if(!all(glottocode_exists(glottocodes)) ){stop("Not all glottocodes are valid. Use glottocode_exists() to check which ones. ")}
-
+glottocreate_data <- function(glottocodes, variables, filename = NULL, meta = TRUE, check = FALSE, simplify = TRUE, levels = NULL, maintainer = NULL, email = NULL, citation = NULL, url = NULL){
+ if(check){
+  if(!all(glottocode_exists(glottocodes)) ){stop("Not all glottocodes are valid. Use glottocode_exists() to check which ones. ")}
+ }
   if(is.numeric(variables) & length(variables) == 1){
     varnames <- paste0("var", sprintf("%03d", seq(1,variables)))
   } else {
@@ -139,7 +145,6 @@ glottocreate_data <- function(glottocodes, variables, filename = NULL, meta = TR
 #'
 #' @param variables Either a vector with variable names, or a single number indicating the total number of variable columns to be generated
 #' @param filename  Optional name of excel file where to store glottodata
-#' @param ... Other parameters passed to glottocreate_readmetable(maintainer, email, citation, url)
 #' @param glottocodes Character vector of glottocodes
 #' @param groups Character vector of group names
 #' @param n Number of records to be assigned to each group
@@ -148,6 +153,8 @@ glottocreate_data <- function(glottocodes, variables, filename = NULL, meta = TR
 #' @param email Email address of maintainer/contact person (optional)
 #' @param citation How to cite the data (optional)
 #' @param url Optional url linking to a webpage.
+#' @param check Should glottocodes be checked? Default is FALSE because takes much time to run.
+#' @param levels Optional character vector with levels across all variables
 #'
 #' @keywords internal
 #'
@@ -158,8 +165,10 @@ glottocreate_data <- function(glottocodes, variables, filename = NULL, meta = TR
 #'
 #' @examples
 #' glottocreate_subdata(glottocodes = c("yucu1253", "tani1257"), variables = 3, groups = c("a", "b"), n = 5, filename = "glottosubdata.xlsx")
-glottocreate_subdata <- function(glottocodes, variables, groups, filename = NULL, levels = NULL, n = NULL, meta = TRUE, maintainer = NULL, email = NULL, citation = NULL, url = NULL){
-  if(!all(glottocode_exists(glottocodes)) ){stop("Not all glottocodes are valid. Use glottocode_exists() to check which ones. ")}
+glottocreate_subdata <- function(glottocodes, variables, groups, filename = NULL, check = FALSE, levels = NULL, n = NULL, meta = TRUE, maintainer = NULL, email = NULL, citation = NULL, url = NULL){
+  if(check){
+    if(!all(glottocode_exists(glottocodes)) ){stop("Not all glottocodes are valid. Use glottocode_exists() to check which ones. ")}
+  }
 
   if(is.numeric(variables) & length(variables) == 1){
     varnames <- paste0("var", sprintf("%03d", seq(1,variables)))

@@ -105,7 +105,7 @@ is_sf <- function(object){
 #' @return TRUE/FALSE
 #' @noRd
 #'
-checkdata_crsmissing <- function(object){
+glottocheck_crsmissing <- function(object){
   is.na(sf::st_crs(object))
 }
 

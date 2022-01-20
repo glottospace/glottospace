@@ -9,6 +9,7 @@ glottocreate_subdata(
   variables,
   groups,
   filename = NULL,
+  check = FALSE,
   levels = NULL,
   n = NULL,
   meta = TRUE,
@@ -27,6 +28,10 @@ glottocreate_subdata(
 
 \item{filename}{Optional name of excel file where to store glottodata}
 
+\item{check}{Should glottocodes be checked? Default is FALSE because takes much time to run.}
+
+\item{levels}{Optional character vector with levels across all variables}
+
 \item{n}{Number of records to be assigned to each group}
 
 \item{meta}{Should metatables be created?}
@@ -38,8 +43,6 @@ glottocreate_subdata(
 \item{citation}{How to cite the data (optional)}
 
 \item{url}{Optional url linking to a webpage.}
-
-\item{...}{Other parameters passed to glottocreate_readmetable(maintainer, email, citation, url)}
 }
 \value{
 A table or list of tables

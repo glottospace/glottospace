@@ -151,7 +151,7 @@ glottojoin_subdata <- function(glottosubdata){
     hadmeta <- FALSE
   }
 
-  checkdata_lscolcount(glottodata) # stops if number of columns is not identical
+  glottocheck_lscolcount(glottodata) # stops if number of columns is not identical
   glottodata <- do.call("rbind", glottodata) # alternative approaches: data.table::rbindlist or plyr::rbind.fill
   glottodata <- tibble::remove_rownames(glottodata)
 

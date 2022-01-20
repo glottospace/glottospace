@@ -9,6 +9,7 @@ glottocreate_data(
   variables,
   filename = NULL,
   meta = TRUE,
+  check = FALSE,
   simplify = TRUE,
   levels = NULL,
   maintainer = NULL,
@@ -26,7 +27,11 @@ glottocreate_data(
 
 \item{meta}{By default, meta tables are created. Use meta=FALSE to exclude them.}
 
+\item{check}{Should glottocodes be checked? Default is FALSE because takes much time to run.}
+
 \item{simplify}{By default, if only one table is loaded, the data will be returned as a data.frame (instead of placing the data inside a list of length 1)}
+
+\item{levels}{Optional character vector with levels across all variables}
 
 \item{maintainer}{Name of the person/organization maintaining the data (optional)}
 
@@ -35,8 +40,6 @@ glottocreate_data(
 \item{citation}{How to cite the data (optional)}
 
 \item{url}{Optional url linking to a webpage.}
-
-\item{...}{Other parameters passed to glottocreate_readmetable(maintainer, email, citation, url)}
 }
 \value{
 

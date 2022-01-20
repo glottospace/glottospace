@@ -13,6 +13,7 @@ glottocreate(
   groups = NULL,
   n = NULL,
   levels = NULL,
+  check = FALSE,
   maintainer = NULL,
   email = NULL,
   citation = NULL,
@@ -35,6 +36,8 @@ glottocreate(
 \item{n}{Optional, number of records to be assigned to each group (only for glottosubdata)}
 
 \item{levels}{Optional character vector with levels across all variables}
+
+\item{check}{Should glottocodes be checked? Default is FALSE because takes much time to run.}
 
 \item{maintainer}{Name of the person/organization maintaining the data (optional)}
 

@@ -63,15 +63,15 @@ glottocheck <- function(glottodata, diagnostic = TRUE, checkmeta = FALSE){
 glottocheck_data <- function(glottodata, diagnostic = TRUE){
   glottodata <- glottosimplify(glottodata)
   id <- "glottocode"
-  checkdata_glottocol(glottodata = glottodata)
-  checkdata_idmissing(data = glottodata, id = id)
-  checkdata_idunique(data = glottodata, id = id)
-  checkdata_twolevels(data = glottodata)
-  checkdata_glottocodes(glottodata = glottodata)
-    checkdata_colmissing(data = glottodata, id = id, diagnostic = diagnostic)
-    checkdata_rowmissing(data = glottodata, id = id, diagnostic = diagnostic)
+  glottocheck_glottocol(glottodata = glottodata)
+  glottocheck_idmissing(data = glottodata, id = id)
+  glottocheck_idunique(data = glottodata, id = id)
+  glottocheck_twolevels(data = glottodata)
+  glottocheck_glottocodes(glottodata = glottodata)
+    glottocheck_colmissing(data = glottodata, id = id, diagnostic = diagnostic)
+    glottocheck_rowmissing(data = glottodata, id = id, diagnostic = diagnostic)
   if(diagnostic == TRUE){
-    checkdata_varlevels(data = glottodata)
+    glottocheck_varlevels(data = glottodata)
     glottoplot_naviewer(data = glottodata, id = id)
   }
 }
@@ -90,15 +90,15 @@ glottocheck_data <- function(glottodata, diagnostic = TRUE){
 glottocheck_subdata <- function(glottosubdata, diagnostic = TRUE){
   glottosubdata <- glottosimplify(glottosubdata)
   id <- "glottosubcode"
-  checkdata_glottosubcol(glottosubdata = glottosubdata)
-  checkdata_idmissing(data = glottosubdata, id = id)
-  checkdata_idunique(data = glottosubdata, id = id)
-  checkdata_twolevels(data = glottosubdata)
-  checkdata_glottosubcodes(glottosubdata = glottosubdata)
-  checkdata_colmissing(data = glottosubdata, id = id, diagnostic = diagnostic)
-  checkdata_rowmissing(data = glottosubdata, id = id, diagnostic = diagnostic)
+  glottocheck_glottosubcol(glottosubdata = glottosubdata)
+  glottocheck_idmissing(data = glottosubdata, id = id)
+  glottocheck_idunique(data = glottosubdata, id = id)
+  glottocheck_twolevels(data = glottosubdata)
+  glottocheck_glottosubcodes(glottosubdata = glottosubdata)
+  glottocheck_colmissing(data = glottosubdata, id = id, diagnostic = diagnostic)
+  glottocheck_rowmissing(data = glottosubdata, id = id, diagnostic = diagnostic)
   if(diagnostic == TRUE){
-    checkdata_varlevels(data = glottosubdata)
+    glottocheck_varlevels(data = glottosubdata)
     glottoplot_naviewer(data = glottosubdata, id = id)
   }
 }
@@ -160,7 +160,7 @@ glottocheck_metaweights <- function(glottodata){
 #' @keywords internal
 #' @export
 #'
-checkdata_idmissing <- function(data, id){
+glottocheck_idmissing <- function(data, id){
 
   idmissing <- nrow(data[is.na(data[,id]),] )
 
@@ -185,8 +185,8 @@ checkdata_idmissing <- function(data, id){
 #' @export
 #'
 #' @examples
-#' checkdata_idunique(data = glottodata, id = "glottocode")
-checkdata_idunique <- function(data, id){
+#' glottocheck_idunique(data = glottodata, id = "glottocode")
+glottocheck_idunique <- function(data, id){
   freqtab <- data.frame(table(data[,id]))
   colnames(freqtab)[1] <- "id"
   colnames(freqtab)[2] <- "n"
@@ -204,16 +204,16 @@ checkdata_idunique <- function(data, id){
 
 #' Check whether each variable has at least two levels (excluding NA).
 #'
-#' This function checks whether each variable has at least two levels (excluding NA). Use function checkall_varlevels to get an overview of the levels in each variable.
+#' This function checks whether each variable has at least two levels (excluding NA). Use function glottocheck_varlevels to get an overview of the levels in each variable.
 #' @param data
 #'
-#' @return Besides diagnostic messages, this function invisibly returns TRUE if check is passed (all IDs are unique) and FALSE otherwise
+#' @return Besides diagnostic messages, this function invisibly returns TRUE if check is passed (all variables have at least two levels) and FALSE otherwise
 #' @export
 #' @keywords internal
 #'
 #' @examples
-#' suppressMessages(checkall_twolevels(data = data))
-checkdata_twolevels <- function(data){
+#' suppressMessages(glottocheck_twolevels(data = data))
+glottocheck_twolevels <- function(data){
   data <- as.data.frame(data)
   lslevels <- lapply(data, unique)
   lslevels <- lapply(lslevels, factor, exclude = NA)
@@ -247,8 +247,8 @@ checkdata_twolevels <- function(data){
 #' @keywords internal
 #'
 #' @examples
-#' suppressMessages(check_varlevels(data = data))
-checkdata_varlevels <- function(data){
+#' suppressMessages(glottocheck_varlevels(data = data))
+glottocheck_varlevels <- function(data){
   # readline(prompt="Do you want to view the levels of each variable (this might take a few seconds)? \n Press [enter] to view or [esc] to skip")
   lslevels <- lapply(data, unique)
   lslevels <- lapply(lslevels, factor)
@@ -270,7 +270,7 @@ checkdata_varlevels <- function(data){
 #' @export
 #' @keywords internal
 #'
-checkdata_glottocodes <- function(glottodata){
+glottocheck_glottocodes <- function(glottodata){
   glottodata <- glottodata[!is.na(glottodata[["glottocode"]]), ]
   message("Checking ", nrow(glottodata), " glottocodes...")
   existing <- glottocode_exists(glottodata[["glottocode"]])
@@ -292,7 +292,7 @@ checkdata_glottocodes <- function(glottodata){
 #' @return
 #' @export
 #' @keywords internal
-checkdata_glottosubcodes <- function(glottosubdata){
+glottocheck_glottosubcodes <- function(glottosubdata){
   v <- glottosubcode_valid(glottosubdata$glottosubcode)
   if(v == TRUE){message("All glottosubcodes are valid.")}
 }
@@ -307,8 +307,8 @@ checkdata_glottosubcodes <- function(glottosubdata){
 #' @examples
 #' glottosubdata <- glottocreate_subdata(glottocodes = c("yucu1253", "tani1257"), variables = 3, groups = c("a", "b"), n = 5)
 #' langlist <- glottosubdata[c(1,2)]
-#' checkdata_lscolcount(langlist) # invisibly returns TRUE
-checkdata_lscolcount <- function(langlist){
+#' glottocheck_lscolcount(langlist) # invisibly returns TRUE
+glottocheck_lscolcount <- function(langlist){
   colcount <- lapply(X = langlist, FUN = function(x){length(colnames(x))})
   colcount <- unlist(colcount, recursive = F)
 
@@ -330,7 +330,7 @@ checkdata_lscolcount <- function(langlist){
 #' @return
 #' @export
 #'
-checkdata_glottocol <- function(glottodata){
+glottocheck_glottocol <- function(glottodata){
   n <- sum(colnames(glottodata) == "glottocode")
   if(n == 1){
     invisible(TRUE)
@@ -349,7 +349,7 @@ checkdata_glottocol <- function(glottodata){
 #' @return
 #' @export
 #'
-checkdata_glottosubcol <- function(glottosubdata){
+glottocheck_glottosubcol <- function(glottosubdata){
   n <- sum(colnames(glottosubdata) == "glottosubcode")
   if(n == 1){
     invisible(TRUE)
@@ -374,7 +374,7 @@ checkdata_glottosubcol <- function(glottosubdata){
 #' @return
 #' @export
 #'
-checkdata_rowmissing <- function(data, id, diagnostic = FALSE, rm.na = TRUE){
+glottocheck_rowmissing <- function(data, id, diagnostic = FALSE, rm.na = TRUE){
   if(rm.na == TRUE){data <- data[!is.na(data[[id]]), ]}
   datamissing <- tibble::column_to_rownames(data, var = id)
   datamissing$count <- rowSums(is.na(datamissing) )
@@ -397,7 +397,7 @@ checkdata_rowmissing <- function(data, id, diagnostic = FALSE, rm.na = TRUE){
 #' @return
 #' @export
 #'
-checkdata_colmissing <- function(data, id, diagnostic = FALSE, rm.na = TRUE){
+glottocheck_colmissing <- function(data, id, diagnostic = FALSE, rm.na = TRUE){
   if(rm.na == TRUE){data <- data[!is.na(data[[id]]), ]}
   datamissing <- tibble::column_to_rownames(data, var = id)
   datamissing <- rbind(datamissing, "count" = colSums(is.na(datamissing) ) )
