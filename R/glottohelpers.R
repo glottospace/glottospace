@@ -43,25 +43,6 @@ recode_vector <- function(vector, old, new){
   return(vector)
 }
 
-#' Conditionally set the position of a string in a longer string
-#'
-#' @param string Any string
-#' @param pos The position of the string in a longer string, can be: "before" or "after" (synonymous with "pre" and "post")
-#' @noRd
-#' @return
-#' @export
-contrans_stringpos <- function(string, pos = NULL){
-  if(is.null(pos) ){
-    return(string)
-  } else if(pos == "before" | pos == "pre" | pos == "first" | pos == "start"){
-    return(paste0("^", string) )
-  } else if(pos == "after" | pos == "post"| pos == "last" | pos == "end"){
-    return(paste0(string, "^") )
-  }
-}
-
-
-
 #' Find R source script of a function
 #'
 #' @param funcname Either a function object (without brackets) or a character string

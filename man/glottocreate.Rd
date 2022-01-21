@@ -58,6 +58,8 @@ glottodata has one table for all languages (and a number of metatables if meta =
 glottosubdata has one table for each language (and a number of metatables if meta = TRUE), with one row per glottosubcode.
 
 Run glottoget("demodata") or glottoget("demosubdata") to see examples.
+
+In case you already have your own dataset and want to convert it into glottodata, use: glottoconvert().
 }
 \examples{
 Creates glottodata table without metadata tables

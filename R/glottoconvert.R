@@ -7,81 +7,123 @@
 #' @param ref Character string that distinguishes those columns which contain references.
 #' @param table In case dataset consists of multiple tables, indicate which table contains the data that should be converted.
 #' @param page Character string that distinguishes those columns which contain page numbers.
-#' @param position Optional position of distinguishing character string, either "start" or "end"
-#' @param com Character string that distinguishes those columns which contain comments.
+#' @param remark Character string that distinguishes those columns which contain remarks.
+#' @param contributor Character string that distinguishes those columns which contain contributors.
 #'
 #' @return
 #' @export
 #'
 #' @examples
-#' # Load data from path:
-#' data <- glottoget("C:/Users/sjnor/surfdrive/Projecten en schrijfsels/Papers in progress/Yucuna-Tanimuca/data/testdata linguistics/2022_01_16_basic_data.xlsx")
-glottoconvert <- function(data, glottocode = NULL, var, table = NULL, ref = NULL, page = NULL, com = NULL, position = NULL){
-  if(!is_list(data) ){
-    udata <- data
-  } else if(is_list(data) & is.null(table)){
-    udata <- data[[1]]
-    message(paste0("Dataset contains multiple tables, assuming data to be converted is in the first table: ", names(data)[[1]]) )
+#' \dontrun{
+#' data <- glottoget("userdata.xlsx")
+#' glottodata <- glottoconvert(data = data, var = "var_", ref = "ref_", page = "pag_", remark = "com_", contributor = "Coder")
+#' glottocheck(glottodata)
+#' glottosave(glottodata)
+#' }
+glottoconvert <- function(data, glottocode = NULL, var, table = NULL, ref = NULL, page = NULL, remark = NULL, contributor = NULL){
+  if(is_list(data) & is.null(table)){
+    message(paste0("Dataset contains multiple tables, assuming data to be converted is in the first table: ", names(data)[[1]]), "\n" )
+    data <- data[[1]]
   } else if(is_list(data) & !is.null(table) ){
-    udata <- data[[table]]
+    data <- data[[table]]
   }
 
-  ncol <- length(colnames(udata))
+  totcol <- length(colnames(data))
 
 # Create new glottodata structure based on glottocodes and variable names
     if(is.null(glottocode)){glottocode <- "glottocode"}
-    glottocol <- grep(pattern = glottocode, x = colnames(udata), ignore.case = TRUE, value = TRUE)
+    glottocol <- grep(pattern = glottocode, x = colnames(data), ignore.case = TRUE, value = TRUE)
     if(length(glottocol) > 1){stop(paste0("Column ", glottocode, " is duplicated. Please rename one of the columns."))}
     if(length(glottocol) == 0){stop(paste0("Column ", glottocode, " not found. Please add a column with glottocodes."))}
-    glottocodes <- udata[[glottocol]]
+    glottocodes <- data[[glottocol]]
 
-    varcols <- grepl(pattern = contrans_stringpos(string = var, pos = position), x = colnames(udata), ignore.case = TRUE)
-    oldvarnames <- colnames(udata)[varcols]
+    oldvarnames <- grep(pattern = var, x = colnames(data), ignore.case = TRUE, value = TRUE)
+    if(length(oldvarnames) == 0){stop(paste0("No columns found with ", var, " in the name."))}
     newvarnames <- gsub(pattern = var, x = oldvarnames, replacement = "")
-    colnames(udata)[colnames(udata) %in% oldvarnames] <- newvarnames
+    glottodata <- glottocreate(glottocodes = glottocodes, variables = newvarnames)
 
-  glottodata <- glottocreate(glottocodes = glottocodes, variables = newvarnames)
-  glottodata[["glottodata"]][,-1] <- udata[,newvarnames]
+# Add data for variables:
+  sdata <- glottoconvert_colname(data = data, oldfix = var,
+                                 newfix = "", newname = "")
+  varcols <- colnames(sdata)
+  nvar <- ncol(sdata)
+  glottodata[["glottodata"]][,-1] <- sdata
 
-  # References per variable
+# Add references
   if(!is.null(ref)){
-    udata <- glottoconvert_colname(data = udata, oldfix = ref, oldpos = position, newfix = "_ref")
-    refcols <- paste0(newvarnames, "_ref")[paste0(newvarnames, "_ref") %in% colnames(udata)]
-    glottodata[["references"]][,paste0(newvarnames, "_ref")] <- udata[,refcols]
+    sdata <- glottoconvert_colname(data = data, oldfix = ref,
+                                   newfix = "_ref", newname = "reference")
+    nref <- ncol(sdata)
+    glottodata[["references"]][,colnames(sdata)] <- sdata
   }
 
-  # Page numbers per variable
+# Add page numbers
   if(!is.null(page)){
-    udata <- glottoconvert_colname(data = udata, oldfix = page, oldpos = position, newfix = "_page")
-    pagecols <- paste0(newvarnames, "_page")[paste0(newvarnames, "_page") %in% colnames(udata)]
-    glottodata[["references"]][,paste0(newvarnames, "_page")] <- udata[,pagecols]
+    sdata <- glottoconvert_colname(data = data, oldfix = page,
+                                   newfix = "_page", newname = "page")
+    pagecols <- colnames(sdata)
+    npage <- ncol(sdata)
+    glottodata[["references"]][,colnames(sdata)] <- sdata
   }
 
-  # Comments per variable
-  if(!is.null(com)){
-    udata <- glottoconvert_colname(data = udata, oldfix = com, oldpos = position, newfix = "_com")
-    comcols <- paste0(newvarnames, "_com")[paste0(newvarnames, "_com") %in% colnames(udata)]
-    glottodata[["comments"]][,comcols] <- udata[,comcols]
+# Add remarks
+  if(!is.null(remark)){
+    sdata <- glottoconvert_colname(data = data, oldfix = remark,
+                                   newfix = "_remark", newname = "remark")
+    remarkcols <- colnames(sdata)
+    nremark <- ncol(sdata)
+    glottodata[["remarks"]][,colnames(sdata)] <- sdata
   }
 
-  # if(!identical(varcols, refcols, pagecols) ){message("Number of columns does not match!")}
+# Add contributors
+  if(!is.null(contributor)){
+    sdata <- glottoconvert_colname(data = data, oldfix = contributor,
+                                   newfix = "_con", newname = "contributor")
+    contrcols <- colnames(sdata)
+    ncontr <- ncol(sdata)
+    glottodata[["contributors"]][,colnames(sdata)] <- sdata
+  }
 
+  message("Overview of the conversion process: ")
+  overview <- tibble::tribble(
+    ~column, ~count,
+    "total", totcol,
+    "variables", nvar,
+    "references", nref,
+    "page numbers", npage,
+    "remarks", nremark,
+    "contributors", ncontr,
+    "omitted", totcol-nvars-nrefs-npage-nremark-ncont-1 # minus 1 for glottocode
+  )
 
+  print(overview)
 
-  # Copy values to glottodata
+  omitted <- colnames(data)[!grepl(pattern = paste(c(glottocode, var, ref, page, remark, contributor), collapse = "|"), x = colnames(data), ignore.case = TRUE)]
+  message(paste0("\n The following columns were omitted: \n", paste(omitted, collapse = ", "), "\n" ))
 
+  message("I don't condemn, I DO convert, but Love is My Religion: https://youtu.be/r-eXYJnV3V4 \n \n your data has been converted into glottodata! \n (don't forget to assign it to a new object)")
 
-
-
-
+invisible(glottodata)
 }
 
-glottoconvert_colname <- function(data, oldfix, oldpos = NULL, newfix = NULL){
-  if(is.null(newfix)){newfix <- ""}
-  cols <- grepl(pattern = contrans_stringpos(string = oldfix, pos = oldpos), x = colnames(data), ignore.case = TRUE)
-  oldnames <- colnames(data)[cols]
-  newnames <- paste0(gsub(pattern = ref, x = oldrefnames, replacement = ""), newfix)
-  colnames(data)[colnames(data) %in% oldnames] <- newnames
+#' Convert colnames and subset
+#'
+#' @param data A data.frame
+#' @param oldfix Either a prefix or suffix such as "_fix", or "fix_"
+#' @param newfix New pre- or suffix.
+#' @noRd
+#' @return
+#' @export
+#'
+glottoconvert_colname <- function(data, oldfix, newfix = NULL, newname = NULL){
+  cols <- grepl(pattern = oldfix, x = colnames(data), ignore.case = TRUE)
+  data <- data[cols]
+  if(ncol(data) != 1){
+    newnames <- paste0(gsub(pattern = oldfix, x = colnames(data), replacement = ""), newfix)
+    colnames(data) <- newnames
+  } else {
+    colnames(data) <- newname
+  }
   data
 }
 

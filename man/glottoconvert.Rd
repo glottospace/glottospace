@@ -11,8 +11,8 @@ glottoconvert(
   table = NULL,
   ref = NULL,
   page = NULL,
-  com = NULL,
-  position = NULL
+  remark = NULL,
+  contributor = NULL
 )
 }
 \arguments{
@@ -28,7 +28,9 @@ glottoconvert(
 
 \item{page}{Character string that distinguishes those columns which contain page numbers.}
 
-\item{position}{Optional position of distinguishing character string, either "start" or "end"}
+\item{remark}{Character string that distinguishes those columns which contain remarks.}
+
+\item{contributor}{Character string that distinguishes those columns which contain contributors.}
 }
 \value{
 
@@ -38,5 +40,10 @@ glottoconvert
 }
 \examples{
 # Load data from path:
-data <- glottoget("C:/Users/sjnor/surfdrive/Projecten en schrijfsels/Papers in progress/Yucuna-Tanimuca/data/testdata linguistics/2022_01_16_basic_data.xlsx")
+\dontrun{
+data <- glottoget("userdata.xlsx")
+glottodata <- glottoconvert(data = data, var = "var_", ref = "ref_", page = "pag_", remark = "com_", contributor = "Coder")
+glottocheck(glottodata)
+glottosave(glottodata)
+}
 }

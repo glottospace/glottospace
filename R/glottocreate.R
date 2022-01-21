@@ -7,6 +7,8 @@
 #'
 #' Run glottoget("demodata") or glottoget("demosubdata") to see examples.
 #'
+#' In case you already have your own dataset and want to convert it into glottodata, use: glottoconvert().
+#'
 #' @param glottocodes Character vector of glottocodes
 #' @param variables Either a vector with variable names, or a single number indicating the total number of variable columns to be generated
 #' @param meta Should metatables be created?
@@ -106,7 +108,7 @@ glottocreate_data <- function(glottocodes, variables, filename = NULL, meta = TR
   structure <- glottocreate_structuretable(glottocodes = glottocodes, varnames = varnames)
   description <- glottocreate_descriptiontable(varnames = varnames, levels = levels)
   references <- glottocreate_reftable(glottocodes = glottocodes, varnames = varnames)
-  comments <- glottocreate_commentstable(glottocodes = glottocodes, varnames = varnames)
+  remarks <- glottocreate_remarkstable(glottocodes = glottocodes, varnames = varnames)
   contributors <- glottocreate_contributorstable(glottocodes = glottocodes, varnames = varnames)
   readme <- glottocreate_readmetable(maintainer = maintainer, email = email, citation = citation, url = url)
 
@@ -116,7 +118,7 @@ glottocreate_data <- function(glottocodes, variables, filename = NULL, meta = TR
                     "structure" = structure,
                     "description" = description,
                     "references" = references,
-                    "comments" = comments,
+                    "remarks" = remarks,
                     "contributors" = contributors,
                     "readme" = readme,
                     "lookup" = lookup)
@@ -192,7 +194,7 @@ glottocreate_subdata <- function(glottocodes, variables, groups, filename = NULL
   structure <- glottocreate_structuretable(glottocodes = glottocodes, varnames = varnames)
   description <- glottocreate_descriptiontable(varnames = varnames, levels = levels)
   references <- glottocreate_reftable(glottocodes = glottocodes, varnames = varnames)
-  comments <- glottocreate_commentstable(glottocodes = glottocodes, varnames = varnames)
+  remarks <- glottocreate_remarkstable(glottocodes = glottocodes, varnames = varnames)
   contributors <- glottocreate_contributorstable(glottocodes = glottocodes, varnames = varnames)
 
   readme <- glottocreate_readmetable(maintainer = maintainer, email = email, citation = citation, url = url)
@@ -202,7 +204,7 @@ glottocreate_subdata <- function(glottocodes, variables, groups, filename = NULL
   tablelist <- list("structure" = structure,
                     "description" = description,
                     "references" = references,
-                    "comments" = comments,
+                    "remarks" = remarks,
                     "contributors" = contributors,
                     "readme" = readme,
                     "lookup" = lookup)
@@ -268,7 +270,7 @@ structure
 glottocreate_descriptiontable <- function(varnames, levels = NULL){
   if(is.null(levels)){levels <- c("Y", "N", NA, "A", "B", "C", "D")}
   description <- data.frame(matrix(nrow = length(varnames), ncol = 4 + length(levels)) )
-  colnames(description) <- c("varname", "description", "reference", "comments", paste0("lev_", levels) )
+  colnames(description) <- c("varname", "description", "reference", "remarks", paste0("lev_", levels) )
   description[,"varname"] <- varnames
   description
 }
@@ -288,7 +290,7 @@ glottocreate_reftable <- function(glottocodes, varnames){
   references
 }
 
-#' create comments table for glottodata
+#' create remarks table for glottodata
 #'
 #' @param glottocodes Character vector of glottocodes
 #' @param varnames Character vector of variable names
@@ -296,11 +298,11 @@ glottocreate_reftable <- function(glottocodes, varnames){
 #' @return
 #' @export
 #' @keywords internal
-glottocreate_commentstable <- function(glottocodes, varnames){
-  comments <- data.frame(matrix(nrow = length(glottocodes), ncol = length(varnames)+2  ) )
-  colnames(comments) <- c("glottocode", "comment", paste(varnames, c("com"), sep = "_") )
-  comments[,"glottocode"] <- glottocodes
-  comments
+glottocreate_remarkstable <- function(glottocodes, varnames){
+  remarks <- data.frame(matrix(nrow = length(glottocodes), ncol = length(varnames)+2  ) )
+  colnames(remarks) <- c("glottocode", "remark", paste(varnames, c("remark"), sep = "_") )
+  remarks[,"glottocode"] <- glottocodes
+  remarks
 }
 
 #' create contributors table for glottodata
