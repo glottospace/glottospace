@@ -39,7 +39,6 @@ glottoconvert(
 glottoconvert
 }
 \examples{
-# Load data from path:
 \dontrun{
 data <- glottoget("userdata.xlsx")
 glottodata <- glottoconvert(data = data, var = "var_", ref = "ref_", page = "pag_", remark = "com_", contributor = "Coder")

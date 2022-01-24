@@ -19,13 +19,10 @@
 glottospace <- function(glottodata, method = NULL, radius = NULL, country = NULL, continent = NULL){
 
   stopifnot(glottocheck_isglottodata(glottodata))
+  splitted <- glottosplitmerge(glottodata)
+  glottodata <- splitted[[1]]
 
   if(!is_sf(glottodata)){
-      if(glottocheck_hasmeta(glottodata) ){
-          glottometa <- glottodata[names(glottodata) != "glottodata"]
-          glottodata <- glottodata[["glottodata"]]
-          hasmeta <- TRUE
-      }
     glottodata <- glottospace_addcoords(glottodata)
   }
 
@@ -33,9 +30,8 @@ glottospace <- function(glottodata, method = NULL, radius = NULL, country = NULL
     glottodata <- glottospace_points2pols(glottopoints = glottodata, method = method, radius = radius, country = country, continent = continent)
   }
 
-  if(hasmeta){
-    glottodata <- glottojoin_meta(glottodata = glottodata, glottometa = glottometa)
-  }
+  glottodata <- glottosplitmerge(glottodata = glottodata, splitted = splitted)
+
 return(glottodata)
 }
 
@@ -51,15 +47,12 @@ return(glottodata)
 #' @export
 #' @keywords internal
 #' @examples
-#' gb <- glottobooster(glottologdata = glottobase)
-#' gbsa <- glottofilter(glottodata = gb, continent = "South America")
+#' glottopoints <- glottofilter(continent = "South America")
 #'
 #' pols <- glottospace_points2pols(glottopoints = gbsa, method = "thiessen", continent = "South America")
 #' plot(pols[,"family_size"])
 glottospace_points2pols <- function(glottopoints, method = NULL, radius = NULL, country = NULL, continent = NULL){
   if(is.null(method)){method <- "buffer"}
-  # FIXME: area of buffers is not equal!
-  # sf::st_area(glottodata)
   glottopoints <- contransform_lonlat(glottopoints)
   # Alternative could be to convert to equidistant projection: https://epsg.io/54032
   epsg_utm <- lonlat2utm(sf::st_coordinates(glottopoints))
@@ -104,6 +97,68 @@ glottospace_points2pols <- function(glottopoints, method = NULL, radius = NULL, 
   return(pols)
 }
 
+#' Create buffer around glottopoint
+#'
+#' @param glottodata spatial glottodata without metadata
+#' @param radius radius in kilometers
+#' @keywords internal
+#' @return
+#' @export
+#'
+#' @examples
+#' glottodata <- glottofilter(country = "Netherlands")
+glottospace_buffer <- function(glottodata, radius){
+  crs_original <- sf::st_crs(glottodata)
+
+  pts <- sf::st_transform(glottodata, sf::st_crs("ESRI:54032")) # convert to equidistant projection: https://epsg.io/54032
+  message(paste0('Buffer created with a radius of ', radius, ' km.'))
+  r <- radius*1000 # convert km to meters because unit of st_buffer should be meters (crs is transformed to equidistant with units = meters, in case lon/lat it would have been degrees.).
+  pols <- sf::st_buffer(x = pts, dist = r)
+
+  # Convert back to original crs
+  pols <- sf::st_transform(pols, crs_original)
+
+  return(pols)
+}
+
+#' Create Thiessen polygons
+#'
+#' @param glottodata spatial glottodata without metadata
+#' @keywords internal
+#' @return
+#' @export
+#'
+#' @examples
+#' glottodata <- glottofilter(country = "Netherlands")
+glottospace_thiessen <- function(glottodata){
+  crs_original <- sf::st_crs(glottodata)
+  pts <- sf::st_transform(glottodata, sf::st_crs("ESRI:54032")) # convert to equidistant projection: https://epsg.io/54032
+
+  pols <- sf::st_collection_extract(sf::st_voronoi(do.call(c, sf::st_geometry(pts))))
+  pols <- sf::st_set_crs(x = pols, value = sf::st_crs(pts))
+
+  # match glottopols to glottopoints:
+  pts$pols <- pols[unlist(sf::st_intersects(pts, pols))]
+  pols <- sf::st_drop_geometry(pts) %>% dplyr::relocate(pols, .after = last_col()) %>% dplyr::rename(geometry = pols)
+  pols <- sf::st_set_geometry(pols, "geometry")
+
+  # crop to country boundaries
+  countries <- unique(pols$country)
+  countries <- rnaturalearth::ne_countries(country = countries, returnclass = "sf", scale = "medium")
+  countries <- sf::st_transform(countries, crs = sf::st_crs("ESRI:54032") ) %>% sf::st_geometry()
+
+  # merge polygons
+  boundary <- sf::st_union(countries) %>% sf::st_make_valid(boundary)
+  pols <- suppressWarnings(sf::st_intersection(pols, boundary) ) # crop to boundaries
+
+  # Convert back to original crs
+  pols <- sf::st_transform(pols, crs_original)
+  pols <- sf::st_wrap_dateline(pols, options = c("WRAPDATELINE=YES","DATELINEOFFSET=180"), quiet = TRUE)
+  pols <- pols %>% sf::st_make_valid()
+
+  return(pols)
+
+}
 
 #' Convert glottodata with lat/lon columns to simple feature class
 #'

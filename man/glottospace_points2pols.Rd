@@ -30,8 +30,7 @@ glottospace_points2pols(
 Convert glottopoints to polygons
 }
 \examples{
-gb <- glottobooster(glottologdata = glottobase)
-gbsa <- glottofilter(glottodata = gb, continent = "South America")
+glottopoints <- glottofilter(continent = "South America")
 
 pols <- glottospace_points2pols(glottopoints = gbsa, method = "thiessen", continent = "South America")
 plot(pols[,"family_size"])
