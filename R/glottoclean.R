@@ -78,27 +78,15 @@ glottorecode_missing <- function(glottodata, tona){
 
   stopifnot(glottocheck_isglottodata(glottodata))
 
-  if(glottocheck_hasmeta(glottodata) ){
-    glottometa <- glottodata[names(glottodata) != "glottodata"]
-    glottodata <- glottodata[["glottodata"]]
-    hasmeta <- TRUE
-  } else {
-    hasmeta <- FALSE
-  }
+  splitted <- glottosplit(glottodata)
+  glottodata <- splitted[[1]]
 
-  glottodata <- glottodata %>% naniar::replace_with_na_all(condition = ~. %in% tona)
-
-  # glottodata %>% dplyr::mutate(var002 = replace(var002, which(var002 %in% c("a", "b", "c") ), NA))
-  # glottodata %>% mutate(var002 = na_if(var002, var002 %in% c("a", "b", "c") ))
-  # purrr::map_dfc(glottodata, ~purrr::na_set(~.x %in% tona))
-  # data <- dplyr::recode_df(data = glottodata, old = tona, new = NA)
-  # glottodata %>% dplyr::mutate(dplyr::across(dplyr::where(~.x %in% tona)))
+  glottodata <- data.frame(lapply(glottodata, recode_tona, tona = tona))
 
   message("Missing values recoded to NA \n")
 
-  if(hasmeta){
-    glottodata <- glottojoin_meta(glottodata = glottodata, glottometa = glottometa)
-  }
+  if(any(!is.na(splitted[[2]]))){glottodata <- glottojoin(glottodata = glottodata, with = splitted[[2]])}
+
   glottodata
 }
 

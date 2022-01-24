@@ -2,13 +2,13 @@
 
 #' Join glottodata with other objects, datasets, or databases.
 #'
-#' @param glottodata A glottodata table or glottodata list.
+#' @param glottodata glottodata or glottosubdata
 #' @param with Optional: glottodata (class data.frame), a dist object (class dist), or the name of a glottodatabase ("glottobase" or "glottospace")
 #' @param id By default, data is joined by a column named "glottocode". If the glottocodes are in another column, the column name should be specified.
 #' @param rm.na Only used when joining with a dist object. By default NAs are kept.
 #' @param type In case two glottodata objects are joined, you can specify the type of join: "left" (default), "right", "full", or "inner"
-#' @param ... Additional arguments in case two glottodata objects are joined, see: ?dplyr::join
 #'
+#' @seealso glottosplit
 #' @return
 #' @export
 #'
@@ -25,10 +25,14 @@
 #' glottosubdata <- glottocreate_subdata(glottocodes = c("yucu1253", "tani1257"), variables = 3, groups = c("a", "b"), n = 2, meta = FALSE)
 #' glottodatatable <- glottojoin(glottodata = glottosubdata)
 #'
-glottojoin <- function(glottodata, with = NULL, id = NULL, rm.na = FALSE, type = "left", ...){
+glottojoin <- function(glottodata, with = NULL, id = NULL, rm.na = FALSE, type = "left"){
   if(glottocheck_isglottosubdata(glottodata) & is.null(with)){
-    joined <- glottojoin_subdata(glottosubdata = glottodata)
+    splitted <- glottosplit(glottodata)
+    joined <- glottojoin_subdata(glottosubdata = splitted[[1]])
+    if(any(!is.na(splitted[[2]]))){joined <- glottojoin(glottodata = joined, with = splitted[[2]])}
+
   } else if(!is.null(with)){
+    glottodata <- glottosplit(glottodata)[[1]]
       if(is_dist(with)){
       joined <- glottojoin_dist(glottodata = glottodata, id = id, dist = with, rm.na = rm.na)
       } else if(glottocheck_hasmeta(with)){

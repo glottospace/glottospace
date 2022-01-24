@@ -38,6 +38,11 @@ recode_df <- function(data, old, new){
   apply(data, MARGIN = 2, FUN = recode_vector, old = old, new = new)
 }
 
+recode_tona <- function(x, tona){
+  x[which(x %in% tona)] <- NA
+  x
+}
+
 recode_vector <- function(vector, old, new){
   vector[which(vector %in% old)] <- new
   return(vector)
