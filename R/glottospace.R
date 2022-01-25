@@ -4,10 +4,8 @@
 #' This function takes glottodata (either with or without metadata) and turns it into spatial points or polygons.
 #'
 #' @param glottodata A glottodata table, or list of a glottodata table and metadata table(s)
-#' @param method In case output should be polygons, interpolation method, either "buffer" or "voronoi" (synonymous with "thiessen")
+#' @param method Interpolation method, either "buffer" or "voronoi" (synonymous with "thiessen")
 #' @param radius In case interpolation method "buffer", the radius in km.
-#' @param country Optionally mask output by country boundaries
-#' @param continent Optionally mask output by continent boundaries
 #'
 #' @return
 #' @export
@@ -16,7 +14,7 @@
 #' glottodata <- glottoget("demodata", meta = TRUE)
 #' glottospacedata <- glottospace(glottodata)
 #'
-glottospace <- function(glottodata, method = NULL, radius = NULL, country = NULL, continent = NULL){
+glottospace <- function(glottodata, method = NULL, radius = NULL){
 
   stopifnot(glottocheck_isglottodata(glottodata))
   splitted <- glottosplitmerge(glottodata)
@@ -26,8 +24,12 @@ glottospace <- function(glottodata, method = NULL, radius = NULL, country = NULL
     glottodata <- glottospace_addcoords(glottodata)
   }
 
-  if(any( c(!is.null(method), !is.null(radius), !is.null(country), !is.null(continent) ) ) ){
-    glottodata <- glottospace_points2pols(glottopoints = glottodata, method = method, radius = radius, country = country, continent = continent)
+  if(method == "thiessen" | method == "voronoi"){
+    glottodata <- glottospace_thiessen(glottodata = glottodata)
+  }
+
+  if(method == "buffer"){
+    glottodata <- glottospace_buffer(glottodata = glottodata, radius = radius)
   }
 
   glottodata <- glottosplitmerge(glottodata = glottodata, splitted = splitted)
@@ -35,69 +37,7 @@ glottospace <- function(glottodata, method = NULL, radius = NULL, country = NULL
 return(glottodata)
 }
 
-#' Convert glottopoints to polygons
-#'
-#' @param glottopoints geoglot object (glottopoints)
-#' @param method Interpolation method, either "buffer" or "voronoi" (synonymous with "thiessen")
-#' @param radius In case interpolation method "buffer", the radius in km.
-#' @param country Optionally mask output by country boundaries
-#' @param continent Optionally mask output by continent boundaries
-#'
-#' @return
-#' @export
-#' @keywords internal
-#' @examples
-#' glottopoints <- glottofilter(continent = "South America")
-#'
-#' pols <- glottospace_points2pols(glottopoints = gbsa, method = "thiessen", continent = "South America")
-#' plot(pols[,"family_size"])
-glottospace_points2pols <- function(glottopoints, method = NULL, radius = NULL, country = NULL, continent = NULL){
-  if(is.null(method)){method <- "buffer"}
-  glottopoints <- contransform_lonlat(glottopoints)
-  # Alternative could be to convert to equidistant projection: https://epsg.io/54032
-  epsg_utm <- lonlat2utm(sf::st_coordinates(glottopoints))
-  pts <- sf::st_transform(glottopoints, sf::st_crs(epsg_utm))
-  if(method == "buffer"){
-    message(paste0('Buffer created with a radius of ', radius, ' km.'))
-    radius <- radius*1000 # convert km to meters because unit of st_buffer should be meters (crs is transformed to utm, in case lon/lat it would have been degrees.).
-    pols <- sf::st_buffer(x = pts, dist = radius)
-
-  }
-  if(method == "voronoi" | method == "thiessen"){
-    # Interpolate categorical data (e.g. family)
-    # https://rspatial.org/raster/analysis/4-interpolation.html
-    # https://r-spatial.github.io/sf/reference/geos_unary.html
-
-    pols <- sf::st_collection_extract(sf::st_voronoi(do.call(c, sf::st_geometry(pts))))
-    # st_crs(pols) <- st_crs(pts)
-    pols <- sf::st_set_crs(x = pols, value = sf::st_crs(pts))
-    # match them to glottopoints:
-    pts$pols <- pols[unlist(sf::st_intersects(pts, pols))]
-    pts$points <- pts$geometry # these lines are redundant because I could just set the active geometry to the polygons, but for the user this seems more intuitive
-    pols <- sf::st_drop_geometry(pts) %>% dplyr::relocate(pols, .after = last_col()) %>% dplyr::rename(geometry = pols)
-    pols <- sf::st_set_geometry(pols, "geometry")
-    if(!is.null(radius)){message("argument 'radius' not relevant for the specified interpolation method.")}
-  }
-
-  if(!purrr::is_empty(country) | !purrr::is_empty(continent) ){
-    country <- rnaturalearth::ne_countries(country = country, continent = continent, returnclass = "sf", scale = "medium")
-    country <- sf::st_geometry(country)
-    country <- sf::st_transform(country, sf::st_crs(epsg_utm))
-    # merge polygons
-    unicountry <- sf::st_union(country)
-    unicountry <- sfheaders::sf_remove_holes(unicountry)
-    pols <- suppressWarnings(sf::st_intersection(pols, unicountry) ) # crop to country boundaries
-  } else if (!purrr::is_empty(country) & !purrr::is_empty(country)) {
-    stop("Please supply either country or continent, noth both")
-  }
-
-  # Convert back to WGS84
-  pols <- sf::st_transform(pols, crs = 4326)
-
-  return(pols)
-}
-
-#' Create buffer around glottopoint
+#' Create buffer around glottopoints
 #'
 #' @param glottodata spatial glottodata without metadata
 #' @param radius radius in kilometers
@@ -130,6 +70,7 @@ glottospace_buffer <- function(glottodata, radius){
 #'
 #' @examples
 #' glottodata <- glottofilter(country = "Netherlands")
+#' glottodata <- glottofilter(continent = "South America")
 glottospace_thiessen <- function(glottodata){
   crs_original <- sf::st_crs(glottodata)
   pts <- sf::st_transform(glottodata, sf::st_crs("ESRI:54032")) # convert to equidistant projection: https://epsg.io/54032
@@ -142,13 +83,23 @@ glottospace_thiessen <- function(glottodata){
   pols <- sf::st_drop_geometry(pts) %>% dplyr::relocate(pols, .after = last_col()) %>% dplyr::rename(geometry = pols)
   pols <- sf::st_set_geometry(pols, "geometry")
 
-  # crop to country boundaries
+  # Select boundaries
   countries <- unique(pols$country)
-  countries <- rnaturalearth::ne_countries(country = countries, returnclass = "sf", scale = "medium")
-  countries <- sf::st_transform(countries, crs = sf::st_crs("ESRI:54032") ) %>% sf::st_geometry()
+  countrypols <- rnaturalearth::ne_countries(country = countries, returnclass = "sf", scale = "medium")
+  continents <- unique(countrypols$continent)
+  continentpols <- rnaturalearth::ne_countries(continent = continents, returnclass = "sf", scale = "medium")
+
+  # Threshold above which Thiessen polygons should be cropped to continental boundaries (instead of countries).
+  if(sum(countrypols$name %in% continentpols$name) / length(continentpols$name) > 0.8){
+    boundarypols <- continentpols
+  } else {
+    boundarypols <- countrypols
+  }
+
+  boundarypols <- sf::st_transform(boundarypols, crs = sf::st_crs("ESRI:54032") ) %>% sf::st_geometry()
 
   # merge polygons
-  boundary <- sf::st_union(countries) %>% sf::st_make_valid(boundary)
+  boundary <- sf::st_union(boundarypols) %>% sf::st_make_valid()
   pols <- suppressWarnings(sf::st_intersection(pols, boundary) ) # crop to boundaries
 
   # Convert back to original crs
@@ -157,7 +108,6 @@ glottospace_thiessen <- function(glottodata){
   pols <- pols %>% sf::st_make_valid()
 
   return(pols)
-
 }
 
 #' Convert glottodata with lat/lon columns to simple feature class

@@ -4,10 +4,12 @@
 \alias{glottospace_thiessen}
 \title{Create Thiessen polygons}
 \usage{
-glottospace_thiessen(glottodata)
+glottospace_thiessen(glottodata, frac = NULL)
 }
 \arguments{
 \item{glottodata}{spatial glottodata without metadata}
+
+\item{frac}{Threshold above which Thiessen polygons should be cropped to continental boundaries (instead of countries). Threshold is given as the number of countries as a fraction of the total number of countries in a continent. If you set frac to 1, only the countries wil be returned.}
 }
 \value{
 
@@ -17,5 +19,6 @@ Create Thiessen polygons
 }
 \examples{
 glottodata <- glottofilter(country = "Netherlands")
+glottodata <- glottofilter(continent = "South America")
 }
 \keyword{internal}

@@ -148,6 +148,7 @@ glottoget_glottospace <- function(){
   glottologdata <- glottologdata %>% dplyr::rename("glottocode" = "id")
   glottospace <- glottospace_coords2sf(glottologdata)
   glottospace <- glottospace[,c("glottocode")]
+  glottospace
 }
 
 

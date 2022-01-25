@@ -2,7 +2,7 @@
 % Please edit documentation in R/glottospace.R
 \name{glottospace_buffer}
 \alias{glottospace_buffer}
-\title{Create buffer around glottopoint}
+\title{Create buffer around glottopoints}
 \usage{
 glottospace_buffer(glottodata, radius)
 }
@@ -15,7 +15,7 @@ glottospace_buffer(glottodata, radius)
 
 }
 \description{
-Create buffer around glottopoint
+Create buffer around glottopoints
 }
 \examples{
 glottodata <- glottofilter(country = "Netherlands")

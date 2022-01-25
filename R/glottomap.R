@@ -6,7 +6,7 @@
 #' @param glottodata Optional, user-provided glottodata. In case no glottodata is provided, you can pass arguments directly to glottofilter.
 #' @param color glottovar, column name, or column index to be used to color features (optional). Run glottovars() to see glottovars
 #' @param label glottovar, column name, or column index to be used to label features (optional). Run glottovars() to see glottovars
-#' @param type One of: "static" or "dynamic". Default is "static".
+#' @param type One of: "static", "dynamic", or "filter". Default is "static".
 #' @param ptsize Size of points between 0 and 1
 #' @param lbsize Size of labels between 0 and 1
 #' @param alpha Transparency of points between 0 (very transparent) and 1 (not transparent)
@@ -15,6 +15,7 @@
 #' @param rivers Do you want to plot rivers (only for static maps)?
 #' @param nclass Preferred number of classes (default is 5)
 #' @param numcat Do numbers represent categories? For example, if your dataset consists of 0 and 1, you might want to set this to TRUE.
+#' @param mode In case type = "filter", you can set mode to either "draw" or "click".
 #' @param crs Coordinate Reference System (only for static maps). Default is World Eckert IV (https://epsg.io/54012)
 #' @param filename Optional filename if you want to save resulting map
 #' @param ... Additional parameters to glottofilter
@@ -42,7 +43,7 @@
 #' glottodata <- glottospotlight(glottodata = glottodata, spotcol =
 #' "family", spotlight = families$family[-c(1:10)], spotcontrast = "family", bgcontrast = "family")
 #' glottomap(glottodata, color = "color")
-glottomap <- function(glottodata = NULL, color = NULL, label = NULL, type = NULL, ptsize = NULL, alpha = NULL, lbsize = NULL, palette = NULL, rivers = FALSE, nclass = NULL, numcat = FALSE, filename = NULL, crs = NULL, shiftrussia = FALSE, ...){
+glottomap <- function(glottodata = NULL, color = NULL, label = NULL, type = NULL, ptsize = NULL, alpha = NULL, lbsize = NULL, palette = NULL, rivers = FALSE, nclass = NULL, numcat = FALSE, filename = NULL, crs = NULL, shiftrussia = FALSE, mode = NULL, ...){
   palette <- glottocolpal(palette = palette)
   if(is.null(type)){type <- "static"}
 
@@ -77,6 +78,10 @@ glottomap <- function(glottodata = NULL, color = NULL, label = NULL, type = NULL
 
   if(type == "static"){
     map <- glottomap_static(glottodata = glottodata, label = label, color = color, ptsize = ptsize, lbsize = lbsize, alpha = alpha, palette = palette, rivers = rivers, nclass = nclass, numcat = numcat, crs = crs)
+  }
+
+  if(type == "filter"){
+    map <- glottofiltermap(glottodata = glottodata, mode = mode)
   }
 
   if(!is.null(filename)){

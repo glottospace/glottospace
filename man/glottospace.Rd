@@ -4,24 +4,14 @@
 \alias{glottospace}
 \title{Make glottodata spatial}
 \usage{
-glottospace(
-  glottodata,
-  method = NULL,
-  radius = NULL,
-  country = NULL,
-  continent = NULL
-)
+glottospace(glottodata, method = NULL, radius = NULL)
 }
 \arguments{
 \item{glottodata}{A glottodata table, or list of a glottodata table and metadata table(s)}
 
-\item{method}{In case output should be polygons, interpolation method, either "buffer" or "voronoi" (synonymous with "thiessen")}
+\item{method}{Interpolation method, either "buffer" or "voronoi" (synonymous with "thiessen")}
 
 \item{radius}{In case interpolation method "buffer", the radius in km.}
-
-\item{country}{Optionally mask output by country boundaries}
-
-\item{continent}{Optionally mask output by continent boundaries}
 }
 \value{
 
