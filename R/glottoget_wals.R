@@ -15,6 +15,7 @@ glottoget_wals <- function(days = NULL){
     vlocal <- wals_version_local()
     if(vremote == vlocal){
       out <- wals_loadlocal()
+      wals_version_localdatereset()
       message(paste("WALS is up-to-date. Version", vlocal, " loaded."))
     } else if(vremote > vlocal){
       out <- wals_download()
@@ -33,6 +34,18 @@ glottoget_wals <- function(days = NULL){
   return(out)
 }
 
+#' Reset last modified date of glottolog
+#'
+#' @return
+#' @export
+#' @keywords internal
+wals_version_localdatereset <- function(){
+  v <- wals_version_local()
+  newestpath <- glottofiles_makepath(paste0("wals-v", v, ".zip"))
+  file.info(newestpath)$mtime
+  Sys.setFileTime(newestpath, Sys.time())
+}
+
 #' Check how long ago WALS data was downloaded
 #' @keywords internal
 #' @return Number of days passed since WALS data was downloaded for the last time
@@ -41,8 +54,8 @@ glottoget_wals <- function(days = NULL){
 wals_date_local <- function(){
   v <- wals_version_local()
   if(v != 0){
-    newestdir <- glottofiles_makepath(paste0("wals-v", v))
-    wals_time <- file.info(newestdir)$ctime
+    newestpath <- glottofiles_makepath(paste0("wals-v", v, ".zip"))
+    wals_time <- file.info(newestpath)$mtime
     daysago <- lubridate::as.duration(lubridate::interval(Sys.time(), wals_time)) %/% lubridate::as.duration(lubridate::days(1))
     return(daysago)
   } else{
@@ -57,7 +70,7 @@ wals_date_local <- function(){
 #' @keywords internal
 #'
 wals_version_remote <- function(){
-  base_url <-  "https://zenodo.org/api/records/596476"
+  base_url <-  "https://zenodo.org/api/records/3606197"
   message("Checking what's the most recent version of WALS ... this might take a while")
   req <- curl::curl_fetch_memory(base_url)
   content <- RJSONIO::fromJSON(rawToChar(req$content))
@@ -83,7 +96,7 @@ wals_download_cldf <- function(){
 #' @keywords internal
 #'
 wals_download_zenodo <- function(){
-  base_url <-  "https://zenodo.org/api/records/596476" # Newest version is always uploaded here!
+  base_url <-  "https://zenodo.org/api/records/3606197" # Newest version is always uploaded here!
   req <- curl::curl_fetch_memory(base_url)
   content <- RJSONIO::fromJSON(rawToChar(req$content))
   url <- content$files[[1]]$links[[1]]
