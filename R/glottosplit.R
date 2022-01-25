@@ -4,10 +4,11 @@
 #' Usually, you will run this function twice, once to split metadata from glottodata, and a second time to join it again.
 #'
 #' @param glottodata glottodata
-#' @param splitted optional, if
+#' @param splitted optional, if provided, the second element of the list will be joined with glottodata
 #'
 #' @return A list of length 2 in case only glottodata is provided, and a merged glottodata object otherwise.
 #' @export
+#' @keywords internal
 #'
 #' @examples
 #' glottodata <- glottoget("demodata", meta = TRUE)
@@ -30,8 +31,8 @@ glottosplitmerge <- function(glottodata, splitted = NULL){
 #'
 #' If data does not contain metadata, the second list element will be NA.
 #'
-#' @param glottodata
-#'
+#' @param glottodata glottodata or glottosubdata (either with or without metadata)
+#' @keywords internal
 #' @return A list of length 2
 #' @export
 #' @seealso glottojoin

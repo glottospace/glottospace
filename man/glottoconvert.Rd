@@ -2,7 +2,7 @@
 % Please edit documentation in R/glottoconvert.R
 \name{glottoconvert}
 \alias{glottoconvert}
-\title{glottoconvert}
+\title{Transform a linguistic dataset into glottodata}
 \usage{
 glottoconvert(
   data,
@@ -36,7 +36,7 @@ glottoconvert(
 
 }
 \description{
-glottoconvert
+Transform a linguistic dataset into glottodata
 }
 \examples{
 \dontrun{

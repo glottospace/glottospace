@@ -2,6 +2,8 @@
 #'
 #' This function restructures glottolog data, and optionally adds/removes data. If you want more flexibility in choosing which data to add/remove, you can use glottoboosterflex().
 #'
+#' This function is used to generate 'glottobase' (the reference dataset used throughout the glottospace R package). The default options generate 'glottobase', which can be loaded directly using glottoget("glottobase").
+#'
 #' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{glottoget_glottolog()}}
 #' @param space Return spatial object?
 #' @param addfamname Add column with familiy names?
@@ -13,10 +15,9 @@
 #' @family <glottobooster>
 #' @return
 #' @export
-#' @keywords internal
 #' @examples
 #' glottologdata <- glottoget("glottolog")
-#' glottologdata <- glottobooster(glottologdata)
+#' glottobase <- glottobooster(glottologdata)
 glottobooster <- function(glottologdata = NULL, space = TRUE,
                                 addfamname = TRUE, addisolates = TRUE,
                                 L1only = TRUE,
@@ -62,6 +63,7 @@ glottobooster <- function(glottologdata = NULL, space = TRUE,
 #' @family <glottobooster>
 #' @return
 #' @export
+#' @keywords internal
 #'
 #' @examples
 #' glottologdata <- glottoget("glottolog")

@@ -26,3 +26,4 @@ glottodata <- glottoget("demodata", meta = TRUE)
 glottodata <- glottorecode(glottodata, tona = c("?", "missing"))
 }
 \concept{<glottorecode><glottoclean>}
+\keyword{internal}

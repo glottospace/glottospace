@@ -13,9 +13,9 @@ glottosearch(
 )
 }
 \arguments{
-\item{search}{Character string to search for, this can be the name of a language, a family, a dialect, a glottocode, isocode.}
+\item{search}{Character string to search for, this can be the name of a language, a family, a glottocode, isocode.}
 
-\item{glottodata}{Any linguistic or cultural dataset. Default is to search within glottolog.}
+\item{glottodata}{Any linguistic or cultural dataset. Default is to search within glottobase.}
 
 \item{partialmatch}{By default, partial matches will be returned as well. In case you only want exact matches, this argument should be set to FALSE.}
 

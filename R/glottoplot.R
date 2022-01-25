@@ -1,7 +1,7 @@
 
-#' Visualize distances
+#' Visualize glottodata or glottodistances
 #'
-#' This function offers different types of visualizations for linguistic distances.
+#' This function offers different types of visualizations for linguistic data and linguistic distances.
 #'
 #' @param type The type of plot: "heatmap", "nmds", or "stress". Default is heatmap if nothing is provided.
 #' @param glottodata glottodata table

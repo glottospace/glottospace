@@ -7,7 +7,7 @@
 glottosearch_exist(search, columns)
 }
 \arguments{
-\item{search}{Glottocode, name of language, family, etc.}
+\item{search}{glottocode, name of language, family, etc.}
 
 \item{columns}{In which column should be searched}
 }

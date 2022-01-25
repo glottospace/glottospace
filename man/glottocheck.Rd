@@ -2,7 +2,7 @@
 % Please edit documentation in R/glottocheck.R
 \name{glottocheck}
 \alias{glottocheck}
-\title{Quality check of user-provided glottodata or glottosubdata}
+\title{Quality check of glottodata or glottosubdata}
 \usage{
 glottocheck(glottodata, diagnostic = TRUE, checkmeta = FALSE)
 }

@@ -43,7 +43,7 @@ glottoclean <- function(glottodata, tona = NULL, tofalse = NULL, totrue = NULL){
 #' @param tona Values to recode to NA
 #' @param tofalse Values to recode to FALSE
 #' @param totrue Values to recode to TRUE
-#'
+#' @keywords internal
 #' @family <glottorecode><glottoclean>
 #' @return
 #' @export

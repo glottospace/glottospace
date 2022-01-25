@@ -7,7 +7,7 @@
 glottosplit(glottodata)
 }
 \arguments{
-\item{glottodata}{}
+\item{glottodata}{glottodata or glottosubdata (either with or without metadata)}
 }
 \value{
 A list of length 2
@@ -26,3 +26,4 @@ merged <- glottojoin(splitted[[1]], splitted[[2]])
 \seealso{
 glottojoin
 }
+\keyword{internal}

@@ -1,5 +1,5 @@
 
-#' Make glottodata spatial
+#' Make glottodata spatial and generate language polygons from points.
 #'
 #' This function takes glottodata (either with or without metadata) and turns it into spatial points or polygons.
 #'
@@ -172,6 +172,7 @@ glottospace_addcountries <- function(glottodata){
 #'
 #' @param glottodata User-provided glottodata
 #' @return glottodata with a GEOMETRY column
+#' @keywords internal
 #' @export
 #' @examples
 #' glottodata <- glottoget("demodata")

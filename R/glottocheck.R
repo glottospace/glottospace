@@ -1,4 +1,4 @@
-#' Quality check of user-provided glottodata or glottosubdata
+#' Quality check of glottodata or glottosubdata
 #'
 #' This function first checks whether a dataset is glottodata or glottosubdata, and depending on the result calls glottocheck_data or glottocheck_subdata.
 #'

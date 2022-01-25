@@ -70,3 +70,4 @@ Other <glottobooster>:
 \code{\link{glottobooster}()}
 }
 \concept{<glottobooster>}
+\keyword{internal}

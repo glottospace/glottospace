@@ -2,7 +2,7 @@
 % Please edit documentation in R/glottospace.R
 \name{glottospace}
 \alias{glottospace}
-\title{Make glottodata spatial}
+\title{Make glottodata spatial and generate language polygons from points.}
 \usage{
 glottospace(glottodata, method = NULL, radius = NULL)
 }

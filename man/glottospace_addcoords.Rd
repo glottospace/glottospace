@@ -20,3 +20,4 @@ If glottodata does not contain a geometry column, it will be added.
 glottodata <- glottoget("demodata")
 glottospace_addcoords(glottodata)
 }
+\keyword{internal}

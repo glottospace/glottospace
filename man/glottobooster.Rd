@@ -35,9 +35,12 @@ glottobooster(
 \description{
 This function restructures glottolog data, and optionally adds/removes data. If you want more flexibility in choosing which data to add/remove, you can use glottoboosterflex().
 }
+\details{
+This function is used to generate 'glottobase' (the reference dataset used throughout the glottospace R package). The default options generate 'glottobase', which can be loaded directly using glottoget("glottobase").
+}
 \examples{
 glottologdata <- glottoget("glottolog")
-glottologdata <- glottobooster(glottologdata)
+glottobase <- glottobooster(glottologdata)
 }
 \seealso{
 Other <glottobooster>: 
@@ -54,4 +57,3 @@ Other <glottobooster>:
 \code{\link{glottoboosterflex}()}
 }
 \concept{<glottobooster>}
-\keyword{internal}

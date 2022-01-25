@@ -1,7 +1,8 @@
 
-#' Create static and dynamic maps from glottodata
+#' Create static and dynamic maps from glottodata, or select languages from a map
 #'
-#' Create static and dynamic maps from glottodata
+#' With this function you can easily create static and dynamic maps from glottodata (by setting type to 'static' or 'dynamic').
+#' Alternatively, by specifying type = "filter", you can select languages by drawing/clicking on a map.
 #'
 #' @param glottodata Optional, user-provided glottodata. In case no glottodata is provided, you can pass arguments directly to glottofilter.
 #' @param color glottovar, column name, or column index to be used to color features (optional). Run glottovars() to see glottovars
@@ -16,7 +17,7 @@
 #' @param nclass Preferred number of classes (default is 5)
 #' @param numcat Do numbers represent categories? For example, if your dataset consists of 0 and 1, you might want to set this to TRUE.
 #' @param mode In case type = "filter", you can set mode to either "draw" or "click".
-#' @param crs Coordinate Reference System (only for static maps). Default is World Eckert IV (https://epsg.io/54012)
+#' @param projection For static maps, you can choose one of the following: 'eqarea' (equal-area Eckert IV, default), 'pacific' (Pacific-centered), or any other Coordinate Reference System, specified using an EPSG code (https://epsg.io/).
 #' @param filename Optional filename if you want to save resulting map
 #' @param ... Additional parameters to glottofilter
 #'
@@ -43,7 +44,7 @@
 #' glottodata <- glottospotlight(glottodata = glottodata, spotcol =
 #' "family", spotlight = families$family[-c(1:10)], spotcontrast = "family", bgcontrast = "family")
 #' glottomap(glottodata, color = "color")
-glottomap <- function(glottodata = NULL, color = NULL, label = NULL, type = NULL, ptsize = NULL, alpha = NULL, lbsize = NULL, palette = NULL, rivers = FALSE, nclass = NULL, numcat = FALSE, filename = NULL, crs = NULL, shiftrussia = FALSE, mode = NULL, ...){
+glottomap <- function(glottodata = NULL, color = NULL, label = NULL, type = NULL, ptsize = NULL, alpha = NULL, lbsize = NULL, palette = NULL, rivers = FALSE, nclass = NULL, numcat = FALSE, filename = NULL, projection = NULL, shiftrussia = FALSE, mode = NULL, ...){
   palette <- glottocolpal(palette = palette)
   if(is.null(type)){type <- "static"}
 
@@ -77,7 +78,7 @@ glottomap <- function(glottodata = NULL, color = NULL, label = NULL, type = NULL
   }
 
   if(type == "static"){
-    map <- glottomap_static(glottodata = glottodata, label = label, color = color, ptsize = ptsize, lbsize = lbsize, alpha = alpha, palette = palette, rivers = rivers, nclass = nclass, numcat = numcat, crs = crs)
+    map <- glottomap_static(glottodata = glottodata, label = label, color = color, ptsize = ptsize, lbsize = lbsize, alpha = alpha, palette = palette, rivers = rivers, nclass = nclass, numcat = numcat, projection = projection)
   }
 
   if(type == "filter"){
@@ -141,7 +142,7 @@ glottomap_dynamic <- function(glottodata, label = NULL, color = NULL, ptsize = N
 #' @param rivers Do you want to plot rivers?
 #' @param nclass Preferred number of classes (default is 5)
 #' @param numcat Do numbers represent categories? For example, if your dataset consists of 0 and 1, you might want to set this to TRUE.
-#' @param crs Coordinate Reference System, specified using an EPSG code (https://epsg.io/). Default is World Eckert IV (https://epsg.io/54012)
+#' @param projection One of: 'eqarea' (equal-area Eckert IV, default), 'pacific' (Pacific-centered), or any other Coordinate Reference System, specified using an EPSG code (https://epsg.io/).
 #'
 #' @return
 #' @keywords internal
@@ -152,7 +153,46 @@ glottomap_dynamic <- function(glottodata, label = NULL, color = NULL, ptsize = N
 #' glottodata <- glottofilter(continent = "South America")
 #' glottodata <- glottofilter(country = c("Netherlands", "Germany", "Belgium") )
 #' glottomap_static(glottodata)
-glottomap_static <- function(glottodata, label = NULL, color = NULL, ptsize = 1, lbsize = NULL, alpha = 1, palette = NULL, rivers = FALSE, nclass = NULL, numcat = FALSE, crs = NULL){
+glottomap_static <- function(glottodata, projection = NULL, label = NULL, color = NULL, ptsize = 1, lbsize = NULL, alpha = 1, palette = NULL, rivers = FALSE, nclass = NULL, numcat = FALSE){
+  if(is.null(projection)){projection <- "eqarea"}
+
+  if(projection == "pacific" | projection == "Pacific" | projection == "pacific-centered" | projection == "Pacific-centered"){
+    glottomap_static_pacific(glottodata = glottodata)
+  } else if(projection == "eqarea" | projection == "equal-area" | projection == "equalarea"){
+    glottomap_static_crs(glottodata, crs = NULL, label = label, color = color, ptsize = ptsize, lbsize = lbsize, alpha = alpha, palette = palette, rivers = rivers, nclass = nclass, numcat = numcat)
+  } else {
+    glottomap_static_crs(glottodata, crs = projection, label = label, color = color, ptsize = ptsize, lbsize = lbsize, alpha = alpha, palette = palette, rivers = rivers, nclass = nclass, numcat = numcat)
+  }
+}
+
+
+
+#' Create a static (equal-area) map with glottodata
+#'
+#' This function returns a static map with glottodata. Data is projected using the equal-area Eckert IV projection (following McNew et al. 2018). See \url{https://epsg.io/54012} and \url{https://en.wikipedia.org/wiki/Eckert_IV_projection}.
+#'
+#' @param glottodata User-provided glottodata (either glottopoints or glottopols)
+#' @param color column name or index to be used to color features (optional), or a color "black"
+#' @param label Column name or index to be used to label features (optional)
+#' @param ptsize Point size between 0 and 1
+#' @param lbsize Label size between 0 an 1
+#' @param alpha Transparency of points between 0 (very transparent) and 1 (not transparent)
+#' @param palette Color palette, see glottocolpal("all") for possible options
+#' @param rivers Do you want to plot rivers?
+#' @param nclass Preferred number of classes (default is 5)
+#' @param numcat Do numbers represent categories? For example, if your dataset consists of 0 and 1, you might want to set this to TRUE.
+#' @param crs Coordinate Reference System, specified using an EPSG code (https://epsg.io/). Default is World Eckert IV (https://epsg.io/54012)
+#'
+#' @return
+#' @keywords internal
+#' @export
+#' @noRd
+#'
+#' @examples
+#' glottodata <- glottofilter(continent = "South America")
+#' glottodata <- glottofilter(country = c("Netherlands", "Germany", "Belgium") )
+#' glottomap_static_crs(glottodata)
+glottomap_static_crs <- function(glottodata, label = NULL, color = NULL, ptsize = 1, lbsize = NULL, alpha = 1, palette = NULL, rivers = FALSE, nclass = NULL, numcat = FALSE, crs = NULL){
   suppressMessages(tmap::tmap_mode("plot"))
   if(is.null(ptsize)){ptsize <- 0.5}
   if(is.null(crs)){crs <- "ESRI:54012"} # https://epsg.io/54012
@@ -204,34 +244,44 @@ glottomap_static <- function(glottodata, label = NULL, color = NULL, ptsize = 1,
     {if(glottospotlight_legend(glottodata)[[1]]){tmap::tm_add_legend(col = glottospotlight_legend(glottodata)$col, labels = glottospotlight_legend(glottodata)$labels)} }
 }
 
-glottomap_static_ggplot <- function(glottodata){
+#' Create a static (Pacific-centered) map with glottodata
+#'
+#' This function returns a static map with glottodata. Data is projected using the Robinson projection centered at the Pacific.
+#'
+#' @param glottodata
+#'
+#' @return
+#' @export
+#' @noRd
+#'
+#' @examples
+#' glottodata <- glottofilter(continent = "South America")
+#' glottodata <- glottofilter(country = c("Netherlands", "Germany", "Belgium") )
+#' glottomap_static(glottodata)
+glottomap_static_pacific <- function(glottodata, color = NULL){
+  if(is.null(color)){color <- "black"}
   world <- rnaturalearth::ne_countries(scale = 50, returnclass = "sf")
-  world <- world %>% st_make_valid()
+  world <- world %>% sf::st_make_valid()
 
   # From here: https://stackoverflow.com/questions/56146735/visual-bug-when-changing-robinson-projections-central-meridian-with-ggplot2
-  # define a long & slim polygon that overlaps the meridian line & set its CRS to match
-  # that of world
-  polygon <- st_polygon(x = list(rbind(c(-0.0001, 90),
-                                       c(0, 90),
-                                       c(0, -90),
-                                       c(-0.0001, -90),
-                                       c(-0.0001, 90)))) %>%
-    st_sfc() %>%
-    st_set_crs(4326)
+  # define a long & slim polygon that overlaps the meridian line & set its CRS to match that of world
+  polygon <- sf::st_polygon(x = list(rbind(c(-0.0001, 90), c(0, 90), c(0, -90), c(-0.0001, -90), c(-0.0001, 90)))) %>%
+    sf::st_sfc() %>%
+    sf::st_set_crs(sf::st_crs(world))
 
   # modify world dataset to remove overlapping portions with world's polygons
-  world2 <- world %>% st_difference(polygon)
+  world2 <- world %>% sf::st_difference(polygon)
 
   # perform transformation on modified version of world dataset
   # Note +lon_0=180 instead of 0
-  world_robinson <- st_transform(world2,
+  world_robinson <- sf::st_transform(world2,
                                  crs = '+proj=robin +lon_0=180 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs')
 
   # plot
-  ggplot() +
-    geom_sf(data = world_robinson) +
-    geom_sf(data = glottodata, aes(color = family)) +
-    theme(legend.position = "none")
+  ggplot2::ggplot() +
+    ggplot2::geom_sf(data = world_robinson) +
+    ggplot2::geom_sf(data = glottodata, ggplot2::aes(color = color)) +
+    ggplot2::theme(legend.position = "none")
 
 
 }

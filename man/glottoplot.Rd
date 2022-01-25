@@ -2,7 +2,7 @@
 % Please edit documentation in R/glottoplot.R
 \name{glottoplot}
 \alias{glottoplot}
-\title{Visualize distances}
+\title{Visualize glottodata or glottodistances}
 \usage{
 glottoplot(
   glottodata = NULL,
@@ -39,7 +39,7 @@ glottoplot(
 
 }
 \description{
-This function offers different types of visualizations for linguistic distances.
+This function offers different types of visualizations for linguistic data and linguistic distances.
 }
 \examples{
 Plot glottodist as nmds:

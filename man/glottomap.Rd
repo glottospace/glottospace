@@ -2,7 +2,7 @@
 % Please edit documentation in R/glottomap.R
 \name{glottomap}
 \alias{glottomap}
-\title{Create static and dynamic maps from glottodata}
+\title{Create static and dynamic maps from glottodata, or select languages from a map}
 \usage{
 glottomap(
   glottodata = NULL,
@@ -59,7 +59,8 @@ Alternatively, you could also run tmaptools::palette_explorer(), RColorBrewer::d
 
 }
 \description{
-Create static and dynamic maps from glottodata
+With this function you can easily create static and dynamic maps from glottodata (by setting type to 'static' or 'dynamic').
+Alternatively, by specifying type = "filter", you can select languages by drawing/clicking on a map.
 }
 \examples{
 glottomap(country = "Netherlands")

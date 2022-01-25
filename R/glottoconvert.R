@@ -1,5 +1,5 @@
 
-#' glottoconvert
+#' Transform a linguistic dataset into glottodata
 #'
 #' @param data Dataset to be transformed to glottodata
 #' @param glottocode column name or column id with glottocodes

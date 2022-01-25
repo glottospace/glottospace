@@ -2,7 +2,7 @@
 % Please edit documentation in R/glottocode.R
 \name{glottocode_exists}
 \alias{glottocode_exists}
-\title{Check whether glottocodes exist in glottolog}
+\title{Check whether a set of glottocodes exist in glottolog}
 \usage{
 glottocode_exists(glottocode)
 }
@@ -13,7 +13,7 @@ glottocode_exists(glottocode)
 A logical vector
 }
 \description{
-Check whether glottocodes exist in glottolog
+Check whether a set of glottocodes exist in glottolog
 }
 \examples{
 glottocode_exists(c("yucu1253"))
@@ -26,3 +26,4 @@ Other <glottocheck><glottosearch>:
 \code{\link{glottosubcode_valid}()}
 }
 \concept{<glottocheck><glottosearch>}
+\keyword{internal}
