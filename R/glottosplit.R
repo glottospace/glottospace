@@ -49,7 +49,7 @@ glottosplit <- function(glottodata){
         glottosplit[[1]] <- glottodata[["glottodata"]]
         glottosplit[[2]] <- glottodata[names(glottodata) != "glottodata"]
       } else {
-        glottosplit[[1]] <- glottosimplify(glottodata)
+        glottosplit[[1]] <- glottosimplify(glottodata, dropspatial = FALSE)
         glottosplit[[2]] <- NA
       }
   } else if (glottocheck_isglottosubdata(glottodata)){

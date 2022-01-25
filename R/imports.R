@@ -2,7 +2,7 @@
 #'
 #' @name %>%
 #' @rdname pipe
-#' @keywords internal
+#' @noRd
 #' @export
 #' @importFrom magrittr %>%
 NULL
@@ -11,7 +11,7 @@ NULL
 #'
 #' @name %nin%
 #' @rdname nin
-#' @keywords internal
+#' @noRd
 #' @export
 #' @importFrom Hmisc %nin%
 NULL

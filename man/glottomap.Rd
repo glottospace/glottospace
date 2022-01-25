@@ -19,6 +19,7 @@ glottomap(
   filename = NULL,
   crs = NULL,
   shiftrussia = FALSE,
+  mode = NULL,
   ...
 )
 }
@@ -29,7 +30,7 @@ glottomap(
 
 \item{label}{glottovar, column name, or column index to be used to label features (optional). Run glottovars() to see glottovars}
 
-\item{type}{One of: "static" or "dynamic". Default is "static".}
+\item{type}{One of: "static", "dynamic", or "filter". Default is "static".}
 
 \item{ptsize}{Size of points between 0 and 1}
 
@@ -49,6 +50,8 @@ Alternatively, you could also run tmaptools::palette_explorer(), RColorBrewer::d
 \item{filename}{Optional filename if you want to save resulting map}
 
 \item{crs}{Coordinate Reference System (only for static maps). Default is World Eckert IV (https://epsg.io/54012)}
+
+\item{mode}{In case type = "filter", you can set mode to either "draw" or "click".}
 
 \item{...}{Additional parameters to glottofilter}
 }

@@ -30,6 +30,12 @@
 glottoplot <- function(glottodata = NULL, glottodist = NULL, type = NULL, k = NULL, rm.na = FALSE,
                        color = NULL, ptsize = NULL, label = NULL, filename = NULL){
   if(is.null(type)){type <- "heatmap"}
+  if(is_dist(glottodata)){
+    glottodist <- glottodata
+  }
+  if(glottocheck_isglottodata(glottodist)){
+    glottodata <- glottodist
+  }
 
   if(type == "heatmap"){
     glottoplot_heatmap(glottodist = glottodist, filename = filename)

@@ -21,6 +21,6 @@ This function takes glottodata (either with or without metadata) and turns it in
 }
 \examples{
 glottodata <- glottoget("demodata", meta = TRUE)
-glottospacedata <- glottospace(glottodata)
+glottospacedata <- glottospace(glottodata, method = "voronoi")
 
 }

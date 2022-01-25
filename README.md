@@ -3,12 +3,12 @@
 
 # glottospace <img src='man/figures/logo.png' align="right" height="139" />
 
-# glottospace: R package for the geospatial analysis of linguistic and cultural data.
+# glottospace: R package for language mapping and geolinguistics.
 
 <!-- badges: start -->
 
 [![Lifecycle:
-experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 <!-- badges: end -->
 
 # Introduction
@@ -57,7 +57,7 @@ about it presenting its full functionality. If you find the
     #>   @Article{,
     #>     title = {glottospace: R package for the geospatial analysis of linguistic and cultural data},
     #>     author = {{Norder} and S.J. et al.},
-    #>     journal = {R package version 0.0.4},
+    #>     journal = {R package version 0.0.72},
     #>     year = {2021},
     #>     url = {https://github.com/SietzeN/glottospace},
     #>   }
@@ -66,7 +66,7 @@ The package uses two global databases:
 [glottolog](https://glottolog.org/) and [WALS](https://wals.info/). In
 addition, **glottospace** builds on a combination of
 [spatial](https://www.r-pkg.org/ctv/Spatial) and non-spatial packages,
-including **sf**, **raster**, **tmap**, **mapview**, **rnaturalearth**,
+including **sf**, **terra**, **tmap**, **mapview**, **rnaturalearth**,
 and **dplyr**. If you use **glottospace** in one of your publications,
 please cite these data sources and packages as well.
 
@@ -110,7 +110,7 @@ interpolate the points and plot those.
 ## Filter by continent
 glottopoints <- glottofilter(continent = "South America")
 # Interpolate points to polygons:
-glottopols <- glottospace(glottopoints, method = "voronoi", continent = "South America")
+glottopols <- glottospace(glottopoints, method = "voronoi")
 # Plot polygon data:
 glottomap(glottodata = glottopols, color = "family_size_rank")
 ```
@@ -186,10 +186,9 @@ data("glottobase")
 glottobase <- glottoget("glottobase")
 colnames(glottobase)
 #>  [1] "glottocode"       "name"             "macroarea"        "isocode"         
-#>  [5] "countries"        "family_id"        "level"            "bookkeeping"     
-#>  [9] "classification"   "parent_id"        "family"           "isolate"         
-#> [13] "family_size"      "family_size_rank" "country"          "continent"       
-#> [17] "region"           "geometry"
+#>  [5] "countries"        "family_id"        "classification"   "parent_id"       
+#>  [9] "family"           "isolate"          "family_size"      "family_size_rank"
+#> [13] "country"          "continent"        "sovereignty"      "geometry"
 ```
 
 ## glottocreate
@@ -212,13 +211,15 @@ several meta tables are included:
 ``` r
 glottodata_meta <- glottocreate_data(glottocodes = c("yucu1253", "tani1257"), variables = 3)
 summary(glottodata_meta)
-#>            Length Class      Mode
-#> glottodata 4      data.frame list
-#> structure  6      data.frame list
-#> metadata   6      data.frame list
-#> references 7      data.frame list
-#> readme     2      data.frame list
-#> lookup     2      data.frame list
+#>              Length Class      Mode
+#> glottodata    4     data.frame list
+#> structure     6     data.frame list
+#> description  11     data.frame list
+#> references    9     data.frame list
+#> remarks       5     data.frame list
+#> contributors  5     data.frame list
+#> readme        2     data.frame list
+#> lookup        2     data.frame list
 ```
 
 The majority of these metatables are added for the convenience of the
@@ -283,7 +284,7 @@ You can also check the metadata:
 ``` r
 glottodata <- glottoget(glottodata = "demodata", meta = TRUE)
 glottocheck_metadata(glottodata)
-#> This glottodataset contains the folowing tables: glottodata, structure, metadata, references, readme, lookup
+#> This glottodataset contains the folowing tables: glottodata, structure, description, references, remarks, contributors, readme, lookup
 #> All types recognized
 #> All weights are specified
 ```
@@ -329,27 +330,25 @@ specific search term
 You can search for a match in all columns:
 
 ``` r
-glottosearch(find = "yurakar")
-#> Simple feature collection with 1 feature and 17 fields
+glottosearch(search = "yurakar")
+#> Simple feature collection with 1 feature and 15 fields
 #> Geometry type: POINT
 #> Dimension:     XY
 #> Bounding box:  xmin: -65.1224 ymin: -16.7479 xmax: -65.1224 ymax: -16.7479
 #> Geodetic CRS:  WGS 84
-#>      glottocode     name     macroarea isocode countries family_id    level
-#> 7546   yura1255 Yuracaré South America     yuz        BO  yura1255 language
-#>      bookkeeping classification parent_id   family isolate family_size
-#> 7546       FALSE           <NA>      <NA> Yuracaré    TRUE           1
-#>      family_size_rank country     continent        region
-#> 7546                1 Bolivia South America South America
-#>                       geometry
-#> 7546 POINT (-65.1224 -16.7479)
+#>      glottocode     name     macroarea isocode countries family_id
+#> 7546   yura1255 Yuracaré South America     yuz        BO  yura1255
+#>      classification parent_id   family isolate family_size family_size_rank
+#> 7546           <NA>      <NA> Yuracaré    TRUE           1                1
+#>      country     continent sovereignty                  geometry
+#> 7546 Bolivia South America     Bolivia POINT (-65.1224 -16.7479)
 ```
 
 Or limit the search to specific columns:
 
 ``` r
-glottosearch(find = "Yucuni", columns = c("name", "family"))
-#> Simple feature collection with 2 features and 17 fields
+glottosearch(search = "Yucuni", columns = c("name", "family"))
+#> Simple feature collection with 2 features and 15 fields
 #> Geometry type: POINT
 #> Dimension:     XY
 #> Bounding box:  xmin: -97.91818 ymin: -0.76075 xmax: -71.0033 ymax: 17.23743
@@ -357,30 +356,29 @@ glottosearch(find = "Yucuni", columns = c("name", "family"))
 #>      glottocode              name     macroarea isocode countries family_id
 #> 7532   yucu1253            Yucuna South America     ycn  BR;CO;PE  araw1281
 #> 7533   yucu1254 Yucunicoco Mixtec North America                MX  otom1299
-#>         level bookkeeping
-#> 7532 language       FALSE
-#> 7533 language       FALSE
 #>                                                      classification parent_id
 #> 7532                            araw1281/japu1236/nucl1764/yucu1252  yucu1252
 #> 7533 otom1299/east2557/amuz1253/mixt1422/mixt1423/mixt1427/sout3179  sout3179
 #>           family isolate family_size family_size_rank  country     continent
 #> 7532    Arawakan   FALSE          77               40 Colombia South America
 #> 7533 Otomanguean   FALSE         182               44   Mexico North America
-#>               region                   geometry
-#> 7532   South America  POINT (-71.0033 -0.76075)
-#> 7533 Central America POINT (-97.91818 17.23743)
+#>      sovereignty                   geometry
+#> 7532    Colombia  POINT (-71.0033 -0.76075)
+#> 7533      Mexico POINT (-97.91818 17.23743)
 ```
 
 Let’s view one of them on [glottolog](https://glottolog.org/):
 
 ``` r
-glottocode_online("yucu1253")
+glottocode("yucu1253")
 ```
+
+<img src="man/figures/README-example_online-1.png" width="100%" />
 
 Sometimes you don’t find a match:
 
 ``` r
-glottosearch(find = "matsigenka")[,"name"]
+glottosearch(search = "matsigenka")[,"name"]
 #> Simple feature collection with 0 features and 1 field
 #> Bounding box:  xmin: NA ymin: NA xmax: NA ymax: NA
 #> Geodetic CRS:  WGS 84
@@ -392,7 +390,7 @@ If you can’t find what you’re looking for, you can increase the
 tolerance:
 
 ``` r
-glottosearch(find = "matsigenka", tolerance = 0.2)[,"name"]
+glottosearch(search = "matsigenka", tolerance = 0.2)[,"name"]
 #> Simple feature collection with 1 feature and 1 field
 #> Geometry type: POINT
 #> Dimension:     XY
@@ -405,7 +403,7 @@ glottosearch(find = "matsigenka", tolerance = 0.2)[,"name"]
 Aha! There it is: ‘Machiguenga’
 
 ``` r
-glottosearch(find = "matsigenka", tolerance = 0.4)[,"name"]
+glottosearch(search = "matsigenka", tolerance = 0.4)[,"name"]
 #> Simple feature collection with 12 features and 1 field
 #> Geometry type: POINT
 #> Dimension:     XY
@@ -432,7 +430,7 @@ filter, select, query
 ``` r
 eurasia <- glottofilter(continent = c("Europe", "Asia"))
 wari <- glottofilter(glottodata = glottodata, glottocode = "wari1268")
-#> No search results. Use glottosearch() first to find what you're looking for
+#> No search results. You might consider using glottosearch() first
 indo_european <- glottofilter(glottodata = glottodata, family = 'Indo-European')
 south_america <- glottofilter(glottodata = glottodata, continent = "South America")
 colovenz <- glottofilter(country = c("Colombia", "Venezuela"))
@@ -476,7 +474,7 @@ glottodist <- glottodist(glottodata = glottodata)
 #> Warning in max(x): no non-missing arguments to max; returning -Inf
 #> Warning in min(x): no non-missing arguments to min; returning Inf
 #> Warning in max(x): no non-missing arguments to max; returning -Inf
-glottoplot(glottodist)
+glottoplot(glottodist = glottodist)
 ```
 
 <img src="man/figures/README-glottoplot-1.png" width="100%" />
@@ -536,17 +534,17 @@ etc.) can be saved with a single command.
 glottodata <- glottoget("demodata", meta = FALSE)
 # Saves as .xlsx
 glottosave(glottodata, filename = "glottodata")
-#> Data.frame saved as glottodata.xlsx
+#> Glottodata (glottodata) saved as glottodata.xlsx
 
 glottospacedata <- glottospace(glottodata)
 # Saves as .GPKG
 glottosave(glottodata, filename = "glottodata")
-#> Data.frame saved as glottodata.xlsx
+#> Glottodata (glottodata) saved as glottodata.xlsx
 
 glottomap <- glottomap(glottodata)
 # By default, static maps are saved as .png, dynamic maps are saved as .html
 glottosave(glottomap, filename = "glottomap")
-#> Map saved to C:\Users\sjnor\surfdrive\PROJECTS_SN\SAPPHIRE\R\glottospace\glottomap.png
+#> Map saved to C:\Users\sjnor\surfdrive\PROJECTS_SN\Rpackages\glottospace\glottomap.png
 #> Resolution: 2510.749 by 1756.448 pixels
 #> Size: 8.369165 by 5.854826 inches (300 dpi)
 #> Map (tmap object) saved as glottomap.png

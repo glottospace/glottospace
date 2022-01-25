@@ -7,7 +7,7 @@
 glottobooster_rmdialects(glottologdata)
 }
 \arguments{
-\item{glottologdata}{data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{glottoget_glottolog()}}}
+\item{glottologdata}{data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{glottoget("glottolog")}}}
 }
 \value{
 

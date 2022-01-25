@@ -12,7 +12,7 @@
 #'
 #' @examples
 #' glottodata <- glottoget("demodata", meta = TRUE)
-#' glottospacedata <- glottospace(glottodata)
+#' glottospacedata <- glottospace(glottodata, method = "voronoi")
 #'
 glottospace <- function(glottodata, method = NULL, radius = NULL){
 
@@ -24,12 +24,14 @@ glottospace <- function(glottodata, method = NULL, radius = NULL){
     glottodata <- glottospace_addcoords(glottodata)
   }
 
+  if(!is.null(method)){
   if(method == "thiessen" | method == "voronoi"){
     glottodata <- glottospace_thiessen(glottodata = glottodata)
   }
 
   if(method == "buffer"){
     glottodata <- glottospace_buffer(glottodata = glottodata, radius = radius)
+  }
   }
 
   glottodata <- glottosplitmerge(glottodata = glottodata, splitted = splitted)

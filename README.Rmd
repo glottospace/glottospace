@@ -20,10 +20,10 @@ knitr::opts_chunk$set(
 # glottospace <img src='man/figures/logo.png' align="right" height="139" />
 
 
-# glottospace: R package for the geospatial analysis of linguistic and cultural data. 
+# glottospace: R package for language mapping and geolinguistics. 
 
 <!-- badges: start -->
-[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+[![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 <!-- badges: end -->
 
 # Introduction
@@ -42,7 +42,7 @@ Once there is a stable version of the package we intend to write a paper about i
 citation("glottospace")
 ```
 
-The package uses two global databases: [glottolog](https://glottolog.org/) and [WALS](https://wals.info/). In addition, **glottospace** builds on a combination of [spatial](https://www.r-pkg.org/ctv/Spatial) and non-spatial packages, including **sf**, **raster**, **tmap**, **mapview**, **rnaturalearth**, and **dplyr**. If you use **glottospace** in one of your publications, please cite these data sources and packages as well. 
+The package uses two global databases: [glottolog](https://glottolog.org/) and [WALS](https://wals.info/). In addition, **glottospace** builds on a combination of [spatial](https://www.r-pkg.org/ctv/Spatial) and non-spatial packages, including **sf**, **terra**, **tmap**, **mapview**, **rnaturalearth**, and **dplyr**. If you use **glottospace** in one of your publications, please cite these data sources and packages as well. 
 
 # Installation
 
@@ -71,7 +71,7 @@ Languages are often represented with points, while in reality the speakers of a 
 ## Filter by continent
 glottopoints <- glottofilter(continent = "South America")
 # Interpolate points to polygons:
-glottopols <- glottospace(glottopoints, method = "voronoi", continent = "South America")
+glottopols <- glottospace(glottopoints, method = "voronoi")
 # Plot polygon data:
 glottomap(glottodata = glottopols, color = "family_size_rank")
 
@@ -185,37 +185,37 @@ As demonstrated in the example above, you can search glottodata for a specific s
 You can search for a match in all columns:
 
 ```{r glottosearch1}
-glottosearch(find = "yurakar")
+glottosearch(search = "yurakar")
 ```
 
 Or limit the search to specific columns:
 
 ``` {r glottosearch2}
-glottosearch(find = "Yucuni", columns = c("name", "family"))
+glottosearch(search = "Yucuni", columns = c("name", "family"))
 
 ```
 
 Let's view one of them on [glottolog](https://glottolog.org/):
 
 ```{r example_online}
-glottocode_online("yucu1253")
+glottocode("yucu1253")
 ```
 
 
 
 Sometimes you don't find a match:
 ```{r glottosearch3}
-glottosearch(find = "matsigenka")[,"name"]
+glottosearch(search = "matsigenka")[,"name"]
 ```
 
 If you can't find what you're looking for, you can increase the tolerance:
 ```{r glottosearch4}
-glottosearch(find = "matsigenka", tolerance = 0.2)[,"name"]
+glottosearch(search = "matsigenka", tolerance = 0.2)[,"name"]
 ```
 
 Aha! There it is: 'Machiguenga'
 ```{r glottosearch5}
-glottosearch(find = "matsigenka", tolerance = 0.4)[,"name"]
+glottosearch(search = "matsigenka", tolerance = 0.4)[,"name"]
 ```
 
 
@@ -255,7 +255,7 @@ Visualizing differences (distances) between languages based on linguistic, cultu
 ```{r glottoplot}
 glottodata <- glottoget("demodata", meta = TRUE)
 glottodist <- glottodist(glottodata = glottodata)
-glottoplot(glottodist)
+glottoplot(glottodist = glottodist)
 ```
 
 

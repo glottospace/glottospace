@@ -4,7 +4,12 @@
 \alias{wals_loadlocal}
 \title{Load locally stored WALS data and join with glottolog}
 \usage{
-wals_loadlocal()
+wals_loadlocal(valuenames = NULL, paramnames = NULL)
+}
+\arguments{
+\item{valuenames}{Should names of the values be added instead of codes?}
+
+\item{paramnames}{Should names of parameters (columns) be added instead of their codes?}
 }
 \value{
 

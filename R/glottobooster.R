@@ -98,7 +98,7 @@ glottoboosterflex <- function(glottologdata = NULL, space = TRUE,
 
 #' Glottolog: add family name
 #'
-#' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{glottoget_glottolog()}}
+#' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{glottoget("glottolog")}}
 #' @keywords internal
 #' @family <glottobooster>
 #' @return
@@ -113,7 +113,7 @@ glottobooster_addfamilyname <- function(glottologdata){
 
 #' Glottolog: add isolates
 #'
-#' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{glottoget_glottolog()}}
+#' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{glottoget("glottolog")}}
 #' @keywords internal
 #' @family <glottobooster>
 #' @return
@@ -133,7 +133,7 @@ glottologdata
 
 #' Glottolog: remove dialects
 #'
-#' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{glottoget_glottolog()}}
+#' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{glottoget("glottolog")}}
 #' @keywords internal
 #' @family <glottobooster>
 #' @return
@@ -144,7 +144,7 @@ glottobooster_rmdialects <- function(glottologdata){
 
 #' Glottolog: remove families
 #'
-#' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{glottoget_glottolog()}}
+#' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{glottoget("glottolog")}}
 #' @keywords internal
 #' @family <glottobooster>
 #' @return
@@ -155,7 +155,7 @@ glottobooster_rmfamilies <- function(glottologdata){
 
 #' Glottolog: remove bookkeeping
 #'
-#' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{glottoget_glottolog()}}
+#' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{glottoget("glottolog")}}
 #' @keywords internal
 #' @family <glottobooster>
 #' @return
@@ -169,7 +169,7 @@ glottobooster_rmbookkeeping <- function(glottologdata){
 
 #' Glottolog: remove artificial families
 #'
-#' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{glottoget_glottolog()}}
+#' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{glottoget("glottolog")}}
 #' @keywords internal
 #' @family <glottobooster>
 #' @return
@@ -181,7 +181,7 @@ glottobooster_rmartifam <- function(glottologdata){
 
 #' Glottolog: remove sign languages
 #'
-#' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{glottoget_glottolog()}}
+#' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{glottoget("glottolog")}}
 #' @keywords internal
 #' @family <glottobooster>
 #' @return
@@ -193,7 +193,7 @@ glottobooster_rmsignlangs <- function(glottologdata){
 
 #' Glottolog: add family size
 #'
-#' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{glottoget_glottolog()}}
+#' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{glottoget("glottolog")}}
 #' @keywords internal
 #' @family <glottobooster>
 #' @return
@@ -206,7 +206,7 @@ glottologdata %>%
 
 #' Glottolog: add rank order of family size
 #'
-#' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{glottoget_glottolog()}}
+#' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{glottoget("glottolog")}}
 #' @keywords internal
 #' @family <glottobooster>
 #' @return
@@ -223,7 +223,7 @@ glottobooster_addfamilysizerank <- function(glottologdata){
 #'
 #' Filter out only L1 languages and drop 'category' column.
 #'
-#' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{glottoget_glottolog()}}
+#' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{glottoget("glottolog")}}
 #' @keywords internal
 #' @family <glottobooster>
 #' @return

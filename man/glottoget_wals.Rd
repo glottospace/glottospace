@@ -4,7 +4,14 @@
 \alias{glottoget_wals}
 \title{Get WALS data}
 \usage{
-glottoget_wals(days = NULL)
+glottoget_wals(days = NULL, valuenames = NULL, paramnames = NULL)
+}
+\arguments{
+\item{days}{After how many days should be checked for a new version?}
+
+\item{valuenames}{Should names of the values be added instead of codes?}
+
+\item{paramnames}{Should names of parameters (columns) be added instead of their codes?}
 }
 \value{
 

@@ -4,7 +4,12 @@
 \alias{wals_download_cldf}
 \title{Download WALS data from zenodo, and select relevant data from cldf data}
 \usage{
-wals_download_cldf()
+wals_download_cldf(valuenames = NULL, paramnames = NULL)
+}
+\arguments{
+\item{valuenames}{Should names of the values be added instead of codes?}
+
+\item{paramnames}{Should names of parameters (columns) be added instead of their codes?}
 }
 \value{
 
