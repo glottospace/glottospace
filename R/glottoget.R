@@ -178,7 +178,7 @@ glottoget_glottolog <- function(days = NULL){
     } else if(vremote > vlocal){
       out <- glottolog_download()
     }
-  } else { # Try to load local data, or else load built-in data.
+  } else { # If there's no internet connection, try to load local data, or else load built-in data.
     out <- try(
       expr = glottolog_loadlocal(),
       silent = TRUE
@@ -196,7 +196,7 @@ return(out)
 
 #' Download glottolog data
 #'
-#' This function tries to download glottolog data from zenodo in cldf format. If that fails, it tries to download from glottolog.org
+#' This function tries to download glottolog data from zenodo in cldf format.
 #' @noRd
 #' @return
 #' @export
@@ -207,12 +207,6 @@ glottolog_download <- function(){
     expr = glottolog_download_cldf(),
     silent = TRUE
   )
-  if(class(out) == "try-error"){
-    out <- try(
-      expr = glottolog_download_webpage(),
-      silent = TRUE
-    )
-  }
   if(class(out) != "try-error"){
     return(out)
   } else {
@@ -305,27 +299,6 @@ glottolog_date_local <- function(){
  } else{
    return(-999999)
  }
-}
-
-#' Download glottolog data from glottolog website
-#'
-#' @return
-#' @export
-#' @keywords internal
-glottolog_download_webpage <- function(){
-  base_url <- "https://cdstar.shh.mpg.de/bitstreams/EAEA0-E62D-ED67-FD05-0/" # Newest version is always uploaded here!
-  filename <- "glottolog_languoid.csv.zip"
-  url <- paste0(base_url, filename)
-  filepath <- glottofiles_makepath(filename)
-
-  utils::download.file(url = url, destfile = filepath) # always downloads newest version (overwrites previous one)
-  exdir <- glottofiles_makedir(tools::file_path_sans_ext(tools::file_path_sans_ext(filename)))
-  utils::unzip(zipfile = filepath, exdir = exdir)
-  glottologdata <- utils::read.csv(unz(filepath, "languoid.csv"), header = TRUE, encoding = "UTF-8")
-  colnames(glottologdata) <- base::tolower(colnames(glottologdata))
-  glottologdata$bookkeeping <- ifelse(glottologdata$bookkeeping == "True", TRUE, FALSE)
-  message("Glottolog data downloaded. This is the most recent version available from www.glottolog.org.")
-  invisible(glottologdata)
 }
 
 #' Download glottolog data from zenodo, and select relevant data from cldf data
