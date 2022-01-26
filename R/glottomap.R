@@ -263,7 +263,9 @@ glottomap_static_crs <- function(glottodata, label = NULL, color = NULL, ptsize 
 #' glottomap_static_pacific(glottodata)
 glottomap_static_pacific <- function(glottodata, color = NULL, rivers = FALSE, ptsize = NULL){
   if(is.null(ptsize)){ptsize <- 0.5}
-  if(is.null(color)){glottodata[,"color"] <- "black"}
+  if(is.null(color)){
+    glottodata[,"color"] <- "black"
+  color <- "color"}
   world <- rnaturalearth::ne_countries(scale = 50, returnclass = "sf")
   world <- world %>% sf::st_make_valid()
 

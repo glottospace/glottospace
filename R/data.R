@@ -8,7 +8,7 @@
 #'   \item{var2}{explain}
 #'   ...
 #' }
-#' @source \url{http://www.glottolog.org/
+#' @source \url{https://glottolog.org/
 #' }
 "glottobase"
 
@@ -22,6 +22,6 @@
 #'   \item{var2}{explain}
 #'   ...
 #' }
-#' @source \url{http://www.glottolog.org/
+#' @source \url{https://glottolog.org/
 #' }
 "glottolog"
