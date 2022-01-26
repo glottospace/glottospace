@@ -17,7 +17,7 @@ glottomap(
   nclass = NULL,
   numcat = FALSE,
   filename = NULL,
-  crs = NULL,
+  projection = NULL,
   shiftrussia = FALSE,
   mode = NULL,
   ...
@@ -49,7 +49,7 @@ Alternatively, you could also run tmaptools::palette_explorer(), RColorBrewer::d
 
 \item{filename}{Optional filename if you want to save resulting map}
 
-\item{crs}{Coordinate Reference System (only for static maps). Default is World Eckert IV (https://epsg.io/54012)}
+\item{projection}{For static maps, you can choose one of the following: 'eqarea' (equal-area Eckert IV, default), 'pacific' (Pacific-centered), or any other Coordinate Reference System, specified using an EPSG code (https://epsg.io/).}
 
 \item{mode}{In case type = "filter", you can set mode to either "draw" or "click".}
 
