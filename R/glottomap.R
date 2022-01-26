@@ -67,11 +67,11 @@ glottomap <- function(glottodata = NULL, color = NULL, label = NULL, type = NULL
 
   if(is.null(lbsize) & type == "static"){lbsize <- 0.75}
   if(!is.null(lbsize) & type == "dynamic"){lbsize <- NULL}
-  if(is.null(alpha)){alpha <- 0.55}
+
   if(!is_sf(glottodata) ) {glottodata <- glottojoin_space(glottodata)}
 
 
-  if(is.null(color)){color <- "black"}
+
 
   if(type == "dynamic"){
     map <- glottomap_dynamic(glottodata = glottodata, label = label, color = color, ptsize = ptsize, alpha = alpha, palette = palette, nclass = nclass, numcat = numcat)
@@ -110,10 +110,12 @@ return(map)
 #' glottodata <- glottofilter(continent = "South America")
 #' glottodata <- glottofilter(country = "Netherlands")
 #' glottomap_dynamic(glottodata)
-glottomap_dynamic <- function(glottodata, label = NULL, color = NULL, ptsize = NULL, alpha = 1, palette = NULL, nclass = NULL, numcat = FALSE){
+glottomap_dynamic <- function(glottodata, label = NULL, color = NULL, ptsize = NULL, alpha = NULL, palette = NULL, nclass = NULL, numcat = FALSE){
     suppressMessages(tmap::tmap_mode("view"))
   if(is.null(ptsize)){ptsize <- 0.08}
   if(is.null(label)){label <- NA}
+  if(is.null(color)){color <- "black"}
+  if(is.null(alpha)){alpha <- 0.55}
 
     tmap::tm_basemap("Esri.WorldTopoMap") +
         {if(is_polygon(glottodata))
@@ -157,7 +159,7 @@ glottomap_static <- function(glottodata, projection = NULL, label = NULL, color 
   if(is.null(projection)){projection <- "eqarea"}
 
   if(projection == "pacific" | projection == "Pacific" | projection == "pacific-centered" | projection == "Pacific-centered"){
-    glottomap_static_pacific(glottodata = glottodata)
+    glottomap_static_pacific(glottodata = glottodata, color = color)
   } else if(projection == "eqarea" | projection == "equal-area" | projection == "equalarea"){
     glottomap_static_crs(glottodata, crs = NULL, label = label, color = color, ptsize = ptsize, lbsize = lbsize, alpha = alpha, palette = palette, rivers = rivers, nclass = nclass, numcat = numcat)
   } else {
@@ -192,10 +194,12 @@ glottomap_static <- function(glottodata, projection = NULL, label = NULL, color 
 #' glottodata <- glottofilter(continent = "South America")
 #' glottodata <- glottofilter(country = c("Netherlands", "Germany", "Belgium") )
 #' glottomap_static_crs(glottodata)
-glottomap_static_crs <- function(glottodata, label = NULL, color = NULL, ptsize = 1, lbsize = NULL, alpha = 1, palette = NULL, rivers = FALSE, nclass = NULL, numcat = FALSE, crs = NULL){
+glottomap_static_crs <- function(glottodata, label = NULL, color = NULL, ptsize = NULL, lbsize = NULL, alpha = NULL, palette = NULL, rivers = FALSE, nclass = NULL, numcat = FALSE, crs = NULL){
   suppressMessages(tmap::tmap_mode("plot"))
   if(is.null(ptsize)){ptsize <- 0.5}
   if(is.null(crs)){crs <- "ESRI:54012"} # https://epsg.io/54012
+  if(is.null(color)){color <- "black"}
+  if(is.null(alpha)){alpha <- 0.55}
 
   # wrld_proj <- geoget_basemap(crs = "+proj=eck4", attributes = FALSE) # function migrated to geospace package
   wrld_basemap <- rnaturalearth::ne_countries(scale = 50, returnclass = "sf")
@@ -255,38 +259,138 @@ glottomap_static_crs <- function(glottodata, label = NULL, color = NULL, ptsize 
 #' @noRd
 #'
 #' @examples
-#' glottodata <- glottofilter(continent = "South America")
-#' glottodata <- glottofilter(country = c("Netherlands", "Germany", "Belgium") )
-#' glottomap_static(glottodata)
-glottomap_static_pacific <- function(glottodata, color = NULL){
-  if(is.null(color)){color <- "black"}
+#' glottodata <- glottofilter(location = "Australia")
+#' glottomap_static_pacific(glottodata)
+glottomap_static_pacific <- function(glottodata, color = NULL, rivers = FALSE, ptsize = NULL){
+  if(is.null(ptsize)){ptsize <- 0.5}
+  if(is.null(color)){glottodata[,"color"] <- "black"}
   world <- rnaturalearth::ne_countries(scale = 50, returnclass = "sf")
   world <- world %>% sf::st_make_valid()
 
-  # From here: https://stackoverflow.com/questions/56146735/visual-bug-when-changing-robinson-projections-central-meridian-with-ggplot2
-  # define a long & slim polygon that overlaps the meridian line & set its CRS to match that of world
   polygon <- sf::st_polygon(x = list(rbind(c(-0.0001, 90), c(0, 90), c(0, -90), c(-0.0001, -90), c(-0.0001, 90)))) %>%
     sf::st_sfc() %>%
     sf::st_set_crs(sf::st_crs(world))
 
   # modify world dataset to remove overlapping portions with world's polygons
   world2 <- world %>% sf::st_difference(polygon)
-
   # perform transformation on modified version of world dataset
   # Note +lon_0=180 instead of 0
   world_robinson <- sf::st_transform(world2,
-                                 crs = '+proj=robin +lon_0=180 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs')
+                                     crs = '+proj=robin +lon_0=180 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs')
+
+  if(rivers == TRUE){
+    rivers_name <- 'ne_10m_rivers_lake_centerlines'
+    rivers_path <- glottofiles_makepath(paste0(rivers_name, ".shp"))
+    if(file.exists(rivers_path)){
+      rivers10 <- rnaturalearth::ne_load(scale = 10, type = 'rivers_lake_centerlines',
+                                         category = 'physical', returnclass = "sf",
+                                         destdir = glottofiles_cachedir())
+    } else {
+      rivers10 <- rnaturalearth::ne_download(scale = 10, type = 'rivers_lake_centerlines',
+                                             category = 'physical', returnclass = "sf",
+                                             destdir = glottofiles_cachedir())
+    }
+    rivers10 <- suppressWarnings(rivers10 %>% sf::st_difference(polygon) )
+  }
+
 
   # plot
   ggplot2::ggplot() +
-    ggplot2::geom_sf(data = world_robinson) +
-    ggplot2::geom_sf(data = glottodata, ggplot2::aes(color = color)) +
-    ggplot2::theme(legend.position = "none")
+    ggplot2::geom_sf(data = world_robinson, fill = "white") +
+    {if(rivers == TRUE){ggplot2::geom_sf(data = rivers10, color = "lightblue" ) }} +
+    ggplot2::geom_sf(data = glottodata, ggplot2::aes(color = .data[[color]]), size = ptsize ) +
+    ggplot2::theme(legend.position = "none",
+                   plot.background = ggplot2::element_rect(fill = "white"))
 
 
 }
 
-
-
-
-
+#' #' Create a shifted static map with glottodata
+#' #'
+#' #' This function returns a static map with glottodata. Data is shifted and subsequently projected using the Robinson projection.
+#' #'
+#' #' @param glottodata
+#' #'
+#' #' @return
+#' #' @export
+#' #' @noRd
+#' #'
+#' #' @examples
+#' #' glottodata <- glottofilter(location = "Australia")
+#' #' glottomap_static_shift(glottodata)
+#' glottomap_static_shift <- function(glottodata, shift = NULL, color = NULL, rivers = FALSE, ptsize = NULL){
+#'
+#'   # sf::st_shift_longitude()
+#'
+# https://github.com/thackl/ggworldmap
+# https://github.com/thackl/ggworldmap/blob/master/R/geom_worldmap.R
+#'   # if(is.null(ptsize)){ptsize <- 0.5}
+#'   # if(is.null(shift)){shift <- 180+30}
+#'
+#'   # https://stackoverflow.com/questions/10620862/use-different-center-than-the-prime-meridian-in-plotting-a-world-map
+#'   # mp1 <- ggplot2::fortify(maps::map(fill=TRUE, plot=FALSE))
+#'   # mp2 <- mp1
+#'   # mp2$long <- mp2$long + 360
+#'   # mp2$group <- mp2$group + max(mp2$group) + 1
+#'   # mp <- rbind(mp1, mp2)
+#'   #
+#'   # world_robinson <- sf::st_transform(mp,
+#'   #                                    crs = '+proj=robin +lon_0=0 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs')
+#'   #
+#'   #
+#'   # ggplot2::ggplot(ggplot2::aes(x = long, y = lat, group = group), data = mp) +
+#'   #   ggplot2::geom_path() +
+#'   #   ggplot2::scale_x_continuous(limits = c(0, 360))
+#'   #
+#'
+#'
+#'
+#'   world <- rnaturalearth::ne_countries(scale = 50, returnclass = "sf")
+#'   world <- world %>% sf::st_make_valid()
+#'
+#'   splitline <- data.frame(x = rep(0, 2), y = c(-90, 90) ) %>% sf::st_as_sf(coords = c("x", "y")) %>%
+#'     sf::st_union() %>%
+#'     sf::st_set_crs(sf::st_crs(world)) %>%
+#'     sf::st_cast("LINESTRING")
+#'   splitline <- sf::st_intersection(x = splitline, y = world)
+#'
+#'   splitlinebuf <- sf::st_buffer(splitline, dist = 0.000001)
+#'
+#'   worldsplit <- world %>% sf::st_difference(splitlinebuf)
+#'
+#'   worldshift <- worldsplit %>% sf::st_shift_longitude()
+#'
+#'
+#'   world_robinson <- sf::st_transform(worldsplit,
+#'                                      crs = '+proj=robin +lon_0=0 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs')
+#'
+#'   if(rivers == TRUE){
+#'     rivers_name <- 'ne_10m_rivers_lake_centerlines'
+#'     rivers_path <- glottofiles_makepath(paste0(rivers_name, ".shp"))
+#'     if(file.exists(rivers_path)){
+#'       rivers10 <- rnaturalearth::ne_load(scale = 10, type = 'rivers_lake_centerlines',
+#'                                          category = 'physical', returnclass = "sf",
+#'                                          destdir = glottofiles_cachedir())
+#'     } else {
+#'       rivers10 <- rnaturalearth::ne_download(scale = 10, type = 'rivers_lake_centerlines',
+#'                                              category = 'physical', returnclass = "sf",
+#'                                              destdir = glottofiles_cachedir())
+#'     }
+#'     rivers10 <- suppressWarnings(rivers10 %>% sf::st_difference(polygon) )
+#'   }
+#'
+#'
+#'   # plot
+#'   ggplot2::ggplot() +
+#'     ggplot2::geom_sf(data = world_robinson, fill = "white") +
+#'     {if(rivers == TRUE){ggplot2::geom_sf(data = rivers10, color = "lightblue" ) }} +
+#'     ggplot2::geom_sf(data = glottodata, ggplot2::aes(color = .data[[color]]), size = ptsize ) +
+#'     ggplot2::theme(legend.position = "none",
+#'                    plot.background = ggplot2::element_rect(fill = "white"))
+#'
+#'
+#' }
+#'
+#'
+#'
+#'
