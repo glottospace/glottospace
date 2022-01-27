@@ -219,7 +219,7 @@ A data frame with XX rows and XX variables:
 }
 }
 \source{
-\url{https://glottolog.org/
+\url{https://wals.info/
 }
 }
 \usage{

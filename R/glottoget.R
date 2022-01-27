@@ -128,6 +128,12 @@ glottoget_path <- function(filepath = NULL, meta = FALSE, simplify = TRUE){
 glottoget_glottobase <- function(...){
   glottolog <- glottoget_glottolog()
   glottobase <- glottobooster(glottologdata = glottolog, ...)
+  Encoding(levels(glottobase$name)) <- "latin1"
+  levels(glottobase$name) <- iconv(
+    levels(glottobase$name),
+    "latin1",
+    "UTF-8"
+  )
   glottobase
 }
 

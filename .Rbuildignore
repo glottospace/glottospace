@@ -3,3 +3,8 @@
 ^README\.Rmd$
 ^data-raw$
 ^LICENSE\.md$
+^README.nb.html
+^demodata.xlsx
+^glottodata.xlsx
+^glottomap.png
+^glottosubdata.xlsx
