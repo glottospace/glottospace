@@ -10,7 +10,7 @@
 #' @param remark Character string that distinguishes those columns which contain remarks.
 #' @param contributor Character string that distinguishes those columns which contain contributors.
 #'
-#' @return
+#'
 #' @export
 #'
 #' @examples
@@ -113,7 +113,7 @@ invisible(glottodata)
 #' @param oldfix Either a prefix or suffix such as "_fix", or "fix_"
 #' @param newfix New pre- or suffix.
 #' @noRd
-#' @return
+#'
 #'
 glottoconvert_colname <- function(data, oldfix, newfix = NULL, newname = NULL){
   cols <- grepl(pattern = oldfix, x = colnames(data), ignore.case = TRUE)

@@ -7,7 +7,7 @@
 #'
 #' @param glottocode A single glottocode
 #'
-#' @return
+#'
 #' @export
 #'
 #' @examples
@@ -27,7 +27,7 @@ glottocode <- function(glottocode){
 #'
 #' @param glottocode
 #'
-#' @return
+#'
 #' @export
 #' @keywords internal
 #' @examples
@@ -70,7 +70,7 @@ glottocode_exists <- function(glottocode){
 #'
 #' @param glottocode
 #'
-#' @return
+#'
 #' @export
 #' @family <glottocheck><glottosearch>
 #' @keywords internal

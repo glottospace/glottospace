@@ -10,7 +10,7 @@
 #' @param tofalse Optional additional values to recode to FALSE (besides default)
 #' @param totrue Optional additional values to recode to TRUE (besides default)
 #'
-#' @return
+#'
 #' @export
 #'
 #' @examples
@@ -45,7 +45,7 @@ glottoclean <- function(glottodata, tona = NULL, tofalse = NULL, totrue = NULL){
 #' @param totrue Values to recode to TRUE
 #' @keywords internal
 #' @family <glottorecode><glottoclean>
-#' @return
+#'
 #' @export
 #' @examples
 #' glottodata <- glottoget("demodata", meta = TRUE)
@@ -67,7 +67,7 @@ glottorecode <- function(glottodata, tofalse = NULL, totrue = NULL, tona = NULL)
 #' @param glottodata User-provided glottodata
 #' @param tona Optional, additional values to recode to NA
 #' @family <glottorecode>
-#' @return
+#'
 #' @export
 #'
 #' @keywords internal
@@ -94,7 +94,7 @@ glottorecode_missing <- function(glottodata, tona){
 #'
 #' @param glottodata glottodata list
 #' @keywords internal
-#' @return
+#'
 #' @export
 #' @examples
 #' glottorecode_logical(glottodata, totrue = c("y", "Y", 1), tofalse = c("n", "N", 0))

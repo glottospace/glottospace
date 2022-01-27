@@ -13,7 +13,7 @@
 #' @param addfamsizerank Add column with family size rank?
 #'
 #' @family <glottobooster>
-#' @return
+#'
 #' @export
 #' @examples
 #' glottologdata <- glottoget("glottolog")
@@ -61,7 +61,6 @@ glottobooster <- function(glottologdata = NULL, space = TRUE,
 #' @param rmartifam Remove rows that refer to artificial families?
 #' @param rmsignlangs Remove rows with sign languages?
 #' @family <glottobooster>
-#' @return
 #' @export
 #' @keywords internal
 #'
@@ -103,7 +102,7 @@ glottoboosterflex <- function(glottologdata = NULL, space = TRUE,
 #' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with glottoget("glottolog").
 #' @keywords internal
 #' @family <glottobooster>
-#' @return
+#'
 #' @export
 glottobooster_addfamilyname <- function(glottologdata){
     families <- glottologdata %>%
@@ -118,7 +117,7 @@ glottobooster_addfamilyname <- function(glottologdata){
 #' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with glottoget("glottolog")
 #' @keywords internal
 #' @family <glottobooster>
-#' @return
+#'
 #' @export
 glottobooster_addisolates <- function(glottologdata){
 
@@ -138,7 +137,7 @@ glottologdata
 #' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with glottoget("glottolog")
 #' @keywords internal
 #' @family <glottobooster>
-#' @return
+#'
 #' @export
 glottobooster_rmdialects <- function(glottologdata){
   glottologdata %>% dplyr::filter(level != "dialect")
@@ -149,7 +148,7 @@ glottobooster_rmdialects <- function(glottologdata){
 #' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with glottoget("glottolog")
 #' @keywords internal
 #' @family <glottobooster>
-#' @return
+#'
 #' @export
 glottobooster_rmfamilies <- function(glottologdata){
   glottologdata %>% dplyr::filter(level != "family")
@@ -160,7 +159,7 @@ glottobooster_rmfamilies <- function(glottologdata){
 #' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with glottoget("glottolog")
 #' @keywords internal
 #' @family <glottobooster>
-#' @return
+#'
 #' @export
 glottobooster_rmbookkeeping <- function(glottologdata){
   # unique(glottologdata$bookkeeping)
@@ -174,7 +173,7 @@ glottobooster_rmbookkeeping <- function(glottologdata){
 #' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with glottoget("glottolog")
 #' @keywords internal
 #' @family <glottobooster>
-#' @return
+#'
 #' @export
 glottobooster_rmartifam <- function(glottologdata){
   glottologdata %>%
@@ -186,7 +185,7 @@ glottobooster_rmartifam <- function(glottologdata){
 #' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with glottoget("glottolog")
 #' @keywords internal
 #' @family <glottobooster>
-#' @return
+#'
 #' @export
 glottobooster_rmsignlangs <- function(glottologdata){
   glottologdata %>%
@@ -198,7 +197,7 @@ glottobooster_rmsignlangs <- function(glottologdata){
 #' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with glottoget("glottolog")
 #' @keywords internal
 #' @family <glottobooster>
-#' @return
+#'
 #' @export
 glottobooster_addfamilysize <- function(glottologdata){
 glottologdata %>%
@@ -211,7 +210,7 @@ glottologdata %>%
 #' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with glottoget("glottolog")
 #' @keywords internal
 #' @family <glottobooster>
-#' @return
+#'
 #' @export
 glottobooster_addfamilysizerank <- function(glottologdata){
   glottologdata$family_size_rank <- as.factor(glottologdata$family_size)
@@ -228,7 +227,7 @@ glottobooster_addfamilysizerank <- function(glottologdata){
 #' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with glottoget("glottolog")
 #' @keywords internal
 #' @family <glottobooster>
-#' @return
+#'
 #' @export
 glottobooster_L1only <- function(glottologdata){
   glottologdata %>%

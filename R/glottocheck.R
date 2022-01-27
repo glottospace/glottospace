@@ -16,7 +16,7 @@
 #' @param checkmeta Should metadata be checked as well?
 #'
 #' @family <glottocheck>
-#' @return
+#'
 #' @export
 #'
 #' @examples
@@ -54,7 +54,7 @@ glottocheck <- function(glottodata, diagnostic = TRUE, checkmeta = FALSE){
 #' @keywords internal
 #'
 #' @family <glottocheck>
-#' @return
+#'
 #' @export
 #'
 #' @examples
@@ -81,7 +81,7 @@ glottocheck_data <- function(glottodata, diagnostic = TRUE){
 #' @param glottosubdata User-provided glottosubdata
 #' @param diagnostic If TRUE (default) a data viewer will be opened to show the levels of each variable (including NAs), and a data coverage plot will be shown.
 #' @keywords internal
-#' @return
+#'
 #' @export
 #' @family <glottocheck>
 #' @examples
@@ -107,7 +107,7 @@ glottocheck_subdata <- function(glottosubdata, diagnostic = TRUE){
 #'
 #' @param glottodata glottodata
 #'
-#' @return
+#'
 #' @export
 #' @keywords internal
 #' @examples
@@ -129,7 +129,7 @@ glottocheck_metadata <- function(glottodata){
 #'
 #' @param glottodata glottodata
 #'
-#' @return
+#'
 #' @export
 #' @aliases glottocheck_hasstructure
 #' @keywords internal
@@ -289,7 +289,7 @@ glottocheck_glottocodes <- function(glottodata){
 #'
 #' @param glottosubdata glottosubdata
 #'
-#' @return
+#'
 #' @export
 #' @keywords internal
 glottocheck_glottosubcodes <- function(glottosubdata){
@@ -328,7 +328,7 @@ glottocheck_lscolcount <- function(langlist){
 #'
 #' @param glottodata A glottodata table
 #' @keywords internal
-#' @return
+#'
 #' @export
 #'
 glottocheck_glottocol <- function(glottodata){
@@ -347,7 +347,7 @@ glottocheck_glottocol <- function(glottodata){
 #'
 #' @param glottosubdata A glottodata list
 #' @keywords internal
-#' @return
+#'
 #' @export
 #'
 glottocheck_glottosubcol <- function(glottosubdata){
@@ -372,7 +372,7 @@ glottocheck_glottosubcol <- function(glottosubdata){
 #' @param rm.na Whether rows without id should be removed.
 #' @keywords internal
 #'
-#' @return
+#'
 #' @export
 #'
 glottocheck_rowmissing <- function(data, id, diagnostic = FALSE, rm.na = TRUE){
@@ -395,7 +395,7 @@ glottocheck_rowmissing <- function(data, id, diagnostic = FALSE, rm.na = TRUE){
 #' @param rm.na Whether rows without id should be removed.
 #' @keywords internal
 #'
-#' @return
+#'
 #' @export
 #'
 glottocheck_colmissing <- function(data, id, diagnostic = FALSE, rm.na = TRUE){
@@ -412,7 +412,7 @@ glottocheck_colmissing <- function(data, id, diagnostic = FALSE, rm.na = TRUE){
 #'
 #' @param glottodata User-provided glottodata
 #'
-#' @return
+#'
 #' @export
 #' @keywords internal
 #' @examples
@@ -427,7 +427,7 @@ glottocheck_isglottosubdata <- function(glottodata){
 #'
 #' @param glottodata glottodata
 #'
-#' @return
+#'
 #' @export
 #' @keywords internal
 #' @examples
