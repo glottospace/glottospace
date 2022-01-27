@@ -24,7 +24,7 @@ Join glottodata with a dist object
 \examples{
 distdf <- glottojoin_dist(glottodata = glottodata, dist = dist)
 
-After joining, you can subset the distance columns by using the IDs:
+# After joining, you can subset the distance columns by using the IDs:
 distdf[, distdf$glottocode]
 }
 \keyword{internal}

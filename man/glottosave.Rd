@@ -26,18 +26,18 @@ also possible.
 \examples{
 
 glottodata <- glottoget("demodata", meta = FALSE)
-Saves as .xlsx
+# Saves as .xlsx
 glottosave(glottodata, filename = "glottodata")
 
 glottospacedata <- glottospace(glottodata)
-Saves as .GPKG
+# Saves as .GPKG
 glottosave(glottodata, filename = "glottodata")
 
 glottomap <- glottomap(glottodata)
-Saves as .png
+# Saves as .png
 glottosave(glottomap, filename = "glottomap")
 
-Saves as .html
+# Saves as .html
 glottomap <- glottomap(glottodata, type = "dynamic")
 }
 \seealso{

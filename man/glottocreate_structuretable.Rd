@@ -18,5 +18,6 @@ glottocreate_structuretable(glottocodes, varnames = NULL)
 This function creates a new structure table, it can be added to glottodata using glottodata_addtable()
 }
 \examples{
-glottocreate_structuretable(glottocodes = c("yucu1253", "tani1257"), varnames = c("var001", "var002", "var003"))
+glottocreate_structuretable(glottocodes = c("yucu1253", "tani1257"),
+         varnames = c("var001", "var002", "var003"))
 }

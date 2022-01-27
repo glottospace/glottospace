@@ -3,7 +3,6 @@
 #' Loads path to local directory where glottospace files are stored and creates directory in a platform independent way in case it doesn't exist.
 #'
 #' @return
-#' @export
 #' @noRd
 glottofiles_cachedir <- function(){
   cachedir <- base::normalizePath(rappdirs::user_data_dir("glottospace"), winslash = "\\", mustWork = FALSE)
@@ -18,7 +17,6 @@ glottofiles_cachedir <- function(){
 #' @param filename filename
 #' @noRd
 #' @return
-#' @export
 #'
 glottofiles_makepath <- function(filename){
   filedir <- glottofiles_cachedir()
@@ -32,7 +30,6 @@ glottofiles_makepath <- function(filename){
 #' @param dirname dirname
 #' @noRd
 #' @return
-#' @export
 #'
 glottofiles_makedir <- function(dirname){
   filedir <- glottofiles_cachedir()

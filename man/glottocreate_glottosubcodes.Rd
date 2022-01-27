@@ -20,5 +20,6 @@ glottocreate_glottosubcodes(glottocode, groups = NULL, n)
 Generate glottosubcodes for a single glottocode
 }
 \examples{
-glottocreate_glottosubcodes(glottocode = "yucu1253", groups = c("a", "b"), n = 5)
+glottocreate_glottosubcodes(glottocode = "yucu1253",
+groups = c("a", "b"), n = 5)
 }

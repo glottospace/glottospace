@@ -5,7 +5,7 @@
 #' - Open the associated webpage on www.glottolog.org
 #' - Check whether it exists in glottolog
 #'
-#' @param glottocode
+#' @param glottocode A single glottocode
 #'
 #' @return
 #' @export

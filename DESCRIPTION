@@ -1,7 +1,7 @@
 Package: glottospace
 Type: Package
-Title: Language mapping and geospatial analysis of linguistic data
-Version: 0.0.72
+Title: Language Mapping and Geospatial Analysis of Linguistic and Cultural Data
+Version: 0.0.75
 Author: Sietze Norder
 Maintainer: Sietze Norder <mail@sietzenorder.nl>
 Description: The R package glottospace helps useRs to do geospatial analyses on linguistic and cultural data. 
@@ -10,8 +10,9 @@ Description: The R package glottospace helps useRs to do geospatial analyses on 
     visualizing linguistic data on a map.
 URL: https://github.com/SietzeN/glottospace
 BugReports: https://github.com/SietzeN/glottospace/issues
-License: MIT + file LICENSE
+License: GPL (>= 3)
 Encoding: UTF-8
+Language: en-US
 LazyData: true
 RoxygenNote: 7.1.1
 Imports: 
@@ -20,11 +21,9 @@ Imports:
     magrittr,
     mapview,
     purrr,
-    rgeos,
     rnaturalearth,
-    rnaturalearthdata,
     sf,
-    tmap
+    tmap,
+    rnaturalearthdata
 Depends: 
     R (>= 4.1.0)
-

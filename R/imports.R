@@ -3,7 +3,6 @@
 #' @name %>%
 #' @rdname pipe
 #' @noRd
-#' @export
 #' @importFrom magrittr %>%
 NULL
 
@@ -12,7 +11,6 @@ NULL
 #' @name %nin%
 #' @rdname nin
 #' @noRd
-#' @export
 #' @importFrom Hmisc %nin%
 NULL
 

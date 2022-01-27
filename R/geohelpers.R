@@ -90,8 +90,6 @@ is_raster <- function(object){
 #'
 #' @return TRUE/FALSE
 #' @noRd
-#' @export
-#'
 is_sf <- function(object){
   class(object)[1] == "sf"
 }

@@ -17,7 +17,6 @@
 #' \item "demosubdata" - Built-in artificial glottosubdata (included for demonstration and testing)
 #' }
 #' @param meta In case 'glottodata' is a path to locally stored data (or demodata/demosubdata): by default, meta sheets are not loaded. Use meta=TRUE if you want to include them.
-#' @param simple In case 'glottodata' is a path to locally stored data  (or demodata/demosubdata): by default, if only one sheet is loaded, the data will be returned as a data.frame (instead of placing the data inside a list of length 1)
 #'
 #' @family <glottodata>
 #' @return
@@ -197,9 +196,8 @@ return(out)
 #' Download glottolog data
 #'
 #' This function tries to download glottolog data from zenodo in cldf format.
-#' @noRd
+#' @keywords internal
 #' @return
-#' @export
 #' @keywords internal
 #'
 glottolog_download <- function(){

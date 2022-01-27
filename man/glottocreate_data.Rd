@@ -48,8 +48,10 @@ glottocreate_data(
 Output is a list with one data.frame for glottodata (and a number of metatables if meta = TRUE). Output can  also be saved as an excel file.
 }
 \examples{
-glottocreate_data(glottocodes = c("yucu1253", "tani1257"), variables = 3, filename = "glottodata.xlsx")
-glottocreate_data(glottocodes = c("yucu1253", "tani1257"), variables = 3, filename = "glottodata_simple.xlsx", meta = FALSE)
+glottocreate_data(glottocodes = c("yucu1253", "tani1257"),
+                   variables = 3, filename = "glottodata.xlsx")
+glottocreate_data(glottocodes = c("yucu1253", "tani1257"),
+     variables = 3, filename = "glottodata_simple.xlsx", meta = FALSE)
 }
 \concept{<glottocreate><glottodata>}
 \keyword{internal}

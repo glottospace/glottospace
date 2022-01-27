@@ -9,6 +9,8 @@
 
 [![Lifecycle:
 stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
+[![License:
+MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 <!-- badges: end -->
 
 # Introduction
@@ -27,11 +29,10 @@ R and integrate them with your own data.
 
 # Development
 
-This package is still under active development. While the basic
-functionality has been implemented, we’re still working on adding new
-functions and improving existing ones. While using **glottospace** you
-will certainly find bugs or encounter things you might find confusing.
-You can help me improve the package by:
+We’re still actively developing the **glottospace** package by adding
+new functions and improving existing ones. Although the package is
+stable, you might find bugs or encounter things you might find
+confusing. You can help me improve the package by:
 
 -   Sending an email to [Sietze
     Norder](mailto:s.j.norder@hum.leidenuniv.nl) with a clear

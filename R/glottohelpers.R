@@ -3,7 +3,6 @@
 #' @param names
 #'
 #' @return
-#' @export
 #' @noRd
 #' @examples
 #' gs_emptydistmat(names = glottocodes)

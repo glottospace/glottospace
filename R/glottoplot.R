@@ -17,7 +17,7 @@
 #' @export
 #'
 #' @examples
-#' Plot glottodist as nmds:
+#' # Plot glottodist as nmds:
 #' glottodata <- glottoget("demodata", meta = TRUE)
 #' glottodist <- glottodist(glottodata = glottodata)
 #' glottoplot(glottodist = glottodist, type = "nmds", k = 3, color = "family", label = "name")
@@ -156,7 +156,6 @@ glottoplot_nmds <- function(nmds, scoresdata, color = NULL, ptsize = NULL, label
 #' @param filename optional filename if output should be saved.
 #' @noRd
 #' @return
-#' @export
 #'
 #' @examples
 #' glottodata <- glottoget("demodata", meta = TRUE)
@@ -193,7 +192,6 @@ glottoplot_nmds_2d <- function(nmds, scoresdata, color = NULL, ptsize = NULL, la
 #' @param filename optional filename if output should be saved.
 #' @noRd
 #' @return
-#' @export
 #'
 #' @examples
 #' glottodata <- glottoget("demodata", meta = TRUE)

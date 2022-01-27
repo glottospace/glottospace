@@ -16,7 +16,8 @@
 #' @examples
 #' \dontrun{
 #' data <- glottoget("userdata.xlsx")
-#' glottodata <- glottoconvert(data = data, var = "var_", ref = "ref_", page = "pag_", remark = "com_", contributor = "Coder")
+#' glottodata <- glottoconvert(data = data, var = "var_", ref = "ref_",
+#'               page = "pag_", remark = "com_", contributor = "Coder")
 #' glottocheck(glottodata)
 #' glottosave(glottodata)
 #' }
@@ -113,7 +114,6 @@ invisible(glottodata)
 #' @param newfix New pre- or suffix.
 #' @noRd
 #' @return
-#' @export
 #'
 glottoconvert_colname <- function(data, oldfix, newfix = NULL, newname = NULL){
   cols <- grepl(pattern = oldfix, x = colnames(data), ignore.case = TRUE)

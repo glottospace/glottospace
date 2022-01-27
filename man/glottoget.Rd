@@ -23,8 +23,6 @@ spatial coordinates.
 }}
 
 \item{meta}{In case 'glottodata' is a path to locally stored data (or demodata/demosubdata): by default, meta sheets are not loaded. Use meta=TRUE if you want to include them.}
-
-\item{simple}{In case 'glottodata' is a path to locally stored data  (or demodata/demosubdata): by default, if only one sheet is loaded, the data will be returned as a data.frame (instead of placing the data inside a list of length 1)}
 }
 \value{
 

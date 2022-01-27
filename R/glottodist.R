@@ -100,7 +100,6 @@ glottodist <- function(glottodata, structure = NULL, id = NULL){
 #' @param structure structure
 #'
 #' @return
-#' @export
 #' @noRd
 glottocondist <- function(data = NULL, index = "constructions", glottocodes = NULL, aggregate = "mean", structure = NULL){
 
@@ -130,7 +129,6 @@ glottocondist <- function(data = NULL, index = "constructions", glottocodes = NU
 #' @param aggregation One of c('mean', 'min', 'sum') indicating how distances should be aggregated to language level.('min' returns best match)
 #' @noRd
 #' @return
-#' @export
 glottocondist_agg <- function(condist, glottocodes, aggregation){
 
   if(any(class(condist) == "dist")){
@@ -186,7 +184,6 @@ glottocondist_agg <- function(condist, glottocodes, aggregation){
 #' @param threstype Threshold type
 #' @noRd
 #' @return
-#' @export
 #'
 glottocondist_con2lang <- function(condist, glottocodes, groups = NULL, thresval = NULL, threstype = "absolute"){
 

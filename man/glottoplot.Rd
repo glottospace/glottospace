@@ -42,7 +42,7 @@ glottoplot(
 This function offers different types of visualizations for linguistic data and linguistic distances.
 }
 \examples{
-Plot glottodist as nmds:
+# Plot glottodist as nmds:
 glottodata <- glottoget("demodata", meta = TRUE)
 glottodist <- glottodist(glottodata = glottodata)
 glottoplot(glottodist = glottodist, type = "nmds", k = 3, color = "family", label = "name")

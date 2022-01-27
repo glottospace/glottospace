@@ -29,19 +29,23 @@
 #' @family <glottoget><glottocreate>
 #'
 #' @examples
-#' Creates glottodata table without metadata tables
-#' glottocreate(glottocodes = c("yucu1253", "tani1257"), variables = 3, meta = FALSE)
+#' # Creates glottodata table without metadata tables
+#' glottocreate(glottocodes = c("yucu1253", "tani1257"),
+#' variables = 3, meta = FALSE)
 #'
-#' Creates glottodata table with metadata tables (stored in a list):
+#' # Creates glottodata table with metadata tables (stored in a list):
 #' glottocreate(glottocodes = c("yucu1253", "tani1257"), variables = 3)
 #'
 #'
-#' Creates glottosubdata table (stored in a list)
-#' glottocreate(glottocodes = c("yucu1253", "tani1257"), variables = 3, groups = c("a", "b") )
+#' # Creates glottosubdata table (stored in a list)
+#' glottocreate(glottocodes = c("yucu1253", "tani1257"),
+#' variables = 3, groups = c("a", "b") )
 #'
-#' Creates glottodata/glottosubdata and save as excel:
-#' glottocreate(glottocodes = c("yucu1253", "tani1257"), variables = 3, filename = "glottodata.xlsx")
-#' glottocreate(glottocodes = c("yucu1253", "tani1257"), variables = 3, groups = c("a", "b"), filename = "glottosubdata.xlsx" )
+#' # Creates glottodata/glottosubdata and save as excel:
+#' glottocreate(glottocodes = c("yucu1253", "tani1257"),
+#' variables = 3, filename = "glottodata.xlsx")
+#' glottocreate(glottocodes = c("yucu1253", "tani1257"),
+#'              variables = 3, groups = c("a", "b"), filename = "glottosubdata.xlsx" )
 glottocreate <- function(glottocodes, variables,
                          meta = TRUE, filename = NULL,
                          simplify = TRUE,
@@ -91,8 +95,10 @@ glottocreate <- function(glottocodes, variables,
 #' @export
 #' @family <glottocreate><glottodata>
 #' @examples
-#' glottocreate_data(glottocodes = c("yucu1253", "tani1257"), variables = 3, filename = "glottodata.xlsx")
-#' glottocreate_data(glottocodes = c("yucu1253", "tani1257"), variables = 3, filename = "glottodata_simple.xlsx", meta = FALSE)
+#' glottocreate_data(glottocodes = c("yucu1253", "tani1257"),
+#'                    variables = 3, filename = "glottodata.xlsx")
+#' glottocreate_data(glottocodes = c("yucu1253", "tani1257"),
+#'      variables = 3, filename = "glottodata_simple.xlsx", meta = FALSE)
 glottocreate_data <- function(glottocodes, variables, filename = NULL, meta = TRUE, check = FALSE, simplify = TRUE, levels = NULL, maintainer = NULL, email = NULL, citation = NULL, url = NULL){
  if(check){
   if(!all(glottocode_exists(glottocodes)) ){stop("Not all glottocodes are valid. Use glottocode_exists() to check which ones. ")}
@@ -166,7 +172,8 @@ glottocreate_data <- function(glottocodes, variables, filename = NULL, meta = TR
 #' @family <glottoget_path><glottocreate>
 #'
 #' @examples
-#' glottocreate_subdata(glottocodes = c("yucu1253", "tani1257"), variables = 3, groups = c("a", "b"), n = 5, filename = "glottosubdata.xlsx")
+#' glottocreate_subdata(glottocodes = c("yucu1253", "tani1257"),
+#' variables = 3, groups = c("a", "b"), n = 5, filename = "glottosubdata.xlsx")
 glottocreate_subdata <- function(glottocodes, variables, groups, filename = NULL, check = FALSE, levels = NULL, n = NULL, meta = TRUE, maintainer = NULL, email = NULL, citation = NULL, url = NULL){
   if(check){
     if(!all(glottocode_exists(glottocodes)) ){stop("Not all glottocodes are valid. Use glottocode_exists() to check which ones. ")}
@@ -249,7 +256,8 @@ glottocreate_glottotable <- function(glottocodes, varnames){
 #' @return
 #' @export
 #' @examples
-#' glottocreate_structuretable(glottocodes = c("yucu1253", "tani1257"), varnames = c("var001", "var002", "var003"))
+#' glottocreate_structuretable(glottocodes = c("yucu1253", "tani1257"),
+#'          varnames = c("var001", "var002", "var003"))
 glottocreate_structuretable <- function(glottocodes, varnames = NULL){
 structure <- data.frame(matrix(nrow = length(varnames), ncol = 6) )
 colnames(structure) <- c("varname", "type", "levels", "weight", "groups", "subgroups")
@@ -377,7 +385,8 @@ glottocreate_lookuptable <- function(){
 #' @return
 #' @export
 #' @examples
-#' glottocreate_glottosubcodes(glottocode = "yucu1253", groups = c("a", "b"), n = 5)
+#' glottocreate_glottosubcodes(glottocode = "yucu1253",
+#' groups = c("a", "b"), n = 5)
 glottocreate_glottosubcodes <- function(glottocode, groups = NULL, n){
   if(length(glottocode) != 1){stop("Please provide a single glottocode")}
   n <- ifelse(!exists("n"), 1, n)
@@ -396,7 +405,6 @@ glottocreate_glottosubcodes <- function(glottocode, groups = NULL, n){
 #' Create demodata
 #'
 #' @return
-#' @export
 #' @noRd
 glottocreate_demodata <- function(meta = TRUE){
   demo <- glottocreate_data(glottocodes = c("yucu1253", "tani1257", "ticu1245", "orej1242", "nade1244", "mara1409"), variables = 3, meta = meta)
@@ -423,7 +431,6 @@ glottocreate_demodata <- function(meta = TRUE){
 #' Create demosubdata
 #'
 #' @return
-#' @export
 #' @noRd
 glottocreate_demosubdata <- function(meta = TRUE){
   demo <- glottocreate_subdata(glottocodes = c("yucu1253", "tani1257"), variables = 3, groups = c("a", "b"), n = 5, meta = meta)

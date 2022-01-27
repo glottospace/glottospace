@@ -305,7 +305,8 @@ glottocheck_glottosubcodes <- function(glottosubdata){
 #' @keywords internal
 #'
 #' @examples
-#' glottosubdata <- glottocreate_subdata(glottocodes = c("yucu1253", "tani1257"), variables = 3, groups = c("a", "b"), n = 5)
+#' glottosubdata <- glottocreate_subdata(glottocodes = c("yucu1253", "tani1257"),
+#'                    variables = 3, groups = c("a", "b"), n = 5)
 #' langlist <- glottosubdata[c(1,2)]
 #' glottocheck_lscolcount(langlist) # invisibly returns TRUE
 glottocheck_lscolcount <- function(langlist){

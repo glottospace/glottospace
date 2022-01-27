@@ -16,7 +16,8 @@ Returns error message if number of columns is not identical, and invisibly retur
 Check whether number of columns are identical across all glottodata objects in a list
 }
 \examples{
-glottosubdata <- glottocreate_subdata(glottocodes = c("yucu1253", "tani1257"), variables = 3, groups = c("a", "b"), n = 5)
+glottosubdata <- glottocreate_subdata(glottocodes = c("yucu1253", "tani1257"),
+                   variables = 3, groups = c("a", "b"), n = 5)
 langlist <- glottosubdata[c(1,2)]
 glottocheck_lscolcount(langlist) # invisibly returns TRUE
 }

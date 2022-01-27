@@ -18,7 +18,6 @@ glottomap(
   numcat = FALSE,
   filename = NULL,
   projection = NULL,
-  shiftrussia = FALSE,
   mode = NULL,
   ...
 )

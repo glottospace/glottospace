@@ -7,7 +7,7 @@
 glottobooster_rmbookkeeping(glottologdata)
 }
 \arguments{
-\item{glottologdata}{data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{glottoget("glottolog")}}}
+\item{glottologdata}{data from \href{https://glottolog.org/}{glottolog}, can be downloaded with glottoget("glottolog")}
 }
 \value{
 

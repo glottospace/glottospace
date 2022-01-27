@@ -63,7 +63,7 @@ return(joined)
 #' @examples
 #' distdf <- glottojoin_dist(glottodata = glottodata, dist = dist)
 #'
-#' After joining, you can subset the distance columns by using the IDs:
+#' # After joining, you can subset the distance columns by using the IDs:
 #' distdf[, distdf$glottocode]
 glottojoin_dist <- function(glottodata, id = NULL, dist, rm.na = FALSE){
   id <- contrans_id2gc(id)

@@ -93,6 +93,7 @@ glottocolpal_options <- function(){
 #' @param spotlight Selection of data to put in the spotlights.
 #' @param spotcontrast Optional column to contrast between data points in the spotlight.
 #' @param bgcontrast Optional column to contrast between background data points
+#' @param palette Color palette. Use glottocolpal() or glottocolpal_options() to see them.
 #'
 #' @return
 #' @export

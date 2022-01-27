@@ -19,7 +19,7 @@ glottoboosterflex(
 )
 }
 \arguments{
-\item{glottologdata}{data from \href{https://glottolog.org/}{glottolog}, can be downloaded with \code{\link{glottoget_glottolog()}}}
+\item{glottologdata}{data from \href{https://glottolog.org/}{glottolog}, can be downloaded with glottoget("glottolog").}
 
 \item{space}{Return spatial object?}
 

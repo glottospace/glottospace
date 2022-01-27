@@ -23,6 +23,8 @@ glottospotlight(
 \item{spotcontrast}{Optional column to contrast between data points in the spotlight.}
 
 \item{bgcontrast}{Optional column to contrast between background data points}
+
+\item{palette}{Color palette. Use glottocolpal() or glottocolpal_options() to see them.}
 }
 \value{
 

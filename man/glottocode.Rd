@@ -7,7 +7,7 @@
 glottocode(glottocode)
 }
 \arguments{
-\item{glottocode}{}
+\item{glottocode}{A single glottocode}
 }
 \value{
 

@@ -44,7 +44,7 @@
 #' glottodata <- glottospotlight(glottodata = glottodata, spotcol =
 #' "family", spotlight = families$family[-c(1:10)], spotcontrast = "family", bgcontrast = "family")
 #' glottomap(glottodata, color = "color")
-glottomap <- function(glottodata = NULL, color = NULL, label = NULL, type = NULL, ptsize = NULL, alpha = NULL, lbsize = NULL, palette = NULL, rivers = FALSE, nclass = NULL, numcat = FALSE, filename = NULL, projection = NULL, shiftrussia = FALSE, mode = NULL, ...){
+glottomap <- function(glottodata = NULL, color = NULL, label = NULL, type = NULL, ptsize = NULL, alpha = NULL, lbsize = NULL, palette = NULL, rivers = FALSE, nclass = NULL, numcat = FALSE, filename = NULL, projection = NULL, mode = NULL, ...){
   palette <- glottocolpal(palette = palette)
   if(is.null(type)){type <- "static"}
 
@@ -103,8 +103,7 @@ return(map)
 #'
 #' @return
 #' @keywords internal
-#' @noRd
-#' @export
+#'
 #'
 #' @examples
 #' glottodata <- glottofilter(continent = "South America")
@@ -149,7 +148,7 @@ glottomap_dynamic <- function(glottodata, label = NULL, color = NULL, ptsize = N
 #' @return
 #' @keywords internal
 #' @export
-#' @noRd
+#'
 #'
 #' @examples
 #' glottodata <- glottofilter(continent = "South America")
@@ -188,7 +187,7 @@ glottomap_static <- function(glottodata, projection = NULL, label = NULL, color 
 #' @return
 #' @keywords internal
 #' @export
-#' @noRd
+#'
 #'
 #' @examples
 #' glottodata <- glottofilter(continent = "South America")
@@ -256,7 +255,7 @@ glottomap_static_crs <- function(glottodata, label = NULL, color = NULL, ptsize 
 #'
 #' @return
 #' @export
-#' @noRd
+#' @keywords internal
 #'
 #' @examples
 #' glottodata <- glottofilter(location = "Australia")
@@ -307,92 +306,3 @@ glottomap_static_pacific <- function(glottodata, color = NULL, rivers = FALSE, p
 
 }
 
-#' #' Create a shifted static map with glottodata
-#' #'
-#' #' This function returns a static map with glottodata. Data is shifted and subsequently projected using the Robinson projection.
-#' #'
-#' #' @param glottodata
-#' #'
-#' #' @return
-#' #' @export
-#' #' @noRd
-#' #'
-#' #' @examples
-#' #' glottodata <- glottofilter(location = "Australia")
-#' #' glottomap_static_shift(glottodata)
-#' glottomap_static_shift <- function(glottodata, shift = NULL, color = NULL, rivers = FALSE, ptsize = NULL){
-#'
-#'   # sf::st_shift_longitude()
-#'
-# https://github.com/thackl/ggworldmap
-# https://github.com/thackl/ggworldmap/blob/master/R/geom_worldmap.R
-#'   # if(is.null(ptsize)){ptsize <- 0.5}
-#'   # if(is.null(shift)){shift <- 180+30}
-#'
-#'   # https://stackoverflow.com/questions/10620862/use-different-center-than-the-prime-meridian-in-plotting-a-world-map
-#'   # mp1 <- ggplot2::fortify(maps::map(fill=TRUE, plot=FALSE))
-#'   # mp2 <- mp1
-#'   # mp2$long <- mp2$long + 360
-#'   # mp2$group <- mp2$group + max(mp2$group) + 1
-#'   # mp <- rbind(mp1, mp2)
-#'   #
-#'   # world_robinson <- sf::st_transform(mp,
-#'   #                                    crs = '+proj=robin +lon_0=0 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs')
-#'   #
-#'   #
-#'   # ggplot2::ggplot(ggplot2::aes(x = long, y = lat, group = group), data = mp) +
-#'   #   ggplot2::geom_path() +
-#'   #   ggplot2::scale_x_continuous(limits = c(0, 360))
-#'   #
-#'
-#'
-#'
-#'   world <- rnaturalearth::ne_countries(scale = 50, returnclass = "sf")
-#'   world <- world %>% sf::st_make_valid()
-#'
-#'   splitline <- data.frame(x = rep(0, 2), y = c(-90, 90) ) %>% sf::st_as_sf(coords = c("x", "y")) %>%
-#'     sf::st_union() %>%
-#'     sf::st_set_crs(sf::st_crs(world)) %>%
-#'     sf::st_cast("LINESTRING")
-#'   splitline <- sf::st_intersection(x = splitline, y = world)
-#'
-#'   splitlinebuf <- sf::st_buffer(splitline, dist = 0.000001)
-#'
-#'   worldsplit <- world %>% sf::st_difference(splitlinebuf)
-#'
-#'   worldshift <- worldsplit %>% sf::st_shift_longitude()
-#'
-#'
-#'   world_robinson <- sf::st_transform(worldsplit,
-#'                                      crs = '+proj=robin +lon_0=0 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs')
-#'
-#'   if(rivers == TRUE){
-#'     rivers_name <- 'ne_10m_rivers_lake_centerlines'
-#'     rivers_path <- glottofiles_makepath(paste0(rivers_name, ".shp"))
-#'     if(file.exists(rivers_path)){
-#'       rivers10 <- rnaturalearth::ne_load(scale = 10, type = 'rivers_lake_centerlines',
-#'                                          category = 'physical', returnclass = "sf",
-#'                                          destdir = glottofiles_cachedir())
-#'     } else {
-#'       rivers10 <- rnaturalearth::ne_download(scale = 10, type = 'rivers_lake_centerlines',
-#'                                              category = 'physical', returnclass = "sf",
-#'                                              destdir = glottofiles_cachedir())
-#'     }
-#'     rivers10 <- suppressWarnings(rivers10 %>% sf::st_difference(polygon) )
-#'   }
-#'
-#'
-#'   # plot
-#'   ggplot2::ggplot() +
-#'     ggplot2::geom_sf(data = world_robinson, fill = "white") +
-#'     {if(rivers == TRUE){ggplot2::geom_sf(data = rivers10, color = "lightblue" ) }} +
-#'     ggplot2::geom_sf(data = glottodata, ggplot2::aes(color = .data[[color]]), size = ptsize ) +
-#'     ggplot2::theme(legend.position = "none",
-#'                    plot.background = ggplot2::element_rect(fill = "white"))
-#'
-#'
-#' }
-#'
-#'
-#'
-#'

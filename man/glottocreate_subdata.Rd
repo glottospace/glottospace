@@ -55,7 +55,8 @@ For example: abcd1234_aaa_0001, abcd1234_aaa_0002, abcd1234_bbb_0001, abcd1234_b
 Output is a list with one data.frame per language (and a number of metatables if meta = TRUE). Output can  also be saved as an excel file.
 }
 \examples{
-glottocreate_subdata(glottocodes = c("yucu1253", "tani1257"), variables = 3, groups = c("a", "b"), n = 5, filename = "glottosubdata.xlsx")
+glottocreate_subdata(glottocodes = c("yucu1253", "tani1257"),
+variables = 3, groups = c("a", "b"), n = 5, filename = "glottosubdata.xlsx")
 }
 \concept{<glottoget_path><glottocreate>}
 \keyword{internal}

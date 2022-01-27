@@ -41,7 +41,8 @@ Transform a linguistic dataset into glottodata
 \examples{
 \dontrun{
 data <- glottoget("userdata.xlsx")
-glottodata <- glottoconvert(data = data, var = "var_", ref = "ref_", page = "pag_", remark = "com_", contributor = "Coder")
+glottodata <- glottoconvert(data = data, var = "var_", ref = "ref_",
+              page = "pag_", remark = "com_", contributor = "Coder")
 glottocheck(glottodata)
 glottosave(glottodata)
 }

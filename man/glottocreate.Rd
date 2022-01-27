@@ -62,18 +62,22 @@ Run glottoget("demodata") or glottoget("demosubdata") to see examples.
 In case you already have your own dataset and want to convert it into glottodata, use: glottoconvert().
 }
 \examples{
-Creates glottodata table without metadata tables
-glottocreate(glottocodes = c("yucu1253", "tani1257"), variables = 3, meta = FALSE)
+# Creates glottodata table without metadata tables
+glottocreate(glottocodes = c("yucu1253", "tani1257"),
+variables = 3, meta = FALSE)
 
-Creates glottodata table with metadata tables (stored in a list):
+# Creates glottodata table with metadata tables (stored in a list):
 glottocreate(glottocodes = c("yucu1253", "tani1257"), variables = 3)
 
 
-Creates glottosubdata table (stored in a list)
-glottocreate(glottocodes = c("yucu1253", "tani1257"), variables = 3, groups = c("a", "b") )
+# Creates glottosubdata table (stored in a list)
+glottocreate(glottocodes = c("yucu1253", "tani1257"),
+variables = 3, groups = c("a", "b") )
 
-Creates glottodata/glottosubdata and save as excel:
-glottocreate(glottocodes = c("yucu1253", "tani1257"), variables = 3, filename = "glottodata.xlsx")
-glottocreate(glottocodes = c("yucu1253", "tani1257"), variables = 3, groups = c("a", "b"), filename = "glottosubdata.xlsx" )
+# Creates glottodata/glottosubdata and save as excel:
+glottocreate(glottocodes = c("yucu1253", "tani1257"),
+variables = 3, filename = "glottodata.xlsx")
+glottocreate(glottocodes = c("yucu1253", "tani1257"),
+             variables = 3, groups = c("a", "b"), filename = "glottosubdata.xlsx" )
 }
 \concept{<glottoget><glottocreate>}
