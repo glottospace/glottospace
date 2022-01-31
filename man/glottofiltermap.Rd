@@ -13,9 +13,6 @@ glottofiltermap(glottodata = NULL, mode = NULL, ...)
 
 \item{...}{Additional arguments to pass to glottofilter}
 }
-\value{
-
-}
 \description{
 Select languages by drawing or clicking on a map
 }

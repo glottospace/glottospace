@@ -16,6 +16,7 @@ Besides diagnostic messages, this function invisibly returns TRUE if check is pa
 This function checks whether each variable has at least two levels (excluding NA). Use function glottocheck_varlevels to get an overview of the levels in each variable.
 }
 \examples{
-suppressMessages(glottocheck_twolevels(data = data))
+glottodata <- glottoget("demodata", meta = FALSE)
+suppressMessages(glottocheck_twolevels(data = glottodata))
 }
 \keyword{internal}

@@ -50,12 +50,12 @@ glottofilter <- function(glottodata = NULL,
   if(!purrr::is_empty(isocodes )){
     selection <- isocodes
     glottodata <- glottodata %>%
-      dplyr::filter(isocode %in% selection)
+      dplyr::filter(.data$isocode %in% selection)
   }
   if(!purrr::is_empty(glottocode )){
     selection <- glottocode
     glottodata <- glottodata %>%
-      dplyr::filter(glottocode %in% selection)
+      dplyr::filter(.data$glottocode %in% selection)
   }
   if(!purrr::is_empty(family )){
     selection <- tolower(family)
@@ -70,7 +70,7 @@ glottofilter <- function(glottodata = NULL,
   if(!purrr::is_empty(family_id )){
     selection <- family_id
     glottodata <- glottodata %>%
-      dplyr::filter(family_id %in% selection)
+      dplyr::filter(.data$family_id %in% selection)
   }
   if(!purrr::is_empty(location )){
     selection <- tolower(location)
@@ -113,13 +113,13 @@ glottofilter <- function(glottodata = NULL,
   if(!purrr::is_empty(colname) & !purrr::is_empty(select) ){
     selection <- select
     glottodata <- glottodata %>%
-      dplyr::filter(.[[colname]] %in% selection)
+      dplyr::filter(.data[[colname]] %in% selection)
   }
 
   if(!purrr::is_empty(colname) & !purrr::is_empty(drop) ){
     selection <- drop
     glottodata <- glottodata %>%
-      dplyr::filter(.[[colname]] %nin% selection)
+      dplyr::filter(.data[[colname]] %nin% selection)
   }
 
   if(nrow(glottodata) == 0){
@@ -137,8 +137,6 @@ glottofilter <- function(glottodata = NULL,
 #' @param glottodata Spatial glottodata object
 #' @param mode Either "draw" or "click"
 #' @param ... Additional arguments to pass to glottofilter
-#'
-#' @return
 #' @export
 #'
 #' @examples
@@ -183,7 +181,7 @@ glottofiltermap <- function(glottodata = NULL, mode = NULL, ...){
 glottofilter_flex <- function(glottodata, colname, select){
 
   if(purrr::is_empty(glottodata)){
-    glottodata <- glottofilter(...)
+    glottodata <- glottoget_glottobase()
   }
 
 arg <- base::substitute(select)
@@ -199,11 +197,11 @@ if(char[1] == "-"){ # inverse
     selection <- char[2]
   }
   glottodata <- glottodata %>%
-    dplyr::filter(.[[colname]] %nin% selection)
+    dplyr::filter(.data[[colname]] %nin% selection)
 } else { # no inverse
   selection <- select
   glottodata <- glottodata %>%
-    dplyr::filter(.[[colname]] %in% selection)
+    dplyr::filter(.data[[colname]] %in% selection)
 }
 
 return(glottodata)

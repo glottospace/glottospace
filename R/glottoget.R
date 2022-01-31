@@ -183,8 +183,7 @@ glottoget_glottolog <- function(days = NULL){
       silent = TRUE
     )
     if(class(out) == "try-error"){
-      data("glottolog")
-      out <- glottolog
+      out <- glottospace::glottolog
     }
 
   }

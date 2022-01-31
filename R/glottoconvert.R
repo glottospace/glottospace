@@ -94,7 +94,7 @@ glottoconvert <- function(data, glottocode = NULL, var, table = NULL, ref = NULL
     "page numbers", npage,
     "remarks", nremark,
     "contributors", ncontr,
-    "omitted", totcol-nvars-nrefs-npage-nremark-ncont-1 # minus 1 for glottocode
+    "omitted", totcol-nvar-nref-npage-nremark-ncontr-1 # minus 1 for glottocode
   )
 
   print(overview)

@@ -16,6 +16,7 @@ Opens a data viewer showing the levels of each variable (including NA)
 This function shows the levels of all variables and is mainly intended to provide users with a quick overview of their data.
 }
 \examples{
-suppressMessages(glottocheck_varlevels(data = data))
+glottodata <- glottoget("demodata", meta = FALSE)
+suppressMessages(glottocheck_varlevels(data = glottodata))
 }
 \keyword{internal}

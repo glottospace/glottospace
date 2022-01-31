@@ -106,8 +106,8 @@ glottoboosterflex <- function(glottologdata = NULL, space = TRUE,
 #' @export
 glottobooster_addfamilyname <- function(glottologdata){
     families <- glottologdata %>%
-      dplyr::filter(level == "family") %>%
-      dplyr::transmute(family_id = id, family = name)
+      dplyr::filter(.data$level == "family") %>%
+      dplyr::transmute(family_id = .data$id, family = .data$name)
 
     dplyr::left_join(x = glottologdata, y = families, by = "family_id")
 }
@@ -140,7 +140,7 @@ glottologdata
 #'
 #' @export
 glottobooster_rmdialects <- function(glottologdata){
-  glottologdata %>% dplyr::filter(level != "dialect")
+  glottologdata %>% dplyr::filter(.data$level != "dialect")
 }
 
 #' Glottolog: remove families
@@ -151,7 +151,7 @@ glottobooster_rmdialects <- function(glottologdata){
 #'
 #' @export
 glottobooster_rmfamilies <- function(glottologdata){
-  glottologdata %>% dplyr::filter(level != "family")
+  glottologdata %>% dplyr::filter(.data$level != "family")
 }
 
 #' Glottolog: remove bookkeeping
@@ -164,8 +164,8 @@ glottobooster_rmfamilies <- function(glottologdata){
 glottobooster_rmbookkeeping <- function(glottologdata){
   # unique(glottologdata$bookkeeping)
   glottologdata %>%
-    dplyr::filter(bookkeeping == FALSE) %>%
-    dplyr::select(-bookkeeping)
+    dplyr::filter(.data$bookkeeping == FALSE) %>%
+    dplyr::select(-.data$bookkeeping)
 }
 
 #' Glottolog: remove artificial families
@@ -177,7 +177,7 @@ glottobooster_rmbookkeeping <- function(glottologdata){
 #' @export
 glottobooster_rmartifam <- function(glottologdata){
   glottologdata %>%
-    dplyr::filter(family_id != "arti1236")
+    dplyr::filter(.data$family_id != "arti1236")
 }
 
 #' Glottolog: remove sign languages
@@ -189,7 +189,7 @@ glottobooster_rmartifam <- function(glottologdata){
 #' @export
 glottobooster_rmsignlangs <- function(glottologdata){
   glottologdata %>%
-    dplyr::filter(family_id != "sign1238")
+    dplyr::filter(.data$family_id != "sign1238")
 }
 
 #' Glottolog: add family size
@@ -201,7 +201,7 @@ glottobooster_rmsignlangs <- function(glottologdata){
 #' @export
 glottobooster_addfamilysize <- function(glottologdata){
 glottologdata %>%
-    dplyr::group_by(family_id) %>%
+    dplyr::group_by(.data$family_id) %>%
     dplyr::mutate(family_size = dplyr::n())
 }
 
@@ -231,8 +231,8 @@ glottobooster_addfamilysizerank <- function(glottologdata){
 #' @export
 glottobooster_L1only <- function(glottologdata){
   glottologdata %>%
-    dplyr::filter(category == "Spoken_L1_Language") %>%
-    dplyr::select(-category, -bookkeeping, -level)
+    dplyr::filter(.data$category == "Spoken_L1_Language") %>%
+    dplyr::select(-.data$category, -.data$bookkeeping, -.data$level)
 }
 
 

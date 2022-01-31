@@ -135,6 +135,7 @@ glottocheck_metadata <- function(glottodata){
 #' @keywords internal
 #' @family <glottocheck>
 #' @examples
+#' glottodata <- glottoget("demodata", meta = TRUE)
 #' glottocheck_hasmeta(glottodata)
 glottocheck_hasmeta <- glottocheck_hasstructure <- function(glottodata){
   any(is_list(glottodata)) & any(names(glottodata) %in% "structure")
@@ -185,6 +186,7 @@ glottocheck_idmissing <- function(data, id){
 #' @export
 #'
 #' @examples
+#' glottodata <- glottoget("demodata", meta = FALSE)
 #' glottocheck_idunique(data = glottodata, id = "glottocode")
 glottocheck_idunique <- function(data, id){
   freqtab <- data.frame(table(data[,id]))
@@ -212,7 +214,8 @@ glottocheck_idunique <- function(data, id){
 #' @keywords internal
 #'
 #' @examples
-#' suppressMessages(glottocheck_twolevels(data = data))
+#' glottodata <- glottoget("demodata", meta = FALSE)
+#' suppressMessages(glottocheck_twolevels(data = glottodata))
 glottocheck_twolevels <- function(data){
   data <- as.data.frame(data)
   lslevels <- lapply(data, unique)
@@ -247,7 +250,8 @@ glottocheck_twolevels <- function(data){
 #' @keywords internal
 #'
 #' @examples
-#' suppressMessages(glottocheck_varlevels(data = data))
+#' glottodata <- glottoget("demodata", meta = FALSE)
+#' suppressMessages(glottocheck_varlevels(data = glottodata))
 glottocheck_varlevels <- function(data){
   # readline(prompt="Do you want to view the levels of each variable (this might take a few seconds)? \n Press [enter] to view or [esc] to skip")
   lslevels <- lapply(data, unique)
@@ -257,7 +261,7 @@ glottocheck_varlevels <- function(data){
   varlevels <- data.frame(variable = colnames(data), levels = varlevels)
 
   invisible(lslevels)
-  View(varlevels)
+  utils::View(varlevels)
 }
 
 #' Check whether all IDs are valid glottocodes.
@@ -416,7 +420,8 @@ glottocheck_colmissing <- function(data, id, diagnostic = FALSE, rm.na = TRUE){
 #' @export
 #' @keywords internal
 #' @examples
-#' glottocheck_isglottosubdata(glottodata)
+#' glottosubdata <- glottoget("demosubdata", meta = FALSE)
+#' glottocheck_isglottosubdata(glottosubdata)
 glottocheck_isglottosubdata <- function(glottodata){
     all(class(glottodata) == "list" &
     !any(names(glottodata) %in% "glottodata") &
@@ -431,6 +436,7 @@ glottocheck_isglottosubdata <- function(glottodata){
 #' @export
 #' @keywords internal
 #' @examples
+#' glottodata <- glottoget("demodata", meta = FALSE)
 #' glottocheck_isglottodata(glottodata)
 glottocheck_isglottodata <- function(glottodata){
   glottodata <- contrans_tb2df(glottodata)

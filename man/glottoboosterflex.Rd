@@ -50,7 +50,7 @@ Another example, depending on whether artificial families are removed, the total
 }
 \examples{
 glottologdata <- glottoget("glottolog")
-glottologdata <- glottologboosterflex(glottologdata)
+glottologdata <- glottoboosterflex(glottologdata)
 }
 \seealso{
 Other <glottobooster>: 

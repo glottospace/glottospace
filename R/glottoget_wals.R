@@ -30,8 +30,7 @@ glottoget_wals <- function(days = NULL, valuenames = NULL, paramnames = NULL){
       silent = TRUE
     )
     if(any(class(out) == "try-error")){
-      data("wals")
-      out <- wals
+      out <- glottospace::wals
     }
 
   }
@@ -91,7 +90,7 @@ wals_version_remote <- function(){
 #' @export
 #' @keywords internal
 #'
-wals_download_cldf <- function(valuenames = NULL, paramnames = NULL){
+wals_download <- function(valuenames = NULL, paramnames = NULL){
   wals_download_zenodo()
   wals_loadlocal(valuenames = valuenames, paramnames = paramnames)
 }

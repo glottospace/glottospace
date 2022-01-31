@@ -128,7 +128,6 @@ glottocondist <- function(data = NULL, index = "constructions", glottocodes = NU
 #' @param glottocodes Vector of glottocodes
 #' @param aggregation One of c('mean', 'min', 'sum') indicating how distances should be aggregated to language level.('min' returns best match)
 #' @noRd
-#' @return
 glottocondist_agg <- function(condist, glottocodes, aggregation){
 
   if(any(class(condist) == "dist")){
@@ -138,15 +137,15 @@ glottocondist_agg <- function(condist, glottocodes, aggregation){
     distmat <- condist
   }
 
-  outmatlang <- gs_langmat(glottocodes = glottocodes)
+  outmatlang <- glottocreate_emptydistmat(glottocodes = glottocodes)
 
   for (i in seq_along(glottocodes)) {
     for (j in seq_along(glottocodes)) {
       if(glottocodes[i]!=glottocodes[j]) {
 
         # Subset distance matrix for language a and b
-        a <- str_detect(rownames(distmat), glottocodes[i])
-        b <- str_detect(rownames(distmat), glottocodes[j])
+        a <- stringr::str_detect(rownames(distmat), glottocodes[i])
+        b <- stringr::str_detect(rownames(distmat), glottocodes[j])
         distmat_ab <- distmat[a,b, drop = F]
 
         if(!all(is.na(distmat_ab))){
@@ -183,14 +182,13 @@ glottocondist_agg <- function(condist, glottocodes, aggregation){
 #' @param thresval Threshold value
 #' @param threstype Threshold type
 #' @noRd
-#' @return
 #'
 glottocondist_con2lang <- function(condist, glottocodes, groups = NULL, thresval = NULL, threstype = "absolute"){
 
   distmat <- as.matrix(condist)
 
   if(is.null(groups) & is.null(thresval)){
-    thr <- mean(dist)
+    thr <- mean(condist)
     cat(paste0('Mean between all constructions is: ', round(thr, 3)))
   }
   if(!is.null(groups) & is.null(thresval)){

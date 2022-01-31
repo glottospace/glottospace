@@ -13,6 +13,7 @@ glottocheck_isglottosubdata(glottodata)
 Guess whether an object is glottosubdata (and not glottodata)
 }
 \examples{
-glottocheck_isglottosubdata(glottodata)
+glottosubdata <- glottoget("demosubdata", meta = FALSE)
+glottocheck_isglottosubdata(glottosubdata)
 }
 \keyword{internal}

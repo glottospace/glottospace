@@ -345,7 +345,7 @@ glottocreate_readmetable <- function(maintainer = NULL, email = NULL, citation =
                   ifelse(purrr::is_empty(email), NA, email),
                   ifelse(is.null(citation), NA, citation),
                   ifelse(is.null(url), NA, url),
-                  paste0("version " ,packageVersion("glottospace") ) )
+                  paste0("version " , utils::packageVersion("glottospace") ) )
   colnames(readme) <- c("info", "value")
   readme
 }
@@ -476,6 +476,21 @@ glottocreate_addtable <- function(glottodata, table, name){
 
   c(glottodata, table)
 
+}
 
 
+
+#' Create empty distance matrix
+#'
+#' @param names
+#'
+#' @noRd
+#' @examples
+#' glottocreate_emptydistmat(names = glottocodes)
+glottocreate_emptydistmat <- function(names){
+  outputmat <- matrix(data = NA,
+                      nrow = length(names),
+                      ncol = length(names),
+                      dimnames = list(names, names))
+  return(outputmat)
 }

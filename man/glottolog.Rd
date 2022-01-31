@@ -3,7 +3,7 @@
 \docType{data}
 \name{glottolog}
 \alias{glottolog}
-\title{glottolog data}
+\title{This is an internally stored version of glottolog data. It is included in the package as a fall-back option in case there is no internet connection.}
 \format{
 A data frame with XX rows and XX variables:
 \describe{

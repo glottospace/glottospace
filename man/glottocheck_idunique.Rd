@@ -18,6 +18,7 @@ Besides diagnostic messages, this function invisibly returns TRUE if check is pa
 Some unicorns might be found...
 }
 \examples{
+glottodata <- glottoget("demodata", meta = FALSE)
 glottocheck_idunique(data = glottodata, id = "glottocode")
 }
 \keyword{internal}

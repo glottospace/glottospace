@@ -14,6 +14,7 @@ glottocheck_hasmeta(glottodata)
 In fact, this function only checks whether glottodata contains a structure table, because the structure table is the only table that is required by some glottospace functions. All other tables are for humans, not computers;-).
 }
 \examples{
+glottodata <- glottoget("demodata", meta = TRUE)
 glottocheck_hasmeta(glottodata)
 }
 \seealso{
