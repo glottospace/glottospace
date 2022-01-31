@@ -256,6 +256,8 @@ glottoplot_nmds_stress <- function(glottodist, k = NULL){
 #' @keywords internal
 #'
 #' @examples
+#' glottodata <- glottoget("demodata", meta = TRUE)
+#' glottodist <- glottodist(glottodata)
 #' glottoplot_heatmap(glottodist)
 glottoplot_heatmap <- function(glottodist, filename = NULL){
   distmat <- contransform_distmat(glottodist)
@@ -263,9 +265,9 @@ glottoplot_heatmap <- function(glottodist, filename = NULL){
   distpivot <- distmat %>%
     as.data.frame() %>%
     tibble::rownames_to_column("glottocode_x") %>%
-    tidyr::pivot_longer(-c(glottocode_x), names_to = "glottocode_y", values_to = "distance")
+    tidyr::pivot_longer(-c(.data$glottocode_x), names_to = "glottocode_y", values_to = "distance")
 
-  heatmap <- ggplot2::ggplot(data = distpivot, ggplot2::aes(x=glottocode_x, y=glottocode_y, fill=distance) ) +
+  heatmap <- ggplot2::ggplot(data = distpivot, ggplot2::aes(x=.data$glottocode_x, y=.data$glottocode_y, fill=.data$distance) ) +
     ggplot2::geom_raster() +
     ggplot2::scale_fill_distiller(palette = "YlOrRd", na.value = "grey50", direction = 1) +
     ggplot2::labs(x = "glottocode", y = "glottocode") +

@@ -23,7 +23,7 @@ glottosearch <- function(search, glottodata = NULL, partialmatch = TRUE, columns
 
   if(is.null(columns)){
     glottodata_sel <- glottodata
-  } else{ glottodata_sel <- dplyr::select(glottodata, all_of(columns))}
+  } else{ glottodata_sel <- dplyr::select(glottodata, tidyselect::all_of(columns))}
 
     found <- base::apply(glottodata_sel, MARGIN = 2,
                    FUN = base::agrep, pattern = search, ignore.case = T, value = FALSE, max.distance = ldist)

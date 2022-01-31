@@ -16,7 +16,7 @@ Quality check of user-provided glottosubdata
 }
 \examples{
 glottosubdata <- glottocreate_demosubdata()
-glottocheck_subdata(glottosubdata)
+glottocheck_subdata(glottosubdata, diagnostic = FALSE)
 }
 \seealso{
 Other <glottocheck>: 

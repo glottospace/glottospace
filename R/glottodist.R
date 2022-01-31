@@ -137,7 +137,7 @@ glottocondist_agg <- function(condist, glottocodes, aggregation){
     distmat <- condist
   }
 
-  outmatlang <- glottocreate_emptydistmat(glottocodes = glottocodes)
+  outmatlang <- glottocreate_emptydistmat(names = glottocodes)
 
   for (i in seq_along(glottocodes)) {
     for (j in seq_along(glottocodes)) {

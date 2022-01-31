@@ -1,7 +1,7 @@
 Package: glottospace
 Type: Package
 Title: Language Mapping and Geospatial Analysis of Linguistic and Cultural Data
-Version: 0.0.79
+Version: 0.0.81
 Author: Sietze Norder
 Maintainer: Sietze Norder <mail@sietzenorder.nl>
 Description: The R package glottospace helps users to do geospatial analyses on linguistic and cultural data. 
@@ -25,27 +25,28 @@ Imports:
     rnaturalearthdata,
     sf,
     tmap,
-    RColorBrewer, 
-    RJSONIO, 
-    cluster, 
-    data.table, 
-    ggplot2, 
-    goeveg, 
-    htmlwidgets, 
-    lubridate, 
-    mapedit, 
-    plotly, 
-    rappdirs, 
-    readxl, 
-    s2, 
-    scales, 
-    stringr, 
-    tibble, 
-    tidyr, 
-    units, 
-    vegan, 
-    viridisLite, 
-    writexl, 
-    curl
+    RColorBrewer,
+    RJSONIO,
+    cluster,
+    data.table,
+    ggplot2,
+    goeveg,
+    htmlwidgets,
+    lubridate,
+    mapedit,
+    plotly,
+    rappdirs,
+    readxl,
+    s2,
+    scales,
+    stringr,
+    tibble,
+    tidyr,
+    units,
+    vegan,
+    viridisLite,
+    writexl,
+    curl,
+    rlang
 Depends: 
     R (>= 4.1.0)

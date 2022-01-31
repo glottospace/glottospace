@@ -135,7 +135,7 @@ glottospotlight <- function(glottodata, spotcol, spotlight, spotcontrast = NULL,
 
   bgnames <- as.factor(data$legend[data$spotlight == FALSE])
   ncolrbg <- length(unique(bgnames))
-  colpalbg <- grey.colors(ncolrbg)
+  colpalbg <- glottocolpal(palette = "Grays", ncolr = ncolrbg)
 
   data$color[data$spotlight == TRUE] <- colpalspot[spotlightnames]
   data$color[data$spotlight == FALSE] <- colpalbg[bgnames]

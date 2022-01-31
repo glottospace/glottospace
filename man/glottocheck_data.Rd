@@ -23,7 +23,7 @@ Go through a user-provided glottodataset and check whether:
 }
 \examples{
 glottodata <- glottocreate_demodata()
-glottocheck_data(glottodata)
+glottocheck_data(glottodata, diagnostic = FALSE)
 }
 \seealso{
 Other <glottocheck>: 

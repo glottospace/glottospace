@@ -361,9 +361,9 @@ glottolog_loadlocal <- function(){
   glottologdata <- languoids %>% dplyr::left_join(levels, by = "lang_id") %>%
     dplyr::left_join(category, by = "lang_id") %>%
     dplyr::left_join(classification, by = "lang_id") %>%
-    dplyr::arrange(lang_id)
+    dplyr::arrange(.data$lang_id)
 
   colnames(glottologdata)[which(colnames(glottologdata) == "lang_id")] <- "id"
-  glottologdata <- base::subset(glottologdata, select = -c(glottocode, language_id))
+  glottologdata <- glottologdata %>% dplyr::select(-.data$glottocode, -.data$language_id)
   invisible(glottologdata)
 }

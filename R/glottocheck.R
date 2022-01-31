@@ -20,7 +20,8 @@
 #' @export
 #'
 #' @examples
-#' glottocheck(glottodata)
+#' glottodata <- glottoget("demodata")
+#' glottocheck(glottodata, diagnostic = FALSE)
 glottocheck <- function(glottodata, diagnostic = TRUE, checkmeta = FALSE){
   if(glottocheck_isglottosubdata(glottodata) == FALSE){
     glottocheck_data(glottodata = glottodata, diagnostic = diagnostic)
@@ -59,7 +60,7 @@ glottocheck <- function(glottodata, diagnostic = TRUE, checkmeta = FALSE){
 #'
 #' @examples
 #' glottodata <- glottocreate_demodata()
-#' glottocheck_data(glottodata)
+#' glottocheck_data(glottodata, diagnostic = FALSE)
 glottocheck_data <- function(glottodata, diagnostic = TRUE){
   glottodata <- glottosimplify(glottodata)
   id <- "glottocode"
@@ -86,7 +87,7 @@ glottocheck_data <- function(glottodata, diagnostic = TRUE){
 #' @family <glottocheck>
 #' @examples
 #' glottosubdata <- glottocreate_demosubdata()
-#' glottocheck_subdata(glottosubdata)
+#' glottocheck_subdata(glottosubdata, diagnostic = FALSE)
 glottocheck_subdata <- function(glottosubdata, diagnostic = TRUE){
   glottosubdata <- glottosimplify(glottosubdata)
   id <- "glottosubcode"

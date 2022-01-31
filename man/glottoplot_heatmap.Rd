@@ -15,6 +15,8 @@ glottoplot_heatmap(glottodist, filename = NULL)
 Plot a heatmap of a distance matrix
 }
 \examples{
+glottodata <- glottoget("demodata", meta = TRUE)
+glottodist <- glottodist(glottodata)
 glottoplot_heatmap(glottodist)
 }
 \keyword{internal}

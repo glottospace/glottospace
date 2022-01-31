@@ -116,7 +116,7 @@ glottosubcode_valid <- function(glottosubcodes){
   gsc_df[,"group_chr"] <- suppressWarnings(is.na(as.numeric(gsc_df[,"group"])))
   gsc_df[,"n_num"] <- suppressWarnings(!is.na(as.numeric(gsc_df[,"n"])))
 
-  invalid <- gsc_df %>% dplyr::filter(dplyr::if_any( c(gc_exists, group_chr, n_num), is_false))
+  invalid <- gsc_df %>% dplyr::filter(dplyr::if_any( c(.data$gc_exists, .data$group_chr, .data$n_num), is_false))
   invalidgcs <- paste(invalid[,"glottosubcode"], collapse = ", ")
 
   if(nrow(invalid) != 0){message(paste("There are issues with the following glottosubcodes:", invalidgcs))

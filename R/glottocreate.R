@@ -485,8 +485,7 @@ glottocreate_addtable <- function(glottodata, table, name){
 #' @param names
 #'
 #' @noRd
-#' @examples
-#' glottocreate_emptydistmat(names = glottocodes)
+#'
 glottocreate_emptydistmat <- function(names){
   outputmat <- matrix(data = NA,
                       nrow = length(names),

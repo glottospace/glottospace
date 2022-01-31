@@ -27,7 +27,8 @@ It subsequently checks whether:
 }
 }
 \examples{
-glottocheck(glottodata)
+glottodata <- glottoget("demodata")
+glottocheck(glottodata, diagnostic = FALSE)
 }
 \seealso{
 Other <glottocheck>: 
