@@ -5,12 +5,12 @@ citEntry(
   title    = "glottospace: R package for the geospatial analysis of linguistic and cultural data",
   author   = "Norder, S.J. et al.",
   journal  = paste("R package version", packageVersion("glottospace")),
-  year     = "2021",
+  year     = "2022",
   volume   = "",
   number   = "",
   pages    = "",
   url      = "https://github.com/SietzeN/glottospace",
-  textVersion = paste("Norder, S.J. et al. (2021).",
+  textVersion = paste("Norder, S.J. et al. (2022).",
         "glottospace: R package for the geospatial analysis of linguistic and cultural data.",
          "URL https://github.com/SietzeN/glottospace.")
 )

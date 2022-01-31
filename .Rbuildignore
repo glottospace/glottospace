@@ -4,7 +4,7 @@
 ^data-raw$
 ^LICENSE\.md$
 ^README.nb.html
-^demodata.xlsx
-^glottodata.xlsx
-^glottomap.png
-^glottosubdata.xlsx
+[.]xlsx$
+^TODO\.R$
+^glottomap\.png$
+^CITATION\.cff$

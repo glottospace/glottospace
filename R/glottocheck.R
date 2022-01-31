@@ -216,7 +216,7 @@ glottocheck_idunique <- function(data, id){
 #'
 #' @examples
 #' glottodata <- glottoget("demodata", meta = FALSE)
-#' suppressMessages(glottocheck_twolevels(data = glottodata))
+#' glottocheck_twolevels(data = glottodata)
 glottocheck_twolevels <- function(data){
   data <- as.data.frame(data)
   lslevels <- lapply(data, unique)
@@ -244,7 +244,9 @@ glottocheck_twolevels <- function(data){
 #' Show levels of all variables.
 #'
 #' This function shows the levels of all variables and is mainly intended to provide users with a quick overview of their data.
-#' @param data
+#'
+#' @param data Glottodata
+#' @param diagnostic Whether diagnostic messages should be shown
 #'
 #' @return Opens a data viewer showing the levels of each variable (including NA)
 #' @export
@@ -252,8 +254,8 @@ glottocheck_twolevels <- function(data){
 #'
 #' @examples
 #' glottodata <- glottoget("demodata", meta = FALSE)
-#' suppressMessages(glottocheck_varlevels(data = glottodata))
-glottocheck_varlevels <- function(data){
+#' glottocheck_varlevels(data = glottodata, diagnostic = FALSE)
+glottocheck_varlevels <- function(data, diagnostic = TRUE){
   # readline(prompt="Do you want to view the levels of each variable (this might take a few seconds)? \n Press [enter] to view or [esc] to skip")
   lslevels <- lapply(data, unique)
   lslevels <- lapply(lslevels, factor)
@@ -262,7 +264,7 @@ glottocheck_varlevels <- function(data){
   varlevels <- data.frame(variable = colnames(data), levels = varlevels)
 
   invisible(lslevels)
-  utils::View(varlevels)
+  if(diagnostic == TRUE){utils::View(varlevels)}
 }
 
 #' Check whether all IDs are valid glottocodes.

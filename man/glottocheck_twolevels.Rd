@@ -17,6 +17,6 @@ This function checks whether each variable has at least two levels (excluding NA
 }
 \examples{
 glottodata <- glottoget("demodata", meta = FALSE)
-suppressMessages(glottocheck_twolevels(data = glottodata))
+glottocheck_twolevels(data = glottodata)
 }
 \keyword{internal}

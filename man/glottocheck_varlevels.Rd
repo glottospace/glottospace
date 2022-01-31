@@ -4,10 +4,12 @@
 \alias{glottocheck_varlevels}
 \title{Show levels of all variables.}
 \usage{
-glottocheck_varlevels(data)
+glottocheck_varlevels(data, diagnostic = TRUE)
 }
 \arguments{
-\item{data}{}
+\item{data}{Glottodata}
+
+\item{diagnostic}{Whether diagnostic messages should be shown}
 }
 \value{
 Opens a data viewer showing the levels of each variable (including NA)
@@ -17,6 +19,6 @@ This function shows the levels of all variables and is mainly intended to provid
 }
 \examples{
 glottodata <- glottoget("demodata", meta = FALSE)
-suppressMessages(glottocheck_varlevels(data = glottodata))
+glottocheck_varlevels(data = glottodata, diagnostic = FALSE)
 }
 \keyword{internal}
