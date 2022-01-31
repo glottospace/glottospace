@@ -13,9 +13,6 @@ glottonmds(glottodist, k = 2, rm.na = FALSE)
 
 \item{dist}{dist object or distance matrix}
 }
-\value{
-
-}
 \description{
 Nonmetric Multidimensional Scaling
 }

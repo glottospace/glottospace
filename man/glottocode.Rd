@@ -9,9 +9,6 @@ glottocode(glottocode)
 \arguments{
 \item{glottocode}{A single glottocode}
 }
-\value{
-
-}
 \description{
 This function does three things for a glottocode:
 - Plot its location on the Earth

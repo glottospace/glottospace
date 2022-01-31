@@ -13,9 +13,6 @@ glottocreate_glottosubcodes(glottocode, groups = NULL, n)
 
 \item{n}{Number of records in each group}
 }
-\value{
-
-}
 \description{
 Generate glottosubcodes for a single glottocode
 }

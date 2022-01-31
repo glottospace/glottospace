@@ -9,9 +9,6 @@ glottoget_glottobase(...)
 \arguments{
 \item{...}{Arguments to glottobooster}
 }
-\value{
-
-}
 \description{
 Downloads most recent glottolog data and transforms it. This 'glottobase' is used as reference dataset in several functions.
 }

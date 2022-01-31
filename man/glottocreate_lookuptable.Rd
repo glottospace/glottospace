@@ -6,9 +6,6 @@
 \usage{
 glottocreate_lookuptable()
 }
-\value{
-
-}
 \description{
 Create lookup table for glottodata
 }

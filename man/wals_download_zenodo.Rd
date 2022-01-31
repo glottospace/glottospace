@@ -6,9 +6,6 @@
 \usage{
 wals_download_zenodo()
 }
-\value{
-
-}
 \description{
 Download most recent version of WALS from zenodo (cldf format)
 }

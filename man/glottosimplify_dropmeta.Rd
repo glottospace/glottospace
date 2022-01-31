@@ -9,9 +9,6 @@ glottosimplify_dropmeta(glottodata)
 \arguments{
 \item{glottodata}{Either glottodata or glottosubdata}
 }
-\value{
-
-}
 \description{
 Drop metadata tables from glottodata
 }

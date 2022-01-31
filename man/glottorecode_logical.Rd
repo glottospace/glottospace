@@ -9,9 +9,6 @@ glottorecode_logical(glottodata, totrue = NULL, tofalse = NULL)
 \arguments{
 \item{glottodata}{glottodata list}
 }
-\value{
-
-}
 \description{
 Recode character columns to TRUE/FALSE
 }

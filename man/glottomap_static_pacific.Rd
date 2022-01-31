@@ -14,9 +14,6 @@ glottomap_static_pacific(
 \arguments{
 \item{glottodata}{}
 }
-\value{
-
-}
 \description{
 This function returns a static map with glottodata. Data is projected using the Robinson projection centered at the Pacific.
 }

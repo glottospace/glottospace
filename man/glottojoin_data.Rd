@@ -13,9 +13,6 @@ glottojoin_data(glottodata, with, type = "left", id = NULL, ...)
 
 \item{id}{Optional, name of column with glottocodes}
 }
-\value{
-
-}
 \description{
 Join two glottodata tables.
 }

@@ -11,9 +11,6 @@ glottosave(glottodata, filename = NULL)
 
 \item{filename}{Filename either with or without file extension}
 }
-\value{
-
-}
 \description{
 If no filename is provided, the name of the glottodata object will be used.
 }

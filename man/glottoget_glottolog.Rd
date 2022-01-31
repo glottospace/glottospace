@@ -6,9 +6,6 @@
 \usage{
 glottoget_glottolog(days = NULL)
 }
-\value{
-
-}
 \description{
 This function checks whether most recent version of glottolog is locally available. If local version is outdated, the newest version will be downloaded.
 }

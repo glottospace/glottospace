@@ -9,7 +9,7 @@ glottodist(glottodata, structure = NULL, id = NULL)
 \arguments{
 \item{glottodata}{A glottodata table, either with or without structure table.}
 
-\item{structure}{If glottodata is a table without a structure table, you can add it separately. To create a structure table, you should run glottocreate_structuretable() and you can add it with glottodata_addtable()}
+\item{structure}{If glottodata is a table without a structure table, you can add it separately. To create a structure table, you should run glottocreate_structuretable() and you can add it with glottocreate_addtable()}
 
 \item{id}{By default, glottodist looks for a column named 'glottocode', if the id is in a different column, this should be specified.}
 }

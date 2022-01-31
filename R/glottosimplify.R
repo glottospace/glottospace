@@ -10,7 +10,7 @@
 #' @param droplist By default if glottodata is a list of tables, only the glottodata table is returned.
 #' @param dropunits By default units are kept.
 #'
-#' @return
+#'
 #' @export
 #'
 #' @examples
@@ -46,7 +46,7 @@ glottosimplify <- function(glottodata, droplist = TRUE, dropmeta = TRUE, dropspa
 #'
 #' @param glottodata Either glottodata or glottosubdata
 #' @keywords internal
-#' @return
+#'
 #' @export
 #'
 glottosimplify_dropmeta <- function(glottodata){
@@ -61,7 +61,7 @@ glottosimplify_dropmeta <- function(glottodata){
 #'
 #' @param glottodata Either glottodata or glottosubdata
 #' @keywords internal
-#' @return
+#'
 #' @export
 #'
 glottosimplify_langtabs <- function(glottodata){
@@ -74,7 +74,7 @@ glottosimplify_langtabs <- function(glottodata){
 #'
 #' @param glottodata glottodatalist
 #' @keywords internal
-#' @return
+#'
 #' @export
 #'
 glottosimplify_droplist <- function(glottodata){
@@ -89,7 +89,7 @@ glottosimplify_droplist <- function(glottodata){
 #'
 #' @param glottodata Either glottodata or glottosubdata
 #' @keywords internal
-#' @return
+#'
 #' @export
 #'
 glottosimplify_dropspatial <- function(glottodata){
@@ -104,7 +104,7 @@ glottosimplify_dropspatial <- function(glottodata){
 #'
 #' @param glottodata Either glottodata or glottosubdata
 #' @keywords internal
-#' @return
+#'
 #' @export
 #'
 glottosimplify_dropunits <- function(glottodata){
@@ -118,7 +118,7 @@ glottosimplify_dropunits <- function(glottodata){
 #'
 #' @param glottosubdata glottosubdata.
 #' @keywords internal
-#' @return
+#'
 #' @export
 #'
 glottosimplify_submerge <- function(glottosubdata){

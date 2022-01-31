@@ -1,30 +1,9 @@
 ## Resubmission
-This is a resubmission. In this version I have:
+This is a resubmission (the second submission). In this version I have fixed all ERRORS, WARNINGS, AND NOTES.
 
-# Fixed ERRORS:
-* Commented text in documentation of the function glottocreate()
 
-# Fixed WARNINGS:
-* Removed invalid license file pointer LICENSE
 
-* Added packages to dependencies
-* Removed Namespaces in Imports field not imported from
 
-* Rd cross-references: removed missing links.
-
-* Missing documentation for code objects are now documented (resulted from using @export and @noRd at the same time).
-* Undocumented data sets are now documented
-
-* Fixed documented/undocumented arguments. 
-* Argument items added description.
-
-# WARNINGS ignored:
-
-* non-ASCII characters are in raw data should be kept. 
-
-# NOTES
-
-* Converted the DESCRIPTION title to title case.
 
 ## First submission: R CMD check results
 There was 1 ERROR, no WARNINGs or NOTEs. 

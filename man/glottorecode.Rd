@@ -15,9 +15,6 @@ glottorecode(glottodata, tofalse = NULL, totrue = NULL, tona = NULL)
 
 \item{tona}{Values to recode to NA}
 }
-\value{
-
-}
 \description{
 This function recodes values within a glottodataset to NA or TRUE/FALSE. Recoding is done based on column types in the structure table. Run glottocreate_structuretable() to create one.
 }

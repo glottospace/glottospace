@@ -11,9 +11,6 @@ glottojoin_space(glottodata, id = NULL)
 
 \item{id}{Optional, name of column with glottocodes}
 }
-\value{
-
-}
 \description{
 Join glottodata with glottospace (keeps all rows from glottodata). It is recommended to use the function glottospace().
 }

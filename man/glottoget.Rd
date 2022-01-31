@@ -24,9 +24,6 @@ spatial coordinates.
 
 \item{meta}{In case 'glottodata' is a path to locally stored data (or demodata/demosubdata): by default, meta sheets are not loaded. Use meta=TRUE if you want to include them.}
 }
-\value{
-
-}
 \description{
 Load locally stored glottodata, download databases from online sources, or load built-in demo data
 }

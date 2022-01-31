@@ -6,9 +6,6 @@
 \usage{
 glottolog_download_cldf()
 }
-\value{
-
-}
 \description{
 Download glottolog data from zenodo, and select relevant data from cldf data
 }

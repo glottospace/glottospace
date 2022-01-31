@@ -22,7 +22,7 @@
 #' @param ... Additional parameters to glottofilter
 #'
 #' @family <glottomap>
-#' @return
+#'
 #' @export
 #'
 #' @examples
@@ -31,7 +31,8 @@
 #' glottopoints <- glottofilter(continent = "South America")
 #' glottopols <- glottospace(glottopoints, method = "voronoi", continent = "South America")
 #' glottomap(glottodata = glottopols, color = "family_size_rank")
-#' glottomap(glottodata = glottopols, color = "family", palette = "turbo", type = "dynamic", label = "name")
+#' glottomap(glottodata = glottopols, color = "family", palette = "turbo",
+#' type = "dynamic", label = "name")
 #'
 #' glottodata <- glottoget()
 #' families <- glottodata %>% dplyr::count(family, sort = TRUE)
@@ -101,7 +102,7 @@ return(map)
 #' @param color Column name or index to be used to color features (optional), or a color "black"
 #' @param ptsize Size of points between 0 and 1
 #'
-#' @return
+#'
 #' @keywords internal
 #'
 #'
@@ -145,7 +146,7 @@ glottomap_dynamic <- function(glottodata, label = NULL, color = NULL, ptsize = N
 #' @param numcat Do numbers represent categories? For example, if your dataset consists of 0 and 1, you might want to set this to TRUE.
 #' @param projection One of: 'eqarea' (equal-area Eckert IV, default), 'pacific' (Pacific-centered), or any other Coordinate Reference System, specified using an EPSG code (https://epsg.io/).
 #'
-#' @return
+#'
 #' @keywords internal
 #' @export
 #'
@@ -184,7 +185,7 @@ glottomap_static <- function(glottodata, projection = NULL, label = NULL, color 
 #' @param numcat Do numbers represent categories? For example, if your dataset consists of 0 and 1, you might want to set this to TRUE.
 #' @param crs Coordinate Reference System, specified using an EPSG code (https://epsg.io/). Default is World Eckert IV (https://epsg.io/54012)
 #'
-#' @return
+#'
 #' @keywords internal
 #' @export
 #'
@@ -253,7 +254,7 @@ glottomap_static_crs <- function(glottodata, label = NULL, color = NULL, ptsize 
 #'
 #' @param glottodata
 #'
-#' @return
+#'
 #' @export
 #' @keywords internal
 #'

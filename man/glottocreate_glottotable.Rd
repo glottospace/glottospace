@@ -11,9 +11,6 @@ glottocreate_glottotable(glottocodes, varnames)
 
 \item{varnames}{Character vector of variable names}
 }
-\value{
-
-}
 \description{
 Create glottotable for glottodata
 }

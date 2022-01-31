@@ -20,9 +20,6 @@ glottocreate_readmetable(
 
 \item{url}{url with background information on the data}
 }
-\value{
-
-}
 \description{
 Create readme table for glottodata
 }

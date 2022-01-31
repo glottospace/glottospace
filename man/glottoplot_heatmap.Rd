@@ -11,9 +11,6 @@ glottoplot_heatmap(glottodist, filename = NULL)
 
 \item{filename}{Optional filename if output should be saved.}
 }
-\value{
-
-}
 \description{
 Plot a heatmap of a distance matrix
 }

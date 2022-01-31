@@ -9,9 +9,6 @@ glottospace_thiessen(glottodata)
 \arguments{
 \item{glottodata}{spatial glottodata without metadata}
 }
-\value{
-
-}
 \description{
 Create Thiessen polygons
 }

@@ -15,9 +15,6 @@ glottoclean(glottodata, tona = NULL, tofalse = NULL, totrue = NULL)
 
 \item{totrue}{Optional additional values to recode to TRUE (besides default)}
 }
-\value{
-
-}
 \description{
 This function is a wrapper around glottorecode. This function has some built in default values that are being recoded.
 For example, "No" is recoded to FALSE and "?" is recoded to NA.

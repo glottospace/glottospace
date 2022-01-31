@@ -26,9 +26,6 @@ glottospotlight(
 
 \item{palette}{Color palette. Use glottocolpal() or glottocolpal_options() to see them.}
 }
-\value{
-
-}
 \description{
 This function creates two separate color scales: one for points to highlight,
 and a second for the remaining background points. It also creates a legend.
@@ -37,6 +34,7 @@ other plots.
 }
 \examples{
 glottodata <- glottofilter(country = c("Netherlands", "Germany", "Belgium") )
-glottodata <- glottospotlight(glottodata = glottodata, spotcol = "country", spotlight = "Netherlands", spotcontrast = "name")
+glottodata <- glottospotlight(glottodata = glottodata, spotcol = "country",
+spotlight = "Netherlands", spotcontrast = "name")
 glottomap(glottodata, color = "color")
 }

@@ -10,7 +10,7 @@
 #' @param glottodata User-provided glottodata
 #' @param filename Filename either with or without file extension
 #' @family <glottodata>
-#' @return
+#'
 #' @export
 #' @seealso glottoget_glottodata
 #' @examples

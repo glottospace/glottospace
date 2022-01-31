@@ -2,7 +2,6 @@
 #'
 #' @param names
 #'
-#' @return
 #' @noRd
 #' @examples
 #' gs_emptydistmat(names = glottocodes)
@@ -51,7 +50,6 @@ recode_vector <- function(vector, old, new){
 #'
 #' @param funcname Either a function object (without brackets) or a character string
 #'
-#' @return
 #' @noRd
 funcsource <- function(funcname){
   if(is.character(funcname)){funcname <- get(funcname)}
@@ -119,6 +117,10 @@ nonna <- function(v, max1 = FALSE){
   return(sel)
 }
 
+#' Unpack .tar or .zip files
+#'
+#' @param optional path to .tar or .zip file
+#' @noRd
 unpack <- function(path = NULL){
   ftar <- list.files(path = path, pattern = ".tar", full.names = TRUE)
   if(!purrr::is_empty(ftar)){

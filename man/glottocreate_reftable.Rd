@@ -11,9 +11,6 @@ glottocreate_reftable(glottocodes, varnames)
 
 \item{varnames}{Character vector of variable names}
 }
-\value{
-
-}
 \description{
 create reference table for glottodata
 }

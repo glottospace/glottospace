@@ -24,9 +24,6 @@ glottomap_dynamic(
 
 \item{ptsize}{Size of points between 0 and 1}
 }
-\value{
-
-}
 \description{
 Create a dynamic map with glottodata
 }

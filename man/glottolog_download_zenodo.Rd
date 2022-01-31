@@ -6,9 +6,6 @@
 \usage{
 glottolog_download_zenodo()
 }
-\value{
-
-}
 \description{
 Download most recent version of glottolog from zenodo (cldf format)
 }

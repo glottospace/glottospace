@@ -13,9 +13,6 @@ glottoplot_naviewer(data, id = NULL, rm.na = TRUE)
 
 \item{rm.na}{Whether rows without id should be removed.}
 }
-\value{
-
-}
 \description{
 This function plots the NAs in a dataset. If you used another coding to
 specify missing data, you should run \code{cleandata_recodemissing} or \code{cleanglottodata} first. If you'd

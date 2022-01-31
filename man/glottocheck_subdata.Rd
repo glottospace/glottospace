@@ -11,9 +11,6 @@ glottocheck_subdata(glottosubdata, diagnostic = TRUE)
 
 \item{diagnostic}{If TRUE (default) a data viewer will be opened to show the levels of each variable (including NAs), and a data coverage plot will be shown.}
 }
-\value{
-
-}
 \description{
 Quality check of user-provided glottosubdata
 }

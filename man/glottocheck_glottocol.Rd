@@ -9,9 +9,6 @@ glottocheck_glottocol(glottodata)
 \arguments{
 \item{glottodata}{A glottodata table}
 }
-\value{
-
-}
 \description{
 Check whether there is one column named 'glottocode'
 }

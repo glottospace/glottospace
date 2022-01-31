@@ -11,9 +11,6 @@ glottospace_buffer(glottodata, radius)
 
 \item{radius}{radius in kilometers}
 }
-\value{
-
-}
 \description{
 Create buffer around glottopoints
 }

@@ -41,9 +41,6 @@ glottomap_static(
 
 \item{numcat}{Do numbers represent categories? For example, if your dataset consists of 0 and 1, you might want to set this to TRUE.}
 }
-\value{
-
-}
 \description{
 This function returns a static map with glottodata. Data is projected using the equal-area Eckert IV projection (following McNew et al. 2018). See \url{https://en.wikipedia.org/wiki/Eckert_IV_projection}.
 }

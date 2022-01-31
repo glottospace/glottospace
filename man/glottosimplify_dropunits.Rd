@@ -9,9 +9,6 @@ glottosimplify_dropunits(glottodata)
 \arguments{
 \item{glottodata}{Either glottodata or glottosubdata}
 }
-\value{
-
-}
 \description{
 Drop units from glottodata
 }

@@ -11,9 +11,6 @@ wals_download_cldf(valuenames = NULL, paramnames = NULL)
 
 \item{paramnames}{Should names of parameters (columns) be added instead of their codes?}
 }
-\value{
-
-}
 \description{
 Download WALS data from zenodo, and select relevant data from cldf data
 }

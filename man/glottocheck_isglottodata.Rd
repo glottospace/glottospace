@@ -9,9 +9,6 @@ glottocheck_isglottodata(glottodata)
 \arguments{
 \item{glottodata}{glottodata}
 }
-\value{
-
-}
 \description{
 Guess whether an object is glottodata (and not glottosubdata)
 }

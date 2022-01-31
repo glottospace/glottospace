@@ -29,9 +29,6 @@ glottobooster(
 
 \item{addfamsizerank}{Add column with family size rank?}
 }
-\value{
-
-}
 \description{
 This function restructures glottolog data, and optionally adds/removes data. If you want more flexibility in choosing which data to add/remove, you can use glottoboosterflex().
 }

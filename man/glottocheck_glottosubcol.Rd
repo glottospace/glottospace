@@ -9,9 +9,6 @@ glottocheck_glottosubcol(glottosubdata)
 \arguments{
 \item{glottosubdata}{A glottodata list}
 }
-\value{
-
-}
 \description{
 Check whether there is one column named 'glottosubcode'
 }

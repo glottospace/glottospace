@@ -6,7 +6,6 @@
 #' @param columns By default, the entire dataset is searched, but optionally the search can be limited to specific columns.
 #' @param tolerance In case partialmatch is TRUE: what is the maximum difference between search term and match? Default is 0.1
 #'
-#' @return
 #' @export
 #' @family <glottosearch><glottofilter>
 #' @examples

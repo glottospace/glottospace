@@ -41,9 +41,6 @@ glottoboosterflex(
 
 \item{rmsignlangs}{Remove rows with sign languages?}
 }
-\value{
-
-}
 \description{
 It is recommended to use glottobooster, but this function is more flexible in removing/adding columns.
 }

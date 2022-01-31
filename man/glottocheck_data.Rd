@@ -11,9 +11,6 @@ glottocheck_data(glottodata, diagnostic = TRUE)
 
 \item{diagnostic}{If TRUE (default) a data viewer will be opened to show the levels of each variable (including NAs), and a data coverage plot will be shown.}
 }
-\value{
-
-}
 \description{
 Go through a user-provided glottodataset and check whether:
 \itemize{

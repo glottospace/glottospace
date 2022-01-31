@@ -13,9 +13,6 @@ glottospace_coords2sf(glottodata, lon = "longitude", lat = "latitude")
 
 \item{lat}{Column name containing latitude}
 }
-\value{
-
-}
 \description{
 This function is used by glottobooster().
 }

@@ -9,9 +9,6 @@ glottosimplify_droplist(glottodata)
 \arguments{
 \item{glottodata}{glottodatalist}
 }
-\value{
-
-}
 \description{
 Select glottodatatable from a glottodatalist
 }

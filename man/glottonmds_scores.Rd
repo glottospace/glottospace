@@ -9,9 +9,6 @@ glottonmds_scores(glottonmds)
 \arguments{
 \item{glottonmds}{a glottonmnds object created with glottonmds_run()}
 }
-\value{
-
-}
 \description{
 Obtain nmds scores of a glottonmds object
 }

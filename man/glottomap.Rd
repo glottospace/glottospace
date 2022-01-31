@@ -54,9 +54,6 @@ Alternatively, you could also run tmaptools::palette_explorer(), RColorBrewer::d
 
 \item{...}{Additional parameters to glottofilter}
 }
-\value{
-
-}
 \description{
 With this function you can easily create static and dynamic maps from glottodata (by setting type to 'static' or 'dynamic').
 Alternatively, by specifying type = "filter", you can select languages by drawing/clicking on a map.
@@ -67,7 +64,8 @@ glottomap(country = "Netherlands")
 glottopoints <- glottofilter(continent = "South America")
 glottopols <- glottospace(glottopoints, method = "voronoi", continent = "South America")
 glottomap(glottodata = glottopols, color = "family_size_rank")
-glottomap(glottodata = glottopols, color = "family", palette = "turbo", type = "dynamic", label = "name")
+glottomap(glottodata = glottopols, color = "family", palette = "turbo",
+type = "dynamic", label = "name")
 
 glottodata <- glottoget()
 families <- glottodata \%>\% dplyr::count(family, sort = TRUE)

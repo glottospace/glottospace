@@ -6,9 +6,6 @@
 \usage{
 wals_version_remote()
 }
-\value{
-
-}
 \description{
 Check what's the most recent version of WALS
 }

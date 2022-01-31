@@ -6,9 +6,6 @@
 \usage{
 glottolog_version_localdir()
 }
-\value{
-
-}
 \description{
 Check which version of glottolog is available on your computer
 }

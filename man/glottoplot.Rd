@@ -35,9 +35,6 @@ glottoplot(
 
 \item{filename}{Optional filename if output should be saved.}
 }
-\value{
-
-}
 \description{
 This function offers different types of visualizations for linguistic data and linguistic distances.
 }

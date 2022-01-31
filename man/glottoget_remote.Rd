@@ -12,9 +12,6 @@ glottoget_remote(glottodata = NULL)
 "glottolog" - this is the raw data downloaded from \href{https://glottolog.org/}{glottolog}
 "glottospace" - a simple dataset with glottocodes and a geometry column. This is a subset of all languages in href{https://glottolog.org/}{glottolog} with spatial coordinates.}
 }
-\value{
-
-}
 \description{
 Get glottodata from online sources
 }

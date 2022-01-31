@@ -24,7 +24,7 @@ knitr::opts_chunk$set(
 
 <!-- badges: start -->
 [![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 <!-- badges: end -->
 
 # Introduction
@@ -285,7 +285,7 @@ However, you can also create maps with other glottodata. For example, we might w
 
 ```{r}
 glottodata <- glottoget()
-families <- glottodata %>% dplyr::count(family, sort = TRUE)
+families <- dplyr::count(glottodata, family, sort = TRUE)
 
 # highlight 10 largest families:
 glottodata <- glottospotlight(glottodata = glottodata, spotcol = "family", spotlight = families$family[1:10], spotcontrast = "family", bgcontrast = "family")

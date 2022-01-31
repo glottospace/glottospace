@@ -11,9 +11,6 @@ wals_loadlocal_raw(valuenames = NULL, paramnames = NULL)
 
 \item{paramnames}{Should names of parameters (columns) be added instead of their codes?}
 }
-\value{
-
-}
 \description{
 Load locally stored WALS data (without joining with glottolog)
 }

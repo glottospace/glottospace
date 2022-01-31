@@ -26,9 +26,6 @@ glottoplot_nmds(
 
 \item{filename}{optional filename if output should be saved.}
 }
-\value{
-
-}
 \description{
 Plot nmds in 3d
 }

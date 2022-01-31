@@ -6,9 +6,6 @@
 \usage{
 glottolog_version_localdatereset()
 }
-\value{
-
-}
 \description{
 Reset last modified date of glottolog
 }

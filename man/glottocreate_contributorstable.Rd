@@ -11,9 +11,6 @@ glottocreate_contributorstable(glottocodes, varnames)
 
 \item{varnames}{Character vector of variable names}
 }
-\value{
-
-}
 \description{
 create contributors table for glottodata
 }

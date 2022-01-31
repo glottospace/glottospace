@@ -13,9 +13,6 @@ glottoget_wals(days = NULL, valuenames = NULL, paramnames = NULL)
 
 \item{paramnames}{Should names of parameters (columns) be added instead of their codes?}
 }
-\value{
-
-}
 \description{
 This function checks whether most recent version of WALS is locally available. If local version is outdated, the newest version will be downloaded.
 }

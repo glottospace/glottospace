@@ -9,9 +9,6 @@ glottocheck_metadata(glottodata)
 \arguments{
 \item{glottodata}{glottodata}
 }
-\value{
-
-}
 \description{
 Check metadata of glottodata
 }

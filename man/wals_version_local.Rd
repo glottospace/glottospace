@@ -6,9 +6,6 @@
 \usage{
 wals_version_local()
 }
-\value{
-
-}
 \description{
 Check which version of WALS is available on your computer
 }

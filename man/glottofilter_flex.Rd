@@ -13,18 +13,20 @@ glottofilter_flex(glottodata, colname, select)
 
 \item{select}{Things to be selected in that column}
 }
-\value{
-
-}
 \description{
 This is a more flexible alternative to glottofilter, allowing for negative selections.
 }
 \examples{
 glottodata <- glottoget("glottobase")
-glottofilter_flex(glottodata = glottodata, colname = "family", select = "Indo-European")
-glottofilter_flex(glottodata = glottodata, colname = "family", select = -"Indo-European")
-glottofilter_flex(glottodata = glottodata, colname = "country", select = c("Germany", "Netherlands") )
-glottofilter_flex(glottodata = glottodata, colname = "country", select = -c("Germany", "Netherlands") )
-glottofilter_flex(glottodata = glottodata, colname = "continent", select = -c("South America", "Europe", "Asia", "Oceania", "Africa") )
+glottofilter_flex(glottodata = glottodata, colname = "family",
+select = "Indo-European")
+glottofilter_flex(glottodata = glottodata, colname = "family",
+select = -"Indo-European")
+glottofilter_flex(glottodata = glottodata, colname = "country",
+select = c("Germany", "Netherlands") )
+glottofilter_flex(glottodata = glottodata, colname = "country",
+select = -c("Germany", "Netherlands") )
+glottofilter_flex(glottodata = glottodata, colname = "continent",
+select = -c("South America", "Europe", "Asia", "Oceania", "Africa") )
 }
 \keyword{internal}

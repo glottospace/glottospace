@@ -9,9 +9,6 @@ glottosimplify_submerge(glottosubdata)
 \arguments{
 \item{glottosubdata}{glottosubdata.}
 }
-\value{
-
-}
 \description{
 Check whether input is glottosubdata and merge tables if TRUE.
 }

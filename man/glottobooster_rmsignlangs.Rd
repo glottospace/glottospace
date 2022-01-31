@@ -9,9 +9,6 @@ glottobooster_rmsignlangs(glottologdata)
 \arguments{
 \item{glottologdata}{data from \href{https://glottolog.org/}{glottolog}, can be downloaded with glottoget("glottolog")}
 }
-\value{
-
-}
 \description{
 Glottolog: remove sign languages
 }

@@ -26,9 +26,6 @@ glottosimplify(
 
 \item{dropunits}{By default units are kept.}
 }
-\value{
-
-}
 \description{
 With glottosimplify, the structure of a glottodata object is simplified by removing tables and properties
 }

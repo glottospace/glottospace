@@ -17,9 +17,6 @@ glottojoin(glottodata, with = NULL, id = NULL, rm.na = FALSE, type = "left")
 
 \item{type}{In case two glottodata objects are joined, you can specify the type of join: "left" (default), "right", "full", or "inner"}
 }
-\value{
-
-}
 \description{
 Join glottodata with other objects, datasets, or databases.
 }
@@ -33,7 +30,8 @@ dist <- geodist(glottodata)
 glottodatadist <- glottojoin(glottodata, with = dist)
 
 # Join a list of glottodata tables:
-glottosubdata <- glottocreate_subdata(glottocodes = c("yucu1253", "tani1257"), variables = 3, groups = c("a", "b"), n = 2, meta = FALSE)
+glottosubdata <- glottocreate_subdata(glottocodes = c("yucu1253", "tani1257"),
+variables = 3, groups = c("a", "b"), n = 2, meta = FALSE)
 glottodatatable <- glottojoin(glottodata = glottosubdata)
 
 }

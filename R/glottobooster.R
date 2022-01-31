@@ -66,7 +66,7 @@ glottobooster <- function(glottologdata = NULL, space = TRUE,
 #'
 #' @examples
 #' glottologdata <- glottoget("glottolog")
-#' glottologdata <- glottologboosterflex(glottologdata)
+#' glottologdata <- glottoboosterflex(glottologdata)
 glottoboosterflex <- function(glottologdata = NULL, space = TRUE,
                              addfamname = TRUE, addisolates = TRUE,
                              rmdialects = TRUE, rmfamilies = TRUE,

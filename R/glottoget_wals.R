@@ -6,7 +6,7 @@
 #' @param valuenames Should names of the values be added instead of codes?
 #' @param paramnames Should names of parameters (columns) be added instead of their codes?
 #'
-#' @return
+#'
 #' @export
 #' @keywords internal
 #' @examples
@@ -40,7 +40,7 @@ glottoget_wals <- function(days = NULL, valuenames = NULL, paramnames = NULL){
 
 #' Reset last modified date of glottolog
 #'
-#' @return
+#'
 #' @export
 #' @keywords internal
 wals_version_localdatereset <- function(){
@@ -69,7 +69,7 @@ wals_date_local <- function(){
 
 #' Check what's the most recent version of WALS
 #'
-#' @return
+#'
 #' @export
 #' @keywords internal
 #'
@@ -87,7 +87,7 @@ wals_version_remote <- function(){
 #' @param valuenames Should names of the values be added instead of codes?
 #' @param paramnames Should names of parameters (columns) be added instead of their codes?
 #'
-#' @return
+#'
 #' @export
 #' @keywords internal
 #'
@@ -98,7 +98,7 @@ wals_download_cldf <- function(valuenames = NULL, paramnames = NULL){
 
 #' Download most recent version of WALS from zenodo (cldf format)
 #'
-#' @return
+#'
 #' @export
 #' @keywords internal
 #'
@@ -118,7 +118,7 @@ wals_download_zenodo <- function(){
 
 #' Check which version of WALS is available on your computer
 #'
-#' @return
+#'
 #' @export
 #' @keywords internal
 #'
@@ -145,7 +145,7 @@ wals_version_local <- function(){
 #' @param valuenames Should names of the values be added instead of codes?
 #' @param paramnames Should names of parameters (columns) be added instead of their codes?
 #'
-#' @return
+#'
 #' @export
 #' @keywords internal
 #'
@@ -159,7 +159,7 @@ wals_loadlocal <- function(valuenames = NULL, paramnames = NULL){
 #' @param valuenames Should names of the values be added instead of codes?
 #' @param paramnames Should names of parameters (columns) be added instead of their codes?
 #'
-#' @return
+#'
 #' @export
 #' @keywords internal
 wals_loadlocal_raw <- function(valuenames = NULL, paramnames = NULL){

@@ -11,11 +11,8 @@ glottocreate_structuretable(glottocodes, varnames = NULL)
 
 \item{varnames}{Character vector of variable names}
 }
-\value{
-
-}
 \description{
-This function creates a new structure table, it can be added to glottodata using glottodata_addtable()
+This function creates a new structure table, it can be added to glottodata using glottocreate_addtable()
 }
 \examples{
 glottocreate_structuretable(glottocodes = c("yucu1253", "tani1257"),

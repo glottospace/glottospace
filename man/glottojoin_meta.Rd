@@ -13,9 +13,6 @@ glottojoin_meta(glottodata, glottometa)
 
 \item{name}{Optional name(s) of glottometa tables}
 }
-\value{
-
-}
 \description{
 Join glottodata with glottometa
 }

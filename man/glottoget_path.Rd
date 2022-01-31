@@ -13,9 +13,6 @@ glottoget_path(filepath = NULL, meta = FALSE, simplify = TRUE)
 
 \item{simplify}{By default, if only one sheet is loaded, the data will be returned as a data.frame (instead of placing the data inside a list of length 1)}
 }
-\value{
-
-}
 \description{
 Load glottodata/glottosubdata from a file
 }

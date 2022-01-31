@@ -7,7 +7,7 @@
 #' @param method Interpolation method, either "buffer" or "voronoi" (synonymous with "thiessen")
 #' @param radius In case interpolation method "buffer", the radius in km.
 #'
-#' @return
+#'
 #' @export
 #'
 #' @examples
@@ -44,7 +44,7 @@ return(glottodata)
 #' @param glottodata spatial glottodata without metadata
 #' @param radius radius in kilometers
 #' @keywords internal
-#' @return
+#'
 #' @export
 #'
 #' @examples
@@ -67,7 +67,7 @@ glottospace_buffer <- function(glottodata, radius){
 #'
 #' @param glottodata spatial glottodata without metadata
 #' @keywords internal
-#' @return
+#'
 #' @export
 #'
 #' @examples
@@ -120,7 +120,7 @@ glottospace_thiessen <- function(glottodata){
 #' @param lon Column name containing longitude
 #' @param lat Column name containing latitude
 #'
-#' @return
+#'
 #' @export
 #' @keywords internal
 glottospace_coords2sf <- function(glottodata, lon = "longitude", lat = "latitude"){

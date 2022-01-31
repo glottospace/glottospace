@@ -6,9 +6,6 @@
 \usage{
 glottoget_glottospace()
 }
-\value{
-
-}
 \description{
 Get most recent glottolog data and turn it into the most elemental geoglot object (i.e. glottocodes + geometry column). This 'glottospace' is used as reference dataset in several functions.
 }

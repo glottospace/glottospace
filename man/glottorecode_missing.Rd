@@ -11,9 +11,6 @@ glottorecode_missing(glottodata, tona)
 
 \item{tona}{Optional, additional values to recode to NA}
 }
-\value{
-
-}
 \description{
 Recode missing values to NA
 }

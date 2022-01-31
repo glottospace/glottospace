@@ -9,9 +9,6 @@ glottocheck_glottosubcodes(glottosubdata)
 \arguments{
 \item{glottosubdata}{glottosubdata}
 }
-\value{
-
-}
 \description{
 This is a wrapper around glottosubcode_valid
 }

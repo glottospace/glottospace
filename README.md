@@ -9,8 +9,8 @@
 
 [![Lifecycle:
 stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
-[![License:
-MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License: GPL
+v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 <!-- badges: end -->
 
 # Introduction
@@ -58,7 +58,7 @@ about it presenting its full functionality. If you find the
     #>   @Article{,
     #>     title = {glottospace: R package for the geospatial analysis of linguistic and cultural data},
     #>     author = {{Norder} and S.J. et al.},
-    #>     journal = {R package version 0.0.72},
+    #>     journal = {R package version 0.0.74},
     #>     year = {2021},
     #>     url = {https://github.com/SietzeN/glottospace},
     #>   }
@@ -515,7 +515,7 @@ families
 
 ``` r
 glottodata <- glottoget()
-families <- glottodata %>% dplyr::count(family, sort = TRUE)
+families <- dplyr::count(glottodata, family, sort = TRUE)
 
 # highlight 10 largest families:
 glottodata <- glottospotlight(glottodata = glottodata, spotcol = "family", spotlight = families$family[1:10], spotcontrast = "family", bgcontrast = "family")

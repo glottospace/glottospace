@@ -15,9 +15,6 @@ glottocheck_rowmissing(data, id, diagnostic = FALSE, rm.na = TRUE)
 
 \item{rm.na}{Whether rows without id should be removed.}
 }
-\value{
-
-}
 \description{
 Provides a message in case there are missing data, otherwise returns NULL
 }

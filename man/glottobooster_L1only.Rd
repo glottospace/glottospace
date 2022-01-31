@@ -9,9 +9,6 @@ glottobooster_L1only(glottologdata)
 \arguments{
 \item{glottologdata}{data from \href{https://glottolog.org/}{glottolog}, can be downloaded with glottoget("glottolog")}
 }
-\value{
-
-}
 \description{
 Filter out only L1 languages and drop 'category' column.
 }

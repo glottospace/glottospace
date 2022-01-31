@@ -9,9 +9,6 @@ glottosimplify_dropspatial(glottodata)
 \arguments{
 \item{glottodata}{Either glottodata or glottosubdata}
 }
-\value{
-
-}
 \description{
 Drop spatial properties from glottodata
 }

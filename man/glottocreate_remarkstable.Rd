@@ -11,9 +11,6 @@ glottocreate_remarkstable(glottocodes, varnames)
 
 \item{varnames}{Character vector of variable names}
 }
-\value{
-
-}
 \description{
 create remarks table for glottodata
 }

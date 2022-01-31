@@ -6,9 +6,6 @@
 \usage{
 glottocolpal_options()
 }
-\value{
-
-}
 \description{
 Show which color palettes are available
 }

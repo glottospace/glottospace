@@ -9,9 +9,6 @@ glottocode_online(glottocode)
 \arguments{
 \item{glottocode}{}
 }
-\value{
-
-}
 \description{
 Open url in web browser for glottocode
 }

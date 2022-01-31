@@ -6,9 +6,6 @@
 \usage{
 glottolog_loadlocal()
 }
-\value{
-
-}
 \description{
 Load locally stored glottolog data
 }

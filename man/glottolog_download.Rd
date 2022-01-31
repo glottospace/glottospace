@@ -6,9 +6,6 @@
 \usage{
 glottolog_download()
 }
-\value{
-
-}
 \description{
 This function tries to download glottolog data from zenodo in cldf format.
 }

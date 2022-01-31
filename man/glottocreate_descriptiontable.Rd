@@ -9,9 +9,6 @@ glottocreate_descriptiontable(varnames, levels = NULL)
 \arguments{
 \item{varnames}{Character vector of variable names}
 }
-\value{
-
-}
 \description{
 create descriptiontable for glottodata
 }

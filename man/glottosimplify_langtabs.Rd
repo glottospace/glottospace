@@ -9,9 +9,6 @@ glottosimplify_langtabs(glottodata)
 \arguments{
 \item{glottodata}{Either glottodata or glottosubdata}
 }
-\value{
-
-}
 \description{
 Drop language tables from glottodata (keep only meta tables)
 }

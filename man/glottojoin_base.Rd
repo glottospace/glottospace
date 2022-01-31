@@ -11,9 +11,6 @@ glottojoin_base(glottodata, id = NULL)
 
 \item{id}{Optional, name of column with glottocodes}
 }
-\value{
-
-}
 \description{
 Keeps all rows from glottodata. Can be used to add features from glottobase.
 }

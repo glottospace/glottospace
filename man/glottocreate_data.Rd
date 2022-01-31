@@ -41,9 +41,6 @@ glottocreate_data(
 
 \item{url}{Optional url linking to a webpage.}
 }
-\value{
-
-}
 \description{
 Output is a list with one data.frame for glottodata (and a number of metatables if meta = TRUE). Output can  also be saved as an excel file.
 }

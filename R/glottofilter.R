@@ -166,16 +166,20 @@ glottofiltermap <- function(glottodata = NULL, mode = NULL, ...){
 #' @param colname Character with a single column name
 #' @param select Things to be selected in that column
 #'
-#' @return
 #' @export
 #' @keywords internal
 #' @examples
 #' glottodata <- glottoget("glottobase")
-#' glottofilter_flex(glottodata = glottodata, colname = "family", select = "Indo-European")
-#' glottofilter_flex(glottodata = glottodata, colname = "family", select = -"Indo-European")
-#' glottofilter_flex(glottodata = glottodata, colname = "country", select = c("Germany", "Netherlands") )
-#' glottofilter_flex(glottodata = glottodata, colname = "country", select = -c("Germany", "Netherlands") )
-#' glottofilter_flex(glottodata = glottodata, colname = "continent", select = -c("South America", "Europe", "Asia", "Oceania", "Africa") )
+#' glottofilter_flex(glottodata = glottodata, colname = "family",
+#' select = "Indo-European")
+#' glottofilter_flex(glottodata = glottodata, colname = "family",
+#' select = -"Indo-European")
+#' glottofilter_flex(glottodata = glottodata, colname = "country",
+#' select = c("Germany", "Netherlands") )
+#' glottofilter_flex(glottodata = glottodata, colname = "country",
+#' select = -c("Germany", "Netherlands") )
+#' glottofilter_flex(glottodata = glottodata, colname = "continent",
+#' select = -c("South America", "Europe", "Asia", "Oceania", "Africa") )
 glottofilter_flex <- function(glottodata, colname, select){
 
   if(purrr::is_empty(glottodata)){

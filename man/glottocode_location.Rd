@@ -9,9 +9,6 @@ glottocode_location(glottocode)
 \arguments{
 \item{glottocode}{}
 }
-\value{
-
-}
 \description{
 Show location of glottocode on globe
 }

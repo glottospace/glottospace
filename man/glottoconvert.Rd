@@ -32,9 +32,6 @@ glottoconvert(
 
 \item{contributor}{Character string that distinguishes those columns which contain contributors.}
 }
-\value{
-
-}
 \description{
 Transform a linguistic dataset into glottodata
 }

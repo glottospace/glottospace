@@ -9,7 +9,7 @@
 #' @param type In case two glottodata objects are joined, you can specify the type of join: "left" (default), "right", "full", or "inner"
 #'
 #' @seealso glottosplit
-#' @return
+#'
 #' @export
 #'
 #' @examples
@@ -22,7 +22,8 @@
 #' glottodatadist <- glottojoin(glottodata, with = dist)
 #'
 #' # Join a list of glottodata tables:
-#' glottosubdata <- glottocreate_subdata(glottocodes = c("yucu1253", "tani1257"), variables = 3, groups = c("a", "b"), n = 2, meta = FALSE)
+#' glottosubdata <- glottocreate_subdata(glottocodes = c("yucu1253", "tani1257"),
+#' variables = 3, groups = c("a", "b"), n = 2, meta = FALSE)
 #' glottodatatable <- glottojoin(glottodata = glottosubdata)
 #'
 glottojoin <- function(glottodata, with = NULL, id = NULL, rm.na = FALSE, type = "left"){
@@ -98,7 +99,7 @@ glottojoin_dist <- function(glottodata, id = NULL, dist, rm.na = FALSE){
 #' @param glottodata User-provided glottodata
 #' @param id Optional, name of column with glottocodes
 #' @keywords internal
-#' @return
+#'
 #' @export
 #'
 #' @examples
@@ -120,7 +121,7 @@ glottojoin_base <- function(glottodata, id = NULL){
 #' @param glottodata User-provided glottodata
 #' @param id Optional, name of column with glottocodes
 #' @keywords internal
-#' @return
+#'
 #' @export
 #' @seealso glottospace_addcoords glottospace_addcoords
 #' @examples
@@ -178,7 +179,7 @@ glottojoin_subdata <- function(glottosubdata){
 #' @param id Optional, name of column with glottocodes
 #'
 #' @keywords internal
-#' @return
+#'
 #' @export
 #' @seealso glottospace_addcoords glottospace_addcoords
 #' @examples
@@ -208,7 +209,7 @@ glottojoin_data <- function(glottodata, with, type = "left", id = NULL, ...){
 #' @param glottometa A glottometa table, or a glottometa list
 #' @param name Optional name(s) of glottometa tables
 #' @keywords internal
-#' @return
+#'
 #' @export
 #'
 #' @examples

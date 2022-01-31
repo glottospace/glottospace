@@ -13,9 +13,6 @@ glottocheck(glottodata, diagnostic = TRUE, checkmeta = FALSE)
 
 \item{checkmeta}{Should metadata be checked as well?}
 }
-\value{
-
-}
 \description{
 This function first checks whether a dataset is glottodata or glottosubdata, and depending on the result calls glottocheck_data or glottocheck_subdata.
 }

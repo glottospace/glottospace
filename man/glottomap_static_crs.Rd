@@ -41,9 +41,6 @@ glottomap_static_crs(
 
 \item{crs}{Coordinate Reference System, specified using an EPSG code (https://epsg.io/). Default is World Eckert IV (https://epsg.io/54012)}
 }
-\value{
-
-}
 \description{
 This function returns a static map with glottodata. Data is projected using the equal-area Eckert IV projection (following McNew et al. 2018). See \url{https://epsg.io/54012} and \url{https://en.wikipedia.org/wiki/Eckert_IV_projection}.
 }
