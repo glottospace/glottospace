@@ -82,7 +82,7 @@ glottospace_thiessen <- function(glottodata){
 
   # match glottopols to glottopoints:
   pts$pols <- pols[unlist(sf::st_intersects(pts, pols))]
-  pols <- sf::st_drop_geometry(pts) %>% dplyr::relocate(pols, .after = tidyselect::last_col()) %>% dplyr::rename(geometry = pols)
+  pols <- sf::st_drop_geometry(pts) %>% dplyr::relocate(pols, .after = dplyr::last_col()) %>% dplyr::rename(geometry = pols)
   pols <- sf::st_set_geometry(pols, "geometry")
 
   # Select boundaries

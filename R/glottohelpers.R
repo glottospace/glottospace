@@ -42,6 +42,15 @@ funcsource <- function(funcname){
   srcfile$filename
 }
 
+findstring <- function(string, dir = NULL){
+  if(is.null(dir)){dir <- "C:/Users/sjnor/surfdrive/PROJECTS_SN/Rpackages/glottospace/R"}
+  rfiles <- list.files(path = dir, pattern = ".R")
+
+  for (x in seq_along(rfiles) ) {
+    if (length(grep(string, readLines(paste0(dir, "/", rfiles[x])))) > 0) { print(rfiles[x])}
+  }
+}
+
 contrans_id2gc <- function(id){
   ifelse(is.null(id), id <- "glottocode", id)
 }

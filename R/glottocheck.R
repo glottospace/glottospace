@@ -59,7 +59,7 @@ glottocheck <- function(glottodata, diagnostic = TRUE, checkmeta = FALSE){
 #' @export
 #'
 #' @examples
-#' glottodata <- glottocreate_demodata()
+#' glottodata <- glottoget("demodata")
 #' glottocheck_data(glottodata, diagnostic = FALSE)
 glottocheck_data <- function(glottodata, diagnostic = TRUE){
   glottodata <- glottosimplify(glottodata)
@@ -86,7 +86,7 @@ glottocheck_data <- function(glottodata, diagnostic = TRUE){
 #' @export
 #' @family <glottocheck>
 #' @examples
-#' glottosubdata <- glottocreate_demosubdata()
+#' glottosubdata <- glottoget("demosubdata")
 #' glottocheck_subdata(glottosubdata, diagnostic = FALSE)
 glottocheck_subdata <- function(glottosubdata, diagnostic = TRUE){
   glottosubdata <- glottosimplify(glottosubdata)
@@ -308,7 +308,7 @@ glottocheck_glottosubcodes <- function(glottosubdata){
 #'
 #' @return Returns error message if number of columns is not identical, and invisibly returns TRUE otherwise.
 #' @keywords internal
-#'
+#' @export
 #' @examples
 #' glottosubdata <- glottocreate_subdata(glottocodes = c("yucu1253", "tani1257"),
 #'                    variables = 3, groups = c("a", "b"), n = 5)

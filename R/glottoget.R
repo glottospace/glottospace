@@ -329,7 +329,7 @@ glottolog_download_zenodo <- function(){
 
 #' Load locally stored glottolog data
 #'
-#'
+#' @importFrom rlang .data
 #' @export
 #' @keywords internal
 glottolog_loadlocal <- function(){

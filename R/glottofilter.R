@@ -163,7 +163,7 @@ glottofiltermap <- function(glottodata = NULL, mode = NULL, ...){
 #' @param glottodata glottodata table
 #' @param colname Character with a single column name
 #' @param select Things to be selected in that column
-#'
+#' @importFrom rlang .data
 #' @export
 #' @keywords internal
 #' @examples
