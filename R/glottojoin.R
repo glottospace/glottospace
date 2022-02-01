@@ -13,7 +13,7 @@
 #' @export
 #'
 #' @examples
-#' glottodata <- glottoget_path()
+#' glottodata <- glottoget("demodata")
 #' glottodata <- glottojoin(glottodata, with = "glottospace")
 #' glottodata <- glottojoin(glottodata, with = "glottobase")
 #'
@@ -103,7 +103,7 @@ glottojoin_dist <- function(glottodata, id = NULL, dist, rm.na = FALSE){
 #' @export
 #'
 #' @examples
-#' glottodata <- glottoget_path(meta = FALSE)
+#' glottodata <- glottoget("demodata", meta = FALSE)
 #' glottojoin_base(glottodata)
 glottojoin_base <- function(glottodata, id = NULL){
   id <- contrans_id2gc(id)
@@ -125,7 +125,7 @@ glottojoin_base <- function(glottodata, id = NULL){
 #' @export
 #' @seealso glottospace_addcoords glottospace_addcoords
 #' @examples
-#' glottodata <- glottoget_path(meta = FALSE)
+#' glottodata <- glottoget("demodata", meta = FALSE)
 #' glottojoin_space(glottodata)
 glottojoin_space <- function(glottodata, id = NULL){
   id <- contrans_id2gc(id)
@@ -181,10 +181,12 @@ glottojoin_subdata <- function(glottosubdata){
 #' @keywords internal
 #'
 #' @export
-#' @seealso glottospace_addcoords glottospace_addcoords
+#' @seealso glottospace_addcoords
 #' @examples
-#' glottodatax <- glottoget_path(meta = FALSE)
-#' glottodatay <- glottoget_path(meta = FALSE)
+#' glottodatax <- glottoget("demodata")
+#' glottodatay <- glottodatax[, c(1,2)]
+#' glottodatay[,2] <- c("x", "y", "z", "z","y", "x")
+#' colnames(glottodatay)[2] <- "var004"
 #' glottojoin_data(glottodatax, glottodatay)
 glottojoin_data <- function(glottodata, with, type = "left", id = NULL, ...){
   id <- contrans_id2gc(id)

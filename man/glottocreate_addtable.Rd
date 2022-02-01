@@ -17,6 +17,7 @@ glottocreate_addtable(glottodata, table, name)
 Add a table to glottodata
 }
 \examples{
-structuretable <- glottocreate_structuretable()
-glottocreate_addtable(glottodata, table = structuretable, name = "structure")
+glottodata <- glottoget("demodata", meta = FALSE)
+structuretable <- glottocreate_structuretable(varnames = colnames(glottodata)[-1])
+glottodata <- glottocreate_addtable(glottodata, table = structuretable, name = "structure")
 }

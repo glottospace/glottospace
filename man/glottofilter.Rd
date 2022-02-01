@@ -60,7 +60,6 @@ A subset of the original glottodata table  containing only filtered languages.
 By default, the glottolog data will be used to filter from. But in case the user provides glottodata, this will be used.
 }
 \examples{
-points <- glottofilter(isocodes = colnames(distmat))
 points <- glottofilter(location = "Australia")
 points <- glottofilter(glottocode = "wari1268")
 points <- glottofilter(family = "Indo-European")

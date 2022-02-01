@@ -17,11 +17,13 @@ glottojoin_data(glottodata, with, type = "left", id = NULL, ...)
 Join two glottodata tables.
 }
 \examples{
-glottodatax <- glottoget_path(meta = FALSE)
-glottodatay <- glottoget_path(meta = FALSE)
+glottodatax <- glottoget("demodata")
+glottodatay <- glottodatax[, c(1,2)]
+glottodatay[,2] <- c("x", "y", "z", "z","y", "x")
+colnames(glottodatay)[2] <- "var004"
 glottojoin_data(glottodatax, glottodatay)
 }
 \seealso{
-glottospace_addcoords glottospace_addcoords
+glottospace_addcoords
 }
 \keyword{internal}

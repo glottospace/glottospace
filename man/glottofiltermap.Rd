@@ -17,9 +17,11 @@ glottofiltermap(glottodata = NULL, mode = NULL, ...)
 Select languages by drawing or clicking on a map
 }
 \examples{
+\dontrun{
 selected <- glottofiltermap()
 glottomap(selected)
 
 glottofiltermap(continent = "South America")
 glottofiltermap(country = "Netherlands")
+}
 }

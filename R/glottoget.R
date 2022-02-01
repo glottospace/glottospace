@@ -23,6 +23,9 @@
 #' @export
 #' @examples
 #' glottoget("glottolog")
+#' \dontrun{
+#' glottoget("yourdatafolder/glottodata.xlsx")
+#' }
 glottoget <- function(glottodata = NULL, meta = FALSE){
   if(is.null(glottodata)){
     glottodata <- glottoget_glottobase()
@@ -85,9 +88,11 @@ glottoget_remote <- function(glottodata = NULL){
 #' @keywords internal
 #' @seealso glottosave
 #' @examples
+#' \dontrun{
 #' glottoget_path()
 #' glottoget_path(filepath = "glottodata.xlsx")
 #' glottoget_path(filepath = "glottodata.gpkg")
+#' }
 glottoget_path <- function(filepath = NULL, meta = FALSE, simplify = TRUE){
 
   metasheets <- c("structure",  "metadata",   "references", "readme",     "lookup" )

@@ -24,7 +24,6 @@
 #' @export
 #'
 #' @examples
-#' points <- glottofilter(isocodes = colnames(distmat))
 #' points <- glottofilter(location = "Australia")
 #' points <- glottofilter(glottocode = "wari1268")
 #' points <- glottofilter(family = "Indo-European")
@@ -140,11 +139,13 @@ glottofilter <- function(glottodata = NULL,
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' selected <- glottofiltermap()
 #' glottomap(selected)
 #'
 #' glottofiltermap(continent = "South America")
 #' glottofiltermap(country = "Netherlands")
+#' }
 glottofiltermap <- function(glottodata = NULL, mode = NULL, ...){
   if(purrr::is_empty(glottodata)){
     glottodata <- glottofilter(...)

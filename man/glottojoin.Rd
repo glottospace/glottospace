@@ -21,7 +21,7 @@ glottojoin(glottodata, with = NULL, id = NULL, rm.na = FALSE, type = "left")
 Join glottodata with other objects, datasets, or databases.
 }
 \examples{
-glottodata <- glottoget_path()
+glottodata <- glottoget("demodata")
 glottodata <- glottojoin(glottodata, with = "glottospace")
 glottodata <- glottojoin(glottodata, with = "glottobase")
 

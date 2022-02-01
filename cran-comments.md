@@ -8,7 +8,7 @@ This is my first package.
 
 # ERRORS and WARNINGS
 
-When running check_rhub(), there were no ERRORS or WARNINGS.
+When running check_rhub(), there were no ERRORS or WARNINGS on Windows Server (64 bit), but a PREPERROR on Linux.
 
 # NOTES
 
@@ -27,11 +27,11 @@ There were five NOTES:
 * The following file/directory was found in the temp directory: 'lastMiKTeXException' is a know issue on rhub: https://github.com/r-hub/rhub/issues/503
 
 
-# check()
+# R CMD CHECK locally with check()
 
 The package has been manually tested on Windows, Mac, and Ubuntu.The package builds and can be installed on all three platforms.
 
-When running check() on windows, there is one ERROR stating that loading failed for 'i386'. When specifying 'install(force = TRUE, args=c("--no-multiarch")) ' the package can be installed.
+When running R CMD CHECK on windows, there is one ERROR stating that loading failed for 'i386'. When specifying 'install(force = TRUE, args=c("--no-multiarch")) ' the package can be installed.
 
 When installing the package on Ubuntu there are some issues with spatial packages RGEOS, RGDAL and sf on which glottospace depends. These issues were already known and are hard to fix within the scope of the current package: https://philmikejones.me/tutorials/2018-08-29-install-sf-ubuntu.html
 https://philmikejones.me/tutorials/2014-07-14-installing-rgdal-in-r-on-linux.html

@@ -29,6 +29,9 @@ Load locally stored glottodata, download databases from online sources, or load 
 }
 \examples{
 glottoget("glottolog")
+\dontrun{
+glottoget("yourdatafolder/glottodata.xlsx")
+}
 }
 \seealso{
 Other <glottodata>: 

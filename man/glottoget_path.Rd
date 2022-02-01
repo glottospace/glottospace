@@ -17,9 +17,11 @@ glottoget_path(filepath = NULL, meta = FALSE, simplify = TRUE)
 Load glottodata/glottosubdata from a file
 }
 \examples{
+\dontrun{
 glottoget_path()
 glottoget_path(filepath = "glottodata.xlsx")
 glottoget_path(filepath = "glottodata.gpkg")
+}
 }
 \seealso{
 glottosave

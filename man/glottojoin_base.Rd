@@ -15,7 +15,7 @@ glottojoin_base(glottodata, id = NULL)
 Keeps all rows from glottodata. Can be used to add features from glottobase.
 }
 \examples{
-glottodata <- glottoget_path(meta = FALSE)
+glottodata <- glottoget("demodata", meta = FALSE)
 glottojoin_base(glottodata)
 }
 \keyword{internal}

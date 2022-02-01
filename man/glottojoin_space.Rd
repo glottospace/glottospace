@@ -15,7 +15,7 @@ glottojoin_space(glottodata, id = NULL)
 Join glottodata with glottospace (keeps all rows from glottodata). It is recommended to use the function glottospace().
 }
 \examples{
-glottodata <- glottoget_path(meta = FALSE)
+glottodata <- glottoget("demodata", meta = FALSE)
 glottojoin_space(glottodata)
 }
 \seealso{

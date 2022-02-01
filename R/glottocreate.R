@@ -111,7 +111,7 @@ glottocreate_data <- function(glottocodes, variables, filename = NULL, meta = TR
 
   glottodata <- glottocreate_glottotable(glottocodes = glottocodes, varnames = varnames)
   if(meta == TRUE){
-  structure <- glottocreate_structuretable(glottocodes = glottocodes, varnames = varnames)
+  structure <- glottocreate_structuretable(varnames = varnames)
   description <- glottocreate_descriptiontable(varnames = varnames, levels = levels)
   references <- glottocreate_reftable(glottocodes = glottocodes, varnames = varnames)
   remarks <- glottocreate_remarkstable(glottocodes = glottocodes, varnames = varnames)
@@ -169,7 +169,7 @@ glottocreate_data <- function(glottocodes, variables, filename = NULL, meta = TR
 #' @return A table or list of tables
 #' @export
 #'
-#' @family <glottoget_path><glottocreate>
+#' @family <glottocreate>
 #'
 #' @examples
 #' glottocreate_subdata(glottocodes = c("yucu1253", "tani1257"),
@@ -198,7 +198,7 @@ glottocreate_subdata <- function(glottocodes, variables, groups, filename = NULL
   }
 
   if(meta == TRUE){
-  structure <- glottocreate_structuretable(glottocodes = glottocodes, varnames = varnames)
+  structure <- glottocreate_structuretable(varnames = varnames)
   description <- glottocreate_descriptiontable(varnames = varnames, levels = levels)
   references <- glottocreate_reftable(glottocodes = glottocodes, varnames = varnames)
   remarks <- glottocreate_remarkstable(glottocodes = glottocodes, varnames = varnames)
@@ -250,15 +250,13 @@ glottocreate_glottotable <- function(glottocodes, varnames){
 #'
 #' This function creates a new structure table, it can be added to glottodata using glottocreate_addtable()
 #'
-#' @param glottocodes Character vector of glottocodes
 #' @param varnames Character vector of variable names
 #'
 #'
 #' @export
 #' @examples
-#' glottocreate_structuretable(glottocodes = c("yucu1253", "tani1257"),
-#'          varnames = c("var001", "var002", "var003"))
-glottocreate_structuretable <- function(glottocodes, varnames = NULL){
+#' glottocreate_structuretable(varnames = c("var001", "var002", "var003"))
+glottocreate_structuretable <- function(varnames = NULL){
 structure <- data.frame(matrix(nrow = length(varnames), ncol = 6) )
 colnames(structure) <- c("varname", "type", "levels", "weight", "groups", "subgroups")
 if(!is.null(varnames)){
@@ -460,8 +458,9 @@ glottocreate_demosubdata <- function(meta = TRUE){
 #' @export
 #'
 #' @examples
-#' structuretable <- glottocreate_structuretable()
-#' glottocreate_addtable(glottodata, table = structuretable, name = "structure")
+#' glottodata <- glottoget("demodata", meta = FALSE)
+#' structuretable <- glottocreate_structuretable(varnames = colnames(glottodata)[-1])
+#' glottodata <- glottocreate_addtable(glottodata, table = structuretable, name = "structure")
 glottocreate_addtable <- function(glottodata, table, name){
   if(is_list(table) & length(table) != 1){stop("Please provide either a data.frame or a list of 1 data.frame")}
 

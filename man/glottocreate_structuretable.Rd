@@ -4,17 +4,14 @@
 \alias{glottocreate_structuretable}
 \title{Create structure table for glottodata}
 \usage{
-glottocreate_structuretable(glottocodes, varnames = NULL)
+glottocreate_structuretable(varnames = NULL)
 }
 \arguments{
-\item{glottocodes}{Character vector of glottocodes}
-
 \item{varnames}{Character vector of variable names}
 }
 \description{
 This function creates a new structure table, it can be added to glottodata using glottocreate_addtable()
 }
 \examples{
-glottocreate_structuretable(glottocodes = c("yucu1253", "tani1257"),
-         varnames = c("var001", "var002", "var003"))
+glottocreate_structuretable(varnames = c("var001", "var002", "var003"))
 }
