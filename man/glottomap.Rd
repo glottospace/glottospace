@@ -62,13 +62,13 @@ Alternatively, by specifying type = "filter", you can select languages by drawin
 glottomap(country = "Netherlands")
 
 glottopoints <- glottofilter(continent = "South America")
-glottopols <- glottospace(glottopoints, method = "voronoi", continent = "South America")
+glottopols <- glottospace(glottopoints, method = "voronoi")
 glottomap(glottodata = glottopols, color = "family_size_rank")
 glottomap(glottodata = glottopols, color = "family", palette = "turbo",
 type = "dynamic", label = "name")
 
 glottodata <- glottoget()
-families <- glottodata \%>\% dplyr::count(family, sort = TRUE)
+families <- dplyr::count(glottodata, family, sort = TRUE)
 
 # highlight 10 largest families:
 glottodata <- glottospotlight(glottodata = glottodata, spotcol =

@@ -97,6 +97,7 @@ glottorecode_missing <- function(glottodata, tona){
 #'
 #' @export
 #' @examples
+#' glottodata <- glottoget("demodata", meta = TRUE)
 #' glottorecode_logical(glottodata, totrue = c("y", "Y", 1), tofalse = c("n", "N", 0))
 glottorecode_logical <- function(glottodata, totrue = NULL, tofalse = NULL){
   # maybe better to do with tribble lookup table https://r-pkgs.org/package-within.html

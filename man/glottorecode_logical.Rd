@@ -13,6 +13,7 @@ glottorecode_logical(glottodata, totrue = NULL, tofalse = NULL)
 Recode character columns to TRUE/FALSE
 }
 \examples{
+glottodata <- glottoget("demodata", meta = TRUE)
 glottorecode_logical(glottodata, totrue = c("y", "Y", 1), tofalse = c("n", "N", 0))
 }
 \keyword{internal}

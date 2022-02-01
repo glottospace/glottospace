@@ -107,6 +107,8 @@ glottoget_path <- function(filepath = NULL, meta = FALSE, simplify = TRUE){
   glottodata <- base::lapply(X = sheetnames,
                          FUN = readxl::read_excel, path = filepath)
   names(glottodata) <- sheetnames
+    } else if(tools::file_ext(filepath) == "csv"){
+      glottodata <- utils::read.csv(filepath, header = TRUE, encoding = "UTF-8")
     } else if(tools::file_ext(filepath) == "gpkg" | tools::file_ext(filepath) == "shp"){
       glottodata <- sf::st_read(dsn = filepath)
     }

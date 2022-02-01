@@ -16,7 +16,7 @@ A single glottodata object
 Join glottosubdata (a list of glottodata tables for multiple languages) into a single glottodata object
 }
 \examples{
-glottosubdata <- glottocreate_demosubdata()
-glottojoin_data(glottosubdata = glottosubdata)
+glottosubdata <- glottoget("demosubdata")
+glottojoin_subdata(glottosubdata = glottosubdata)
 }
 \keyword{internal}

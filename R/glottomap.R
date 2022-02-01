@@ -29,13 +29,13 @@
 #' glottomap(country = "Netherlands")
 #'
 #' glottopoints <- glottofilter(continent = "South America")
-#' glottopols <- glottospace(glottopoints, method = "voronoi", continent = "South America")
+#' glottopols <- glottospace(glottopoints, method = "voronoi")
 #' glottomap(glottodata = glottopols, color = "family_size_rank")
 #' glottomap(glottodata = glottopols, color = "family", palette = "turbo",
 #' type = "dynamic", label = "name")
 #'
 #' glottodata <- glottoget()
-#' families <- glottodata %>% dplyr::count(family, sort = TRUE)
+#' families <- dplyr::count(glottodata, family, sort = TRUE)
 #'
 #' # highlight 10 largest families:
 #' glottodata <- glottospotlight(glottodata = glottodata, spotcol =
@@ -102,7 +102,7 @@ return(map)
 #' @param color Column name or index to be used to color features (optional), or a color "black"
 #' @param ptsize Size of points between 0 and 1
 #'
-#'
+#' @export
 #' @keywords internal
 #'
 #'

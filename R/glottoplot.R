@@ -107,7 +107,9 @@ glottonmds <- function(glottodist, k = 2, rm.na = FALSE){
 #' @family <glottoplot>
 #'
 #' @examples
+#' \dontrun{
 #' glottonmds_scores(glottonmds)
+#' }
 glottonmds_scores <- function(glottonmds){
   scores <- as.data.frame(vegan::scores(glottonmds))
   scores <- tibble::rownames_to_column(scores, "glottocode")

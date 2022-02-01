@@ -22,18 +22,18 @@ Join glottodata with other objects, datasets, or databases.
 }
 \examples{
 glottodata <- glottoget("demodata")
-glottodata <- glottojoin(glottodata, with = "glottospace")
-glottodata <- glottojoin(glottodata, with = "glottobase")
+glottodata_space <- glottojoin(glottodata, with = "glottospace")
+glottodata_base <- glottojoin(glottodata, with = "glottobase")
 
 # Join with a dist object
-dist <- geodist(glottodata)
-glottodatadist <- glottojoin(glottodata, with = dist)
+glottodata <- glottoget("demodata", meta = TRUE)
+dist <- glottodist(glottodata)
+glottodata_dist <- glottojoin(glottodata, with = dist)
 
-# Join a list of glottodata tables:
+# Join glottosubdata tables:
 glottosubdata <- glottocreate_subdata(glottocodes = c("yucu1253", "tani1257"),
 variables = 3, groups = c("a", "b"), n = 2, meta = FALSE)
 glottodatatable <- glottojoin(glottodata = glottosubdata)
-
 }
 \seealso{
 glottosplit

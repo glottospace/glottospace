@@ -13,7 +13,9 @@ glottonmds_scores(glottonmds)
 Obtain nmds scores of a glottonmds object
 }
 \examples{
+\dontrun{
 glottonmds_scores(glottonmds)
+}
 }
 \seealso{
 Other <glottoplot>: 

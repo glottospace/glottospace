@@ -14,18 +14,18 @@
 #'
 #' @examples
 #' glottodata <- glottoget("demodata")
-#' glottodata <- glottojoin(glottodata, with = "glottospace")
-#' glottodata <- glottojoin(glottodata, with = "glottobase")
+#' glottodata_space <- glottojoin(glottodata, with = "glottospace")
+#' glottodata_base <- glottojoin(glottodata, with = "glottobase")
 #'
 #' # Join with a dist object
-#' dist <- geodist(glottodata)
-#' glottodatadist <- glottojoin(glottodata, with = dist)
+#' glottodata <- glottoget("demodata", meta = TRUE)
+#' dist <- glottodist(glottodata)
+#' glottodata_dist <- glottojoin(glottodata, with = dist)
 #'
-#' # Join a list of glottodata tables:
+#' # Join glottosubdata tables:
 #' glottosubdata <- glottocreate_subdata(glottocodes = c("yucu1253", "tani1257"),
 #' variables = 3, groups = c("a", "b"), n = 2, meta = FALSE)
 #' glottodatatable <- glottojoin(glottodata = glottosubdata)
-#'
 glottojoin <- function(glottodata, with = NULL, id = NULL, rm.na = FALSE, type = "left"){
   if(glottocheck_isglottosubdata(glottodata) & is.null(with)){
     splitted <- glottosplit(glottodata)
@@ -62,11 +62,16 @@ return(joined)
 #' @export
 #'
 #' @examples
-#' distdf <- glottojoin_dist(glottodata = glottodata, dist = dist)
+#' glottodata <- glottoget("demodata", meta = TRUE)
+#' dist <- glottodist(glottodata)
+#' glottodata_dist <- glottojoin_dist(glottodata = glottodata, dist = dist)
 #'
 #' # After joining, you can subset the distance columns by using the IDs:
-#' distdf[, distdf$glottocode]
+#' glottodata_dist[, glottodata_dist$glottocode]
 glottojoin_dist <- function(glottodata, id = NULL, dist, rm.na = FALSE){
+
+  glottodata <- glottosimplify(glottodata)
+
   id <- contrans_id2gc(id)
   distmat <- as.matrix(dist)
 
@@ -143,29 +148,18 @@ glottojoin_space <- function(glottodata, id = NULL){
 #' @export
 #' @keywords internal
 #' @examples
-#' glottosubdata <- glottocreate_demosubdata()
-#' glottojoin_data(glottosubdata = glottosubdata)
+#' glottosubdata <- glottoget("demosubdata")
+#' glottojoin_subdata(glottosubdata = glottosubdata)
 glottojoin_subdata <- function(glottosubdata){
 
-  if(glottocheck_hasmeta(glottosubdata) ){
-    glottodata <- glottosimplify_dropmeta(glottosubdata)
-    glottometa <- glottosimplify_langtabs(glottosubdata)
-    hadmeta <- TRUE
-  } else {
-    glottodata <- glottosubdata
-    hadmeta <- FALSE
-  }
+  splitted <- glottosplitmerge(glottosubdata)
+  glottodata <- splitted[[1]]
 
   glottocheck_lscolcount(glottodata) # stops if number of columns is not identical
   glottodata <- do.call("rbind", glottodata) # alternative approaches: data.table::rbindlist or plyr::rbind.fill
   glottodata <- tibble::remove_rownames(glottodata)
 
-  if(hadmeta == TRUE){
-    glottodata <- glottojoin_meta(glottodata = glottodata, glottometa = glottometa)
-    return(glottodata)
-  } else {
-    return(glottodata)
-  }
+  glottodata <- glottosplitmerge(glottodata = glottodata, splitted = splitted)
 
 }
 

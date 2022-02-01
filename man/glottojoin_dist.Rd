@@ -22,9 +22,11 @@ Data frame
 Join glottodata with a dist object
 }
 \examples{
-distdf <- glottojoin_dist(glottodata = glottodata, dist = dist)
+glottodata <- glottoget("demodata", meta = TRUE)
+dist <- glottodist(glottodata)
+glottodata_dist <- glottojoin_dist(glottodata = glottodata, dist = dist)
 
 # After joining, you can subset the distance columns by using the IDs:
-distdf[, distdf$glottocode]
+glottodata_dist[, glottodata_dist$glottocode]
 }
 \keyword{internal}
