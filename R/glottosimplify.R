@@ -14,6 +14,7 @@
 #' @export
 #'
 #' @examples
+#' glottodata <- glottoget("demodata", meta = TRUE)
 #' glottosimplify(glottodata)
 glottosimplify <- function(glottodata, droplist = TRUE, dropmeta = TRUE, dropspatial = TRUE, submerge = TRUE, dropunits = FALSE){
 

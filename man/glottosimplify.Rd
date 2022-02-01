@@ -30,5 +30,6 @@ glottosimplify(
 With glottosimplify, the structure of a glottodata object is simplified by removing tables and properties
 }
 \examples{
+glottodata <- glottoget("demodata", meta = TRUE)
 glottosimplify(glottodata)
 }

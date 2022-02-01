@@ -20,7 +20,7 @@ Spatial intersection between glottodata and
 of countries, continents, and regions.
 }
 \examples{
-glottodata <- glottoget_glottodata(meta = FALSE)
+glottodata <- glottoget("demodata")
 glottospace_addcountries(glottodata)
 }
 \keyword{internal}

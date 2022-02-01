@@ -150,7 +150,7 @@ return(glottodata)
 #' @export
 #' @keywords internal
 #' @examples
-#' glottodata <- glottoget_glottodata(meta = FALSE)
+#' glottodata <- glottoget("demodata")
 #' glottospace_addcountries(glottodata)
 glottospace_addcountries <- function(glottodata){
   glottodata <- glottospace_addcoords(glottodata)
