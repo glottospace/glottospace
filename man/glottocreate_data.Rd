@@ -46,9 +46,15 @@ Output is a list with one data.frame for glottodata (and a number of metatables 
 }
 \examples{
 glottocreate_data(glottocodes = c("yucu1253", "tani1257"),
-                   variables = 3, filename = "glottodata.xlsx")
+                   variables = 3)
 glottocreate_data(glottocodes = c("yucu1253", "tani1257"),
-     variables = 3, filename = "glottodata_simple.xlsx", meta = FALSE)
+     variables = 3, meta = FALSE)
+
+# If you specifying a filename, the glottodata object will be saved locally.
+\dontrun{
+glottocreate_data(glottocodes = c("yucu1253", "tani1257"),
+                   variables = 3, filename = "glottodata.xlsx")
+}
 }
 \concept{<glottocreate><glottodata>}
 \keyword{internal}

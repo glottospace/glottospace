@@ -75,9 +75,12 @@ glottocreate(glottocodes = c("yucu1253", "tani1257"),
 variables = 3, groups = c("a", "b") )
 
 # Creates glottodata/glottosubdata and save as excel:
+\dontrun{
 glottocreate(glottocodes = c("yucu1253", "tani1257"),
 variables = 3, filename = "glottodata.xlsx")
+
 glottocreate(glottocodes = c("yucu1253", "tani1257"),
              variables = 3, groups = c("a", "b"), filename = "glottosubdata.xlsx" )
+}
 }
 \concept{<glottoget><glottocreate>}

@@ -1,16 +1,18 @@
 citHeader("To cite glottospace in publications use:")
 
-citEntry(
-  entry    = "Article",
-  title    = "glottospace: R package for the geospatial analysis of linguistic and cultural data",
-  author   = "Norder, S.J. et al.",
-  journal  = paste("R package version", packageVersion("glottospace")),
-  year     = "2022",
-  volume   = "",
-  number   = "",
-  pages    = "",
-  url      = "https://github.com/SietzeN/glottospace",
-  textVersion = paste("Norder, S.J. et al. (2022).",
+citEntry(entry = "Unpublished",
+  title        = "glottospace: R package for the geospatial analysis of linguistic and cultural data",
+  author       = personList(as.person("Sietze Norder") ),
+  journal      = "",
+  year         = "",
+  volume       = "",
+  number       = "",
+  pages        = "",
+  note         = "Manuscript under preparation",
+  url          = "https://github.com/SietzeN/glottospace",
+
+  textVersion =
+  paste("Norder, S.J. et al. (2022).",
         "glottospace: R package for the geospatial analysis of linguistic and cultural data.",
          "URL https://github.com/SietzeN/glottospace.")
 )

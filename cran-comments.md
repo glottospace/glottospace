@@ -1,3 +1,25 @@
+## Resubmission
+
+Dear CRAN-team,
+
+Thanks again for your time. This is a resubmission. 
+
+There were no ERRORS or WARNINGS.
+
+On Windows there were 3 NOTES, on Debian there was one additional NOTE:
+
+* Possibly misspelled words in DESCRIPTION: I have checked the words and they are spelled correctly (related with package name, data sources, etc.) 
+
+* Reading CITATION file fails: I have gone at great lenghts to understand where this NOTE comes from, but I haven't been able to understand what it means, or how to fix it. If I type citation("glottospace"), the citation is printed. There is a file with the name CITATION in the folder 'inst/'
+
+* Non-standard files at top level: 'cran-comments.md' (this file) and 'news.md' (currently empty because this will be the first release). I have kept these files because they are required for a submission to CRAN. 
+
+* The Debian pre-test indicated there were four files in the R directory. In the previous submission I had added those files to .Rbuildignore. This worked on the Windows pre-test, but not on Debian. I have now deleted all these files and added \dontrun{} to the examples that generated those files. 
+
+Thanks and kind regards,
+Sietze
+
+
 ## First submission: R CMD check results
 
 Dear CRAN-team,

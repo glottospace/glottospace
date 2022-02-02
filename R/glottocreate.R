@@ -42,10 +42,13 @@
 #' variables = 3, groups = c("a", "b") )
 #'
 #' # Creates glottodata/glottosubdata and save as excel:
+#' \dontrun{
 #' glottocreate(glottocodes = c("yucu1253", "tani1257"),
 #' variables = 3, filename = "glottodata.xlsx")
+#'
 #' glottocreate(glottocodes = c("yucu1253", "tani1257"),
 #'              variables = 3, groups = c("a", "b"), filename = "glottosubdata.xlsx" )
+#' }
 glottocreate <- function(glottocodes, variables,
                          meta = TRUE, filename = NULL,
                          simplify = TRUE,
@@ -96,9 +99,15 @@ glottocreate <- function(glottocodes, variables,
 #' @family <glottocreate><glottodata>
 #' @examples
 #' glottocreate_data(glottocodes = c("yucu1253", "tani1257"),
-#'                    variables = 3, filename = "glottodata.xlsx")
+#'                    variables = 3)
 #' glottocreate_data(glottocodes = c("yucu1253", "tani1257"),
-#'      variables = 3, filename = "glottodata_simple.xlsx", meta = FALSE)
+#'      variables = 3, meta = FALSE)
+#'
+#' # If you specifying a filename, the glottodata object will be saved locally.
+#'\dontrun{
+#'glottocreate_data(glottocodes = c("yucu1253", "tani1257"),
+#'                    variables = 3, filename = "glottodata.xlsx")
+#'}
 glottocreate_data <- function(glottocodes, variables, filename = NULL, meta = TRUE, check = FALSE, simplify = TRUE, levels = NULL, maintainer = NULL, email = NULL, citation = NULL, url = NULL){
  if(check){
   if(!all(glottocode_exists(glottocodes)) ){stop("Not all glottocodes are valid. Use glottocode_exists() to check which ones. ")}
@@ -173,7 +182,7 @@ glottocreate_data <- function(glottocodes, variables, filename = NULL, meta = TR
 #'
 #' @examples
 #' glottocreate_subdata(glottocodes = c("yucu1253", "tani1257"),
-#' variables = 3, groups = c("a", "b"), n = 5, filename = "glottosubdata.xlsx")
+#' variables = 3, groups = c("a", "b"), n = 5)
 glottocreate_subdata <- function(glottocodes, variables, groups, filename = NULL, check = FALSE, levels = NULL, n = NULL, meta = TRUE, maintainer = NULL, email = NULL, citation = NULL, url = NULL){
   if(check){
     if(!all(glottocode_exists(glottocodes)) ){stop("Not all glottocodes are valid. Use glottocode_exists() to check which ones. ")}
