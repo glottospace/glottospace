@@ -6,15 +6,17 @@ Thanks again for your time. This is a resubmission.
 
 There were no ERRORS or WARNINGS.
 
-On Windows there were 3 NOTES, on Debian there was one additional NOTE:
+On Windows there were 6 NOTES. Here I address them one by one:
 
-* Possibly misspelled words in DESCRIPTION: I have checked the words and they are spelled correctly (related with package name, data sources, etc.) 
+* Possibly misspelled words in DESCRIPTION: I have checked the words and they are spelled correctly (the words are related with the package name, data sources, etc.) 
 
-* Reading CITATION file fails: I have gone at great lenghts to understand where this NOTE comes from, but I haven't been able to understand what it means, or how to fix it. If I type citation("glottospace"), the citation is printed. There is a file with the name CITATION in the folder 'inst/'
+* Reading CITATION file fails: I had formatted the CITATION file incorrectly. While citation("glottospace") gave the correct output, it was mentioned in the CRAN pretest. I have fixed this by changing the bibtype to 'Unpublished' instead of 'Article' (since the manuscript hasn't been published yet). In addition I have now wrapped as.person() within personList(). 
 
 * Non-standard files at top level: 'cran-comments.md' (this file) and 'news.md' (currently empty because this will be the first release). I have kept these files because they are required for a submission to CRAN. 
 
-* The Debian pre-test indicated there were four files in the R directory. In the previous submission I had added those files to .Rbuildignore. This worked on the Windows pre-test, but not on Debian. I have now deleted all these files and added \dontrun{} to the examples that generated those files. 
+* Examples with elapsed time > 10s or elapsed time >5s. While CRAN pretest highlight these as two separate notes, I here address them together. The glottospace package works with several large online databases. When the user calls a function that requires any of these databases to be loaded, it first checks which version is available locally and what is the most recent online version. If the local version is outdated, the newest version will be downloaded, unpacked, reformatted etc. Because of these processing steps, it takes more time during the first run. I assume that CRAN pretests run examples only once, and I assume this is why they take more time. The functions in the package that download these databases provide messages to keep the user updated about what's happening behind the scenes. 
+
+* The Debian pre-test indicated there were four files in the R directory. In the previous submission I had added those files to .Rbuildignore. This worked on the Windows pre-test, but not on Debian. I have now deleted all these files and also added \dontrun{} to the examples that generated those files. 
 
 Thanks and kind regards,
 Sietze
