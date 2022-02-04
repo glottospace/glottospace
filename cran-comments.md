@@ -6,7 +6,7 @@ Thanks again for your time. This is a resubmission.
 
 There were no ERRORS or WARNINGS.
 
-On Windows there were 6 NOTES. Here I address them one by one:
+There were 6 NOTES. Here I address them one by one:
 
 * Possibly misspelled words in DESCRIPTION: I have checked the words and they are spelled correctly (the words are related with the package name, data sources, etc.) 
 

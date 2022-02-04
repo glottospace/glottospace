@@ -8,13 +8,14 @@
 #'
 #' @return A list of length 2 in case only glottodata is provided, and a merged glottodata object otherwise.
 #' @export
+#' @seealso glottojoin
 #' @keywords internal
 #'
 #' @examples
 #' glottodata <- glottoget("demodata", meta = TRUE)
-#' splitted <- glottosplitmerge(glottodata)
-#' merged <- glottosplitmerge(glottodata = glottodata, splitted = splitted)
-glottosplitmerge <- function(glottodata, splitted = NULL){
+#' splitted <- glottosplitmergemeta(glottodata)
+#' merged <- glottosplitmergemeta(glottodata = glottodata, splitted = splitted)
+glottosplitmergemeta <- function(glottodata, splitted = NULL){
   if(is.null(splitted)){
     splitted <- glottosplit(glottodata)
     return(splitted)
@@ -35,7 +36,6 @@ glottosplitmerge <- function(glottodata, splitted = NULL){
 #' @keywords internal
 #' @return A list of length 2
 #' @export
-#' @seealso glottojoin
 #' @examples
 #' glottodata <- glottoget("demodata", meta = TRUE)
 #' splitted <- glottosplit(glottodata)

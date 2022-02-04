@@ -4,7 +4,7 @@
 \alias{glottocreate_contributorstable}
 \title{create contributors table for glottodata}
 \usage{
-glottocreate_contributorstable(glottocodes, varnames)
+glottocreate_contributorstable(glottocodes = NULL, varnames = NULL)
 }
 \arguments{
 \item{glottocodes}{Character vector of glottocodes}

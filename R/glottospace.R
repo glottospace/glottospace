@@ -17,7 +17,7 @@
 glottospace <- function(glottodata, method = NULL, radius = NULL){
 
   stopifnot(glottocheck_isglottodata(glottodata))
-  splitted <- glottosplitmerge(glottodata)
+  splitted <- glottosplitmergemeta(glottodata)
   glottodata <- splitted[[1]]
 
   if(!is_sf(glottodata)){
@@ -34,7 +34,7 @@ glottospace <- function(glottodata, method = NULL, radius = NULL){
   }
   }
 
-  glottodata <- glottosplitmerge(glottodata = glottodata, splitted = splitted)
+  glottodata <- glottosplitmergemeta(glottodata = glottodata, splitted = splitted)
 
 return(glottodata)
 }

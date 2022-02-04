@@ -4,7 +4,7 @@
 \alias{glottocreate_remarkstable}
 \title{create remarks table for glottodata}
 \usage{
-glottocreate_remarkstable(glottocodes, varnames)
+glottocreate_remarkstable(glottocodes = NULL, varnames = NULL)
 }
 \arguments{
 \item{glottocodes}{Character vector of glottocodes}

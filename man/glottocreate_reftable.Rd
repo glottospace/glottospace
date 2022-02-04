@@ -4,7 +4,7 @@
 \alias{glottocreate_reftable}
 \title{create reference table for glottodata}
 \usage{
-glottocreate_reftable(glottocodes, varnames)
+glottocreate_reftable(glottocodes = NULL, varnames = NULL)
 }
 \arguments{
 \item{glottocodes}{Character vector of glottocodes}

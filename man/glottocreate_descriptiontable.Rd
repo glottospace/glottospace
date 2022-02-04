@@ -4,7 +4,7 @@
 \alias{glottocreate_descriptiontable}
 \title{create descriptiontable for glottodata}
 \usage{
-glottocreate_descriptiontable(varnames, levels = NULL)
+glottocreate_descriptiontable(varnames = NULL, levels = NULL)
 }
 \arguments{
 \item{varnames}{Character vector of variable names}

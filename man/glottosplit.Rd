@@ -23,7 +23,4 @@ glottodata <- glottoget("demodata", meta = TRUE)
 splitted <- glottosplit(glottodata)
 merged <- glottojoin(splitted[[1]], splitted[[2]])
 }
-\seealso{
-glottojoin
-}
 \keyword{internal}

@@ -1,4 +1,53 @@
 
+#' Convert a linguistic dataset into glottosubdata
+#'
+#' @param subdata Any dataset that should be converted into glottosubdata. This will generally an excel file loaded with glottoget() of which the sheetnames are glottocodes.
+#' @param glottocodes Optional character vector of glottocodes. If no glottocodes are supplied, glottospace will search for them in the sample table.
+#'
+#' @export
+#'
+glottoconvert_subdata <- function(data, glottocodes = NULL){
+  if("sample" %in% names(data) ){
+    sample <- data$sample[["glottocode"]]
+  }
+  if(!is.null(glottocodes) & !purrr::is_empty(sample) ){
+    glottosample <- glottocodes
+    message("Using the glottocodes you specified to transform the data. Please note that the data you provided also contains a 'sample' table with glottocodes. If you would rather want to use those, you should leave the glottocodes argument empty.")
+  } else if(!is.null(glottocodes) & purrr::is_empty(sample)){
+    glottosample <- glottocodes
+    message("Using the glottocodes you specified to transform the data.")
+  } else if(is.null(glottocodes) & !purrr::is_empty(sample) ){
+    glottosample <- sample
+    message("Using the glottocodes in the sample table to transform the data.")
+  } else {
+    stop("Please provide glottocodes, or add a sample table to your dataset with glottocodes.")
+  }
+
+  glottodatanames <- names(data) %in% glottosample
+  if(sum(glottodatanames) == 0){
+    stop("Unable to find tables in your dataset that match the specified glottocodes.
+         Please check whether your table names are actually glottocodes (and only glottocodes),
+         and not something like 'abcd1234_something'. ")
+  } else {
+  glottodatatables <- data[glottodatanames]
+  }
+
+  glottometanames <- names(data) %in% names(glottocreate_metatables())
+  if(sum(glottometanames) == 0){
+    message("Unable to find meta tables in your dataset.
+            In case you would like to add meta tables, use glottocreate_metatables() and add them to glottosubdata using glottojoin(). ")
+    glottosubdata <- glottodatatables
+  } else {
+    glottometatables <- data[glottometanames]
+    glottosubdata <- c(glottodatatables, glottometatables)
+  }
+
+  ignored <- paste(names(data)[!(glottodatanames | glottometanames)], collapse = ", ")
+  message(paste("The following tables were ignored: ", ignored ) )
+
+  glottosubdata
+}
+
 #' Transform a linguistic dataset into glottodata
 #'
 #' @param data Dataset to be transformed to glottodata

@@ -27,18 +27,25 @@
 #' variables = 3, groups = c("a", "b"), n = 2, meta = FALSE)
 #' glottodatatable <- glottojoin(glottodata = glottosubdata)
 glottojoin <- function(glottodata, with = NULL, id = NULL, rm.na = FALSE, type = "left"){
-  if(glottocheck_isglottosubdata(glottodata) & is.null(with)){
-    splitted <- glottosplit(glottodata)
+  if(glottocheck_isglottosubdata(glottodata) ){
+    if(is.null(with)){# join glottosubdata
+    splitted <- glottosplitmergemeta(glottodata)
     joined <- glottojoin_subdata(glottosubdata = splitted[[1]])
-    if(any(!is.na(splitted[[2]]))){joined <- glottojoin(glottodata = joined, with = splitted[[2]])}
+    joined <- glottosplitmergemeta(glottodata = joined, splitted = splitted)
+  } else if (glottocheck_hasmeta(with)){
+    joined <- glottojoin_meta(glottodata = glottodata, glottometa = with)
+  } else {
+    message("Unable to join glottosubdata with this type of data.")
+  }
+  }
 
-  } else if(!is.null(with)){
+  if(glottocheck_isglottodata(glottodata) & !is.null(with)){
     glottodata <- glottosplit(glottodata)[[1]]
       if(is_dist(with)){
       joined <- glottojoin_dist(glottodata = glottodata, id = id, dist = with, rm.na = rm.na)
       } else if(glottocheck_hasmeta(with)){
       joined <- glottojoin_meta(glottodata = glottodata, glottometa = with)
-      } else if(glottocheck_isglottodata(glottodata) & glottocheck_isglottodata(with)){
+      } else if(glottocheck_isglottodata(with)){
         joined <- glottojoin_data(glottodata = glottodata, with = with, type = type)
       } else if(is.character(with)){
           if(with == "glottobase"){
@@ -46,7 +53,7 @@ glottojoin <- function(glottodata, with = NULL, id = NULL, rm.na = FALSE, type =
           } else if(with == "glottospace"){
             joined <- glottojoin_space(glottodata = glottodata, id = id)
           }
-      } else(message("Class of input data not supported.") )
+      } else(message("Unable to join glottodata with this type of data.") )
       }
 return(joined)
 }
@@ -152,14 +159,14 @@ glottojoin_space <- function(glottodata, id = NULL){
 #' glottojoin_subdata(glottosubdata = glottosubdata)
 glottojoin_subdata <- function(glottosubdata){
 
-  splitted <- glottosplitmerge(glottosubdata)
+  splitted <- glottosplitmergemeta(glottosubdata)
   glottodata <- splitted[[1]]
 
   glottocheck_lscolcount(glottodata) # stops if number of columns is not identical
   glottodata <- do.call("rbind", glottodata) # alternative approaches: data.table::rbindlist or plyr::rbind.fill
   glottodata <- tibble::remove_rownames(glottodata)
 
-  glottodata <- glottosplitmerge(glottodata = glottodata, splitted = splitted)
+  glottodata <- glottosplitmergemeta(glottodata = glottodata, splitted = splitted)
 
 }
 
@@ -215,7 +222,7 @@ glottojoin_data <- function(glottodata, with, type = "left", id = NULL, ...){
 #' glottojoin_meta(glottodata, glottometa)
 glottojoin_meta <- function(glottodata, glottometa){
 
-  stopifnot(glottocheck_isglottodata(glottodata))
+  stopifnot(glottocheck_isglottodata(glottodata) | glottocheck_isglottosubdata(glottodata) )
   stopifnot(glottocheck_hasmeta(glottometa))
 
   if(is_sf(glottodata)){
