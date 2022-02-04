@@ -2,15 +2,15 @@
 % Please edit documentation in R/glottoconvert.R
 \name{glottoconvert_subdata}
 \alias{glottoconvert_subdata}
-\title{Convert subdata into glottosubdata}
+\title{Convert a linguistic dataset into glottosubdata}
 \usage{
-glottoconvert_subdata(subdata, glottocodes = NULL)
+glottoconvert_subdata(data, glottocodes = NULL)
 }
 \arguments{
-\item{subdata}{Any dataset that should be converted into glottosubdata. This will generally an excel file loaded with glottoget() of which the sheetnames are glottocodes.}
-
 \item{glottocodes}{Optional character vector of glottocodes. If no glottocodes are supplied, glottospace will search for them in the sample table.}
+
+\item{subdata}{Any dataset that should be converted into glottosubdata. This will generally an excel file loaded with glottoget() of which the sheetnames are glottocodes.}
 }
 \description{
-Convert subdata into glottosubdata
+Convert a linguistic dataset into glottosubdata
 }

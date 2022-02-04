@@ -119,7 +119,9 @@ glottosubcode_valid <- function(glottosubcodes){
   invalid <- gsc_df %>% dplyr::filter(dplyr::if_any( c(.data$gc_exists, .data$group_chr, .data$n_num), is_false))
   invalidgcs <- paste(invalid[,"glottosubcode"], collapse = ", ")
 
-  if(nrow(invalid) != 0){message(paste("There are issues with the following glottosubcodes:", invalidgcs))
+  if(nrow(invalid) != 0){
+    message(paste("There are issues with the following glottosubcodes:", invalidgcs))
+    invisible(FALSE)
   } else {
     invisible(TRUE)
   }

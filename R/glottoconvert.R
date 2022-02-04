@@ -42,8 +42,10 @@ glottoconvert_subdata <- function(data, glottocodes = NULL){
     glottosubdata <- c(glottodatatables, glottometatables)
   }
 
-  ignored <- paste(names(data)[!(glottodatanames | glottometanames)], collapse = ", ")
-  message(paste("The following tables were ignored: ", ignored ) )
+  ignored <- names(data)[!(glottodatanames | glottometanames)]
+  if(length(ignored) != 0){
+  message(paste("The following tables were ignored: ", paste(ignored, collapse = ", ") ) )
+  }
 
   glottosubdata
 }
