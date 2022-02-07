@@ -21,10 +21,11 @@ Spatial data (sf) are saved as geopackage (.GPKG) by default, but .shp is
 also possible.
 }
 \examples{
-
+\donttest{
 glottodata <- glottoget("demodata", meta = FALSE)
 # Saves as .xlsx
 glottosave(glottodata, filename = "glottodata")
+glottosave(glottodata, filename = file.path(tempdir(), "glottodata") )
 
 glottospacedata <- glottospace(glottodata)
 # Saves as .GPKG
@@ -36,6 +37,7 @@ glottosave(glottomap, filename = "glottomap")
 
 # Saves as .html
 glottomap <- glottomap(glottodata, type = "dynamic")
+}
 }
 \seealso{
 glottoget_glottodata

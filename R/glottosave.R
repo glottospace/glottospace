@@ -14,10 +14,11 @@
 #' @export
 #' @seealso glottoget_glottodata
 #' @examples
-#'
+#' \donttest{
 #' glottodata <- glottoget("demodata", meta = FALSE)
 #' # Saves as .xlsx
 #' glottosave(glottodata, filename = "glottodata")
+#' glottosave(glottodata, filename = file.path(tempdir(), "glottodata") )
 #'
 #' glottospacedata <- glottospace(glottodata)
 #' # Saves as .GPKG
@@ -29,7 +30,7 @@
 #'
 #' # Saves as .html
 #' glottomap <- glottomap(glottodata, type = "dynamic")
-
+#' }
 glottosave <- function(glottodata, filename = NULL){
 
   if(is.null(filename)){filename <- deparse(substitute(glottodata))}

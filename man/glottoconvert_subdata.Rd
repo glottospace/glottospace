@@ -7,10 +7,11 @@
 glottoconvert_subdata(data, glottocodes = NULL)
 }
 \arguments{
-\item{glottocodes}{Optional character vector of glottocodes. If no glottocodes are supplied, glottospace will search for them in the sample table.}
+\item{data}{Any dataset that should be converted into glottosubdata. This will generally be an excel file loaded with glottoget() of which the sheetnames are glottocodes.}
 
-\item{subdata}{Any dataset that should be converted into glottosubdata. This will generally an excel file loaded with glottoget() of which the sheetnames are glottocodes.}
+\item{glottocodes}{Optional character vector of glottocodes. If no glottocodes are supplied, glottospace will search for them in the sample table.}
 }
 \description{
 Convert a linguistic dataset into glottosubdata
 }
+\keyword{internal}

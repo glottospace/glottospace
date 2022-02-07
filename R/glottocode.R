@@ -11,7 +11,9 @@
 #' @export
 #'
 #' @examples
+#' \donttest{
 #' glottocode("yucu1253")
+#' }
 glottocode <- function(glottocode){
   if(length(glottocode) > 1){stop("Please provide a single glottocode")}
   if(glottocode_exists(glottocode)){
@@ -60,8 +62,10 @@ glottocode_location <- function(glottocode){
 #' @keywords internal
 #' @family <glottocheck><glottosearch>
 #' @examples
+#' \donttest{
 #' glottocode_exists(c("yucu1253"))
 #' glottocode_exists(c("yucu1253", "abcd1234"))
+#' }
 glottocode_exists <- function(glottocode){
   glottosearch_exist(search = glottocode, columns = "glottocode")
 }

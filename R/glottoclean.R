@@ -126,4 +126,26 @@ glottorecode_logical <- function(glottodata, totrue = NULL, tofalse = NULL){
   glottodata
 }
 
+#' Fix colnames of excel files in which colnames refer to another cell
+#'
+#' @param glottodata glottodata or glottosubdata
+#' @export
+#'
+#'
+glottoclean_colnamerepair <- function(glottodata){
+  if(glottocheck_isglottodata(glottodata)){
+    splitted <- glottosplitmergemeta(glottodata)
+    glottodata <- glottoclean_colnamerepair_table(splitted[[1]])
+    glottodata <- glottosplitmergemeta(glottodata = glottodata, splitted = splitted)
+  } else if(glottocheck_isglottodata(glottodata)){
+    splitted <- glottosplitmergemeta(glottodata)
+    glottodata <- lapply(splitted[[1]], glottoclean_colnamerepair_table)
+    glottodata <- glottosplitmergemeta(glottodata = glottodata, splitted = splitted)
+  }
+  glottodata
+}
 
+glottoclean_colnamerepair_table <- function(table){
+  colnames(table) <- gsub("\\...[0-9]*$","",colnames(table))
+  table
+}

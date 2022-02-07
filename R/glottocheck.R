@@ -20,8 +20,10 @@
 #' @export
 #'
 #' @examples
+#' \donttest{
 #' glottodata <- glottoget("demodata")
 #' glottocheck(glottodata, diagnostic = FALSE)
+#' }
 glottocheck <- function(glottodata, diagnostic = TRUE, checkmeta = FALSE){
   if(glottocheck_isglottosubdata(glottodata) == FALSE){
     glottocheck_data(glottodata = glottodata, diagnostic = diagnostic)
@@ -59,8 +61,10 @@ glottocheck <- function(glottodata, diagnostic = TRUE, checkmeta = FALSE){
 #' @export
 #'
 #' @examples
+#' \donttest{
 #' glottodata <- glottoget("demodata")
 #' glottocheck_data(glottodata, diagnostic = FALSE)
+#' }
 glottocheck_data <- function(glottodata, diagnostic = TRUE){
   glottodata <- glottosimplify(glottodata)
   id <- "glottocode"

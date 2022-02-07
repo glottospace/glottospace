@@ -9,3 +9,4 @@
 ^glottomap\.png$
 ^CITATION\.cff$
 ^CRAN-RELEASE$
+^cran-comments\.md$

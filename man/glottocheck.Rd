@@ -27,8 +27,10 @@ It subsequently checks whether:
 }
 }
 \examples{
+\donttest{
 glottodata <- glottoget("demodata")
 glottocheck(glottodata, diagnostic = FALSE)
+}
 }
 \seealso{
 Other <glottocheck>: 

@@ -26,6 +26,7 @@
 #' @export
 #'
 #' @examples
+#' \donttest{
 #' glottomap(country = "Netherlands")
 #'
 #' glottopoints <- glottofilter(continent = "South America")
@@ -45,6 +46,7 @@
 #' glottodata <- glottospotlight(glottodata = glottodata, spotcol =
 #' "family", spotlight = families$family[-c(1:10)], spotcontrast = "family", bgcontrast = "family")
 #' glottomap(glottodata, color = "color")
+#' }
 glottomap <- function(glottodata = NULL, color = NULL, label = NULL, type = NULL, ptsize = NULL, alpha = NULL, lbsize = NULL, palette = NULL, rivers = FALSE, nclass = NULL, numcat = FALSE, filename = NULL, projection = NULL, mode = NULL, ...){
   palette <- glottocolpal(palette = palette)
   if(is.null(type)){type <- "static"}

@@ -10,7 +10,9 @@
 #' @export
 #' @keywords internal
 #' @examples
+#' \donttest{
 #' glottoget_wals()
+#' }
 glottoget_wals <- function(days = NULL, valuenames = NULL, paramnames = NULL){
   if(is.null(days)){days <- 30}
   if(curl::has_internet() & wals_date_local() < (-days) ){

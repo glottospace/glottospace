@@ -1,9 +1,63 @@
 
+#' Convert a linguistic dataset into glottodata or glottosubdata
+#'
+#' @param data A dataset that should be converted into glottodata/glottosubdata. This will generally be an excel file loaded with glottoget().
+#'
+#' The dataset will be converted into glottodata if:
+#' \itemize{
+#'  \item all data are stored in a single table, or
+#'  \item the dataset contains several tables of which one is called 'glottodata', or
+#'  \item a table argument is provided.
+#'  }
+#'
+#' Otherwise, glottospace will attempt to convert the dataset into glottosubdata. This works if:
+#' \itemize{
+#'  \item table names are glottocodes, and
+#'  \item an argument is provided to glottocodes, or the dataset contains a sample table from which glottocodes can be obtained.
+#' }
+#' @param glottocodes Optional character vector of glottocodes. If no glottocodes are supplied, glottospace will search for them in the sample table.
+#' @param table In case dataset consists of multiple tables, indicate which table contains the data that should be converted.
+#' @param var Character string that distinguishes those columns which contain variable names.
+#' @param ref Character string that distinguishes those columns which contain references.
+#' @param page Character string that distinguishes those columns which contain page numbers.
+#' @param remark Character string that distinguishes those columns which contain remarks.
+#' @param contributor Character string that distinguishes those columns which contain contributors.
+#' @param glottocolumn column name or column id with glottocodes (optional, provide if glottocodes are not stored in a column called 'glottocode')
+#' @param glottosubcolumn Column name or column id with glottosubcodes (optional, provide if glottosubcodes are not stored in a column called 'glottosubcode')
+#'
+#' @export
+#'
+glottoconvert <- function(data, var, glottocodes = NULL, table = NULL, glottocolumn = NULL, glottosubcolumn = NULL, ref = NULL, page = NULL, remark = NULL, contributor = NULL){
+
+  if(purrr::is_empty(var)){
+    stop("Please indicate how variable columns are distinguished from other columns.")
+  }
+
+  if(!is_list(data) ){
+    glottodata <- glottoconvert_table(table = data, glottocolumn = glottocolumn, var = var, ref = ref, page = page, remark = remark, contributor = contributor)
+  } else if(is_list(data) & length(data) == 1){
+    glottodata <- glottoconvert_table(table = data[[1]], glottocolumn = glottocolumn, var = var, ref = ref, page = page, remark = remark, contributor = contributor)
+  } else if(is_list(data) & "glottodata" %in% names(data)){
+    glottodata <- glottoconvert_table(table = "glottodata", glottocolumn = glottocolumn, var = var, ref = ref, page = page, remark = remark, contributor = contributor)
+  } else if(is_list(data) & !is.null(table) ){
+    glottodata <- glottoconvert_table(table = data[[table]], glottocolumn = glottocolumn, var = var, ref = ref, page = page, remark = remark, contributor = contributor)
+  } else {
+  glottosubdata <- glottoconvert_subdata(data = data, glottocodes = glottocodes)
+  splitted <- glottosplitmergemeta(glottosubdata)
+  glottosubdata <- lapply(X = splitted[[1]], FUN = glottoconvert_subtable, glottosubcolumn = glottosubcolumn, var = var)
+  glottodata <- glottosplitmergemeta(glottodata = glottosubdata, splitted = splitted)
+  }
+
+  message("I don't condemn, I DO convert, but Love is My Religion: https://youtu.be/r-eXYJnV3V4 \n \n your data has been converted into glottodata! \n (don't forget to assign it to a new object)")
+  glottodata
+
+}
+
 #' Convert a linguistic dataset into glottosubdata
 #'
-#' @param subdata Any dataset that should be converted into glottosubdata. This will generally an excel file loaded with glottoget() of which the sheetnames are glottocodes.
+#' @param data Any dataset that should be converted into glottosubdata. This will generally be an excel file loaded with glottoget() of which the sheetnames are glottocodes.
 #' @param glottocodes Optional character vector of glottocodes. If no glottocodes are supplied, glottospace will search for them in the sample table.
-#'
+#' @keywords internal
 #' @export
 #'
 glottoconvert_subdata <- function(data, glottocodes = NULL){
@@ -53,49 +107,43 @@ glottoconvert_subdata <- function(data, glottocodes = NULL){
 #' Transform a linguistic dataset into glottodata
 #'
 #' @param data Dataset to be transformed to glottodata
-#' @param glottocode column name or column id with glottocodes
+#' @param glottocolumn column name or column id with glottocodes
 #' @param var Character string that distinguishes those columns which contain variable names.
 #' @param ref Character string that distinguishes those columns which contain references.
 #' @param table In case dataset consists of multiple tables, indicate which table contains the data that should be converted.
 #' @param page Character string that distinguishes those columns which contain page numbers.
 #' @param remark Character string that distinguishes those columns which contain remarks.
 #' @param contributor Character string that distinguishes those columns which contain contributors.
-#'
+#' @keywords internal
 #'
 #' @export
 #'
 #' @examples
 #' \dontrun{
 #' data <- glottoget("userdata.xlsx")
-#' glottodata <- glottoconvert(data = data, var = "var_", ref = "ref_",
+#' glottodata <- glottoconvert_table(data = data, var = "var_", ref = "ref_",
 #'               page = "pag_", remark = "com_", contributor = "Coder")
 #' glottocheck(glottodata)
 #' glottosave(glottodata)
 #' }
-glottoconvert <- function(data, glottocode = NULL, var, table = NULL, ref = NULL, page = NULL, remark = NULL, contributor = NULL){
-  if(is_list(data) & is.null(table)){
-    message(paste0("Dataset contains multiple tables, assuming data to be converted is in the first table: ", names(data)[[1]]), "\n" )
-    data <- data[[1]]
-  } else if(is_list(data) & !is.null(table) ){
-    data <- data[[table]]
-  }
+glottoconvert_table <- function(table, glottocolumn = NULL, var, ref = NULL, page = NULL, remark = NULL, contributor = NULL){
 
-  totcol <- length(colnames(data))
+  totcol <- length(colnames(table))
 
 # Create new glottodata structure based on glottocodes and variable names
-    if(is.null(glottocode)){glottocode <- "glottocode"}
-    glottocol <- grep(pattern = glottocode, x = colnames(data), ignore.case = TRUE, value = TRUE)
-    if(length(glottocol) > 1){stop(paste0("Column ", glottocode, " is duplicated. Please rename one of the columns."))}
-    if(length(glottocol) == 0){stop(paste0("Column ", glottocode, " not found. Please add a column with glottocodes."))}
-    glottocodes <- data[[glottocol]]
+    if(is.null(glottocolumn)){glottocolumn <- "glottocode"}
+    glottocol <- grep(pattern = glottocolumn, x = colnames(table), ignore.case = TRUE, value = TRUE)
+    if(length(glottocol) > 1){stop(paste0("Column ", glottocolumn, " is duplicated. Please rename one of the columns."))}
+    if(length(glottocol) == 0){stop(paste0("Column ", glottocolumn, " not found. Please add a column with glottocodes."))}
+    glottocodes <- table[[glottocol]]
 
-    oldvarnames <- grep(pattern = var, x = colnames(data), ignore.case = TRUE, value = TRUE)
+    oldvarnames <- grep(pattern = var, x = colnames(table), ignore.case = TRUE, value = TRUE)
     if(length(oldvarnames) == 0){stop(paste0("No columns found with ", var, " in the name."))}
     newvarnames <- gsub(pattern = var, x = oldvarnames, replacement = "")
     glottodata <- glottocreate(glottocodes = glottocodes, variables = newvarnames)
 
 # Add data for variables:
-  sdata <- glottoconvert_colname(data = data, oldfix = var,
+  sdata <- glottoconvert_colname(data = table, oldfix = var,
                                  newfix = "", newname = "")
   varcols <- colnames(sdata)
   nvar <- ncol(sdata)
@@ -103,37 +151,45 @@ glottoconvert <- function(data, glottocode = NULL, var, table = NULL, ref = NULL
 
 # Add references
   if(!is.null(ref)){
-    sdata <- glottoconvert_colname(data = data, oldfix = ref,
+    sdata <- glottoconvert_colname(data = table, oldfix = ref,
                                    newfix = "_ref", newname = "reference")
     nref <- ncol(sdata)
     glottodata[["references"]][,colnames(sdata)] <- sdata
+  } else {
+    nref <- 0
   }
 
 # Add page numbers
   if(!is.null(page)){
-    sdata <- glottoconvert_colname(data = data, oldfix = page,
+    sdata <- glottoconvert_colname(data = table, oldfix = page,
                                    newfix = "_page", newname = "page")
     pagecols <- colnames(sdata)
     npage <- ncol(sdata)
     glottodata[["references"]][,colnames(sdata)] <- sdata
+  } else {
+    npage <- 0
   }
 
 # Add remarks
   if(!is.null(remark)){
-    sdata <- glottoconvert_colname(data = data, oldfix = remark,
+    sdata <- glottoconvert_colname(data = table, oldfix = remark,
                                    newfix = "_remark", newname = "remark")
     remarkcols <- colnames(sdata)
     nremark <- ncol(sdata)
     glottodata[["remarks"]][,colnames(sdata)] <- sdata
+  } else {
+    nremark <- 0
   }
 
 # Add contributors
   if(!is.null(contributor)){
-    sdata <- glottoconvert_colname(data = data, oldfix = contributor,
+    sdata <- glottoconvert_colname(data = table, oldfix = contributor,
                                    newfix = "_con", newname = "contributor")
     contrcols <- colnames(sdata)
     ncontr <- ncol(sdata)
     glottodata[["contributors"]][,colnames(sdata)] <- sdata
+  } else {
+    ncontr <- 0
   }
 
   message("Overview of the conversion process: ")
@@ -150,12 +206,46 @@ glottoconvert <- function(data, glottocode = NULL, var, table = NULL, ref = NULL
 
   print(overview)
 
-  omitted <- colnames(data)[!grepl(pattern = paste(c(glottocode, var, ref, page, remark, contributor), collapse = "|"), x = colnames(data), ignore.case = TRUE)]
+  omitted <- colnames(table)[!grepl(pattern = paste(c(glottocolumn, var, ref, page, remark, contributor), collapse = "|"), x = colnames(table), ignore.case = TRUE)]
   message(paste0("\n The following columns were omitted: \n", paste(omitted, collapse = ", "), "\n" ))
 
-  message("I don't condemn, I DO convert, but Love is My Religion: https://youtu.be/r-eXYJnV3V4 \n \n your data has been converted into glottodata! \n (don't forget to assign it to a new object)")
-
 invisible(glottodata)
+}
+
+
+#' Transform a table of a linguistic dataset into a glottosubdata table
+#'
+#' @param var Character string that distinguishes those columns which contain variable names.
+#' @param glottosubcolumn Column name with glottosubcodes
+#' @param table In case dataset consists of multiple tables, indicate which table contains the data that should be converted.
+#'
+#' @export
+#'
+glottoconvert_subtable <- function(table, glottosubcolumn = NULL, var){
+
+  totcol <- length(colnames(table))
+
+  # Create new glottotable structure based on glottocodes and variable names
+  if(is.null(glottosubcolumn)){glottosubcolumn <- "glottosubcode"}
+  glottosubcol <- grep(pattern = glottosubcolumn, x = colnames(table), ignore.case = TRUE, value = TRUE)
+  if(length(glottosubcol) > 1){stop(paste0("Column ", glottosubcolumn, " is duplicated. Please rename one of the columns."))}
+  if(length(glottosubcol) == 0){stop(paste0("Column ", glottosubcolumn, " not found. Please add a column with glottosubcodes."))}
+  glottosubcodes <- table[[glottosubcol]]
+
+  oldvarnames <- grep(pattern = var, x = colnames(table), ignore.case = TRUE, value = TRUE)
+  if(length(oldvarnames) == 0){stop(paste0("No columns found with ", var, " in the name."))}
+  newvarnames <- gsub(pattern = var, x = oldvarnames, replacement = "")
+  glottotable <- glottocreate(glottocodes = glottosubcodes, variables = newvarnames, meta = FALSE)
+  colnames(glottotable)[1] <- "glottosubcode"
+
+  # Add data for variables:
+  sdata <- glottoconvert_colname(data = table, oldfix = var,
+                                 newfix = "", newname = "")
+  varcols <- colnames(sdata)
+  nvar <- ncol(sdata)
+  glottotable[,-1] <- sdata
+
+  invisible(glottotable)
 }
 
 #' Convert colnames and subset
@@ -177,4 +267,5 @@ glottoconvert_colname <- function(data, oldfix, newfix = NULL, newname = NULL){
   }
   data
 }
+
 

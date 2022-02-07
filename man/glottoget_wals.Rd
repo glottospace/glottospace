@@ -17,6 +17,8 @@ glottoget_wals(days = NULL, valuenames = NULL, paramnames = NULL)
 This function checks whether most recent version of WALS is locally available. If local version is outdated, the newest version will be downloaded.
 }
 \examples{
+\donttest{
 glottoget_wals()
+}
 }
 \keyword{internal}

@@ -2,13 +2,15 @@
 % Please edit documentation in R/glottoconvert.R
 \name{glottoconvert}
 \alias{glottoconvert}
-\title{Transform a linguistic dataset into glottodata}
+\title{Convert a linguistic dataset into glottodata or glottosubdata}
 \usage{
 glottoconvert(
   data,
-  glottocode = NULL,
   var,
+  glottocodes = NULL,
   table = NULL,
+  glottocolumn = NULL,
+  glottosubcolumn = NULL,
   ref = NULL,
   page = NULL,
   remark = NULL,
@@ -16,13 +18,30 @@ glottoconvert(
 )
 }
 \arguments{
-\item{data}{Dataset to be transformed to glottodata}
+\item{data}{A dataset that should be converted into glottodata/glottosubdata. This will generally be an excel file loaded with glottoget().
 
-\item{glottocode}{column name or column id with glottocodes}
+The dataset will be converted into glottodata if:
+\itemize{
+ \item all data are stored in a single table, or
+ \item the dataset contains several tables of which one is called 'glottodata', or
+ \item a table argument is provided.
+ }
+
+Otherwise, glottospace will attempt to convert the dataset into glottosubdata. This works if:
+\itemize{
+ \item table names are glottocodes, and
+ \item an argument is provided to glottocodes, or the dataset contains a sample table from which glottocodes can be obtained.
+}}
 
 \item{var}{Character string that distinguishes those columns which contain variable names.}
 
+\item{glottocodes}{Optional character vector of glottocodes. If no glottocodes are supplied, glottospace will search for them in the sample table.}
+
 \item{table}{In case dataset consists of multiple tables, indicate which table contains the data that should be converted.}
+
+\item{glottocolumn}{column name or column id with glottocodes (optional, provide if glottocodes are not stored in a column called 'glottocode')}
+
+\item{glottosubcolumn}{Column name or column id with glottosubcodes (optional, provide if glottosubcodes are not stored in a column called 'glottosubcode')}
 
 \item{ref}{Character string that distinguishes those columns which contain references.}
 
@@ -33,14 +52,5 @@ glottoconvert(
 \item{contributor}{Character string that distinguishes those columns which contain contributors.}
 }
 \description{
-Transform a linguistic dataset into glottodata
-}
-\examples{
-\dontrun{
-data <- glottoget("userdata.xlsx")
-glottodata <- glottoconvert(data = data, var = "var_", ref = "ref_",
-              page = "pag_", remark = "com_", contributor = "Coder")
-glottocheck(glottodata)
-glottosave(glottodata)
-}
+Convert a linguistic dataset into glottodata or glottosubdata
 }

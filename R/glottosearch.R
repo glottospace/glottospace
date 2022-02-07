@@ -9,9 +9,11 @@
 #' @export
 #' @family <glottosearch><glottofilter>
 #' @examples
+#' \donttest{
 #' glottosearch(search = "Yucuni")
 #' glottosearch(search = "Yucuni", columns = "name")
 #' glottosearch(search = "Yucuni", columns = c("name", "family"))
+#' }
 glottosearch <- function(search, glottodata = NULL, partialmatch = TRUE, columns = NULL, tolerance = NULL){
   if(is.null(tolerance)){tolerance <- 0.1}
 

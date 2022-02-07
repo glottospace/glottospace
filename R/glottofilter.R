@@ -24,6 +24,7 @@
 #' @export
 #'
 #' @examples
+#' \donttest{
 #' points <- glottofilter(location = "Australia")
 #' points <- glottofilter(glottocode = "wari1268")
 #' points <- glottofilter(family = "Indo-European")
@@ -33,6 +34,7 @@
 #' points <- glottofilter(expression = family %in% c("Arawakan", "Tucanoan"))
 #' points <- glottofilter(expression = family_size > 2)
 #' points <- glottofilter(colname = "family", drop = "Indo-European")
+#' }
 glottofilter <- function(glottodata = NULL,
                       glottocode = NULL, location = NULL, name = NULL, family = NULL, family_id = NULL,
                       continent = NULL, country = NULL, sovereignty = NULL, macroarea = NULL, expression = NULL, isocodes = NULL,colname = NULL, select = NULL, drop = NULL){

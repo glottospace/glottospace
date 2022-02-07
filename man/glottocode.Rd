@@ -16,5 +16,7 @@ This function does three things for a glottocode:
 - Check whether it exists in glottolog
 }
 \examples{
+\donttest{
 glottocode("yucu1253")
+}
 }

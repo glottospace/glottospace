@@ -27,8 +27,10 @@ glottosearch(
 Search within glottodata for languages, glottocodes, etc.
 }
 \examples{
+\donttest{
 glottosearch(search = "Yucuni")
 glottosearch(search = "Yucuni", columns = "name")
 glottosearch(search = "Yucuni", columns = c("name", "family"))
+}
 }
 \concept{<glottosearch><glottofilter>}

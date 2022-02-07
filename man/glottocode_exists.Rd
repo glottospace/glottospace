@@ -16,8 +16,10 @@ A logical vector
 Check whether a set of glottocodes exist in glottolog
 }
 \examples{
+\donttest{
 glottocode_exists(c("yucu1253"))
 glottocode_exists(c("yucu1253", "abcd1234"))
+}
 }
 \seealso{
 Other <glottocheck><glottosearch>: 

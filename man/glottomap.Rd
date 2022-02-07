@@ -66,7 +66,7 @@ glottopols <- glottospace(glottopoints, method = "voronoi")
 glottomap(glottodata = glottopols, color = "family_size_rank")
 glottomap(glottodata = glottopols, color = "family", palette = "turbo",
 type = "dynamic", label = "name")
-
+\donttest{
 glottodata <- glottoget()
 families <- dplyr::count(glottodata, family, sort = TRUE)
 
@@ -78,5 +78,6 @@ glottodata <- glottospotlight(glottodata = glottodata, spotcol =
 glottodata <- glottospotlight(glottodata = glottodata, spotcol =
 "family", spotlight = families$family[-c(1:10)], spotcontrast = "family", bgcontrast = "family")
 glottomap(glottodata, color = "color")
+}
 }
 \concept{<glottomap>}

@@ -60,6 +60,7 @@ A subset of the original glottodata table  containing only filtered languages.
 By default, the glottolog data will be used to filter from. But in case the user provides glottodata, this will be used.
 }
 \examples{
+\donttest{
 points <- glottofilter(location = "Australia")
 points <- glottofilter(glottocode = "wari1268")
 points <- glottofilter(family = "Indo-European")
@@ -69,6 +70,7 @@ points <- glottofilter(country = c("Colombia", "Venezuela"))
 points <- glottofilter(expression = family \%in\% c("Arawakan", "Tucanoan"))
 points <- glottofilter(expression = family_size > 2)
 points <- glottofilter(colname = "family", drop = "Indo-European")
+}
 }
 \seealso{
 glottofiltermap()
