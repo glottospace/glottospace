@@ -59,6 +59,7 @@ With this function you can easily create static and dynamic maps from glottodata
 Alternatively, by specifying type = "filter", you can select languages by drawing/clicking on a map.
 }
 \examples{
+\donttest{
 glottomap(country = "Netherlands")
 
 glottopoints <- glottofilter(continent = "South America")
@@ -66,7 +67,7 @@ glottopols <- glottospace(glottopoints, method = "voronoi")
 glottomap(glottodata = glottopols, color = "family_size_rank")
 glottomap(glottodata = glottopols, color = "family", palette = "turbo",
 type = "dynamic", label = "name")
-\donttest{
+
 glottodata <- glottoget()
 families <- dplyr::count(glottodata, family, sort = TRUE)
 
