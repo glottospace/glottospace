@@ -4,12 +4,10 @@
 \alias{glottoget_path}
 \title{Load glotto(sub)data from file}
 \usage{
-glottoget_path(filepath = NULL, meta = FALSE, simplify = TRUE)
+glottoget_path(filepath = NULL, simplify = TRUE)
 }
 \arguments{
 \item{filepath}{Path to glottodata file with extension (.xlsx .xls .gpkg .shp). If no filepath is specified, an artificial demo dataset will be created.}
-
-\item{meta}{By default, meta sheets are not loaded. Use meta=TRUE if you want to include them.}
 
 \item{simplify}{By default, if only one sheet is loaded, the data will be returned as a data.frame (instead of placing the data inside a list of length 1)}
 }

@@ -42,7 +42,7 @@ glottoget <- function(glottodata = NULL, meta = FALSE){
   } else if(glottodata == "wals"){
     glottodata <- glottoget_wals()
   } else if(tools::file_ext(glottodata) != ""){
-    glottodata <- glottoget_path(filepath = glottodata, meta = meta)
+    glottodata <- glottoget_path(filepath = glottodata)
   } else {message("Unable to load requested glottodata")}
 return(glottodata)
 }
@@ -80,7 +80,6 @@ glottoget_remote <- function(glottodata = NULL){
 #' Load glottodata/glottosubdata from a file
 #'
 #' @param filepath Path to glottodata file with extension (.xlsx .xls .gpkg .shp). If no filepath is specified, an artificial demo dataset will be created.
-#' @param meta By default, meta sheets are not loaded. Use meta=TRUE if you want to include them.
 #' @param simplify By default, if only one sheet is loaded, the data will be returned as a data.frame (instead of placing the data inside a list of length 1)
 #' @family <glottodata>
 #'
@@ -93,17 +92,17 @@ glottoget_remote <- function(glottodata = NULL){
 #' glottoget_path(filepath = "glottodata.xlsx")
 #' glottoget_path(filepath = "glottodata.gpkg")
 #' }
-glottoget_path <- function(filepath = NULL, meta = FALSE, simplify = TRUE){
+glottoget_path <- function(filepath = NULL, simplify = TRUE){
 
-  metasheets <- names(glottocreate_metatables())
+  # metasheets <- names(glottocreate_metatables())
 
   if(tools::file_ext(filepath) == "xlsx" | tools::file_ext(filepath) == "xls"){
     sheetnames <- readxl::excel_sheets(filepath)
-  if(meta == TRUE){
-    sheetnames <- sheetnames
-  } else {
-    sheetnames <- sheetnames[sheetnames %nin% metasheets]
-  }
+  # if(meta == TRUE){
+  #   sheetnames <- sheetnames
+  # } else {
+  #   sheetnames <- sheetnames[sheetnames %nin% metasheets]
+  # }
   glottodata <- base::lapply(X = sheetnames,
                          FUN = readxl::read_excel, path = filepath)
   names(glottodata) <- sheetnames

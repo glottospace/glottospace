@@ -229,7 +229,7 @@ glottoconvert_subtable <- function(table, glottosubcolumn = NULL, var){
   if(is.null(glottosubcolumn)){glottosubcolumn <- "glottosubcode"}
   glottosubcol <- grep(pattern = glottosubcolumn, x = colnames(table), ignore.case = TRUE, value = TRUE)
   if(length(glottosubcol) > 1){stop(paste0("Column ", glottosubcolumn, " is duplicated. Please rename one of the columns."))}
-  if(length(glottosubcol) == 0){stop(paste0("Column ", glottosubcolumn, " not found. Please add a column with glottosubcodes."))}
+  if(length(glottosubcol) == 0){stop(paste0("Column ", glottosubcolumn, " not found. Please make sure each (!) table has a column with glottosubcodes."))}
   glottosubcodes <- table[[glottosubcol]]
 
   oldvarnames <- grep(pattern = var, x = colnames(table), ignore.case = TRUE, value = TRUE)
