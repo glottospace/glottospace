@@ -45,8 +45,10 @@ glottomap_static(
 This function returns a static map with glottodata. Data is projected using the equal-area Eckert IV projection (following McNew et al. 2018). See \url{https://en.wikipedia.org/wiki/Eckert_IV_projection}.
 }
 \examples{
+\donttest{
 glottodata <- glottofilter(continent = "South America")
 glottodata <- glottofilter(country = c("Netherlands", "Germany", "Belgium") )
 glottomap_static(glottodata)
+}
 }
 \keyword{internal}

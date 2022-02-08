@@ -1,4 +1,5 @@
 # EApath <- "D:/Linguistic/D-PLACE/dplace-data-v2.2.0/D-PLACE-dplace-data-541f9f8/datasets/EA/"
+# https://zenodo.org/record/5554412
 #
 # # variables <- read.csv(paste0(EApath, "variables.csv"))
 # eadata <- read.csv(paste0(EApath, "data.csv"))

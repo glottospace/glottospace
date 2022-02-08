@@ -156,9 +156,11 @@ glottomap_dynamic <- function(glottodata, label = NULL, color = NULL, ptsize = N
 #'
 #'
 #' @examples
+#' \donttest{
 #' glottodata <- glottofilter(continent = "South America")
 #' glottodata <- glottofilter(country = c("Netherlands", "Germany", "Belgium") )
 #' glottomap_static(glottodata)
+#' }
 glottomap_static <- function(glottodata, projection = NULL, label = NULL, color = NULL, ptsize = 1, lbsize = NULL, alpha = 1, palette = NULL, rivers = FALSE, nclass = NULL, numcat = FALSE){
   if(is.null(projection)){projection <- "eqarea"}
 
@@ -195,9 +197,11 @@ glottomap_static <- function(glottodata, projection = NULL, label = NULL, color 
 #'
 #'
 #' @examples
+#' \donttest{
 #' glottodata <- glottofilter(continent = "South America")
 #' glottodata <- glottofilter(country = c("Netherlands", "Germany", "Belgium") )
 #' glottomap_static_crs(glottodata)
+#' }
 glottomap_static_crs <- function(glottodata, label = NULL, color = NULL, ptsize = NULL, lbsize = NULL, alpha = NULL, palette = NULL, rivers = FALSE, nclass = NULL, numcat = FALSE, crs = NULL){
   suppressMessages(tmap::tmap_mode("plot"))
   if(is.null(ptsize)){ptsize <- 0.5}
