@@ -5,11 +5,7 @@ Dear CRAN-team,
 
 Thanks again for your time. This is a resubmission. 
 
-There were no ERRORS or WARNINGS.
-
-There was 1 NOTE:
-
-* Possibly misspelled words in DESCRIPTION: I have checked the words and they are spelled correctly (the words are related with the package name, data sources, etc.) 
+There were no ERRORS, WARNINGS or NOTES.
 
 Kind regards,
 Sietze
