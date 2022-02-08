@@ -11,6 +11,9 @@ There was 1 NOTE:
 
 * Possibly misspelled words in DESCRIPTION: I have checked the words and they are spelled correctly (the words are related with the package name, data sources, etc.) 
 
+Kind regards,
+Sietze
+
 ## Resubmission
 
 Dear CRAN-team,
