@@ -109,9 +109,11 @@ return(map)
 #'
 #'
 #' @examples
+#' \donttest{
 #' glottodata <- glottofilter(continent = "South America")
 #' glottodata <- glottofilter(country = "Netherlands")
 #' glottomap_dynamic(glottodata)
+#' }
 glottomap_dynamic <- function(glottodata, label = NULL, color = NULL, ptsize = NULL, alpha = NULL, palette = NULL, nclass = NULL, numcat = FALSE){
     suppressMessages(tmap::tmap_mode("view"))
   if(is.null(ptsize)){ptsize <- 0.08}
