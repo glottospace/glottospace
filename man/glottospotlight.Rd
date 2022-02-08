@@ -33,8 +33,10 @@ This is useful for preparing the data for visualizations such as maps or
 other plots.
 }
 \examples{
+\donttest{
 glottodata <- glottofilter(country = c("Netherlands", "Germany", "Belgium") )
 glottodata <- glottospotlight(glottodata = glottodata, spotcol = "country",
 spotlight = "Netherlands", spotcontrast = "name")
 glottomap(glottodata, color = "color")
+}
 }
