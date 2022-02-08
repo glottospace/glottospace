@@ -28,8 +28,10 @@ glottomap_dynamic(
 Create a dynamic map with glottodata
 }
 \examples{
+\donttest{
 glottodata <- glottofilter(continent = "South America")
 glottodata <- glottofilter(country = "Netherlands")
 glottomap_dynamic(glottodata)
+}
 }
 \keyword{internal}
