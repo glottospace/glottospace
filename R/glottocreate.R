@@ -23,7 +23,7 @@
 #' @param levels Optional character vector with levels across all variables
 #' @param check Should glottocodes be checked? Default is FALSE because takes much time to run.
 #'
-#' @return A table or list of tables.
+#' @return A glottodata or glottosubdata object (either with or without metadata).
 #' @export
 #'
 #' @family <glottoget><glottocreate>
@@ -91,11 +91,7 @@ glottocreate <- function(glottocodes, variables,
 #' @param url Optional url linking to a webpage.
 #' @param check Should glottocodes be checked? Default is FALSE because takes much time to run.
 #' @param levels Optional character vector with levels across all variables
-#'
-#' @keywords internal
-#'
-#'
-#' @export
+#' @noRd
 #' @family <glottocreate><glottodata>
 #' @examples
 #' glottocreate_data(glottocodes = c("yucu1253", "tani1257"),
@@ -161,10 +157,9 @@ glottocreate_data <- function(glottocodes, variables, filename = NULL, meta = TR
 #' @param check Should glottocodes be checked? Default is FALSE because takes much time to run.
 #' @param levels Optional character vector with levels across all variables
 #'
-#' @keywords internal
+#' @noRd
 #'
 #' @return A table or list of tables
-#' @export
 #'
 #' @family <glottocreate>
 #'
@@ -224,7 +219,7 @@ glottocreate_subdata <- function(glottocodes, variables, groups, filename = NULL
 #' @param citation How to cite the data (optional)
 #' @param url Optional url linking to a webpage.
 #' @param levels Optional character vector with levels across all variables
-#'
+#' @return a list of metatables
 #' @keywords internal
 #' @export
 #'
@@ -256,9 +251,7 @@ glottocreate_metatables <- function(glottocodes = NULL, varnames = NULL, levels 
 #' @param glottocodes Character vector of glottocodes
 #' @param varnames Character vector of variable names
 #'
-#'
-#' @export
-#' @keywords internal
+#' @noRd
 glottocreate_glottotable <- function(glottocodes, varnames){
   colnames <- c("glottocode", varnames)
   glottodata <- data.frame(matrix(nrow=length(glottocodes),ncol=length(colnames))) # alternative: tbl <- colnames %>% purrr::map_dfc(setNames, object = list(character()))
@@ -272,8 +265,8 @@ glottocreate_glottotable <- function(glottocodes, varnames){
 #' This function creates a new structure table, it can be added to glottodata using glottocreate_addtable()
 #'
 #' @param varnames Character vector of variable names
-#'
-#'
+#' @keywords internal
+#' @return A structure table
 #' @export
 #' @examples
 #' glottocreate_structuretable(varnames = c("var001", "var002", "var003"))
@@ -291,9 +284,7 @@ structure
 #'
 #' @param varnames Character vector of variable names
 #'
-#'
-#' @export
-#' @keywords internal
+#' @noRd
 glottocreate_descriptiontable <- function(varnames = NULL, levels = NULL){
   if(is.null(levels)){levels <- c("Y", "N", NA, "A", "B", "C", "D")}
   description <- data.frame(matrix(nrow = length(varnames), ncol = 4 + length(levels)) )
@@ -309,9 +300,7 @@ glottocreate_descriptiontable <- function(varnames = NULL, levels = NULL){
 #' @param glottocodes Character vector of glottocodes
 #' @param varnames Character vector of variable names
 #'
-#'
-#' @export
-#' @keywords internal
+#' @noRd
 glottocreate_reftable <- function(glottocodes = NULL, varnames = NULL){
   if(is.null(glottocodes)){glottocodes <- NA}
   references <- data.frame(matrix(nrow = length(glottocodes), ncol = (length(varnames)*2)+3 ) )
@@ -329,9 +318,7 @@ glottocreate_reftable <- function(glottocodes = NULL, varnames = NULL){
 #' @param glottocodes Character vector of glottocodes
 #' @param varnames Character vector of variable names
 #'
-#'
-#' @export
-#' @keywords internal
+#' @noRd
 glottocreate_remarkstable <- function(glottocodes = NULL, varnames = NULL){
   if(is.null(glottocodes)){glottocodes <- NA}
   remarks <- data.frame(matrix(nrow = length(glottocodes), ncol = length(varnames)+2  ) )
@@ -350,9 +337,7 @@ glottocreate_remarkstable <- function(glottocodes = NULL, varnames = NULL){
 #' @param glottocodes Character vector of glottocodes
 #' @param varnames Character vector of variable names
 #'
-#'
-#' @export
-#' @keywords internal
+#' @noRd
 glottocreate_contributorstable <- function(glottocodes = NULL, varnames = NULL){
   if(is.null(glottocodes)){glottocodes <- NA}
   contributors <- data.frame(matrix(nrow = length(glottocodes), ncol = length(varnames)+2  ) )
@@ -370,9 +355,7 @@ glottocreate_contributorstable <- function(glottocodes = NULL, varnames = NULL){
 #'
 #' @param glottocodes Character vector of glottocodes
 #'
-#'
-#' @export
-#' @keywords internal
+#' @noRd
 glottocreate_sampletable <- function(glottocodes = NULL){
   if(is.null(glottocodes)){glottocodes <- NA}
   sample <- data.frame(matrix(nrow = length(glottocodes), ncol = 1  ) )
@@ -388,9 +371,7 @@ glottocreate_sampletable <- function(glottocodes = NULL){
 #' @param citation how to cite the data
 #' @param url url with background information on the data
 #'
-#'
-#' @export
-#' @keywords internal
+#' @noRd
 glottocreate_readmetable <- function(maintainer = NULL, email = NULL, citation = NULL, url = NULL ){
   readme <- data.frame(matrix(nrow = 5, ncol = 2) )
   readme[,1] <- c("maintainer", "email", "citation", "url", "This database was created using the glottospace R package")
@@ -405,9 +386,7 @@ glottocreate_readmetable <- function(maintainer = NULL, email = NULL, citation =
 
 #' Create lookup table for glottodata
 #'
-#'
-#' @export
-#' @keywords internal
+#' @noRd
 glottocreate_lookuptable <- function(){
   lookup <- data.frame(matrix(nrow = 7, ncol = 2) )
   lookup[,1] <- c("symm",
@@ -436,7 +415,7 @@ glottocreate_lookuptable <- function(){
 #' @param n Number of records in each group
 #'
 #'
-#' @export
+#' @noRd
 #' @examples
 #' glottocreate_glottosubcodes(glottocode = "yucu1253",
 #' groups = c("a", "b"), n = 5)
@@ -509,7 +488,7 @@ glottocreate_demosubdata <- function(meta = TRUE){
 #' @param table A table to be added
 #' @param name A name for the table
 #'
-#'
+#' @return a glottodata object with structure table added to it.
 #' @export
 #'
 #' @examples

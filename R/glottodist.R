@@ -1,7 +1,3 @@
-# LANGDIST - LINGUISTIC DISTANCES -----------------------------------------
-
-
-
 #' Calculate distances between languages
 #'
 #' @param glottodata A glottodata table, either with or without structure table.
@@ -99,7 +95,6 @@ glottodist <- function(glottodata, structure = NULL, id = NULL){
 #' @param aggregate aggregate
 #' @param structure structure
 #'
-#' @return
 #' @noRd
 glottocondist <- function(data = NULL, index = "constructions", glottocodes = NULL, aggregate = "mean", structure = NULL){
 

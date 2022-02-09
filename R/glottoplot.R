@@ -13,7 +13,7 @@
 #' @param ptsize Size of points between 0 and 1 (optional)
 #' @param filename Optional filename if output should be saved.
 #'
-#'
+#' @return a visualization of a glottodata or glottodist object
 #' @export
 #'
 #' @examples
@@ -65,10 +65,9 @@ glottoplot <- function(glottodata = NULL, glottodist = NULL, type = NULL, k = NU
 #' @param k Number of dimensions
 #' @param dist dist object or distance matrix
 #' @param rm.na Whether NAs should be removed (default is FALSE)
-#' @keywords internal
 #' @family <glottoplot>
 #'
-#' @export
+#' @noRd
 #'
 #' @examples
 #' glottodata <- glottoget("demodata", meta = TRUE)
@@ -102,8 +101,7 @@ glottonmds <- function(glottodist, k = 2, rm.na = FALSE){
 #' @param glottonmds a glottonmnds object created with glottonmds_run()
 #'
 #'
-#' @export
-#' @keywords internal
+#' @noRd
 #' @family <glottoplot>
 #'
 #' @examples
@@ -124,9 +122,7 @@ glottonmds_scores <- function(glottonmds){
 #' @param ptsize ptsize
 #' @param label label
 #' @param filename optional filename if output should be saved.
-#' @keywords internal
-#'
-#' @export
+#' @noRd
 #'
 #' @examples
 #' glottodata <- glottoget("demodata", meta = TRUE)
@@ -254,8 +250,7 @@ glottoplot_nmds_stress <- function(glottodist, k = NULL){
 #' @param filename Optional filename if output should be saved.
 #'
 #'
-#' @export
-#' @keywords internal
+#' @noRd
 #'
 #' @examples
 #' glottodata <- glottoget("demodata", meta = TRUE)
@@ -292,9 +287,7 @@ glottoplot_heatmap <- function(glottodist, filename = NULL){
 #' @param data Any dataset
 #' @param id column name with IDs
 #' @param rm.na Whether rows without id should be removed.
-#' @keywords internal
-#'
-#' @export
+#' @noRd
 #'
 #' @examples
 #' glottodata <- glottoget("demodata", meta = TRUE)

@@ -10,7 +10,7 @@
 #' @param tofalse Optional additional values to recode to FALSE (besides default)
 #' @param totrue Optional additional values to recode to TRUE (besides default)
 #'
-#'
+#' @return A cleaned-up version of the original glottodata object
 #' @export
 #'
 #' @examples
@@ -43,10 +43,9 @@ glottoclean <- function(glottodata, tona = NULL, tofalse = NULL, totrue = NULL){
 #' @param tona Values to recode to NA
 #' @param tofalse Values to recode to FALSE
 #' @param totrue Values to recode to TRUE
-#' @keywords internal
+#' @noRd
 #' @family <glottorecode><glottoclean>
 #'
-#' @export
 #' @examples
 #' glottodata <- glottoget("demodata", meta = TRUE)
 #' glottodata <- glottorecode(glottodata, tona = c("?", "missing"))
@@ -67,10 +66,7 @@ glottorecode <- function(glottodata, tofalse = NULL, totrue = NULL, tona = NULL)
 #' @param glottodata User-provided glottodata
 #' @param tona Optional, additional values to recode to NA
 #' @family <glottorecode>
-#'
-#' @export
-#'
-#' @keywords internal
+#' @noRd
 #' @examples
 #' glottodata <- glottoget("demodata", meta = TRUE)
 #' glottorecode_missing(glottodata, tona = "?")
@@ -93,9 +89,7 @@ glottorecode_missing <- function(glottodata, tona){
 #' Recode character columns to TRUE/FALSE
 #'
 #' @param glottodata glottodata list
-#' @keywords internal
-#'
-#' @export
+#' @noRd
 #' @examples
 #' glottodata <- glottoget("demodata", meta = TRUE)
 #' glottorecode_logical(glottodata, totrue = c("y", "Y", 1), tofalse = c("n", "N", 0))
@@ -129,8 +123,7 @@ glottorecode_logical <- function(glottodata, totrue = NULL, tofalse = NULL){
 #' Fix colnames of excel files in which colnames refer to another cell
 #'
 #' @param glottodata glottodata or glottosubdata
-#' @export
-#'
+#' @noRd
 #'
 glottoclean_colnamerepair <- function(glottodata){
   if(glottocheck_isglottodata(glottodata)){

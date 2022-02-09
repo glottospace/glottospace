@@ -6,9 +6,7 @@
 #' @param valuenames Should names of the values be added instead of codes?
 #' @param paramnames Should names of parameters (columns) be added instead of their codes?
 #'
-#'
-#' @export
-#' @keywords internal
+#' @noRd
 #' @examples
 #' \donttest{
 #' glottoget_wals()
@@ -42,8 +40,7 @@ glottoget_wals <- function(days = NULL, valuenames = NULL, paramnames = NULL){
 #' Reset last modified date of glottolog
 #'
 #'
-#' @export
-#' @keywords internal
+#' @noRd
 wals_version_localdatereset <- function(){
   v <- wals_version_local()
   newestpath <- glottofiles_makepath(paste0("wals-v", v, ".zip"))
@@ -52,9 +49,8 @@ wals_version_localdatereset <- function(){
 }
 
 #' Check how long ago WALS data was downloaded
-#' @keywords internal
 #' @return Number of days passed since WALS data was downloaded for the last time
-#' @export
+#' @noRd
 #'
 wals_date_local <- function(){
   v <- wals_version_local()
@@ -71,8 +67,7 @@ wals_date_local <- function(){
 #' Check what's the most recent version of WALS
 #'
 #'
-#' @export
-#' @keywords internal
+#' @noRd
 #'
 wals_version_remote <- function(){
   base_url <-  "https://zenodo.org/api/records/3606197"
@@ -89,8 +84,7 @@ wals_version_remote <- function(){
 #' @param paramnames Should names of parameters (columns) be added instead of their codes?
 #'
 #'
-#' @export
-#' @keywords internal
+#' @noRd
 #'
 wals_download <- function(valuenames = NULL, paramnames = NULL){
   wals_download_zenodo()
@@ -100,8 +94,7 @@ wals_download <- function(valuenames = NULL, paramnames = NULL){
 #' Download most recent version of WALS from zenodo (cldf format)
 #'
 #'
-#' @export
-#' @keywords internal
+#' @noRd
 #'
 wals_download_zenodo <- function(){
   base_url <-  "https://zenodo.org/api/records/3606197" # Newest version is always uploaded here!
@@ -120,8 +113,7 @@ wals_download_zenodo <- function(){
 #' Check which version of WALS is available on your computer
 #'
 #'
-#' @export
-#' @keywords internal
+#' @noRd
 #'
 wals_version_local <- function(){
   files <- base::list.files(glottofiles_cachedir(), full.names = FALSE, recursive = FALSE)
@@ -147,8 +139,7 @@ wals_version_local <- function(){
 #' @param paramnames Should names of parameters (columns) be added instead of their codes?
 #'
 #'
-#' @export
-#' @keywords internal
+#' @noRd
 #'
 wals_loadlocal <- function(valuenames = NULL, paramnames = NULL){
   walsdata <- wals_loadlocal_raw(valuenames = valuenames, paramnames = paramnames)
@@ -161,8 +152,7 @@ wals_loadlocal <- function(valuenames = NULL, paramnames = NULL){
 #' @param paramnames Should names of parameters (columns) be added instead of their codes?
 #'
 #'
-#' @export
-#' @keywords internal
+#' @noRd
 wals_loadlocal_raw <- function(valuenames = NULL, paramnames = NULL){
   if(is.null(valuenames)){valuenames <- TRUE}
   if(is.null(paramnames)){paramnames <- FALSE}

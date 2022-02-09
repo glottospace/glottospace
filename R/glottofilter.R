@@ -139,6 +139,7 @@ glottofilter <- function(glottodata = NULL,
 #' @param mode Either "draw" or "click"
 #' @param ... Additional arguments to pass to glottofilter
 #' @export
+#' @return A set of languages selected from the original glottodata object
 #'
 #' @examples
 #' \dontrun{
@@ -171,17 +172,17 @@ glottofiltermap <- function(glottodata = NULL, mode = NULL, ...){
 #' @keywords internal
 #' @examples
 #' glottodata <- glottoget("glottobase")
-#' glottofilter_flex(glottodata = glottodata, colname = "family",
+#' glottofilterflex(glottodata = glottodata, colname = "family",
 #' select = "Indo-European")
-#' glottofilter_flex(glottodata = glottodata, colname = "family",
+#' glottofilterflex(glottodata = glottodata, colname = "family",
 #' select = -"Indo-European")
-#' glottofilter_flex(glottodata = glottodata, colname = "country",
+#' glottofilterflex(glottodata = glottodata, colname = "country",
 #' select = c("Germany", "Netherlands") )
-#' glottofilter_flex(glottodata = glottodata, colname = "country",
+#' glottofilterflex(glottodata = glottodata, colname = "country",
 #' select = -c("Germany", "Netherlands") )
-#' glottofilter_flex(glottodata = glottodata, colname = "continent",
+#' glottofilterflex(glottodata = glottodata, colname = "continent",
 #' select = -c("South America", "Europe", "Asia", "Oceania", "Africa") )
-glottofilter_flex <- function(glottodata, colname, select){
+glottofilterflex <- function(glottodata, colname, select){
 
   if(purrr::is_empty(glottodata)){
     glottodata <- glottoget_glottobase()

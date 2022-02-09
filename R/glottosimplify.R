@@ -9,7 +9,7 @@
 #' @param submerge By default, glottosubdata tables are merged into a single glottodata table.
 #' @param droplist By default if glottodata is a list of tables, only the glottodata table is returned.
 #' @param dropunits By default units are kept.
-#'
+#' @return a simplified version of the original dataset
 #'
 #' @export
 #'
@@ -46,9 +46,7 @@ glottosimplify <- function(glottodata, droplist = TRUE, dropmeta = TRUE, dropspa
 #' Drop metadata tables from glottodata
 #'
 #' @param glottodata Either glottodata or glottosubdata
-#' @keywords internal
-#'
-#' @export
+#' @noRd
 #'
 glottosimplify_dropmeta <- function(glottodata){
   if(glottocheck_hasmeta(glottodata)){
@@ -61,9 +59,7 @@ glottosimplify_dropmeta <- function(glottodata){
 #' Drop language tables from glottodata (keep only meta tables)
 #'
 #' @param glottodata Either glottodata or glottosubdata
-#' @keywords internal
-#'
-#' @export
+#' @noRd
 #'
 glottosimplify_langtabs <- function(glottodata){
   glottodata[(names(glottodata) %in% c("structure", "metadata",  "references", "readme", "lookup"))]
@@ -74,9 +70,7 @@ glottosimplify_langtabs <- function(glottodata){
 #' Select glottodatatable from a glottodatalist
 #'
 #' @param glottodata glottodatalist
-#' @keywords internal
-#'
-#' @export
+#' @noRd
 #'
 glottosimplify_droplist <- function(glottodata){
   if(glottocheck_isglottodata(glottodata) & is_list(glottodata)){
@@ -89,9 +83,7 @@ glottosimplify_droplist <- function(glottodata){
 #' Drop spatial properties from glottodata
 #'
 #' @param glottodata Either glottodata or glottosubdata
-#' @keywords internal
-#'
-#' @export
+#' @noRd
 #'
 glottosimplify_dropspatial <- function(glottodata){
   if(is_sf(glottodata) ){
@@ -104,9 +96,7 @@ glottosimplify_dropspatial <- function(glottodata){
 #' Drop units from glottodata
 #'
 #' @param glottodata Either glottodata or glottosubdata
-#' @keywords internal
-#'
-#' @export
+#' @noRd
 #'
 glottosimplify_dropunits <- function(glottodata){
   units::drop_units(glottodata)
@@ -118,9 +108,7 @@ glottosimplify_dropunits <- function(glottodata){
 #' Check whether input is glottosubdata and merge tables if TRUE.
 #'
 #' @param glottosubdata glottosubdata.
-#' @keywords internal
-#'
-#' @export
+#' @noRd
 #'
 glottosimplify_submerge <- function(glottosubdata){
   if(glottocheck_isglottosubdata(glottosubdata) ){

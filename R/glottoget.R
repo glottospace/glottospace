@@ -19,7 +19,7 @@
 #' @param meta In case 'glottodata' is a path to locally stored data (or demodata/demosubdata): by default, meta sheets are not loaded. Use meta=TRUE if you want to include them.
 #'
 #' @family <glottodata>
-#'
+#' @return A glottodata or glottosubdata object
 #' @export
 #' @examples
 #' glottoget("glottolog")
@@ -57,9 +57,7 @@ return(glottodata)
 #' "glottospace" - a simple dataset with glottocodes and a geometry column. This is a subset of all languages in href{https://glottolog.org/}{glottolog} with spatial coordinates.
 #'
 #' @family <glottodata>
-#' @keywords internal
-#'
-#' @export
+#' @noRd
 #' @examples
 #' glottoget_remote()
 glottoget_remote <- function(glottodata = NULL){
@@ -83,8 +81,7 @@ glottoget_remote <- function(glottodata = NULL){
 #' @param simplify By default, if only one sheet is loaded, the data will be returned as a data.frame (instead of placing the data inside a list of length 1)
 #' @family <glottodata>
 #'
-#' @export
-#' @keywords internal
+#' @noRd
 #' @seealso glottosave
 #' @examples
 #' \dontrun{
@@ -127,8 +124,7 @@ glottoget_path <- function(filepath = NULL, simplify = TRUE){
 #' @param ... Arguments to glottobooster
 #'
 #'
-#' @export
-#' @keywords internal
+#' @noRd
 #'
 #' @examples
 #' glottobase <- glottoget_glottobase()
@@ -143,9 +139,9 @@ glottoget_glottobase <- function(...){
 #' Get most recent glottolog data and turn it into the most elemental geoglot object (i.e. glottocodes + geometry column). This 'glottospace' is used as reference dataset in several functions.
 #'
 #'
-#' @export
+#' @noRd
 #' @seealso glottospace_addcoords
-#' @keywords internal
+#'
 #'
 #' @examples
 #' glottospace <- glottoget_glottospace()
@@ -166,8 +162,7 @@ glottoget_glottospace <- function(){
 #' This function checks whether most recent version of glottolog is locally available. If local version is outdated, the newest version will be downloaded.
 #'
 #'
-#' @export
-#' @keywords internal
+#' @noRd
 #'
 #' @examples
 #' glottoget_glottolog()
@@ -201,10 +196,7 @@ return(out)
 
 #' Download glottolog data
 #'
-#' This function tries to download glottolog data from zenodo in cldf format.
-#' @keywords internal
-#'
-#' @keywords internal
+#' @noRd
 #'
 glottolog_download <- function(){
   out <- try(
@@ -220,9 +212,7 @@ glottolog_download <- function(){
 
 #' Check what's the most recent version of glottolog
 #'
-#'
-#' @export
-#' @keywords internal
+#' @noRd
 glottolog_version_remote <- function(){
   base_url <-  "https://zenodo.org/api/records/3260727"
   message("Checking what's the most recent version of glottolog ... this might take a while")
@@ -235,8 +225,7 @@ glottolog_version_remote <- function(){
 #' Check which version of glottolog is available on your computer
 #'
 #'
-#' @export
-#' @keywords internal
+#' @noRd
 glottolog_version_localdir <- function(){
   dirs <- list.dirs(glottofiles_cachedir(), full.names = FALSE, recursive = FALSE)
   if(purrr::is_empty(dirs)){
@@ -256,8 +245,7 @@ glottolog_version_localdir <- function(){
 #' Check which version of glottolog is available on your computer
 #'
 #'
-#' @export
-#' @keywords internal
+#' @noRd
 glottolog_version_local <- function(){
   files <- base::list.files(glottofiles_cachedir(), full.names = FALSE, recursive = FALSE)
   if(purrr::is_empty(files)){
@@ -279,8 +267,7 @@ glottolog_version_local <- function(){
 #' Reset last modified date of glottolog
 #'
 #'
-#' @export
-#' @keywords internal
+#' @noRd
 glottolog_version_localdatereset <- function(){
   v <- glottolog_version_local()
   newestpath <- glottofiles_makepath(paste0("glottolog-cldf-v", version, ".zip"))
@@ -291,8 +278,7 @@ glottolog_version_localdatereset <- function(){
 #' Check how long ago glottolog was last downloaded
 #'
 #' @return Number of days passed since glottolog data was downloaded for the last time
-#' @export
-#' @keywords internal
+#' @noRd
 glottolog_date_local <- function(){
   v <- glottolog_version_local()
  if(v != 0){
@@ -308,8 +294,7 @@ glottolog_date_local <- function(){
 #' Download glottolog data from zenodo, and select relevant data from cldf data
 #'
 #'
-#' @export
-#' @keywords internal
+#' @noRd
 glottolog_download_cldf <- function(){
   glottolog_download_zenodo()
   glottolog_loadlocal()
@@ -318,8 +303,7 @@ glottolog_download_cldf <- function(){
 #' Download most recent version of glottolog from zenodo (cldf format)
 #'
 #'
-#' @export
-#' @keywords internal
+#' @noRd
 glottolog_download_zenodo <- function(){
   base_url <-  "https://zenodo.org/api/records/3260727" # Newest version is always uploaded here!
   req <- curl::curl_fetch_memory(base_url)
@@ -337,8 +321,7 @@ glottolog_download_zenodo <- function(){
 #' Load locally stored glottolog data
 #'
 #' @importFrom rlang .data
-#' @export
-#' @keywords internal
+#' @noRd
 glottolog_loadlocal <- function(){
   exdir <- glottofiles_makedir(paste0("glottolog-cldf-v", glottolog_version_local()))
   cldf_metadata <- base::list.files(exdir, pattern = "cldf-metadata.json", recursive = TRUE)

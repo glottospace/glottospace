@@ -7,7 +7,7 @@
 #' @param method Interpolation method, either "buffer" or "voronoi" (synonymous with "thiessen")
 #' @param radius In case interpolation method "buffer", the radius in km.
 #'
-#'
+#' @return A spatial version of glottodata. In case glottodata has metadata, only glottodata will be converted to spatial (but all metadata tables are kept)
 #' @export
 #'
 #' @examples
@@ -43,9 +43,7 @@ return(glottodata)
 #'
 #' @param glottodata spatial glottodata without metadata
 #' @param radius radius in kilometers
-#' @keywords internal
-#'
-#' @export
+#' @noRd
 #'
 #' @examples
 #' glottodata <- glottofilter(country = "Netherlands")
@@ -66,9 +64,7 @@ glottospace_buffer <- function(glottodata, radius){
 #' Create Thiessen polygons
 #'
 #' @param glottodata spatial glottodata without metadata
-#' @keywords internal
-#'
-#' @export
+#' @noRd
 #'
 #' @examples
 #' glottodata <- glottofilter(country = "Netherlands")
@@ -121,8 +117,7 @@ glottospace_thiessen <- function(glottodata){
 #' @param lat Column name containing latitude
 #'
 #'
-#' @export
-#' @keywords internal
+#' @noRd
 glottospace_coords2sf <- function(glottodata, lon = "longitude", lat = "latitude"){
   if(class(glottodata)[1] == "sf"){stop("glottodata is already a spatial object")}
   glottolatlon <- glottodata %>%
@@ -147,8 +142,7 @@ return(glottodata)
 #' @aliases glottodata_addregions
 #'
 #' @return A spatial (sf) object
-#' @export
-#' @keywords internal
+#' @noRd
 #' @examples
 #' glottodata <- glottoget("demodata")
 #' glottospace_addcountries(glottodata)
@@ -172,8 +166,7 @@ glottospace_addcountries <- function(glottodata){
 #'
 #' @param glottodata User-provided glottodata
 #' @return glottodata with a GEOMETRY column
-#' @keywords internal
-#' @export
+#' @noRd
 #' @examples
 #' glottodata <- glottoget("demodata")
 #' glottospace_addcoords(glottodata)

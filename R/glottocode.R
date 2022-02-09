@@ -29,9 +29,7 @@ glottocode <- function(glottocode){
 #'
 #' @param glottocode
 #'
-#'
-#' @export
-#' @keywords internal
+#' @noRd
 #' @examples
 #' glottocode_location("yucu1253")
 glottocode_location <- function(glottocode){
@@ -55,11 +53,12 @@ glottocode_location <- function(glottocode){
 
 #' Check whether a set of glottocodes exist in glottolog
 #'
+#' Checks whether a set of glottocodes exist in glottolog (checked at the level of L1 languages)
+#'
 #' @param glottocode A glottocode or character vector of glottocodes
 #'
 #' @return A logical vector
 #' @export
-#' @keywords internal
 #' @family <glottocheck><glottosearch>
 #' @examples
 #' \donttest{
@@ -74,10 +73,8 @@ glottocode_exists <- function(glottocode){
 #'
 #' @param glottocode
 #'
-#'
-#' @export
 #' @family <glottocheck><glottosearch>
-#' @keywords internal
+#' @noRd
 #' @examples
 #' glottocode_online("yucu1253")
 glottocode_online <- function(glottocode){
@@ -91,12 +88,12 @@ glottocode_online <- function(glottocode){
 #' following form: glottocode_group_record. For example: abcd1234_aaa_0001,
 #' abcd1234_aaa_0002, abcd1234_bbb_0001, abcd1234_bbb_0002.
 #'
-#' Specifically, the function checks whether all glottocodes (which are part of the glotosubcodes) are valid, whether 'group' is a character, and whether 'record' is a number.
+#' Specifically, the function checks whether all glottocodes (which are part of the glotosubcodes) are valid (checked at L1 level), whether 'group' is a character, and whether 'record' is a number.
 #'
 #'
 #' @param glottosubcodes Character vector of glottosubcodes
 #' @family <glottocheck><glottosearch>
-#' @return Gives warning in case there are issues, and invisibly returns TRUE otherwise.
+#' @return Gives warning in case there are issues, and invisibly returns TRUE/FALSE.
 #' @export
 #'
 #' @examples

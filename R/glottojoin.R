@@ -64,9 +64,8 @@ return(joined)
 #' @param dist A dist object
 #' @param rm.na Default is to keep NAs.
 #' @param id Column with IDs in \code{glottodata} that match names of dist object. By default, the "glottocode" column is used.
-#' @keywords internal
 #' @return Data frame
-#' @export
+#' @noRd
 #'
 #' @examples
 #' glottodata <- glottoget("demodata", meta = TRUE)
@@ -110,9 +109,7 @@ glottojoin_dist <- function(glottodata, id = NULL, dist, rm.na = FALSE){
 #'
 #' @param glottodata User-provided glottodata
 #' @param id Optional, name of column with glottocodes
-#' @keywords internal
-#'
-#' @export
+#' @noRd
 #'
 #' @examples
 #' glottodata <- glottoget("demodata", meta = FALSE)
@@ -132,9 +129,7 @@ glottojoin_base <- function(glottodata, id = NULL){
 #'
 #' @param glottodata User-provided glottodata
 #' @param id Optional, name of column with glottocodes
-#' @keywords internal
-#'
-#' @export
+#' @noRd
 #' @seealso glottospace_addcoords glottospace_addcoords
 #' @examples
 #' glottodata <- glottoget("demodata", meta = FALSE)
@@ -152,8 +147,7 @@ glottojoin_space <- function(glottodata, id = NULL){
 #' @param glottosubdata A list of glottodata objects. Column names across languages should be identical.
 #'
 #' @return A single glottodata object
-#' @export
-#' @keywords internal
+#' @noRd
 #' @examples
 #' glottosubdata <- glottoget("demosubdata")
 #' glottojoin_subdata(glottosubdata = glottosubdata)
@@ -179,9 +173,7 @@ glottojoin_subdata <- function(glottosubdata){
 #' @param with User-provided glottodata
 #' @param id Optional, name of column with glottocodes
 #'
-#' @keywords internal
-#'
-#' @export
+#' @noRd
 #' @seealso glottospace_addcoords
 #' @examples
 #' glottodatax <- glottoget("demodata")
@@ -211,9 +203,7 @@ glottojoin_data <- function(glottodata, with, type = "left", id = NULL, ...){
 #' @param glottodata A glottodata table, or a glottodata list with one table.
 #' @param glottometa A glottometa table, or a glottometa list
 #' @param name Optional name(s) of glottometa tables
-#' @keywords internal
-#'
-#' @export
+#' @noRd
 #'
 #' @examples
 #' glottodata <- glottoget("demodata", meta = TRUE)

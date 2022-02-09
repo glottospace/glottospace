@@ -100,10 +100,9 @@ glottoboosterflex <- function(glottologdata = NULL, space = TRUE,
 #' Glottolog: add family name
 #'
 #' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with glottoget("glottolog").
-#' @keywords internal
+#' @noRd
 #' @family <glottobooster>
 #'
-#' @export
 glottobooster_addfamilyname <- function(glottologdata){
     families <- glottologdata %>%
       dplyr::filter(.data$level == "family") %>%
@@ -115,10 +114,9 @@ glottobooster_addfamilyname <- function(glottologdata){
 #' Glottolog: add isolates
 #'
 #' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with glottoget("glottolog")
-#' @keywords internal
+#' @noRd
 #' @family <glottobooster>
 #'
-#' @export
 glottobooster_addisolates <- function(glottologdata){
 
     glottologdata$isolate <-   ifelse(
@@ -135,10 +133,9 @@ glottologdata
 #' Glottolog: remove dialects
 #'
 #' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with glottoget("glottolog")
-#' @keywords internal
+#' @noRd
 #' @family <glottobooster>
 #'
-#' @export
 glottobooster_rmdialects <- function(glottologdata){
   glottologdata %>% dplyr::filter(.data$level != "dialect")
 }
@@ -146,10 +143,9 @@ glottobooster_rmdialects <- function(glottologdata){
 #' Glottolog: remove families
 #'
 #' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with glottoget("glottolog")
-#' @keywords internal
+#' @noRd
 #' @family <glottobooster>
 #'
-#' @export
 glottobooster_rmfamilies <- function(glottologdata){
   glottologdata %>% dplyr::filter(.data$level != "family")
 }
@@ -157,10 +153,9 @@ glottobooster_rmfamilies <- function(glottologdata){
 #' Glottolog: remove bookkeeping
 #'
 #' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with glottoget("glottolog")
-#' @keywords internal
+#' @noRd
 #' @family <glottobooster>
 #'
-#' @export
 glottobooster_rmbookkeeping <- function(glottologdata){
   # unique(glottologdata$bookkeeping)
   glottologdata %>%
@@ -171,10 +166,9 @@ glottobooster_rmbookkeeping <- function(glottologdata){
 #' Glottolog: remove artificial families
 #'
 #' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with glottoget("glottolog")
-#' @keywords internal
+#' @noRd
 #' @family <glottobooster>
 #'
-#' @export
 glottobooster_rmartifam <- function(glottologdata){
   glottologdata %>%
     dplyr::filter(.data$family_id != "arti1236")
@@ -183,10 +177,9 @@ glottobooster_rmartifam <- function(glottologdata){
 #' Glottolog: remove sign languages
 #'
 #' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with glottoget("glottolog")
-#' @keywords internal
+#' @noRd
 #' @family <glottobooster>
 #'
-#' @export
 glottobooster_rmsignlangs <- function(glottologdata){
   glottologdata %>%
     dplyr::filter(.data$family_id != "sign1238")
@@ -195,10 +188,9 @@ glottobooster_rmsignlangs <- function(glottologdata){
 #' Glottolog: add family size
 #'
 #' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with glottoget("glottolog")
-#' @keywords internal
+#' @noRd
 #' @family <glottobooster>
 #'
-#' @export
 glottobooster_addfamilysize <- function(glottologdata){
 glottologdata %>%
     dplyr::group_by(.data$family_id) %>%
@@ -208,10 +200,9 @@ glottologdata %>%
 #' Glottolog: add rank order of family size
 #'
 #' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with glottoget("glottolog")
-#' @keywords internal
+#' @noRd
 #' @family <glottobooster>
 #'
-#' @export
 glottobooster_addfamilysizerank <- function(glottologdata){
   glottologdata$family_size_rank <- as.factor(glottologdata$family_size)
   levels(glottologdata$family_size_rank) <- seq(1:length(levels(glottologdata$family_size_rank)))
@@ -225,10 +216,9 @@ glottobooster_addfamilysizerank <- function(glottologdata){
 #' Filter out only L1 languages and drop 'category' column.
 #'
 #' @param glottologdata data from \href{https://glottolog.org/}{glottolog}, can be downloaded with glottoget("glottolog")
-#' @keywords internal
+#' @noRd
 #' @family <glottobooster>
 #'
-#' @export
 glottobooster_L1only <- function(glottologdata){
   glottologdata %>%
     dplyr::filter(.data$category == "Spoken_L1_Language") %>%

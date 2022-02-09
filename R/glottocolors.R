@@ -6,7 +6,7 @@
 #' @param alpha Values between 0 (transparent) and 1 (opaque)
 #' @param show Do you want to plot the color palette?
 #'
-#'
+#' @return A vector of colors, optionally plotted.
 #' @export
 #' @keywords internal
 #' @examples
@@ -53,7 +53,7 @@ glottocolpal <- function(palette, ncolr = NULL, rev = FALSE, alpha = NULL, show 
 
 #' Show which color palettes are available
 #' @keywords internal
-#'
+#' @return Overview of color palettes available to choose from.
 #' @export
 #'
 glottocolpal_options <- function(){
@@ -94,7 +94,7 @@ glottocolpal_options <- function(){
 #' @param spotcontrast Optional column to contrast between data points in the spotlight.
 #' @param bgcontrast Optional column to contrast between background data points
 #' @param palette Color palette. Use glottocolpal() or glottocolpal_options() to see them.
-#'
+#' @return A glottodata object with columns added to be used in visualization.
 #'
 #' @export
 #'

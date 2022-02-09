@@ -22,7 +22,7 @@
 #' @param ... Additional parameters to glottofilter
 #'
 #' @family <glottomap>
-#'
+#' @return a map
 #' @export
 #'
 #' @examples
@@ -104,8 +104,7 @@ return(map)
 #' @param color Column name or index to be used to color features (optional), or a color "black"
 #' @param ptsize Size of points between 0 and 1
 #'
-#' @export
-#' @keywords internal
+#' @noRd
 #'
 #'
 #' @examples
@@ -151,8 +150,7 @@ glottomap_dynamic <- function(glottodata, label = NULL, color = NULL, ptsize = N
 #' @param projection One of: 'eqarea' (equal-area Eckert IV, default), 'pacific' (Pacific-centered), or any other Coordinate Reference System, specified using an EPSG code (https://epsg.io/).
 #'
 #'
-#' @keywords internal
-#' @export
+#' @noRd
 #'
 #'
 #' @examples
@@ -192,8 +190,7 @@ glottomap_static <- function(glottodata, projection = NULL, label = NULL, color 
 #' @param crs Coordinate Reference System, specified using an EPSG code (https://epsg.io/). Default is World Eckert IV (https://epsg.io/54012)
 #'
 #'
-#' @keywords internal
-#' @export
+#' @noRd
 #'
 #'
 #' @examples
@@ -263,8 +260,7 @@ glottomap_static_crs <- function(glottodata, label = NULL, color = NULL, ptsize 
 #' @param glottodata
 #'
 #'
-#' @export
-#' @keywords internal
+#' @noRd
 #'
 #' @examples
 #' glottodata <- glottofilter(location = "Australia")

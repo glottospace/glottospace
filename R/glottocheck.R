@@ -54,11 +54,10 @@ glottocheck <- function(glottodata, diagnostic = TRUE, checkmeta = FALSE){
 #'
 #' @param glottodata User-provided glottodata
 #' @param diagnostic If TRUE (default) a data viewer will be opened to show the levels of each variable (including NAs), and a data coverage plot will be shown.
-#' @keywords internal
+#' @noRd
 #'
 #' @family <glottocheck>
 #'
-#' @export
 #'
 #' @examples
 #' \donttest{
@@ -85,9 +84,8 @@ glottocheck_data <- function(glottodata, diagnostic = TRUE){
 #'
 #' @param glottosubdata User-provided glottosubdata
 #' @param diagnostic If TRUE (default) a data viewer will be opened to show the levels of each variable (including NAs), and a data coverage plot will be shown.
-#' @keywords internal
+#' @noRd
 #'
-#' @export
 #' @family <glottocheck>
 #' @examples
 #' glottosubdata <- glottoget("demosubdata")
@@ -113,8 +111,7 @@ glottocheck_subdata <- function(glottosubdata, diagnostic = TRUE){
 #' @param glottodata glottodata
 #'
 #'
-#' @export
-#' @keywords internal
+#' @noRd
 #' @examples
 #' glottodata <- glottoget("demodata", meta = TRUE)
 #' glottocheck_metadata(glottodata)
@@ -135,9 +132,8 @@ glottocheck_metadata <- function(glottodata){
 #' @param glottodata glottodata
 #'
 #'
-#' @export
 #' @aliases glottocheck_hasstructure
-#' @keywords internal
+#' @noRd
 #' @family <glottocheck>
 #' @examples
 #' glottodata <- glottoget("demodata", meta = TRUE)
@@ -163,8 +159,7 @@ glottocheck_metaweights <- function(glottodata){
 #' @param id Column index or name with IDs (glottocodes, glottosubcodes, or glottosubsubcodes)
 #'
 #' @return Besides diagnostic messages, this function invisibly returns TRUE if check is passed (no missing IDs) and FALSE otherwise
-#' @keywords internal
-#' @export
+#' @noRd
 #'
 glottocheck_idmissing <- function(data, id){
 
@@ -187,8 +182,7 @@ glottocheck_idmissing <- function(data, id){
 #' @param id Column index or name with IDs (glottocodes, glottosubcodes, or glottosubsubcodes)
 #'
 #' @return Besides diagnostic messages, this function invisibly returns TRUE if check is passed (all IDs are unique) and FALSE otherwise
-#' @keywords internal
-#' @export
+#' @noRd
 #'
 #' @examples
 #' glottodata <- glottoget("demodata", meta = FALSE)
@@ -215,8 +209,7 @@ glottocheck_idunique <- function(data, id){
 #' @param data
 #'
 #' @return Besides diagnostic messages, this function invisibly returns TRUE if check is passed (all variables have at least two levels) and FALSE otherwise
-#' @export
-#' @keywords internal
+#' @noRd
 #'
 #' @examples
 #' glottodata <- glottoget("demodata", meta = FALSE)
@@ -253,8 +246,7 @@ glottocheck_twolevels <- function(data){
 #' @param diagnostic Whether diagnostic messages should be shown
 #'
 #' @return Opens a data viewer showing the levels of each variable (including NA)
-#' @export
-#' @keywords internal
+#' @noRd
 #'
 #' @examples
 #' glottodata <- glottoget("demodata", meta = FALSE)
@@ -277,11 +269,11 @@ glottocheck_varlevels <- function(data, diagnostic = TRUE){
 #'
 #' @param glottodata User-provided glottodata
 #'
-#' @return Besides diagnostic messages, this function invisibly returns TRUE if check is passed (all IDs are unique) and FALSE otherwise
-#' @export
-#' @keywords internal
+#' @return Besides diagnostic messages, this function invisibly returns TRUE if check is passed and FALSE otherwise
+#' @noRd
 #'
 glottocheck_glottocodes <- function(glottodata){
+  glottodata <- glottosimplify(glottodata)
   glottodata <- glottodata[!is.na(glottodata[["glottocode"]]), ]
   message("Checking ", nrow(glottodata), " glottocodes...")
   existing <- glottocode_exists(glottodata[["glottocode"]])
@@ -300,12 +292,13 @@ glottocheck_glottocodes <- function(glottodata){
 #'
 #' @param glottosubdata glottosubdata
 #'
-#'
-#' @export
-#' @keywords internal
+#' @return Besides diagnostic messages, this function invisibly returns TRUE if check is passed and FALSE otherwise
+#' @noRd
 glottocheck_glottosubcodes <- function(glottosubdata){
+  glottosubdata <- glottosimplify(glottosubdata)
   v <- glottosubcode_valid(glottosubdata$glottosubcode)
   if(v == TRUE){message("All glottosubcodes are valid.")}
+  invisible(v)
 }
 
 #' Check whether number of columns are identical across all glottodata objects in a list
@@ -313,8 +306,7 @@ glottocheck_glottosubcodes <- function(glottosubdata){
 #' @param langlist
 #'
 #' @return Returns error message if number of columns is not identical, and invisibly returns TRUE otherwise.
-#' @keywords internal
-#' @export
+#' @noRd
 #' @examples
 #' glottosubdata <- glottocreate_subdata(glottocodes = c("yucu1253", "tani1257"),
 #'                    variables = 3, groups = c("a", "b"), n = 5)
@@ -338,9 +330,8 @@ glottocheck_lscolcount <- function(langlist){
 #' Check whether there is one column named 'glottocode'
 #'
 #' @param glottodata A glottodata table
-#' @keywords internal
 #'
-#' @export
+#' @noRd
 #'
 glottocheck_glottocol <- function(glottodata){
   n <- sum(colnames(glottodata) == "glottocode")
@@ -357,10 +348,7 @@ glottocheck_glottocol <- function(glottodata){
 #' Check whether there is one column named 'glottosubcode'
 #'
 #' @param glottosubdata A glottodata list
-#' @keywords internal
-#'
-#' @export
-#'
+#' @noRd
 glottocheck_glottosubcol <- function(glottosubdata){
   n <- sum(colnames(glottosubdata) == "glottosubcode")
   if(n == 1){
@@ -381,11 +369,7 @@ glottocheck_glottosubcol <- function(glottosubdata){
 #' @param id Column name or index with unique id's
 #' @param diagnostic Whether diagnostic messages should be shown
 #' @param rm.na Whether rows without id should be removed.
-#' @keywords internal
-#'
-#'
-#' @export
-#'
+#' @noRd
 glottocheck_rowmissing <- function(data, id, diagnostic = FALSE, rm.na = TRUE){
   if(rm.na == TRUE){data <- data[!is.na(data[[id]]), ]}
   datamissing <- tibble::column_to_rownames(data, var = id)
@@ -404,11 +388,7 @@ glottocheck_rowmissing <- function(data, id, diagnostic = FALSE, rm.na = TRUE){
 #' @param id Column name or index with unique id's
 #' @param diagnostic Whether diagnostic messages should be shown
 #' @param rm.na Whether rows without id should be removed.
-#' @keywords internal
-#'
-#'
-#' @export
-#'
+#' @noRd
 glottocheck_colmissing <- function(data, id, diagnostic = FALSE, rm.na = TRUE){
   if(rm.na == TRUE){data <- data[!is.na(data[[id]]), ]}
   datamissing <- tibble::column_to_rownames(data, var = id)
@@ -423,9 +403,7 @@ glottocheck_colmissing <- function(data, id, diagnostic = FALSE, rm.na = TRUE){
 #'
 #' @param glottodata User-provided glottodata
 #'
-#'
-#' @export
-#' @keywords internal
+#' @noRd
 #' @examples
 #' glottosubdata <- glottoget("demosubdata", meta = FALSE)
 #' glottocheck_isglottosubdata(glottosubdata)
@@ -439,9 +417,7 @@ glottocheck_isglottosubdata <- function(glottodata){
 #'
 #' @param glottodata glottodata
 #'
-#'
-#' @export
-#' @keywords internal
+#' @noRd
 #' @examples
 #' glottodata <- glottoget("demodata", meta = FALSE)
 #' glottocheck_isglottodata(glottodata)
