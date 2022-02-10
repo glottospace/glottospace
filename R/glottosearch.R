@@ -58,8 +58,7 @@ glottosearch_1valid <- function(search, columns){
 #' @param columns In which column should be searched
 #' @family <glottocheck><glottosearch>
 #' @return Logical: TRUE/FALSE
-#' @export
-#' @keywords internal
+#' @noRd
 #' @examples
 #' glottosearch_exist(search = c("yucu1253", "abcd1234"), columns = "glottocode")
 glottosearch_exist <- function(search, columns){

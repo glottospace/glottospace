@@ -54,6 +54,9 @@ Alternatively, you could also run tmaptools::palette_explorer(), RColorBrewer::d
 
 \item{...}{Additional parameters to glottofilter}
 }
+\value{
+a map
+}
 \description{
 With this function you can easily create static and dynamic maps from glottodata (by setting type to 'static' or 'dynamic').
 Alternatively, by specifying type = "filter", you can select languages by drawing/clicking on a map.

@@ -13,6 +13,9 @@ glottospace(glottodata, method = NULL, radius = NULL)
 
 \item{radius}{In case interpolation method "buffer", the radius in km.}
 }
+\value{
+A spatial version of glottodata. In case glottodata has metadata, only glottodata will be converted to spatial (but all metadata tables are kept)
+}
 \description{
 This function takes glottodata (either with or without metadata) and turns it into spatial points or polygons.
 }

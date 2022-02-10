@@ -74,7 +74,11 @@ glottoconvert_data <- function(data, var, table = NULL, glottocolumn = NULL, ref
   # glottometanames <- names(data) %in% names(glottocreate_metatables())
 
   if(any(names(data) %in% "structure")){
-    glottodata[["structure"]] <- data["structure"]
+    glottodata[["structure"]] <- data[["structure"]]
+    if("varname" %nin% colnames(glottodata[["structure"]])){stop("The structure table does not contain a column named 'varname', please add it.")}
+    oldvarids <- grep(pattern = var, x = glottodata[["structure"]]$varname, ignore.case = TRUE, value = FALSE)
+    newvarnames <- gsub(pattern = var, x = glottodata[["structure"]][oldvarids, "varname", drop = TRUE], replacement = "")
+    glottodata[["structure"]][oldvarids, "varname", drop = TRUE] <- newvarnames
   }
 
   ignored <- names(data)[names(data) %nin% c(table, "structure")]
@@ -135,7 +139,6 @@ glottoconvert_subdata <- function(data, glottocodes = NULL){
 
 #' Transform a linguistic dataset consisting of a single table into glottodata
 #'
-#' @param data Dataset to be transformed to glottodata
 #' @param glottocolumn column name or column id with glottocodes
 #' @param var Character string that distinguishes those columns which contain variable names.
 #' @param ref Character string that distinguishes those columns which contain references.
@@ -143,6 +146,7 @@ glottoconvert_subdata <- function(data, glottocodes = NULL){
 #' @param page Character string that distinguishes those columns which contain page numbers.
 #' @param remark Character string that distinguishes those columns which contain remarks.
 #' @param contributor Character string that distinguishes those columns which contain contributors.
+#'
 #' @noRd
 #' @examples
 #' \dontrun{
@@ -230,7 +234,7 @@ glottoconvert_table <- function(table, glottocolumn = NULL, var, ref = NULL, pag
     "omitted", totcol-nvar-nref-npage-nremark-ncontr-1 # minus 1 for glottocode
   )
 
-  print(overview)
+  printmessage(overview)
 
   omitted <- colnames(table)[!grepl(pattern = paste(c(glottocolumn, var, ref, page, remark, contributor), collapse = "|"), x = colnames(table), ignore.case = TRUE)]
   message(paste0("\n The following columns were omitted: \n", paste(omitted, collapse = ", "), "\n" ))

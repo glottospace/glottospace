@@ -94,7 +94,7 @@ glottocode_online <- function(glottocode){
 #' @param glottosubcodes Character vector of glottosubcodes
 #' @family <glottocheck><glottosearch>
 #' @return Gives warning in case there are issues, and invisibly returns TRUE/FALSE.
-#' @export
+#' @noRd
 #'
 #' @examples
 #' glottosubcode_valid(c("yucu1253_aaa_0002", "abcd1234_aaa_0001"))

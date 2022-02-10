@@ -26,6 +26,9 @@ glottospotlight(
 
 \item{palette}{Color palette. Use glottocolpal() or glottocolpal_options() to see them.}
 }
+\value{
+A glottodata object with columns added to be used in visualization.
+}
 \description{
 This function creates two separate color scales: one for points to highlight,
 and a second for the remaining background points. It also creates a legend.

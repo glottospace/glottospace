@@ -133,3 +133,9 @@ unpack <- function(path = NULL){
 }
 
 
+#' Generate warning message instead of print
+#' @noRd
+printmessage <- function(x)
+{
+  message(paste(utils::capture.output(print(x)), collapse = "\n"))
+}

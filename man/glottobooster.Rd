@@ -41,16 +41,6 @@ glottobase <- glottobooster(glottologdata)
 }
 \seealso{
 Other <glottobooster>: 
-\code{\link{glottobooster_L1only}()},
-\code{\link{glottobooster_addfamilyname}()},
-\code{\link{glottobooster_addfamilysizerank}()},
-\code{\link{glottobooster_addfamilysize}()},
-\code{\link{glottobooster_addisolates}()},
-\code{\link{glottobooster_rmartifam}()},
-\code{\link{glottobooster_rmbookkeeping}()},
-\code{\link{glottobooster_rmdialects}()},
-\code{\link{glottobooster_rmfamilies}()},
-\code{\link{glottobooster_rmsignlangs}()},
 \code{\link{glottoboosterflex}()}
 }
 \concept{<glottobooster>}

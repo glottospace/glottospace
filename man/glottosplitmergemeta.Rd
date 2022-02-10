@@ -9,7 +9,7 @@ glottosplitmergemeta(glottodata, splitted = NULL)
 \arguments{
 \item{glottodata}{glottodata}
 
-\item{splitted}{optional, if provided, the second element of the list will be joined with glottodata}
+\item{splitted}{if provided, the second element of the list will be joined with glottodata}
 }
 \value{
 A list of length 2 in case only glottodata is provided, and a merged glottodata object otherwise.
@@ -24,5 +24,6 @@ merged <- glottosplitmergemeta(glottodata = glottodata, splitted = splitted)
 }
 \seealso{
 glottojoin
+
+glottosimplify
 }
-\keyword{internal}

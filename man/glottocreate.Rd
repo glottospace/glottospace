@@ -48,7 +48,7 @@ glottocreate(
 \item{url}{Optional url linking to a webpage.}
 }
 \value{
-A table or list of tables.
+A glottodata or glottosubdata object (either with or without metadata).
 }
 \description{
 By default, glottodata will be created. In case a groups argument is provided, glottosubdata will be created.

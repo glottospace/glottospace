@@ -29,6 +29,9 @@ glottocreate_metatables(
 
 \item{url}{Optional url linking to a webpage.}
 }
+\value{
+a list of metatables
+}
 \description{
 Create metatables
 }

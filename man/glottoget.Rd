@@ -24,6 +24,9 @@ spatial coordinates.
 
 \item{meta}{In case 'glottodata' is a path to locally stored data (or demodata/demosubdata): by default, meta sheets are not loaded. Use meta=TRUE if you want to include them.}
 }
+\value{
+A glottodata or glottosubdata object
+}
 \description{
 Load locally stored glottodata, download databases from online sources, or load built-in demo data
 }
@@ -35,8 +38,6 @@ glottoget("yourdatafolder/glottodata.xlsx")
 }
 \seealso{
 Other <glottodata>: 
-\code{\link{glottoget_path}()},
-\code{\link{glottoget_remote}()},
 \code{\link{glottosave}()}
 }
 \concept{<glottodata>}

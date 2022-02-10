@@ -32,10 +32,4 @@ glottodata <- glottoget("demodata")
 glottocheck(glottodata, diagnostic = FALSE)
 }
 }
-\seealso{
-Other <glottocheck>: 
-\code{\link{glottocheck_data}()},
-\code{\link{glottocheck_hasmeta}()},
-\code{\link{glottocheck_subdata}()}
-}
 \concept{<glottocheck>}

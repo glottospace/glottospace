@@ -63,21 +63,21 @@ glottocolpal_options <- function(){
   grdevpals <- grdevpals[order(grdevpals)]
   grdevpals2 <- c("rainbow", "heat", "terrain", "topo", "cm")
 
-  cat("Viridis palettes: \n")
-  print(viridispals)
-  cat("\n\n")
+  message("Viridis palettes: \n")
+  printmessage(viridispals)
+  message("\n\n")
 
-  cat("grDevices palettes: \n")
-  print(grdevpals)
-  cat("\n\n")
+  message("grDevices palettes: \n")
+  printmessage(grdevpals)
+  message("\n\n")
 
-  cat("Additional grDevices palettes: \n")
-  print(grdevpals2)
-  cat("\n\n")
+  message("Additional grDevices palettes: \n")
+  printmessage(grdevpals2)
+  message("\n\n")
 
-  cat("ColorBrewer palettes: \n")
-  print(colorbrewerpals)
-  cat("\n\n")
+  message("ColorBrewer palettes: \n")
+  printmessage(colorbrewerpals)
+  message("\n\n")
 }
 
 

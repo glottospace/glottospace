@@ -271,7 +271,9 @@ glottocheck_varlevels <- function(data, diagnostic = TRUE){
 #'
 #' @return Besides diagnostic messages, this function invisibly returns TRUE if check is passed and FALSE otherwise
 #' @noRd
-#'
+#' @examples
+#' glottodata <- glottoget("demodata")
+#' glottocheck_glottocodes(glottodata)
 glottocheck_glottocodes <- function(glottodata){
   glottodata <- glottosimplify(glottodata)
   glottodata <- glottodata[!is.na(glottodata[["glottocode"]]), ]
@@ -279,7 +281,8 @@ glottocheck_glottocodes <- function(glottodata){
   existing <- glottocode_exists(glottodata[["glottocode"]])
   if(sum(!existing) > 0){
     message("Not all IDs are valid glottocodes \n The following glottocodes are not found in glottolog (checked at the language level): \n")
-    print(glottodata[!existing,"glottocode", drop = TRUE])
+    nexist <- paste(glottodata[!existing,"glottocode", drop = TRUE], collapse = ", ")
+    message(nexist)
   } else {
     message("All IDs are valid glottocodes")
   }
@@ -376,7 +379,7 @@ glottocheck_rowmissing <- function(data, id, diagnostic = FALSE, rm.na = TRUE){
   datamissing$count <- rowSums(is.na(datamissing) )
   if(any(datamissing$count != 0)){
     message("Some rows have missing data.")
-  if(diagnostic == TRUE){print(datamissing[datamissing$count != 0, "count", drop = FALSE])}
+  if(diagnostic == TRUE){printmessage(datamissing[datamissing$count != 0, "count", drop = FALSE])}
   }
 }
 
@@ -395,7 +398,7 @@ glottocheck_colmissing <- function(data, id, diagnostic = FALSE, rm.na = TRUE){
   datamissing <- rbind(datamissing, "count" = colSums(is.na(datamissing) ) )
   if(any(datamissing["count", ] != 0)){
     message("Some columns have missing data.")
-  if(diagnostic == TRUE){print(datamissing["count", datamissing["count", ] != 0, drop = FALSE])}
+  if(diagnostic == TRUE){printmessage(datamissing["count", datamissing["count", ] != 0, drop = FALSE])}
   }
 }
 

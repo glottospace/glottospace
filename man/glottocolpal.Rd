@@ -17,6 +17,9 @@ glottocolpal(palette, ncolr = NULL, rev = FALSE, alpha = NULL, show = FALSE)
 
 \item{show}{Do you want to plot the color palette?}
 }
+\value{
+A vector of colors, optionally plotted.
+}
 \description{
 Color palettes for maps and figures
 }

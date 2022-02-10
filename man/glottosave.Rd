@@ -11,6 +11,9 @@ glottosave(glottodata, filename = NULL)
 
 \item{filename}{Filename either with or without file extension}
 }
+\value{
+No object is returned, it will be save locally at the specified location
+}
 \description{
 If no filename is provided, the name of the glottodata object will be used.
 }
@@ -43,8 +46,6 @@ glottomap <- glottomap(glottodata, type = "dynamic")
 glottoget_glottodata
 
 Other <glottodata>: 
-\code{\link{glottoget_path}()},
-\code{\link{glottoget_remote}()},
 \code{\link{glottoget}()}
 }
 \concept{<glottodata>}

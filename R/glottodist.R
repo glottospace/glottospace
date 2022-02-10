@@ -163,7 +163,7 @@ glottocondist_agg <- function(condist, glottocodes, aggregation){
         outmatlang[glottocodes[i],glottocodes[j]] <- 0}
     }
   }
-  cat('See you later, aggregator!')
+  message('See you later, aggregator!')
   return(outmatlang)
 }
 
@@ -184,7 +184,7 @@ glottocondist_con2lang <- function(condist, glottocodes, groups = NULL, thresval
 
   if(is.null(groups) & is.null(thresval)){
     thr <- mean(condist)
-    cat(paste0('Mean between all constructions is: ', round(thr, 3)))
+    message(paste0('Mean between all constructions is: ', round(thr, 3)))
   }
   if(!is.null(groups) & is.null(thresval)){
     if(length(unique(groups)) >2){stop('Maximum number of groups is 2')}
@@ -196,7 +196,7 @@ glottocondist_con2lang <- function(condist, glottocodes, groups = NULL, thresval
     b <- groups %in% group2
     distmat_ab <- distmat[a,b, drop = F]
     thr <- mean(distmat_ab)
-    cat(paste0('Mean between groups is: ', round(thr, 3)))
+    message(paste0('Mean between groups is: ', round(thr, 3)))
   }
   if(!is.null(thresval) & is.null(groups)){
     thr <- thresval
@@ -206,13 +206,13 @@ glottocondist_con2lang <- function(condist, glottocodes, groups = NULL, thresval
   }
 
   if(threstype == "absolute"){
-    cat('\n +1 = more dissimilar than average, \n -1 less dissimilar than average')
+    message('\n +1 = more dissimilar than average, \n -1 less dissimilar than average')
     distmat <- ifelse(distmat > thr, 1, -1)
     return(distmat)
   }
 
   if(threstype == "center"){
-    cat('\n Positive values = more dissimilar than average, \n Negative values = less dissimilar than average')
+    message('\n Positive values = more dissimilar than average, \n Negative values = less dissimilar than average')
     distmat <- distmat - thr # equivalent: scale(x = distmat, center = rep(thr, ncol(distmat)), scale = F)
     return(distmat)
   }

@@ -13,6 +13,9 @@ glottocreate_addtable(glottodata, table, name)
 
 \item{name}{A name for the table}
 }
+\value{
+a glottodata object with structure table added to it.
+}
 \description{
 Add a table to glottodata
 }

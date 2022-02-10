@@ -9,9 +9,13 @@ glottocreate_structuretable(varnames = NULL)
 \arguments{
 \item{varnames}{Character vector of variable names}
 }
+\value{
+A structure table
+}
 \description{
 This function creates a new structure table, it can be added to glottodata using glottocreate_addtable()
 }
 \examples{
 glottocreate_structuretable(varnames = c("var001", "var002", "var003"))
 }
+\keyword{internal}

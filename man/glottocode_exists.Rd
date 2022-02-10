@@ -13,7 +13,7 @@ glottocode_exists(glottocode)
 A logical vector
 }
 \description{
-Check whether a set of glottocodes exist in glottolog
+Checks whether a set of glottocodes exist in glottolog (checked at the level of L1 languages)
 }
 \examples{
 \donttest{
@@ -21,11 +21,4 @@ glottocode_exists(c("yucu1253"))
 glottocode_exists(c("yucu1253", "abcd1234"))
 }
 }
-\seealso{
-Other <glottocheck><glottosearch>: 
-\code{\link{glottocode_online}()},
-\code{\link{glottosearch_exist}()},
-\code{\link{glottosubcode_valid}()}
-}
 \concept{<glottocheck><glottosearch>}
-\keyword{internal}
