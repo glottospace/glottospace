@@ -24,6 +24,7 @@ glottodata or glottosubdata, either with or without metatables. Object is return
 Join glottodata with other objects, datasets, or databases.
 }
 \examples{
+\donttest{
 glottodata <- glottoget("demodata")
 glottodata_space <- glottojoin(glottodata, with = "glottospace")
 glottodata_base <- glottojoin(glottodata, with = "glottobase")
@@ -37,6 +38,7 @@ glottodata_dist <- glottojoin(glottodata, with = dist)
 glottosubdata <- glottocreate(glottocodes = c("yucu1253", "tani1257"),
 variables = 3, groups = c("a", "b"), n = 2, meta = FALSE)
 glottodatatable <- glottojoin(glottodata = glottosubdata)
+}
 }
 \seealso{
 glottosplit

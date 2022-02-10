@@ -39,8 +39,10 @@ This function restructures glottolog data, and optionally adds/removes data. If 
 This function is used to generate 'glottobase' (the reference dataset used throughout the glottospace R package). The default options generate 'glottobase', which can be loaded directly using glottoget("glottobase").
 }
 \examples{
+\donttest{
 glottologdata <- glottoget("glottolog")
 glottobase <- glottobooster(glottologdata)
+}
 }
 \seealso{
 Other <glottobooster>: 
