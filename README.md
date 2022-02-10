@@ -544,16 +544,13 @@ etc.) can be saved with a single command.
 ``` r
 glottodata <- glottoget("demodata", meta = FALSE)
 # Saves as .xlsx
-glottosave(glottodata, filename = file.path(tempdir(), "glottodata") )
-#> Glottodata (glottodata) saved as C:\Users\sjnor\AppData\Local\Temp\RtmpScBZHX\glottodata.xlsx
+# glottosave(glottodata, filename = "glottodata") 
 
-glottospacedata <- glottospace(glottodata)
 # Saves as .GPKG
-glottosave(glottodata, filename = file.path(tempdir(), "glottodata") )
-#> Glottodata (glottodata) saved as C:\Users\sjnor\AppData\Local\Temp\RtmpScBZHX\glottodata.xlsx
+glottospacedata <- glottospace(glottodata)
+# glottosave(glottodata, filename = "glottodata") 
 
-glottomap <- glottomap(glottodata)
 # By default, static maps are saved as .png, dynamic maps are saved as .html
-glottosave(glottomap, filename = file.path(tempdir(), "glottomap") )
-#> Map (tmap object) saved as C:\Users\sjnor\AppData\Local\Temp\RtmpScBZHX\glottomap.png
+glottomap <- glottomap(glottodata)
+# glottosave(glottomap, filename = "glottomap") 
 ```

@@ -24,7 +24,6 @@
 #' @examples
 #' \donttest{
 #' glottoget("glottolog")
-#' glottoget("yourdatafolder/glottodata.xlsx")
 #' }
 glottoget <- function(glottodata = NULL, meta = FALSE){
   if(is.null(glottodata)){
