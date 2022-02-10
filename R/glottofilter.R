@@ -171,6 +171,7 @@ glottofiltermap <- function(glottodata = NULL, mode = NULL, ...){
 #' @export
 #' @keywords internal
 #' @examples
+#' \donttest{
 #' glottodata <- glottoget("glottobase")
 #' glottofilterflex(glottodata = glottodata, colname = "family",
 #' select = "Indo-European")
@@ -182,6 +183,7 @@ glottofiltermap <- function(glottodata = NULL, mode = NULL, ...){
 #' select = -c("Germany", "Netherlands") )
 #' glottofilterflex(glottodata = glottodata, colname = "continent",
 #' select = -c("South America", "Europe", "Asia", "Oceania", "Africa") )
+#' }
 glottofilterflex <- function(glottodata, colname, select){
 
   if(purrr::is_empty(glottodata)){

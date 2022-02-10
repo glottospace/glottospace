@@ -17,6 +17,7 @@
 #' @export
 #'
 #' @examples
+#' \donttest{
 #' # Plot glottodist as nmds:
 #' glottodata <- glottoget("demodata", meta = TRUE)
 #' glottodist <- glottodist(glottodata = glottodata)
@@ -26,7 +27,7 @@
 #' glottodata <- glottoget("demodata", meta = TRUE)
 #' glottodata <- glottosimplify(glottodata)
 #' glottoplot(glottodata = glottodata, type = "missing")
-#'
+#' }
 glottoplot <- function(glottodata = NULL, glottodist = NULL, type = NULL, k = NULL, rm.na = FALSE,
                        color = NULL, ptsize = NULL, label = NULL, filename = NULL){
   if(is.null(type)){type <- "heatmap"}

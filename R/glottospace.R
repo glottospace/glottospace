@@ -14,8 +14,9 @@
 #'
 #' @examples
 #' glottodata <- glottoget("demodata", meta = TRUE)
+#' \donttest{
 #' glottospacedata <- glottospace(glottodata, method = "voronoi")
-#'
+#' }
 glottospace <- function(glottodata, method = NULL, radius = NULL){
 
   stopifnot(glottocheck_isglottodata(glottodata))

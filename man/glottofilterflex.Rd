@@ -17,6 +17,7 @@ glottofilterflex(glottodata, colname, select)
 This is a more flexible alternative to glottofilter, allowing for negative selections.
 }
 \examples{
+\donttest{
 glottodata <- glottoget("glottobase")
 glottofilterflex(glottodata = glottodata, colname = "family",
 select = "Indo-European")
@@ -28,5 +29,6 @@ glottofilterflex(glottodata = glottodata, colname = "country",
 select = -c("Germany", "Netherlands") )
 glottofilterflex(glottodata = glottodata, colname = "continent",
 select = -c("South America", "Europe", "Asia", "Oceania", "Africa") )
+}
 }
 \keyword{internal}

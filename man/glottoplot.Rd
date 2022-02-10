@@ -42,6 +42,7 @@ a visualization of a glotto(sub)data or glottodist object, which can be saved wi
 This function offers different types of visualizations for linguistic data and linguistic distances.
 }
 \examples{
+\donttest{
 # Plot glottodist as nmds:
 glottodata <- glottoget("demodata", meta = TRUE)
 glottodist <- glottodist(glottodata = glottodata)
@@ -51,5 +52,5 @@ glottoplot(glottodist = glottodist, type = "nmds", k = 3, color = "family", labe
 glottodata <- glottoget("demodata", meta = TRUE)
 glottodata <- glottosimplify(glottodata)
 glottoplot(glottodata = glottodata, type = "missing")
-
+}
 }

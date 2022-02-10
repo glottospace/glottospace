@@ -22,8 +22,8 @@
 #' @return A glottodata or glottosubdata object (a data.frame or list, depending on which glottodata is requested)
 #' @export
 #' @examples
+#' \donttest{
 #' glottoget("glottolog")
-#' \dontrun{
 #' glottoget("yourdatafolder/glottodata.xlsx")
 #' }
 glottoget <- function(glottodata = NULL, meta = FALSE){

@@ -52,8 +52,10 @@ Note that the different options are additional. For example, if you set rmfamili
 Another example, depending on whether artificial families are removed, the total number of families also increases/decreases.
 }
 \examples{
+\donttest{
 glottologdata <- glottoget("glottolog")
 glottologdata <- glottoboosterflex(glottologdata)
+}
 }
 \seealso{
 Other <glottobooster>: 
