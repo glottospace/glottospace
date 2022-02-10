@@ -300,15 +300,15 @@ All output generated with the glottospace package (data, figures, maps, etc.) ca
 ```{r glottoworldmap}
 glottodata <- glottoget("demodata", meta = FALSE)
 # Saves as .xlsx
-glottosave(glottodata, filename = "glottodata")
+glottosave(glottodata, filename = file.path(tempdir(), "glottodata") )
 
 glottospacedata <- glottospace(glottodata)
 # Saves as .GPKG
-glottosave(glottodata, filename = "glottodata")
+glottosave(glottodata, filename = file.path(tempdir(), "glottodata") )
 
 glottomap <- glottomap(glottodata)
 # By default, static maps are saved as .png, dynamic maps are saved as .html
-glottosave(glottomap, filename = "glottomap")
+glottosave(glottomap, filename = file.path(tempdir(), "glottomap") )
 ```
 
 

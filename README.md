@@ -544,16 +544,16 @@ etc.) can be saved with a single command.
 ``` r
 glottodata <- glottoget("demodata", meta = FALSE)
 # Saves as .xlsx
-glottosave(glottodata, filename = "glottodata")
-#> Glottodata (glottodata) saved as C:\Users\sjnor\surfdrive\PROJECTS_SN\Rpackages\glottospace\glottodata.xlsx
+glottosave(glottodata, filename = file.path(tempdir(), "glottodata") )
+#> Glottodata (glottodata) saved as C:\Users\sjnor\AppData\Local\Temp\RtmpScBZHX\glottodata.xlsx
 
 glottospacedata <- glottospace(glottodata)
 # Saves as .GPKG
-glottosave(glottodata, filename = "glottodata")
-#> Glottodata (glottodata) saved as C:\Users\sjnor\surfdrive\PROJECTS_SN\Rpackages\glottospace\glottodata.xlsx
+glottosave(glottodata, filename = file.path(tempdir(), "glottodata") )
+#> Glottodata (glottodata) saved as C:\Users\sjnor\AppData\Local\Temp\RtmpScBZHX\glottodata.xlsx
 
 glottomap <- glottomap(glottodata)
 # By default, static maps are saved as .png, dynamic maps are saved as .html
-glottosave(glottomap, filename = "glottomap")
-#> Map (tmap object) saved as C:\Users\sjnor\surfdrive\PROJECTS_SN\Rpackages\glottospace\glottomap.png
+glottosave(glottomap, filename = file.path(tempdir(), "glottomap") )
+#> Map (tmap object) saved as C:\Users\sjnor\AppData\Local\Temp\RtmpScBZHX\glottomap.png
 ```
