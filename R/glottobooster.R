@@ -16,8 +16,10 @@
 #' @return glottologdata object, either a spatial object (class: sf) or a data.frame.
 #' @export
 #' @examples
+#' \donttest{
 #' glottologdata <- glottoget("glottolog")
 #' glottobase <- glottobooster(glottologdata)
+#' }
 glottobooster <- function(glottologdata = NULL, space = TRUE,
                                 addfamname = TRUE, addisolates = TRUE,
                                 L1only = TRUE,

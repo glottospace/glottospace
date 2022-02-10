@@ -11,6 +11,7 @@
 stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 [![License: GPL
 v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![R-CMD-check](https://github.com/SietzeN/glottospace/workflows/R-CMD-check/badge.svg)](https://github.com/SietzeN/glottospace/actions)
 <!-- badges: end -->
 
 # Introduction
@@ -32,7 +33,7 @@ R and integrate them with your own data.
 We’re still actively developing the **glottospace** package by adding
 new functions and improving existing ones. Although the package is
 stable, you might find bugs or encounter things you might find
-confusing. You can help me improve the package by:
+confusing. You can help to improve the package by:
 
 -   Sending an email to [Sietze
     Norder](mailto:s.j.norder@hum.leidenuniv.nl) with a clear
@@ -42,24 +43,23 @@ confusing. You can help me improve the package by:
 
 # Citation
 
-Once there is a stable version of the package we intend to write a paper
-about it presenting its full functionality. If you find the
-**glottospace** package useful, please cite it in your work:
+We’re currently writing a paper about the package presenting its full
+functionality. If you find the **glottospace** package useful, please
+cite it in your work:
 
     #> 
     #> To cite glottospace in publications use:
     #> 
-    #>   Norder, S.J. et al. (2021). glottospace: R package for the geospatial
+    #>   Norder, S.J. et al. (2022). glottospace: R package for the geospatial
     #>   analysis of linguistic and cultural data. URL
     #>   https://github.com/SietzeN/glottospace.
     #> 
     #> A BibTeX entry for LaTeX users is
     #> 
-    #>   @Article{,
+    #>   @Unpublished{,
     #>     title = {glottospace: R package for the geospatial analysis of linguistic and cultural data},
-    #>     author = {{Norder} and S.J. et al.},
-    #>     journal = {R package version 0.0.74},
-    #>     year = {2021},
+    #>     author = {Sietze Norder},
+    #>     note = {Manuscript under preparation},
     #>     url = {https://github.com/SietzeN/glottospace},
     #>   }
 
@@ -83,7 +83,7 @@ devtools::install_github("SietzeN/glottospace", INSTALL_opts=c("--no-multiarch")
 
 # Example
 
-Before describing the functionality of **glottospace**, I give a quick
+Before describing the functionality of **glottospace**, we give a quick
 demonstration of a typical workflow.
 
 ## Plotting language locations on a map
@@ -103,7 +103,7 @@ glottomap(continent = "South America", color = "isolate")
 <img src="man/figures/README-example_glottomap-1.png" width="100%" />
 
 Languages are often represented with points, while in reality the
-speakers of a language can inhabit vast areas. Glottospace works with
+speakers of a language can inhabit vast areas. glottospace works with
 point and polygon data. When polygon data is not available, you can
 interpolate the points and plot those.
 
@@ -184,6 +184,7 @@ the data (‘glottolog’), or an enriched/boosted version (‘glottobase’):
 ``` r
 # Two ways to load glottobase:
 data("glottobase")
+#> Warning in data("glottobase"): data set 'glottobase' not found
 glottobase <- glottoget("glottobase")
 colnames(glottobase)
 #>  [1] "glottocode"       "name"             "macroarea"        "isocode"         
@@ -199,7 +200,7 @@ data in a structured way. These data structures can be saved to your
 local folder by specifying a filename (not demonstrated here).
 
 ``` r
-glottocreate_data(glottocodes = c("yucu1253", "tani1257"), variables = 3, meta = FALSE)
+glottocreate(glottocodes = c("yucu1253", "tani1257"), variables = 3, meta = FALSE)
 #>   glottocode var001 var002 var003
 #> 1   yucu1253     NA     NA     NA
 #> 2   tani1257     NA     NA     NA
@@ -210,7 +211,7 @@ I’ve specified meta = FALSE, to indicate that we want to generate a
 several meta tables are included:
 
 ``` r
-glottodata_meta <- glottocreate_data(glottocodes = c("yucu1253", "tani1257"), variables = 3)
+glottodata_meta <- glottocreate(glottocodes = c("yucu1253", "tani1257"), variables = 3)
 summary(glottodata_meta)
 #>              Length Class      Mode
 #> glottodata    4     data.frame list
@@ -219,6 +220,7 @@ summary(glottodata_meta)
 #> references    9     data.frame list
 #> remarks       5     data.frame list
 #> contributors  5     data.frame list
+#> sample        1     data.frame list
 #> readme        2     data.frame list
 #> lookup        2     data.frame list
 ```
@@ -229,8 +231,7 @@ the functions in the glottospace package. A structure table can also be
 added later:
 
 ``` r
-glottocreate_structuretable(glottocodes = c("yucu1253", "tani1257"), 
-                            varnames = c("var001", "var002", "var003"))
+glottocreate_structuretable(varnames = c("var001", "var002", "var003"))
 #>   varname type levels weight groups subgroups
 #> 1  var001   NA     NA      1     NA        NA
 #> 2  var002   NA     NA      1     NA        NA
@@ -243,7 +244,7 @@ language.
 
 ``` r
 # Instead of creating a single table for all languages, you might want to create a list of tables (one table for each language)
-glottocreate_subdata(glottocodes = c("yucu1253", "tani1257"), 
+glottocreate(glottocodes = c("yucu1253", "tani1257"), 
                      variables = 3, groups = c("a", "b"), n = 2, meta = FALSE)
 #> $yucu1253
 #>     glottosubcode var001 var002 var003
@@ -284,8 +285,19 @@ You can also check the metadata:
 
 ``` r
 glottodata <- glottoget(glottodata = "demodata", meta = TRUE)
-glottocheck_metadata(glottodata)
-#> This glottodataset contains the folowing tables: glottodata, structure, description, references, remarks, contributors, readme, lookup
+glottocheck(glottodata, checkmeta = TRUE)
+#> No missing IDs
+#> No duplicate IDs.
+#> All variables have two or more levels (excluding NA)
+#> Checking 6 glottocodes...
+#> All IDs are valid glottocodes
+#> Some columns have missing data.
+#>       var001
+#> count      1
+#> Some rows have missing data.
+#>          count
+#> tani1257     1
+#> This glottodataset contains the folowing tables: glottodata, structure, description, references, remarks, contributors, sample, readme, lookup
 #> All types recognized
 #> All weights are specified
 ```
@@ -318,7 +330,7 @@ glottodatabase <- glottojoin(glottodata, with = "glottobase")
 glottodataspace <- glottojoin(glottodata, with = "glottospace")
 
 # Join a list of glottodata tables into a single table
-glottodatalist <- glottocreate_subdata(glottocodes = c("yucu1253", "tani1257"), 
+glottodatalist <- glottocreate(glottocodes = c("yucu1253", "tani1257"), 
                                        variables = 3, groups = c("a", "b"), n = 2, meta = FALSE)
 glottodatatable <- glottojoin(glottodata = glottodatalist)
 ```
@@ -458,7 +470,7 @@ glottodist <- glottodist(glottodata = glottodata)
 # As we've seen above, in case you have glottodata without a structure table, you can add it:
 glottodata <- glottoget("demodata", meta = FALSE)
 structure <- glottocreate_structuretable()
-glottodata <- glottodata_addtable(glottodata, structure, name = "structure")
+glottodata <- glottocreate_addtable(glottodata, structure, name = "structure")
 ```
 
 ## glottoplot
@@ -478,7 +490,7 @@ glottodist <- glottodist(glottodata = glottodata)
 glottoplot(glottodist = glottodist)
 ```
 
-<img src="man/figures/README-glottoplot-1.png" width="100%" />
+<img src="man/figures/README-glottoplot-1.png" width="100%" /><img src="man/figures/README-glottoplot-2.png" width="100%" />
 
 ## glottospace
 
@@ -535,18 +547,15 @@ etc.) can be saved with a single command.
 glottodata <- glottoget("demodata", meta = FALSE)
 # Saves as .xlsx
 glottosave(glottodata, filename = "glottodata")
-#> Glottodata (glottodata) saved as glottodata.xlsx
+#> Glottodata (glottodata) saved as C:\Users\sjnor\surfdrive\PROJECTS_SN\Rpackages\glottospace\glottodata.xlsx
 
 glottospacedata <- glottospace(glottodata)
 # Saves as .GPKG
 glottosave(glottodata, filename = "glottodata")
-#> Glottodata (glottodata) saved as glottodata.xlsx
+#> Glottodata (glottodata) saved as C:\Users\sjnor\surfdrive\PROJECTS_SN\Rpackages\glottospace\glottodata.xlsx
 
 glottomap <- glottomap(glottodata)
 # By default, static maps are saved as .png, dynamic maps are saved as .html
 glottosave(glottomap, filename = "glottomap")
-#> Map saved to C:\Users\sjnor\surfdrive\PROJECTS_SN\Rpackages\glottospace\glottomap.png
-#> Resolution: 2510.749 by 1756.448 pixels
-#> Size: 8.369165 by 5.854826 inches (300 dpi)
-#> Map (tmap object) saved as glottomap.png
+#> Map (tmap object) saved as C:\Users\sjnor\surfdrive\PROJECTS_SN\Rpackages\glottospace\glottomap.png
 ```

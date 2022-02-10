@@ -14,6 +14,7 @@
 #' @return glottodata or glottosubdata, either with or without metatables. Object is returned as a data.frame or list, depending on the input.
 #'
 #' @examples
+#' \donttest{
 #' glottodata <- glottoget("demodata")
 #' glottodata_space <- glottojoin(glottodata, with = "glottospace")
 #' glottodata_base <- glottojoin(glottodata, with = "glottobase")
@@ -27,6 +28,7 @@
 #' glottosubdata <- glottocreate(glottocodes = c("yucu1253", "tani1257"),
 #' variables = 3, groups = c("a", "b"), n = 2, meta = FALSE)
 #' glottodatatable <- glottojoin(glottodata = glottosubdata)
+#' }
 glottojoin <- function(glottodata, with = NULL, id = NULL, rm.na = FALSE, type = "left"){
   if(glottocheck_isglottosubdata(glottodata) ){
     if(is.null(with)){# join glottosubdata
