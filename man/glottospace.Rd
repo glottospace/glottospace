@@ -23,6 +23,7 @@ This function takes glottodata (either with or without metadata) and turns it in
 }
 \examples{
 glottodata <- glottoget("demodata", meta = TRUE)
+\donttest{
 glottospacedata <- glottospace(glottodata, method = "voronoi")
-
+}
 }

@@ -31,8 +31,8 @@ A glottodata or glottosubdata object (a data.frame or list, depending on which g
 Load locally stored glottodata, download databases from online sources, or load built-in demo data
 }
 \examples{
+\donttest{
 glottoget("glottolog")
-\dontrun{
 glottoget("yourdatafolder/glottodata.xlsx")
 }
 }
