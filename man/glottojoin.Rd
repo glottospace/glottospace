@@ -17,6 +17,9 @@ glottojoin(glottodata, with = NULL, id = NULL, rm.na = FALSE, type = "left")
 
 \item{type}{In case two glottodata objects are joined, you can specify the type of join: "left" (default), "right", "full", or "inner"}
 }
+\value{
+glottodata or glottosubdata, either with or without metatables. Object is returned as a data.frame or list, depending on the input.
+}
 \description{
 Join glottodata with other objects, datasets, or databases.
 }

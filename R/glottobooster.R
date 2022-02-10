@@ -13,7 +13,7 @@
 #' @param addfamsizerank Add column with family size rank?
 #'
 #' @family <glottobooster>
-#'
+#' @return glottologdata object, either a spatial object (class: sf) or a data.frame.
 #' @export
 #' @examples
 #' glottologdata <- glottoget("glottolog")
@@ -63,7 +63,7 @@ glottobooster <- function(glottologdata = NULL, space = TRUE,
 #' @family <glottobooster>
 #' @export
 #' @keywords internal
-#'
+#' @return glottologdata object, either a spatial object (class: sf) or a data.frame.
 #' @examples
 #' glottologdata <- glottoget("glottolog")
 #' glottologdata <- glottoboosterflex(glottologdata)

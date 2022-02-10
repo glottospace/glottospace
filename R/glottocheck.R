@@ -18,7 +18,7 @@
 #' @family <glottocheck>
 #'
 #' @export
-#'
+#' @return Diagnostic messages highlighting potential issues with glottodata or glottosubdata.
 #' @examples
 #' \donttest{
 #' glottodata <- glottoget("demodata")

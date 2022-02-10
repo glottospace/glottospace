@@ -32,14 +32,15 @@ glottosave(glottodata, filename = file.path(tempdir(), "glottodata") )
 
 glottospacedata <- glottospace(glottodata)
 # Saves as .GPKG
-glottosave(glottodata, filename = "glottodata")
+glottosave(glottodata, filename = file.path(tempdir(), "glottodata") )
 
 glottomap <- glottomap(glottodata)
 # Saves as .png
-glottosave(glottomap, filename = "glottomap")
+glottosave(glottomap, filename = file.path(tempdir(), "glottomap") )
 
 # Saves as .html
-glottomap <- glottomap(glottodata, type = "dynamic")
+glottomap <- glottomap(glottodata, type = "dynamic",
+             filename = file.path(tempdir(), "glottomap") )
 }
 }
 \seealso{

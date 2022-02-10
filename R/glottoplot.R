@@ -13,7 +13,7 @@
 #' @param ptsize Size of points between 0 and 1 (optional)
 #' @param filename Optional filename if output should be saved.
 #'
-#' @return a visualization of a glottodata or glottodist object
+#' @return a visualization of a glotto(sub)data or glottodist object, which can be saved with glottosave()
 #' @export
 #'
 #' @examples
@@ -38,7 +38,7 @@ glottoplot <- function(glottodata = NULL, glottodist = NULL, type = NULL, k = NU
   }
 
   if(type == "heatmap"){
-    glottoplot_heatmap(glottodist = glottodist, filename = filename)
+    plot <- glottoplot_heatmap(glottodist = glottodist, filename = filename)
   }
 
   if(type == "nmds"){
@@ -46,18 +46,18 @@ glottoplot <- function(glottodata = NULL, glottodist = NULL, type = NULL, k = NU
     glottonmds <- glottonmds(glottodist = glottodist, k = k, rm.na = rm.na)
     scores <- glottonmds_scores(glottonmds)
     scoresdata <- glottojoin_base(scores)
-    glottoplot_nmds(nmds = glottonmds, scoresdata = scoresdata,
+    plot <- glottoplot_nmds(nmds = glottonmds, scoresdata = scoresdata,
                     color = color, ptsize = ptsize, label = label, filename = filename)
   }
 
   if(type == "stress"){
-    glottoplot_nmds_stress(glottodist = glottodist, k = k)
+    plot <- glottoplot_nmds_stress(glottodist = glottodist, k = k)
   }
 
   if(type == "missing"){
-    glottoplot_naviewer(data = glottodata, id = "glottocode")
+    plot <- glottoplot_naviewer(data = glottodata, id = "glottocode")
   }
-
+plot
 }
 
 #' Nonmetric Multidimensional Scaling
@@ -316,9 +316,11 @@ glottoplot_naviewer <- function(data, id = NULL, rm.na = TRUE){
     tibble::rownames_to_column(id) %>%
     tidyr::pivot_longer(-c(id), names_to = "variable", values_to = "coverage")
 
-  ggplot2::ggplot(data = datamissing, ggplot2::aes_string(x="variable", y=id, fill="coverage") ) +
+  plotmissing <- ggplot2::ggplot(data = datamissing, ggplot2::aes_string(x="variable", y=id, fill="coverage") ) +
     ggplot2::geom_raster() +
     ggplot2::scale_fill_manual(labels = c("data", "NA"), values = c("navy", "darkred"))
+
+  print(plotmissing)
 }
 
 

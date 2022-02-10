@@ -7,7 +7,9 @@
 #' @param method Interpolation method, either "buffer" or "voronoi" (synonymous with "thiessen")
 #' @param radius In case interpolation method "buffer", the radius in km.
 #'
-#' @return A spatial version of glottodata. In case glottodata has metadata, only glottodata will be converted to spatial (but all metadata tables are kept)
+#' @return A spatial version of glottodata. In case glottodata has metadata, only glottodata
+#'  will be converted to spatial (but all metadata tables are kept).
+#'  Object returned as sf object, or a list of which the first element is an sf object, depending on the input.
 #' @export
 #'
 #' @examples

@@ -9,6 +9,11 @@ glottocode(glottocode)
 \arguments{
 \item{glottocode}{A single glottocode}
 }
+\value{
+Diagnostic messages indicating whether a glottocode exists,
+a plot showing the location of the glottocode on the Earth,
+a pop-up browser window to the Glottolog webpage.
+}
 \description{
 This function does three things for a glottocode:
 - Plot its location on the Earth

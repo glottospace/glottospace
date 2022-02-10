@@ -54,7 +54,7 @@ glottofilter(
 \item{drop}{Character vector of things to drop (only if colname is provided)}
 }
 \value{
-A subset of the original glottodata table  containing only filtered languages.
+A subset of the original glottodata table (data.frame or sf) containing only filtered languages.
 }
 \description{
 By default, the glottolog data will be used to filter from. But in case the user provides glottodata, this will be used.

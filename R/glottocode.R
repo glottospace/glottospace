@@ -9,7 +9,9 @@
 #'
 #'
 #' @export
-#'
+#' @return Diagnostic messages indicating whether a glottocode exists,
+#' a plot showing the location of the glottocode on the Earth,
+#' a pop-up browser window to the Glottolog webpage.
 #' @examples
 #' \donttest{
 #' glottocode("yucu1253")

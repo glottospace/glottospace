@@ -22,7 +22,7 @@
 #' @param ... Additional parameters to glottofilter
 #'
 #' @family <glottomap>
-#' @return a map
+#' @return a map created from a glotto(sub)data object and can be saved with glottosave()
 #' @export
 #'
 #' @examples

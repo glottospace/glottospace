@@ -52,7 +52,7 @@ Otherwise, glottospace will attempt to convert the dataset into glottosubdata. T
 \item{contributor}{Character string that distinguishes those columns which contain contributors.}
 }
 \value{
-A glottodata or glottosubdata object
+A glottodata or glottosubdata object (either a list or data.frame)
 }
 \description{
 Convert a linguistic dataset into glottodata or glottosubdata

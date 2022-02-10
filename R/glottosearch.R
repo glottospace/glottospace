@@ -5,7 +5,7 @@
 #' @param partialmatch By default, partial matches will be returned as well. In case you only want exact matches, this argument should be set to FALSE.
 #' @param columns By default, the entire dataset is searched, but optionally the search can be limited to specific columns.
 #' @param tolerance In case partialmatch is TRUE: what is the maximum difference between search term and match? Default is 0.1
-#' @return A subset of glottodata that matches search conditions
+#' @return A subset of glottodata that matches search conditions (object returned as a data.frame/tibble)
 #' @export
 #' @family <glottosearch><glottofilter>
 #' @examples

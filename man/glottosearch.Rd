@@ -24,7 +24,7 @@ glottosearch(
 \item{tolerance}{In case partialmatch is TRUE: what is the maximum difference between search term and match? Default is 0.1}
 }
 \value{
-A subset of glottodata that matches search conditions
+A subset of glottodata that matches search conditions (object returned as a data.frame/tibble)
 }
 \description{
 Search within glottodata for languages, glottocodes, etc.

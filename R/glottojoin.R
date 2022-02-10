@@ -11,6 +11,7 @@
 #' @seealso glottosplit
 #'
 #' @export
+#' @return glottodata or glottosubdata, either with or without metatables. Object is returned as a data.frame or list, depending on the input.
 #'
 #' @examples
 #' glottodata <- glottoget("demodata")

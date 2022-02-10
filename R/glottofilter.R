@@ -20,7 +20,7 @@
 #'
 #' @family <glottofilter><glottosearch>
 #' @seealso glottofiltermap()
-#' @return A subset of the original glottodata table  containing only filtered languages.
+#' @return A subset of the original glottodata table (data.frame or sf) containing only filtered languages.
 #' @export
 #'
 #' @examples

@@ -22,14 +22,15 @@
 #'
 #' glottospacedata <- glottospace(glottodata)
 #' # Saves as .GPKG
-#' glottosave(glottodata, filename = "glottodata")
+#' glottosave(glottodata, filename = file.path(tempdir(), "glottodata") )
 #'
 #' glottomap <- glottomap(glottodata)
 #' # Saves as .png
-#' glottosave(glottomap, filename = "glottomap")
+#' glottosave(glottomap, filename = file.path(tempdir(), "glottomap") )
 #'
 #' # Saves as .html
-#' glottomap <- glottomap(glottodata, type = "dynamic")
+#' glottomap <- glottomap(glottodata, type = "dynamic",
+#'              filename = file.path(tempdir(), "glottomap") )
 #' }
 glottosave <- function(glottodata, filename = NULL){
 
@@ -42,20 +43,20 @@ glottosave <- function(glottodata, filename = NULL){
     }
     # if(file.exists(filename) & overwrite == FALSE){stop("File already exists, use overwrite = TRUE")}
     writexl::write_xlsx(glottodata, path = filename) # works better than openxlsx, which omitted some columns..
-    message(paste("Glottodata (glottodata) saved as", filename))
+    message(paste("Glottodata (glottodata) saved as", normalizePath(filename) ))
   } else if(glottocheck_isglottosubdata(glottodata)){
       if(tools::file_ext(filename) != ".xlsx"){
         filename <- tools::file_path_sans_ext(filename)
         filename <- paste0(filename, ".xlsx")
       }
-      writexl::write_xlsx(glottodata, path = filename) # works better than openxlsx, which omitted some columns..
-      message(paste("Glottodata (glottodata) saved as", filename))
+      writexl::write_xlsx(glottodata, path = filename) # works better than openxlsx, which sometimes omits columns..
+      message(paste("Glottodata (glottodata) saved as", normalizePath(filename) ))
   } else if((class(glottodata) == "tmap")[1]){
     if( tools::file_ext(filename) == "" ){
     ifelse(getOption("tmap.mode") == "plot", filename <- paste0(filename, ".png"), filename <- paste0(filename, ".html"))
     }
-    tmap::tmap_save(glottodata, filename = filename)
-    message(paste0("Map (tmap object) saved as ", filename))
+    suppressMessages(tmap::tmap_save(glottodata, filename = filename) )
+    message(paste0("Map (tmap object) saved as ", normalizePath(filename) ))
   } else if( is_sf(glottodata) ){
     if( tools::file_ext(filename) == "" ){
       sf::st_write(obj = glottodata, dsn = paste0(filename, ".gpkg"),
@@ -64,18 +65,18 @@ glottosave <- function(glottodata, filename = NULL){
       sf::st_write(obj = glottodata, dsn = filename,
                append = FALSE)
     }
-    message(paste0("Spatial object (sf) saved as ", filename))
+    message(paste0("Spatial object (sf) saved as ", normalizePath(filename) ))
   } else if(any(class(glottodata) == "matrix" ) ){
     if( tools::file_ext(filename) == "" ){
     utils::write.csv(glottodata, file = paste0(filename, ".csv"))
     } else {
       utils::write.csv(glottodata, file = filename)
     }
-    message(paste0("Matrix saved as ", filename))
+    message(paste0("Matrix saved as ", normalizePath(filename) ))
   } else if(class(glottodata) == "data.frame"){
     if( tools::file_ext(filename) == "" ){filename <- paste0(filename, ".xlsx")}
     writexl::write_xlsx(glottodata, path = filename) # works better than openxlsx, which omits some columns..
-    message(paste0("Data.frame saved as ", filename))
+    message(paste0("Data.frame saved as ", normalizePath(filename) ))
   } else(
     message("Could not detect object type. Please convert glottodata to a supported object type.")
   )

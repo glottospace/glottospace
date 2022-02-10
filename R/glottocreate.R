@@ -23,7 +23,7 @@
 #' @param levels Optional character vector with levels across all variables
 #' @param check Should glottocodes be checked? Default is FALSE because takes much time to run.
 #'
-#' @return A glottodata or glottosubdata object (either with or without metadata).
+#' @return A glottodata or glottosubdata object (either with or without metadata). The output can be a list or a data.frame.
 #' @export
 #'
 #' @family <glottoget><glottocreate>
@@ -41,13 +41,15 @@
 #' glottocreate(glottocodes = c("yucu1253", "tani1257"),
 #' variables = 3, groups = c("a", "b") )
 #'
-#' # Creates glottodata/glottosubdata and save as excel:
-#' \dontrun{
+#' # Creates glottodata/glottosubdata and save excel file in specified directory:
+#' \donttest{
 #' glottocreate(glottocodes = c("yucu1253", "tani1257"),
-#' variables = 3, filename = "glottodata.xlsx")
+#'              variables = 3,
+#'              filename = file.path(tempdir(), "glottodata.xlsx") )
 #'
 #' glottocreate(glottocodes = c("yucu1253", "tani1257"),
-#'              variables = 3, groups = c("a", "b"), filename = "glottosubdata.xlsx" )
+#'              variables = 3, groups = c("a", "b"),
+#'              filename = file.path(tempdir(), "glottosubdata.xlsx") )
 #' }
 glottocreate <- function(glottocodes, variables,
                          meta = TRUE, filename = NULL,
@@ -99,10 +101,11 @@ glottocreate <- function(glottocodes, variables,
 #' glottocreate_data(glottocodes = c("yucu1253", "tani1257"),
 #'      variables = 3, meta = FALSE)
 #'
-#' # If you specifying a filename, the glottodata object will be saved locally.
-#'\dontrun{
+#' # If you specify a filename, the glottodata object will be saved locally.
+#'\donttest{
 #'glottocreate_data(glottocodes = c("yucu1253", "tani1257"),
-#'                    variables = 3, filename = "glottodata.xlsx")
+#'                    variables = 3,
+#'                    filename = file.path(tempdir(), "glottodata.xlsx") )
 #'}
 glottocreate_data <- function(glottocodes, variables, filename = NULL, meta = TRUE, check = FALSE, simplify = TRUE, levels = NULL, maintainer = NULL, email = NULL, citation = NULL, url = NULL){
  if(check){

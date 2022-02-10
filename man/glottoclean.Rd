@@ -7,7 +7,7 @@
 glottoclean(glottodata, tona = NULL, tofalse = NULL, totrue = NULL)
 }
 \arguments{
-\item{glottodata}{glottodata list}
+\item{glottodata}{glottodata (either a list or a data.frame)}
 
 \item{tona}{Optional additional values to recode to NA (besides default)}
 
@@ -16,7 +16,7 @@ glottoclean(glottodata, tona = NULL, tofalse = NULL, totrue = NULL)
 \item{totrue}{Optional additional values to recode to TRUE (besides default)}
 }
 \value{
-A cleaned-up version of the original glottodata object
+A cleaned-up version of the original glottodata object (either a list or a data.frame, depending on the input)
 }
 \description{
 This function is a wrapper around glottorecode. This function has some built in default values that are being recoded.

@@ -41,6 +41,9 @@ glottoboosterflex(
 
 \item{rmsignlangs}{Remove rows with sign languages?}
 }
+\value{
+glottologdata object, either a spatial object (class: sf) or a data.frame.
+}
 \description{
 It is recommended to use glottobooster, but this function is more flexible in removing/adding columns.
 }

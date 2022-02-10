@@ -27,7 +27,7 @@ glottosimplify(
 \item{dropunits}{By default units are kept.}
 }
 \value{
-a simplified version of the original dataset
+a simplified version of the original dataset, either a data.frame/tibble or a list (depending on the selected options)
 }
 \description{
 With glottosimplify, the structure of a glottodata object is simplified by removing tables and properties

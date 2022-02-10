@@ -1,4 +1,35 @@
 
+## Third resubmission
+
+Dear CRAN-team,
+
+Thanks again for your time. This is a resubmission. 
+
+There were no ERRORS, WARNINGS or NOTES. 
+
+In response you highlighted the following issues:
+
+* ISSUE: Please do not start the description with "This package", package name, title or similar.
+* FIX: Implemented all suggested changes. 
+
+* ISSUE:Please always write package names, software names and API (application programming interface) names in single quotes in title and description. e.g: --> 'glottospace'
+* FIX: Implemented all suggested changes.
+
+* ISSUE: Please add \value to .Rd files regarding exported methods and explain the functions results in the documentation. Please write about the structure of the output (class) and also what the output means. 
+* FIX: I have drastically reduced the number of exported functions. Previously I used @keywords internal while still exporting the functions. I now use @noRd for those functions. For the remaining functions I now specify the class and what the output means. 
+
+* ISSUE: You write information messages to the console that cannot be easily suppressed.
+It is more R like to generate objects that can be used to extract the information a user is interested in, and then print() that object. Instead of print()/cat() rather use message()/warning()  or if(verbose)cat(..) (or maybe stop()) if you really have to write text to the console.
+(except for print, summary, interactive functions)
+* FIX: I have now replaced all occurrences of print()/cat() with message(). The only exceptions are in the glottomap() and glottoplot() functions, because their output should be printed. 
+
+* ISSUE: Please ensure that your functions do not write by default or in your examples/vignettes/tests in the user's home filespace (including the package directory and getwd()). This is not allowed by CRAN policies.
+In your examples/vignettes/tests you can write to tempdir(). 
+* FIX: The functions in the package only save a file if the filename argument is specified. I had already wrapped those examples that illustrate how to save a file in donttest{}, I have now also added tempdir() to those examples that write files, following your suggestion. 
+
+Kind regards,
+Sietze
+
 ## Second resubmission
 
 Dear CRAN-team,

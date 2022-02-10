@@ -19,7 +19,7 @@
 #' @param meta In case 'glottodata' is a path to locally stored data (or demodata/demosubdata): by default, meta sheets are not loaded. Use meta=TRUE if you want to include them.
 #'
 #' @family <glottodata>
-#' @return A glottodata or glottosubdata object
+#' @return A glottodata or glottosubdata object (a data.frame or list, depending on which glottodata is requested)
 #' @export
 #' @examples
 #' glottoget("glottolog")

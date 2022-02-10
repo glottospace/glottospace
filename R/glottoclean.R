@@ -5,14 +5,13 @@
 #' For example, "No" is recoded to FALSE and "?" is recoded to NA.
 #' Use glottorecode directly if you don't want to use these defaults.
 #'
-#' @param glottodata glottodata list
+#' @param glottodata glottodata (either a list or a data.frame)
 #' @param tona Optional additional values to recode to NA (besides default)
 #' @param tofalse Optional additional values to recode to FALSE (besides default)
 #' @param totrue Optional additional values to recode to TRUE (besides default)
 #'
-#' @return A cleaned-up version of the original glottodata object
+#' @return A cleaned-up version of the original glottodata object (either a list or a data.frame, depending on the input)
 #' @export
-#'
 #' @examples
 #' glottodata <- glottoget("demodata", meta = TRUE)
 #' glottodata <- glottoclean(glottodata)

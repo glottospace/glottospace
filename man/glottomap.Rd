@@ -55,7 +55,7 @@ Alternatively, you could also run tmaptools::palette_explorer(), RColorBrewer::d
 \item{...}{Additional parameters to glottofilter}
 }
 \value{
-a map
+a map created from a glotto(sub)data object and can be saved with glottosave()
 }
 \description{
 With this function you can easily create static and dynamic maps from glottodata (by setting type to 'static' or 'dynamic').

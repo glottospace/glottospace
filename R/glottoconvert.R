@@ -26,7 +26,7 @@
 #' @param glottosubcolumn Column name or column id with glottosubcodes (optional, provide if glottosubcodes are not stored in a column called 'glottosubcode')
 #'
 #' @export
-#' @return A glottodata or glottosubdata object
+#' @return A glottodata or glottosubdata object (either a list or data.frame)
 glottoconvert <- function(data, var, glottocodes = NULL, table = NULL, glottocolumn = NULL, glottosubcolumn = NULL, ref = NULL, page = NULL, remark = NULL, contributor = NULL){
 
   if(purrr::is_empty(var)){

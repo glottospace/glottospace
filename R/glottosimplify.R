@@ -9,7 +9,7 @@
 #' @param submerge By default, glottosubdata tables are merged into a single glottodata table.
 #' @param droplist By default if glottodata is a list of tables, only the glottodata table is returned.
 #' @param dropunits By default units are kept.
-#' @return a simplified version of the original dataset
+#' @return a simplified version of the original dataset, either a data.frame/tibble or a list (depending on the selected options)
 #'
 #' @export
 #'
