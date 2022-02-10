@@ -1,8 +1,9 @@
 ---
+title: "`glottospace`: Language Mapping and Geospatial Analysis of Linguistic and Cultural Data"
 output: 
   github_document: 
-  toc: true
-  toc_depth: 2
+    toc: true
+    toc_depth: 2
 always_allow_html: true
 ---
 
@@ -20,7 +21,6 @@ knitr::opts_chunk$set(
 # glottospace <img src='man/figures/logo.png' align="right" height="139" />
 
 
-# glottospace: R package for language mapping and geolinguistics. 
 
 <!-- badges: start -->
 [![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)

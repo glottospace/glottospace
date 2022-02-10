@@ -1,9 +1,33 @@
+`glottospace`: Language Mapping and Geospatial Analysis of Linguistic
+and Cultural Data
+================
+
+-   [glottospace
+    <img src='man/figures/logo.png' align="right" height="139" />](#glottospace-)
+-   [Introduction](#introduction)
+-   [Development](#development)
+-   [Citation](#citation)
+-   [Installation](#installation)
+-   [Example](#example)
+    -   [Plotting language locations on a
+        map](#plotting-language-locations-on-a-map)
+-   [Workflow of glottospace](#workflow-of-glottospace)
+    -   [glottoget](#glottoget)
+    -   [glottocreate](#glottocreate)
+    -   [glottocheck](#glottocheck)
+    -   [glottoclean](#glottoclean)
+    -   [glottojoin](#glottojoin)
+    -   [glottosearch](#glottosearch)
+    -   [glottofilter](#glottofilter)
+    -   [glottodist](#glottodist)
+    -   [glottoplot](#glottoplot)
+    -   [glottospace](#glottospace)
+    -   [glottomap](#glottomap)
+    -   [glottosave](#glottosave)
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 # glottospace <img src='man/figures/logo.png' align="right" height="139" />
-
-# glottospace: R package for language mapping and geolinguistics.
 
 <!-- badges: start -->
 

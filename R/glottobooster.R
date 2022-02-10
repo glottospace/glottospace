@@ -67,8 +67,10 @@ glottobooster <- function(glottologdata = NULL, space = TRUE,
 #' @keywords internal
 #' @return glottologdata object, either a spatial object (class: sf) or a data.frame.
 #' @examples
+#' \donttest{
 #' glottologdata <- glottoget("glottolog")
 #' glottologdata <- glottoboosterflex(glottologdata)
+#' }
 glottoboosterflex <- function(glottologdata = NULL, space = TRUE,
                              addfamname = TRUE, addisolates = TRUE,
                              rmdialects = TRUE, rmfamilies = TRUE,
