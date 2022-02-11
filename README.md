@@ -378,7 +378,10 @@ glottosearch(search = "Yucuni", columns = c("name", "family"))
 #> 7533      Mexico POINT (-97.91818 17.23743)
 ```
 
-Sometimes you don’t find a match:
+checking for non-standard things in the check directory … NOTE Found the
+following files/directories:checking for non-standard things in the
+check directory … NOTE Found the following
+files/directories:fraSometimes you don’t find a match:
 
 ``` r
 glottosearch(search = "matsigenka")[,"name"]
