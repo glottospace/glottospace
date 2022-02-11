@@ -39,7 +39,7 @@ glottoplot <- function(glottodata = NULL, glottodist = NULL, type = NULL, k = NU
   }
 
   if(type == "heatmap"){
-    plot <- glottoplot_heatmap(glottodist = glottodist, filename = filename)
+    glottoplot_heatmap(glottodist = glottodist, filename = filename)
   }
 
   if(type == "nmds"){
@@ -47,18 +47,18 @@ glottoplot <- function(glottodata = NULL, glottodist = NULL, type = NULL, k = NU
     glottonmds <- glottonmds(glottodist = glottodist, k = k, rm.na = rm.na)
     scores <- glottonmds_scores(glottonmds)
     scoresdata <- glottojoin_base(scores)
-    plot <- glottoplot_nmds(nmds = glottonmds, scoresdata = scoresdata,
+    glottoplot_nmds(nmds = glottonmds, scoresdata = scoresdata,
                     color = color, ptsize = ptsize, label = label, filename = filename)
   }
 
   if(type == "stress"){
-    plot <- glottoplot_nmds_stress(glottodist = glottodist, k = k)
+    glottoplot_nmds_stress(glottodist = glottodist, k = k)
   }
 
   if(type == "missing"){
-    plot <- glottoplot_naviewer(data = glottodata, id = "glottocode")
+    glottoplot_naviewer(data = glottodata, id = "glottocode")
   }
-plot
+
 }
 
 #' Nonmetric Multidimensional Scaling
@@ -143,6 +143,7 @@ glottoplot_nmds <- function(nmds, scoresdata, color = NULL, ptsize = NULL, label
   if(nmds$ndim == 3){
     glottoplot_nmds_3d(nmds = nmds, scoresdata = scoresdata, color = color, ptsize = ptsize, label = label, filename = filename)
   }
+
 }
 
 #' Plot nmds in 2d

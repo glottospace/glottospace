@@ -73,12 +73,16 @@ glottosave <- function(glottodata, filename = NULL){
       utils::write.csv(glottodata, file = filename)
     }
     message(paste0("Matrix saved as ", normalizePath(filename) ))
+  } else if(any(class(glottodata) %in% c("gg", "ggplot")) ){
+    if( tools::file_ext(filename) == "" ){filename <- paste0(filename, ".png")}
+    ggplot2::ggsave(plot = glottodata, filename = filename)
+    message(paste0("Plot saved as ", normalizePath(filename) ))
   } else if(class(glottodata) == "data.frame"){
     if( tools::file_ext(filename) == "" ){filename <- paste0(filename, ".xlsx")}
     writexl::write_xlsx(glottodata, path = filename) # works better than openxlsx, which omits some columns..
     message(paste0("Data.frame saved as ", normalizePath(filename) ))
   } else(
-    message("Could not detect object type. Please convert glottodata to a supported object type.")
+    message("Could not detect object type. Please convert glottodata to a supported object type. In case you attempt to save the output of glottoplot() or glottomap, you can try to save it by specifying the filename argument in those functions directly. ")
   )
 
 }
