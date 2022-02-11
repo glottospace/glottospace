@@ -4,7 +4,7 @@
 #'
 #' @param glottodata glottodata or glottosubdata
 #' @param with Optional: glottodata (class data.frame), a dist object (class dist), or the name of a glottodatabase ("glottobase" or "glottospace")
-#' @param id By default, data is joined by a column named "glottocode". If the glottocodes are in another column, the column name should be specified.
+#' @param id By default, data is joined by a column named "glottocode" or "glottosubcode". In case you want to join using another column, the column name should be specified.
 #' @param rm.na Only used when joining with a dist object. By default NAs are kept.
 #' @param type In case two glottodata objects are joined, you can specify the type of join: "left" (default), "right", "full", or "inner"
 #'
@@ -35,14 +35,13 @@ glottojoin <- function(glottodata, with = NULL, id = NULL, rm.na = FALSE, type =
     splitted <- glottosplitmergemeta(glottodata)
     joined <- glottojoin_subdata(glottosubdata = splitted[[1]])
     joined <- glottosplitmergemeta(glottodata = joined, splitted = splitted)
-  } else if (glottocheck_hasmeta(with)){
+  } else if (glottocheck_hasmeta(with) & is.null(id)){
     joined <- glottojoin_meta(glottodata = glottodata, glottometa = with)
   } else {
     message("Unable to join glottosubdata with this type of data.")
   }
-  }
-
-  if(glottocheck_isglottodata(glottodata) & !is.null(with)){
+  return(joined)
+  } else if(glottocheck_isglottodata(glottodata) & !is.null(with)){
     glottodata <- glottosplit(glottodata)[[1]]
       if(is_dist(with)){
       joined <- glottojoin_dist(glottodata = glottodata, id = id, dist = with, rm.na = rm.na)
@@ -57,8 +56,14 @@ glottojoin <- function(glottodata, with = NULL, id = NULL, rm.na = FALSE, type =
             joined <- glottojoin_space(glottodata = glottodata, id = id)
           }
       } else(message("Unable to join glottodata with this type of data.") )
-      }
-return(joined)
+    return(joined)
+  } else if (!is.null(with) & !is.null(id)){
+    message("Input data is not glottodata or glottosubdata. Trying to join anyway. ")
+    joined <- glottojoin_data(glottodata = glottodata, with = with, type = type, id = id)
+    return(joined)
+  }
+
+
 }
 
 #' Join glottodata with a dist object

@@ -11,7 +11,7 @@ glottojoin(glottodata, with = NULL, id = NULL, rm.na = FALSE, type = "left")
 
 \item{with}{Optional: glottodata (class data.frame), a dist object (class dist), or the name of a glottodatabase ("glottobase" or "glottospace")}
 
-\item{id}{By default, data is joined by a column named "glottocode". If the glottocodes are in another column, the column name should be specified.}
+\item{id}{By default, data is joined by a column named "glottocode" or "glottosubcode". In case you want to join using another column, the column name should be specified.}
 
 \item{rm.na}{Only used when joining with a dist object. By default NAs are kept.}
 
