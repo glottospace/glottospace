@@ -33,7 +33,6 @@ Load locally stored glottodata, download databases from online sources, or load 
 \examples{
 \donttest{
 glottoget("glottolog")
-glottoget("yourdatafolder/glottodata.xlsx")
 }
 }
 \seealso{
