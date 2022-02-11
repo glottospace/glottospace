@@ -378,14 +378,6 @@ glottosearch(search = "Yucuni", columns = c("name", "family"))
 #> 7533      Mexico POINT (-97.91818 17.23743)
 ```
 
-Let’s view one of them on [glottolog](https://glottolog.org/):
-
-``` r
-glottocode("yucu1253")
-```
-
-<img src="man/figures/README-example_online-1.png" width="100%" />
-
 Sometimes you don’t find a match:
 
 ``` r

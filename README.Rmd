@@ -195,14 +195,6 @@ glottosearch(search = "Yucuni", columns = c("name", "family"))
 
 ```
 
-Let's view one of them on [glottolog](https://glottolog.org/):
-
-```{r example_online}
-glottocode("yucu1253")
-```
-
-
-
 Sometimes you don't find a match:
 ```{r glottosearch3}
 glottosearch(search = "matsigenka")[,"name"]
