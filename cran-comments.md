@@ -5,10 +5,6 @@ Dear Uwe Ligges/Gregor Seyer,
 
 Thanks again for your time and patience. This is a resubmission. 
 
-There were no ERRORS or WARNINGS.
-
-There were three NOTES, all of which we've discussed before (misspelled words in description, number of dependencies, rnaturalearth package dependency)
-
 Below I respond to the issues you highlighted in your mail: 
 
 * ISSUE: Please do not start the description with "This package", package name, title or similar.
