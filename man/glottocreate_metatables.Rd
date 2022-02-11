@@ -2,10 +2,11 @@
 % Please edit documentation in R/glottocreate.R
 \name{glottocreate_metatables}
 \alias{glottocreate_metatables}
-\title{Create metatables}
+\title{Create metatables for glottodata or glottosubdata}
 \usage{
 glottocreate_metatables(
   glottocodes = NULL,
+  glottosubcodes = NULL,
   varnames = NULL,
   levels = NULL,
   maintainer = NULL,
@@ -33,6 +34,6 @@ glottocreate_metatables(
 a list of metatables
 }
 \description{
-Create metatables
+Create metatables for glottodata or glottosubdata
 }
 \keyword{internal}
