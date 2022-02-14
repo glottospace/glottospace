@@ -1,6 +1,6 @@
 #' Calculate distances between languages
 #'
-#' @param glottodata A glottodata table, either with or without structure table.
+#' @param glottodata glottodata or glottosubdata, either with or without structure table.
 #' @param structure If glottodata is a table without a structure table, you can add it separately. To create a structure table, you should run glottocreate_structuretable() and you can add it with glottocreate_addtable()
 #' @param id By default, glottodist looks for a column named 'glottocode', if the id is in a different column, this should be specified.
 #' @return object of class \code{dist}
@@ -11,7 +11,11 @@
 #' glottodist <- glottodist(glottodata = glottodata)
 glottodist <- function(glottodata, structure = NULL, id = NULL){
 
-  if(!glottocheck_isglottodata(glottodata)){message("glottodata object does not adhere to glottodata format. Use glottocreate() to create it.")}
+  if(glottocheck_isglottosubdata(glottodata)){
+    glottodata <- glottojoin(glottodata)
+  } else if(!glottocheck_isglottodata(glottodata)){
+    message("glottodata object does not adhere to glottodata/glottosubdata format. Use glottocreate() or glottoconvert().")
+    }
 
   if(glottocheck_hasmeta(glottodata) & is.null(structure)){
     structure <- glottodata[["structure"]]
@@ -23,7 +27,20 @@ glottodist <- function(glottodata, structure = NULL, id = NULL){
   }
 
   # glottodata:
-  if(is.null(id)){id <- "glottocode"}
+  if(is.null(id)){
+    if("glottocode" %in% colnames(glottodata) & "glottosubcode" %nin% colnames(glottodata)){
+      id <- "glottocode"
+      message("glottocode used as id")
+    } else if("glottocode" %nin% colnames(glottodata) & "glottosubcode" %in% colnames(glottodata)){
+      id <- "glottosubcode"
+      message("glottosubcode used as id")
+    } else if(all(c("glottocode", "glottosubcode") %in% colnames(glottodata)) ){
+      id <- "glottocode"
+      message("Data contains glottocodes AND glottosubcodes, glottocode used as id. If this is not what you want, please specify id.")
+    } else if(all(c("glottocode", "glottosubcode") %nin% colnames(glottodata)) ){
+      stop("Please provide an id, or add a 'glottocode' or 'glottosubcode' column to your data")
+    }
+    }
   glottodata <- tibble::column_to_rownames(glottodata, id)
 
   # structure table:
@@ -31,7 +48,6 @@ glottodist <- function(glottodata, structure = NULL, id = NULL){
     colnames(structure)[1] <- "varname"
     message("The structure table does not contain a 'varname' column, trying with the first column instead.")
   }
-  # glottodata <-  glottodata[, (colnames(glottodata) %in% structure$varname)]
 
   structure <- suppressMessages(dplyr::left_join(data.frame("varname" = colnames(glottodata)), structure))
 

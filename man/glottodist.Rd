@@ -7,7 +7,7 @@
 glottodist(glottodata, structure = NULL, id = NULL)
 }
 \arguments{
-\item{glottodata}{A glottodata table, either with or without structure table.}
+\item{glottodata}{glottodata or glottosubdata, either with or without structure table.}
 
 \item{structure}{If glottodata is a table without a structure table, you can add it separately. To create a structure table, you should run glottocreate_structuretable() and you can add it with glottocreate_addtable()}
 

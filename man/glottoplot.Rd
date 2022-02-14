@@ -13,7 +13,8 @@ glottoplot(
   color = NULL,
   ptsize = NULL,
   label = NULL,
-  filename = NULL
+  filename = NULL,
+  row2id = NULL
 )
 }
 \arguments{
@@ -34,6 +35,8 @@ glottoplot(
 \item{label}{glottovar to be used to label features (optional). Run glottovars() to see the options.}
 
 \item{filename}{Optional filename if output should be saved.}
+
+\item{row2id}{In case of nmds, specify what each row contains (either 'glottocode' or 'glottosubcode')}
 }
 \value{
 a visualization of a glotto(sub)data or glottodist object, which can be saved with glottosave()
@@ -46,7 +49,7 @@ This function offers different types of visualizations for linguistic data and l
 # Plot glottodist as nmds:
 glottodata <- glottoget("demodata", meta = TRUE)
 glottodist <- glottodist(glottodata = glottodata)
-glottoplot(glottodist = glottodist, type = "nmds", k = 3, color = "family", label = "name")
+glottoplot(glottodist = glottodist, type = "nmds", k = 3, color = "family", label = "name", row2id = "glottocode")
 
 # Plot missing data:
 glottodata <- glottoget("demodata", meta = TRUE)

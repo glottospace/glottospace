@@ -427,8 +427,8 @@ glottocheck_isglottosubdata <- function(glottodata){
 glottocheck_isglottodata <- function(glottodata){
   glottodata <- contrans_tb2df(glottodata)
   if(is_list(glottodata)){
-    return(all(any(names(glottodata) %in% "glottodata") &
-          !purrr::is_empty(colnames(glottodata[[1]])[1] == "glottocode")) )
+    return(all(names(glottodata) %in% "glottodata") &
+          !purrr::is_empty(colnames(glottodata[[1]])[1] == "glottocode") )
   } else {
     return(!purrr::is_empty(colnames(glottodata)[1] == "glottocode"))
   }

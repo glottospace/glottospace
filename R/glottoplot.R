@@ -12,6 +12,7 @@
 #' @param label glottovar to be used to label features (optional). Run glottovars() to see the options.
 #' @param ptsize Size of points between 0 and 1 (optional)
 #' @param filename Optional filename if output should be saved.
+#' @param row2id In case of nmds, specify what each row contains (either 'glottocode' or 'glottosubcode')
 #'
 #' @return a visualization of a glotto(sub)data or glottodist object, which can be saved with glottosave()
 #' @export
@@ -21,7 +22,7 @@
 #' # Plot glottodist as nmds:
 #' glottodata <- glottoget("demodata", meta = TRUE)
 #' glottodist <- glottodist(glottodata = glottodata)
-#' glottoplot(glottodist = glottodist, type = "nmds", k = 3, color = "family", label = "name")
+#' glottoplot(glottodist = glottodist, type = "nmds", k = 3, color = "family", label = "name", row2id = "glottocode")
 #'
 #' # Plot missing data:
 #' glottodata <- glottoget("demodata", meta = TRUE)
@@ -29,7 +30,7 @@
 #' glottoplot(glottodata = glottodata, type = "missing")
 #' }
 glottoplot <- function(glottodata = NULL, glottodist = NULL, type = NULL, k = NULL, rm.na = FALSE,
-                       color = NULL, ptsize = NULL, label = NULL, filename = NULL){
+                       color = NULL, ptsize = NULL, label = NULL, filename = NULL, row2id = NULL){
   if(is.null(type)){type <- "heatmap"}
   if(is_dist(glottodata)){
     glottodist <- glottodata
@@ -45,7 +46,11 @@ glottoplot <- function(glottodata = NULL, glottodist = NULL, type = NULL, k = NU
   if(type == "nmds"){
     if(is.null(k)){stop("Please specify k (number of dimensions)")}
     glottonmds <- glottonmds(glottodist = glottodist, k = k, rm.na = rm.na)
-    scores <- glottonmds_scores(glottonmds)
+    if(is.null(row2id)){stop("Please specify row2id ('glottocode' or 'glottosubcode')")}
+    scores <- glottonmds_scores(glottonmds, row2id = row2id)
+    if(row2id == "glottosubcode"){
+    scores$glottocode <- glottoconvert_subcodes(scores$glottosubcode)
+    }
     scoresdata <- glottojoin_base(scores)
     glottoplot_nmds(nmds = glottonmds, scoresdata = scoresdata,
                     color = color, ptsize = ptsize, label = label, filename = filename)
@@ -101,6 +106,7 @@ glottonmds <- function(glottodist, k = 2, rm.na = FALSE){
 #'
 #' @param glottonmds a glottonmnds object created with glottonmds_run()
 #'
+#' @param row2id Name of column where ids should be placed, default is 'glottocode' (can also be 'glottosubcode')
 #'
 #' @noRd
 #' @family <glottoplot>
@@ -109,9 +115,10 @@ glottonmds <- function(glottodist, k = 2, rm.na = FALSE){
 #' \dontrun{
 #' glottonmds_scores(glottonmds)
 #' }
-glottonmds_scores <- function(glottonmds){
+glottonmds_scores <- function(glottonmds, row2id = NULL){
   scores <- as.data.frame(vegan::scores(glottonmds))
-  scores <- tibble::rownames_to_column(scores, "glottocode")
+  if(is.null(row2id)){row2id <- "glottocode"}
+  scores <- tibble::rownames_to_column(scores, row2id)
   scores
 }
 

@@ -14,7 +14,8 @@ glottoconvert(
   ref = NULL,
   page = NULL,
   remark = NULL,
-  contributor = NULL
+  contributor = NULL,
+  varnamecol = NULL
 )
 }
 \arguments{
@@ -50,6 +51,8 @@ Otherwise, glottospace will attempt to convert the dataset into glottosubdata. T
 \item{remark}{Character string that distinguishes those columns which contain remarks.}
 
 \item{contributor}{Character string that distinguishes those columns which contain contributors.}
+
+\item{varnamecol}{In case the dataset contains a structure table, and the varnamecol is not called 'varname', its name should be specified.}
 }
 \value{
 A glottodata or glottosubdata object (either a list or data.frame)
