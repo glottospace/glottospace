@@ -136,7 +136,7 @@ glottoconvert_subdata <- function(data, glottocodes = NULL, varnamecol = NULL){
     glottometatables <- data[glottometanames]
     glottosubdata <- c(glottodatatables, glottometatables)
     # structure table:
-      if("varname" %nin% colnames(glottodata[["structure"]]) & is.null(varnamecol)){
+      if("varname" %nin% colnames(glottosubdata[["structure"]]) & is.null(varnamecol)){
         stop("The structure table does not contain a column named 'varname', please specify the varnamecol argument to indicate which column in the structure table contains varnames.")
       } else if("varname" %nin% colnames(glottosubdata[["structure"]]) & !is.null(varnamecol)){
         colnames(glottosubdata[["structure"]])[colnames(glottosubdata[["structure"]]) == varnamecol] <- "varname"
