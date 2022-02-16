@@ -34,8 +34,6 @@ glottoconvert <- function(data, var, glottocodes = NULL, table = NULL, glottocol
     stop("Please indicate how variable columns are distinguished from other columns.")
   }
 
-
-
   if(!is_list(data) ){
     glottodata <- glottoconvert_table(table = data, glottocolumn = glottocolumn, var = var, ref = ref, page = page, remark = remark, contributor = contributor)
   } else if(is_list(data) & length(data) == 1){
@@ -45,10 +43,7 @@ glottoconvert <- function(data, var, glottocodes = NULL, table = NULL, glottocol
   } else if(is_list(data) & !is.null(table) ){
     glottodata <- glottoconvert_data(data = data, table = table, glottocolumn = glottocolumn, var = var, ref = ref, page = page, remark = remark, contributor = contributor)
   } else {
-  glottosubdata <- glottoconvert_subdata(data = data, var = var, glottocodes = glottocodes)
-  splitted <- glottosplitmergemeta(glottosubdata)
-  glottosubdata <- lapply(X = splitted[[1]], FUN = glottoconvert_subtable, glottosubcolumn = glottosubcolumn, var = var)
-  glottodata <- glottosplitmergemeta(glottodata = glottosubdata, splitted = splitted)
+    glottodata <- glottoconvert_subdata(data = data, var = var, glottocodes = glottocodes, glottosubcolumn = glottosubcolumn)
   }
 
   message("I don't condemn, I DO convert, but Love is My Religion: https://youtu.be/r-eXYJnV3V4 \n \n your data has been converted into glottodata! \n (don't forget to assign it to a new object)")
@@ -109,7 +104,7 @@ glottoconvert_data <- function(data, var, table = NULL, glottocolumn = NULL, ref
 #' @param varnamecol In case the dataset contains a structure table, but the varnamecol is not called 'varname', its name should be specified.
 #'
 #' @noRd
-glottoconvert_subdata <- function(data, var, glottocodes = NULL, varnamecol = NULL){
+glottoconvert_subdata <- function(data, var, glottocodes = NULL, varnamecol = NULL, glottosubcolumn = NULL){
 
   if("sample" %in% names(data) ){
     sample <- data$sample[["glottocode"]]
@@ -133,8 +128,7 @@ glottoconvert_subdata <- function(data, var, glottocodes = NULL, varnamecol = NU
          Please check whether your table names are actually glottocodes (and only glottocodes),
          and not something like 'abcd1234_something'. ")
   } else {
-  glottodatatables <- data[glottodatanames]
-  # Perhaps lapply glottoconvert_table
+  glottodatatables <- lapply(X = data[glottodatanames], FUN = glottoconvert_subtable, glottosubcolumn = glottosubcolumn, var = var)
   }
 
   glottometanames <- names(data) %in% names(glottocreate_metatables())
@@ -271,7 +265,7 @@ invisible(glottodata)
 }
 
 
-#' Transform a table of a linguistic dataset into a glottosubdata table
+#' Transform a table into a glottosubdata table
 #'
 #' @param var Character string that distinguishes those columns which contain variable names.
 #' @param glottosubcolumn Column name with glottosubcodes
