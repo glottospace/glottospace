@@ -24,7 +24,7 @@
 #' @param contributor Character string that distinguishes those columns which contain contributors.
 #' @param glottocolumn column name or column id with glottocodes (optional, provide if glottocodes are not stored in a column called 'glottocode')
 #' @param glottosubcolumn Column name or column id with glottosubcodes (optional, provide if glottosubcodes are not stored in a column called 'glottosubcode')
-#' @param varnamecol In case the dataset contains a structure table, and the varnamecol is not called 'varname', its name should be specified.
+#' @param varnamecol In case the dataset contains a structure table, but the varnamecol is not called 'varname', its name should be specified.
 #'
 #' @export
 #' @return A glottodata or glottosubdata object (either a list or data.frame)
@@ -34,16 +34,18 @@ glottoconvert <- function(data, var, glottocodes = NULL, table = NULL, glottocol
     stop("Please indicate how variable columns are distinguished from other columns.")
   }
 
+
+
   if(!is_list(data) ){
     glottodata <- glottoconvert_table(table = data, glottocolumn = glottocolumn, var = var, ref = ref, page = page, remark = remark, contributor = contributor)
   } else if(is_list(data) & length(data) == 1){
     glottodata <- glottoconvert_table(table = data[[1]], glottocolumn = glottocolumn, var = var, ref = ref, page = page, remark = remark, contributor = contributor)
   } else if(is_list(data) & "glottodata" %in% names(data)){
-    glottodata <- glottoconvert_data(data = data, table = "glottodata", glottocolumn = glottocolumn, var = var, ref = ref, page = page, remark = remark, contributor = contributor, varnamecol = varnamecol)
+    glottodata <- glottoconvert_data(data = data, table = "glottodata", glottocolumn = glottocolumn, var = var, ref = ref, page = page, remark = remark, contributor = contributor)
   } else if(is_list(data) & !is.null(table) ){
-    glottodata <- glottoconvert_data(data = data, table = table, glottocolumn = glottocolumn, var = var, ref = ref, page = page, remark = remark, contributor = contributor, varnamecol = varnamecol)
+    glottodata <- glottoconvert_data(data = data, table = table, glottocolumn = glottocolumn, var = var, ref = ref, page = page, remark = remark, contributor = contributor)
   } else {
-  glottosubdata <- glottoconvert_subdata(data = data, glottocodes = glottocodes, varnamecol = varnamecol)
+  glottosubdata <- glottoconvert_subdata(data = data, var = var, glottocodes = glottocodes)
   splitted <- glottosplitmergemeta(glottosubdata)
   glottosubdata <- lapply(X = splitted[[1]], FUN = glottoconvert_subtable, glottosubcolumn = glottosubcolumn, var = var)
   glottodata <- glottosplitmergemeta(glottodata = glottosubdata, splitted = splitted)
@@ -64,7 +66,7 @@ glottoconvert <- function(data, var, glottocodes = NULL, table = NULL, glottocol
 #' @param contributor Character string that distinguishes those columns which contain contributors.
 #' @param glottocolumn column name or column id with glottocodes (optional, provide if glottocodes are not stored in a column called 'glottocode')
 #' @param data Dataset to be converted
-#' @param varnamecol In case the dataset contains a structure table, and the varnamecol is not called 'varname', its name should be specified.
+#' @param varnamecol In case the dataset contains a structure table, but the varnamecol is not called 'varname', its name should be specified.
 #'
 #' @return A glottodata object
 #' @noRd
@@ -73,21 +75,26 @@ glottoconvert_data <- function(data, var, table = NULL, glottocolumn = NULL, ref
   if(is.null(table)){table <- "glottodata"}
   glottodata <- glottoconvert_table(table = data[[table]], glottocolumn = glottocolumn, var = var, ref = ref, page = page, remark = remark, contributor = contributor)
 
-  # glottometanames <- names(data) %in% names(glottocreate_metatables())
-
-  if(any(names(data) %in% "structure")){
-    glottodata[["structure"]] <- data[["structure"]]
-    if("varname" %nin% colnames(glottodata[["structure"]]) & is.null(varnamecol)){
-      stop("The structure table does not contain a column named 'varname', please indicate which column in the structure table contains varnames.")
-    } else if("varname" %nin% colnames(glottodata[["structure"]]) & !is.null(varnamecol)){
-      colnames(glottodata[["structure"]])[colnames(glottodata[["structure"]]) == varnamecol] <- "varname"
+  glottometanames <- names(data) %in% names(glottocreate_metatables())
+  if(sum(glottometanames) == 0){
+    message("Unable to find meta tables in your dataset.
+            In case you would like to add meta tables, use glottocreate_metatables() and add them to glottosubdata using glottojoin(). ")
+  } else {
+    glottometatables <- data[glottometanames]
+    if("structure" %in% names(glottometatables)){
+      if("varname" %nin% colnames(glottometatables[["structure"]]) & is.null(varnamecol)){
+        stop("The structure table does not contain a column named 'varname'. Either add it to your dataset, or specify varnamecol argument to indicate which column in the structure table contains varnames.")
+      } else if("varname" %nin% colnames(glottometatables[["structure"]]) & !is.null(varnamecol)){
+        colnames(glottometatables[["structure"]])[colnames(glottometatables[["structure"]]) == varnamecol] <- "varname"
+      }
+      oldvarids <- grep(pattern = var, x = glottometatables[["structure"]][, "varname", drop = TRUE], ignore.case = TRUE, value = FALSE)
+      newvarnames <- gsub(pattern = var, x = glottometatables[["structure"]][oldvarids, "varname", drop = TRUE], replacement = "")
+      glottometatables[["structure"]][oldvarids, "varname", drop = TRUE] <- newvarnames
     }
-    oldvarids <- grep(pattern = var, x = glottodata[["structure"]]$varname, ignore.case = TRUE, value = FALSE)
-    newvarnames <- gsub(pattern = var, x = glottodata[["structure"]][oldvarids, "varname", drop = TRUE], replacement = "")
-    glottodata[["structure"]][oldvarids, "varname", drop = TRUE] <- newvarnames
+    glottodata <- c(glottodata, glottometatables)
   }
 
-  ignored <- names(data)[names(data) %nin% c(table, "structure")]
+  ignored <- names(data)[names(data) %nin% c(table, glottometanames)]
   if(length(ignored) != 0){
     message(paste("The following tables were ignored: ", paste(ignored, collapse = ", ") ) )
   }
@@ -97,11 +104,13 @@ glottoconvert_data <- function(data, var, table = NULL, glottocolumn = NULL, ref
 #' Convert a linguistic dataset into glottosubdata
 #'
 #' @param data Any dataset that should be converted into glottosubdata. This will generally be an excel file loaded with glottoget() of which the sheetnames are glottocodes.
-#' @param varnamecol In case the dataset contains a structure table, and the varnamecol is not called 'varname', its name should be specified.
 #' @param glottocodes Optional character vector of glottocodes. If no glottocodes are supplied, glottospace will search for them in the sample table.
+#' @param var Character string that distinguishes those columns which contain variable names.
+#' @param varnamecol In case the dataset contains a structure table, but the varnamecol is not called 'varname', its name should be specified.
 #'
 #' @noRd
-glottoconvert_subdata <- function(data, glottocodes = NULL, varnamecol = NULL){
+glottoconvert_subdata <- function(data, var, glottocodes = NULL, varnamecol = NULL){
+
   if("sample" %in% names(data) ){
     sample <- data$sample[["glottocode"]]
   }
@@ -125,6 +134,7 @@ glottoconvert_subdata <- function(data, glottocodes = NULL, varnamecol = NULL){
          and not something like 'abcd1234_something'. ")
   } else {
   glottodatatables <- data[glottodatanames]
+  # Perhaps lapply glottoconvert_table
   }
 
   glottometanames <- names(data) %in% names(glottocreate_metatables())
@@ -134,17 +144,17 @@ glottoconvert_subdata <- function(data, glottocodes = NULL, varnamecol = NULL){
     glottosubdata <- glottodatatables
   } else {
     glottometatables <- data[glottometanames]
-    glottosubdata <- c(glottodatatables, glottometatables)
-    # structure table:
-      if("varname" %nin% colnames(glottosubdata[["structure"]]) & is.null(varnamecol)){
-        stop("The structure table does not contain a column named 'varname', please specify the varnamecol argument to indicate which column in the structure table contains varnames.")
-      } else if("varname" %nin% colnames(glottosubdata[["structure"]]) & !is.null(varnamecol)){
-        colnames(glottosubdata[["structure"]])[colnames(glottosubdata[["structure"]]) == varnamecol] <- "varname"
+    if("structure" %in% names(glottometatables)){
+      if("varname" %nin% colnames(glottometatables[["structure"]]) & is.null(varnamecol)){
+        stop("The structure table does not contain a column named 'varname'. Either add it to your dataset, or specify varnamecol argument to indicate which column in the structure table contains varnames.")
+      } else if("varname" %nin% colnames(glottometatables[["structure"]]) & !is.null(varnamecol)){
+        colnames(glottometatables[["structure"]])[colnames(glottometatables[["structure"]]) == varnamecol] <- "varname"
       }
-      oldvarids <- grep(pattern = var, x = glottosubdata[["structure"]]$varname, ignore.case = TRUE, value = FALSE)
-      newvarnames <- gsub(pattern = var, x = glottosubdata[["structure"]][oldvarids, "varname", drop = TRUE], replacement = "")
-      glottosubdata[["structure"]][oldvarids, "varname", drop = TRUE] <- newvarnames
-
+      oldvarids <- grep(pattern = var, x = glottometatables[["structure"]][, "varname", drop = TRUE], ignore.case = TRUE, value = FALSE)
+      newvarnames <- gsub(pattern = var, x = glottometatables[["structure"]][oldvarids, "varname", drop = TRUE], replacement = "")
+      glottometatables[["structure"]][oldvarids, "varname", drop = TRUE] <- newvarnames
+    }
+    glottosubdata <- c(glottodatatables, glottometatables)
   }
 
   ignored <- names(data)[!(glottodatanames | glottometanames)]
@@ -155,7 +165,7 @@ glottoconvert_subdata <- function(data, glottocodes = NULL, varnamecol = NULL){
   glottosubdata
 }
 
-#' Transform a linguistic dataset consisting of a single table into glottodata
+#' Transform a table into a glottodatatable and move info to metatables
 #'
 #' @param glottocolumn column name or column id with glottocodes
 #' @param var Character string that distinguishes those columns which contain variable names.

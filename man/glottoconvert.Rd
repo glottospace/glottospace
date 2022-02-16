@@ -52,7 +52,7 @@ Otherwise, glottospace will attempt to convert the dataset into glottosubdata. T
 
 \item{contributor}{Character string that distinguishes those columns which contain contributors.}
 
-\item{varnamecol}{In case the dataset contains a structure table, and the varnamecol is not called 'varname', its name should be specified.}
+\item{varnamecol}{In case the dataset contains a structure table, but the varnamecol is not called 'varname', its name should be specified.}
 }
 \value{
 A glottodata or glottosubdata object (either a list or data.frame)
