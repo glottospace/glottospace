@@ -49,6 +49,9 @@ glottodist <- function(glottodata, structure = NULL, id = NULL){
     message("The structure table does not contain a 'varname' column, trying with the first column instead.")
   }
 
+  if(length(colnames(glottodata)) != length(structure$varname) ){
+    stop(paste("The number of variables in ", ifelse(id == "glottocode", "glottodata", "glottosubdata"), "differs from the number of variables in the structure table") )
+  }
   structure <- suppressMessages(dplyr::left_join(data.frame("varname" = colnames(glottodata)), structure))
 
   # type
