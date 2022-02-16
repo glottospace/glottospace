@@ -169,6 +169,7 @@ glottojoin_subdata <- function(glottosubdata){
   glottodata <- tibble::remove_rownames(glottodata)
 
   glottodata <- glottosplitmergemeta(glottodata = glottodata, splitted = splitted)
+  return(glottodata)
 
 }
 

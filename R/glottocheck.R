@@ -429,10 +429,21 @@ glottocheck_isglottosubdata <- function(glottodata){
 glottocheck_isglottodata <- function(glottodata){
   glottodata <- contrans_tb2df(glottodata)
   if(is_list(glottodata)){
-    return( ("glottodata" %in% names(glottodata)) &
-          !purrr::is_empty(colnames(glottodata[["glottodata"]])[1] == "glottocode") )
+    if("glottodata" %in% names(glottodata)){
+      if(!purrr:is_empty(colnames(glottodata[["glottodata"]])[1])){
+        return(colnames(glottodata[["glottodata"]])[1])
+      } else {
+        return(FALSE)
+      }
+    } else {
+      return(FALSE)
+    }
   } else {
-    return(!purrr::is_empty(colnames(glottodata)[1] == "glottocode"))
+    if(!purrr::is_empty(colnames(glottodata)[1])){
+      return(colnames(glottodata)[1] == "glottocode")
+    } else {
+      return(FALSE)
+    }
   }
 }
 

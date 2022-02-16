@@ -13,6 +13,7 @@
 #' @param ptsize Size of points between 0 and 1 (optional)
 #' @param filename Optional filename if output should be saved.
 #' @param row2id In case of nmds, specify what each row contains (either 'glottocode' or 'glottosubcode')
+#' @param palette Name of color palette, use glottocolpal("all") to see the options
 #'
 #' @return a visualization of a glotto(sub)data or glottodist object, which can be saved with glottosave()
 #' @export
@@ -30,7 +31,7 @@
 #' glottoplot(glottodata = glottodata, type = "missing")
 #' }
 glottoplot <- function(glottodata = NULL, glottodist = NULL, type = NULL, k = NULL, rm.na = FALSE,
-                       color = NULL, ptsize = NULL, label = NULL, filename = NULL, row2id = NULL){
+                       color = NULL, ptsize = NULL, label = NULL, filename = NULL, row2id = NULL, palette = NULL){
   if(is.null(type)){type <- "heatmap"}
   if(is_dist(glottodata)){
     glottodist <- glottodata
@@ -53,7 +54,7 @@ glottoplot <- function(glottodata = NULL, glottodist = NULL, type = NULL, k = NU
     }
     scoresdata <- glottojoin_base(scores)
     glottoplot_nmds(nmds = glottonmds, scoresdata = scoresdata,
-                    color = color, ptsize = ptsize, label = label, filename = filename)
+                    color = color, ptsize = ptsize, label = label, palette = palette, filename = filename)
   }
 
   if(type == "stress"){
@@ -141,14 +142,14 @@ glottonmds_scores <- function(glottonmds, row2id = NULL){
 #'
 #' glottoplot_nmds(nmds = nmds, scoresdata = scoresdata, color = "family", ptsize = "isolate")
 #' glottoplot_nmds(nmds = nmds, scoresdata = scoresdata, color = "isolate")
-glottoplot_nmds <- function(nmds, scoresdata, color = NULL, ptsize = NULL, label = NULL, filename = NULL){
+glottoplot_nmds <- function(nmds, scoresdata, color = NULL, ptsize = NULL, label = NULL, palette = NULL, filename = NULL){
 
   if(nmds$ndim == 2){
     glottoplot_nmds_2d(nmds = nmds, scoresdata = scoresdata, color = color, ptsize = ptsize, label = label, filename = filename)
   }
 
   if(nmds$ndim == 3){
-    glottoplot_nmds_3d(nmds = nmds, scoresdata = scoresdata, color = color, ptsize = ptsize, label = label, filename = filename)
+    glottoplot_nmds_3d(nmds = nmds, scoresdata = scoresdata, color = color, ptsize = ptsize, label = label, palette = palette, filename = filename)
   }
 
 }
@@ -183,9 +184,13 @@ glottoplot_nmds_2d <- function(nmds, scoresdata, color = NULL, ptsize = NULL, la
       ggplot2::labs(title = paste0("NMDS (k = ", nmds$ndim, ", stress = ", round(nmds$stress, 2), ")"), x = "NMDS1", y = "NMDS2") +
       ggplot2::theme_bw()
 
-      if(!is.null(filename)){ggplot2::ggsave(plot = nmdsplot, filename = filename)}
 
-      print(nmdsplot)
+
+      if(!is.null(filename)){
+        if( tools::file_ext(filename) == "" ){filename <- paste0(filename, ".png")}
+        ggplot2::ggsave(plot = nmdsplot, filename = filename)
+        }
+    print(nmdsplot)
 
 }
 
@@ -209,13 +214,20 @@ glottoplot_nmds_2d <- function(nmds, scoresdata, color = NULL, ptsize = NULL, la
 #'
 #' glottoplot_nmds_3d(nmds = nmds, scoresdata = scoresdata, color = "family", label = "name")
 #' glottoplot_nmds_3d(nmds = nmds, scoresdata = scoresdata, color = "isolate")
-glottoplot_nmds_3d <- function(nmds, scoresdata, color = NULL, ptsize = NULL, label = NULL, filename = NULL){
+glottoplot_nmds_3d <- function(nmds, scoresdata, color = NULL, ptsize = NULL, label = NULL, palette = NULL, filename = NULL){
   if(is.null(color)){
     color <- "allsame"
     scoresdata$allsame <- "allsame"
   }
 
-  nmdsplot <- plotly::plot_ly(type="scatter3d", mode="markers")
+  if(is.null(palette)){
+    palette = "turbo"
+  }
+
+  colpal <- glottocolpal(palette = palette, ncolr = length(unique(scoresdata[[color]])) )
+  # colpal[as.factor(scoresdata[[color]])]
+
+  nmdsplot <- plotly::plot_ly(type="scatter3d", mode="markers", colors = colpal)
   for (i in unique(scoresdata[[color]])) {
 
     nmdsplot <- plotly::add_trace(nmdsplot,
@@ -242,7 +254,10 @@ glottoplot_nmds_3d <- function(nmds, scoresdata, color = NULL, ptsize = NULL, la
     ) )
 
 
-  if(!is.null(filename)){htmlwidgets::saveWidget(nmdsplot, title = "NMDS 3D", filename)}
+  if(!is.null(filename)){
+    if( tools::file_ext(filename) == "" ){filename <- paste0(filename, ".html")}
+    htmlwidgets::saveWidget(nmdsplot, title = "NMDS 3D", filename)
+    }
   print(nmdsplot)
 }
 
@@ -279,7 +294,10 @@ glottoplot_heatmap <- function(glottodist, filename = NULL){
     ggplot2::labs(x = "glottocode", y = "glottocode") +
     ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90, vjust = 0.5, hjust=1))
 
-  if(!is.null(filename)){ggplot2::ggsave(plot = heatmap, filename = filename)}
+  if(!is.null(filename)){
+    if( tools::file_ext(filename) == "" ){filename <- paste0(filename, ".png")}
+    ggplot2::ggsave(plot = heatmap, filename = filename)
+    }
   print(heatmap)
 
 

@@ -50,7 +50,7 @@ glottodist <- function(glottodata, structure = NULL, id = NULL){
   }
 
   if(length(colnames(glottodata)) != length(structure$varname) ){
-    stop(paste("The number of variables in ", ifelse(id == "glottocode", "glottodata", "glottosubdata"), "differs from the number of variables in the structure table") )
+    message(paste("The number of variables in ", ifelse(id == "glottocode", "glottodata", "glottosubdata"), "differs from the number of variables in the structure table") )
   }
   structure <- suppressMessages(dplyr::left_join(data.frame("varname" = colnames(glottodata)), structure))
 
@@ -61,7 +61,7 @@ glottodist <- function(glottodata, structure = NULL, id = NULL){
 
   dropvars <- which(structure$type %nin% glottocreate_lookuptable()$type_lookup )
   if(!purrr::is_empty(dropvars)){
-    dropvarnames <- paste0(colnames(glottodata[,dropvars]), collapse = ",")
+    dropvarnames <- paste0(colnames(glottodata)[dropvars], collapse = ",")
     message(paste0("The following variables are ignored in distance calculation (their type is not one of the pre-specified types): \n", dropvarnames))
     glottodata <- glottodata[,-dropvars]
     structure <- structure[-dropvars, ]
@@ -78,8 +78,17 @@ glottodist <- function(glottodata, structure = NULL, id = NULL){
   # levels
   levels <- structure$levels
 
-  # set type
+  # binary columns
   cbinary <- c(symm, asymm)
+  if(length(cbinary) != 0){
+  allevmat <- sapply(lapply(glottodata[cbinary], as.factor), levels)
+  allevuniq <- unique(c(allev))
+  if(any(allevuniq %nin% c("T", "TRUE", "True", "true", "F", "FALSE", "False", "false"))){
+    message("For some variables of type 'symm' and 'asymm', it is not clear whether they are TRUE of FALSE. It is highly recommended to run glottoclean() before running glottodist(). Proceeding anyway...")
+    glottodata[cbinary] <- glottoclean(glottodata[cbinary], structure = structure)
+  }
+  }
+  # set type
   glottodata[cbinary] <- lapply(glottodata[cbinary], as.logical)
   glottodata[numer] <- lapply(glottodata[numer], as.numeric)
   glottodata[fact] <- lapply(glottodata[fact], as.factor)

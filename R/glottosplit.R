@@ -20,8 +20,7 @@ glottosplitmergemeta <- function(glottodata, splitted = NULL){
     splitted <- glottosplit(glottodata)
     return(splitted)
   } else {
-    if(any(!is.na(splitted[[2]]))){glottodata <- glottojoin(glottodata = glottodata, with = splitted[[2]])}
-    return(glottodata)
+    if(any(!is.na(splitted[[2]]))){glottojoin(glottodata = glottodata, with = splitted[[2]])      }
   }
 
 }

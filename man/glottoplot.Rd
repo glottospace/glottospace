@@ -14,7 +14,8 @@ glottoplot(
   ptsize = NULL,
   label = NULL,
   filename = NULL,
-  row2id = NULL
+  row2id = NULL,
+  palette = NULL
 )
 }
 \arguments{
@@ -37,6 +38,8 @@ glottoplot(
 \item{filename}{Optional filename if output should be saved.}
 
 \item{row2id}{In case of nmds, specify what each row contains (either 'glottocode' or 'glottosubcode')}
+
+\item{palette}{Name of color palette, use glottocolpal("all") to see the options}
 }
 \value{
 a visualization of a glotto(sub)data or glottodist object, which can be saved with glottosave()

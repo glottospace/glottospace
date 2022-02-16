@@ -85,6 +85,8 @@ glottoconvert_data <- function(data, var, table = NULL, glottocolumn = NULL, ref
       oldvarids <- grep(pattern = var, x = glottometatables[["structure"]][, "varname", drop = TRUE], ignore.case = TRUE, value = FALSE)
       newvarnames <- gsub(pattern = var, x = glottometatables[["structure"]][oldvarids, "varname", drop = TRUE], replacement = "")
       glottometatables[["structure"]][oldvarids, "varname", drop = TRUE] <- newvarnames
+      glottodata[["structure"]] <- glottometatables[["structure"]]
+      glottometatables[["structure"]] <- NULL
     }
     glottodata <- c(glottodata, glottometatables)
   }
