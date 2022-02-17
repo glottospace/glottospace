@@ -85,7 +85,7 @@ glottorecode_missing <- function(glottodata, tona){
   message("Missing values recoded to NA \n")
 
   if(!is.null(splitted)){
-    glottodata <- glottosplitmergemeta(glottodata = glottodata, splitted = splitted[[2]])
+    glottodata <- glottosplitmergemeta(glottodata = glottodata, splitted = splitted)
   }
   glottodata
 }

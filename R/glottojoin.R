@@ -32,9 +32,7 @@
 glottojoin <- function(glottodata, with = NULL, id = NULL, rm.na = FALSE, type = "left"){
   if(glottocheck_isglottosubdata(glottodata) ){
     if(is.null(with)){# join glottosubdata
-    splitted <- glottosplitmergemeta(glottodata)
-    joined <- glottojoin_subdata(glottosubdata = splitted[[1]])
-    joined <- glottosplitmergemeta(glottodata = joined, splitted = splitted)
+    joined <- glottojoin_subdata(glottosubdata = glottodata)
   } else if (glottocheck_hasmeta(with) & is.null(id)){
     joined <- glottojoin_meta(glottodata = glottodata, glottometa = with)
   } else {
@@ -57,9 +55,13 @@ glottojoin <- function(glottodata, with = NULL, id = NULL, rm.na = FALSE, type =
           }
       } else(message("Unable to join glottodata with this type of data.") )
     return(joined)
-  } else if (!is.null(with) & !is.null(id)){
+  } else if (!is.null(with) ){
     message("Input data is not glottodata or glottosubdata. Trying to join anyway. ")
+    if(glottocheck_hasmeta(with) & is.null(id)){
+      joined <- c("data" = list(glottodata), with)
+    } else {
     joined <- glottojoin_data(glottodata = glottodata, with = with, type = type, id = id)
+    }
     return(joined)
   }
 
@@ -168,7 +170,8 @@ glottojoin_subdata <- function(glottosubdata){
   glottodata <- do.call("rbind", glottodata) # alternative approaches: data.table::rbindlist or plyr::rbind.fill
   glottodata <- tibble::remove_rownames(glottodata)
 
-  glottodata <- glottosplitmergemeta(glottodata = glottodata, splitted = splitted)
+  if(any(!is.na(splitted[[2]]))){glottodata <- c("data" = list(glottodata), splitted[[2]]) }
+
   return(glottodata)
 
 }
