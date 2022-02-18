@@ -58,7 +58,7 @@ glottojoin <- function(glottodata, with = NULL, id = NULL, rm.na = FALSE, type =
   } else if (!is.null(with) ){
     message("Input data is not glottodata or glottosubdata. Trying to join anyway. ")
     if(glottocheck_hasmeta(with) & is.null(id)){
-      joined <- c("data" = list(glottodata), with)
+      joined <- c("glottosubdata" = list(glottodata), with)
     } else {
     joined <- glottojoin_data(glottodata = glottodata, with = with, type = type, id = id)
     }

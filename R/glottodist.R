@@ -18,8 +18,9 @@ glottodist <- function(glottodata, structure = NULL, id = NULL){
     }
 
   if(glottocheck_hasmeta(glottodata) & is.null(structure)){
-    structure <- glottodata[["structure"]]
-    glottodata <- glottodata[["glottodata"]]
+    splitted <- glottosplitmergemeta(glottodata)
+    glottodata <- splitted[[1]][[1]]
+    structure <- splitted[[2]][["structure"]]
   } else if(glottocheck_hasmeta(glottodata) & !is.null(structure)){
     glottodata <- glottodata[["glottodata"]]
   } else if(!glottocheck_hasmeta(glottodata) & is.null(structure)){
@@ -76,15 +77,18 @@ glottodist <- function(glottodata, structure = NULL, id = NULL){
   logratio <- which(structure$type == "logratio")
 
   # levels
+  if(any(colnames(structure) == "levels")){
   levels <- structure$levels
+  }
 
   # binary columns
   cbinary <- c(symm, asymm)
   if(length(cbinary) != 0){
   allevmat <- sapply(lapply(glottodata[cbinary], as.factor), levels)
-  allevuniq <- unique(c(allev))
+  allevuniq <- unique(c(allevmat))
   if(any(allevuniq %nin% c("T", "TRUE", "True", "true", "F", "FALSE", "False", "false"))){
-    message("For some variables of type 'symm' and 'asymm', it is not clear whether they are TRUE of FALSE. It is highly recommended to run glottoclean() before running glottodist(). Proceeding anyway...")
+    message("For some variables of type 'symm' and 'asymm', it is not clear whether they are TRUE of FALSE. It is highly recommended to run glottoclean() before running glottodist(). Attempting to convert the following values to TRUE/FALSE...")
+    printmessage(allevuniq)
     glottodata[cbinary] <- glottoclean(glottodata[cbinary], structure = structure)
   }
   }
@@ -92,7 +96,9 @@ glottodist <- function(glottodata, structure = NULL, id = NULL){
   glottodata[cbinary] <- lapply(glottodata[cbinary], as.logical)
   glottodata[numer] <- lapply(glottodata[numer], as.numeric)
   glottodata[fact] <- lapply(glottodata[fact], as.factor)
+  if(!purrr::is_empty(ordfact)){
   glottodata[ordfact] <- mapply(FUN = as.ordfact, x = glottodata[ordfact], levels = levels[ordfact])
+  }
   glottodata[ordratio] <- lapply(glottodata[ordratio], as.numeric)
   glottodata[logratio] <- lapply(glottodata[logratio], as.numeric)
 
