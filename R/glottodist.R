@@ -19,7 +19,7 @@ glottodist <- function(glottodata, structure = NULL, id = NULL){
 
   if(glottocheck_hasmeta(glottodata) & is.null(structure)){
     splitted <- glottosplitmergemeta(glottodata)
-    glottodata <- splitted[[1]][[1]]
+    glottodata <- splitted[[1]]
     structure <- splitted[[2]][["structure"]]
   } else if(glottocheck_hasmeta(glottodata) & !is.null(structure)){
     glottodata <- glottodata[["glottodata"]]
