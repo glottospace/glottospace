@@ -58,7 +58,7 @@ glottojoin <- function(glottodata, with = NULL, id = NULL, rm.na = FALSE, type =
   } else if (!is.null(with) ){
     message("Input data is not glottodata or glottosubdata. Trying to join anyway. ")
     if(glottocheck_hasmeta(with) & is.null(id)){
-      joined <- c("glottosubdata" = list(glottodata), with)
+      joined <- c("glottodata" = list(glottodata), with)
     } else {
     joined <- glottojoin_data(glottodata = glottodata, with = with, type = type, id = id)
     }
@@ -103,7 +103,7 @@ glottojoin_dist <- function(glottodata, id = NULL, dist, rm.na = FALSE){
   }
 
   distdf <- as.data.frame(distmat)
-  data.table::setDT(distdf, keep.rownames = "id")
+  distdf <- tibble::rownames_to_column(distdf, var = "id")
 
   colnames(glottodata)[colnames(glottodata) == id] <- "id"
 
@@ -170,7 +170,7 @@ glottojoin_subdata <- function(glottosubdata){
   glottodata <- do.call("rbind", glottodata) # alternative approaches: data.table::rbindlist or plyr::rbind.fill
   glottodata <- tibble::remove_rownames(glottodata)
 
-  if(any(!is.na(splitted[[2]]))){glottodata <- c("data" = list(glottodata), splitted[[2]]) }
+  if(any(!is.na(splitted[[2]]))){glottodata <- c("glottodata" = list(glottodata), splitted[[2]]) }
 
   return(glottodata)
 

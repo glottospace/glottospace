@@ -431,7 +431,7 @@ glottocheck_isglottodata <- function(glottodata){
   if(is_list(glottodata)){
     if("glottodata" %in% names(glottodata)){
       if(!purrr::is_empty(colnames(glottodata[["glottodata"]])[1])){
-        return(colnames(glottodata[["glottodata"]])[1] == "glottocode")
+        return(colnames(glottodata[["glottodata"]])[1] %in% c("glottocode", "glottosubcode"))
       } else {
         return(FALSE)
       }
@@ -440,7 +440,7 @@ glottocheck_isglottodata <- function(glottodata){
     }
   } else {
     if(!purrr::is_empty(colnames(glottodata)[1])){
-      return(colnames(glottodata)[1] == "glottocode")
+      return(colnames(glottodata)[1] %in% c("glottocode", "glottosubcode"))
     } else {
       return(FALSE)
     }
