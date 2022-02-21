@@ -4,7 +4,7 @@
 \alias{glottoget}
 \title{Get glottodata from local path or online global databases}
 \usage{
-glottoget(glottodata = NULL, meta = FALSE, download = FALSE)
+glottoget(glottodata = NULL, meta = FALSE, download = FALSE, dirpath = NULL)
 }
 \arguments{
 \item{glottodata}{options are:
@@ -25,6 +25,8 @@ spatial coordinates.
 \item{meta}{In case 'glottodata' is a path to locally stored data (or demodata/demosubdata): by default, meta sheets are not loaded. Use meta=TRUE if you want to include them.}
 
 \item{download}{By default internally stored versions of global databases are used. Specify download = TRUE in case you want to download the latest version from a remote server.}
+
+\item{dirpath}{Optional, if you want to store a global CLDF dataset in a specific directory, or load it from a specific directory.}
 }
 \value{
 A glottodata or glottosubdata object (a data.frame or list, depending on which glottodata is requested)

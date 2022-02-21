@@ -18,6 +18,7 @@
 #' }
 #' @param meta In case 'glottodata' is a path to locally stored data (or demodata/demosubdata): by default, meta sheets are not loaded. Use meta=TRUE if you want to include them.
 #' @param download By default internally stored versions of global databases are used. Specify download = TRUE in case you want to download the latest version from a remote server.
+#' @param dirpath Optional, if you want to store a global CLDF dataset in a specific directory, or load it from a specific directory.
 #'
 #' @family <glottodata>
 #' @return A glottodata or glottosubdata object (a data.frame or list, depending on which glottodata is requested)
@@ -26,15 +27,15 @@
 #' \donttest{
 #' glottoget("glottolog")
 #' }
-glottoget <- function(glottodata = NULL, meta = FALSE, download = FALSE){
+glottoget <- function(glottodata = NULL, meta = FALSE, download = FALSE, dirpath = NULL){
   if(is.null(glottodata)){
-    glottodata <- glottoget_glottobase(download = download)
+    glottodata <- glottoget_glottobase(download = download, dirpath = dirpath)
   } else if(glottodata == "glottobase"){
-    glottodata <- glottoget_glottobase(download = download)
+    glottodata <- glottoget_glottobase(download = download, dirpath = dirpath)
   } else if(glottodata == "glottolog"){
-    glottodata <- glottoget_glottolog(download = download)
+    glottodata <- glottoget_glottolog(download = download, dirpath = dirpath)
   } else if (glottodata == "glottospace"){
-    glottodata <- glottoget_glottospace(download = download)
+    glottodata <- glottoget_glottospace(download = download, dirpath = dirpath)
   } else if(glottodata == "demodata"){
     glottodata <- glottocreate_demodata(meta = meta)
   } else if(glottodata == "demosubdata"){
@@ -103,8 +104,8 @@ glottoget_path <- function(filepath = NULL, simplify = TRUE){
 #'
 #' @examples
 #' glottobase <- glottoget_glottobase()
-glottoget_glottobase <- function(download = NULL, ...){
-  glottolog <- glottoget_glottolog(download = download)
+glottoget_glottobase <- function(download = NULL, dirpath = NULL, ...){
+  glottolog <- glottoget_glottolog(download = download, dirpath = dirpath)
   glottobase <- glottobooster(glottologdata = glottolog, ...)
   glottobase
 }
@@ -122,8 +123,8 @@ glottoget_glottobase <- function(download = NULL, ...){
 #'
 #' @examples
 #' glottospace <- glottoget_glottospace()
-glottoget_glottospace <- function(download = NULL){
-  glottologdata <- glottoget_glottolog(download = download)
+glottoget_glottospace <- function(download = NULL, dirpath = NULL){
+  glottologdata <- glottoget_glottolog(download = download, dirpath = dirpath)
   glottologdata <- glottologdata %>% dplyr::rename("glottocode" = "id")
   glottospace <- glottospace_coords2sf(glottologdata)
   glottospace <- glottospace[,c("glottocode")]
@@ -143,35 +144,28 @@ glottoget_glottospace <- function(download = NULL){
 #'
 #' @examples
 #' glottoget_glottolog()
-glottoget_glottolog <- function(download = NULL){
-  if(is.null(download)){download <- FALSE}
-  if(download == FALSE){
-    out <- glottospace::glottolog
-  } else{
-    message(paste("Your local version of glottolog was downloaded ", glottolog_date_local(), " days ago."))
-    vremote <- glottolog_version_remote()
-    vlocal <- glottolog_version_local()
-    if(vremote == vlocal){
-      out <- glottolog_loadlocal()
-      glottolog_version_localdatereset()
-      message(paste("Glottolog is up-to-date. Version", vlocal, " loaded."))
-    } else if(vremote > vlocal){
-      out <- glottolog_download()
+glottoget_glottolog <- function(download = NULL, dirpath = NULL){
+  if(is.null(download)){
+    download <- FALSE
     }
+  if(download == FALSE & is.null(dirpath) ){
+    out <- glottospace::glottolog
+  } else if(download == FALSE & !is.null(dirpath)){
+    out <- glottolog_loadlocal(dirpath = dirpath)
+  } else if(download == TRUE){
+    out <- glottolog_download(dirpath = dirpath)
   }
 return(out)
 }
-
-
 
 #' Download glottolog data
 #'
 #' @noRd
 #'
-glottolog_download <- function(){
+glottolog_download <- function(dirpath = NULL){
   invisible(readline(prompt="Are you sure you want to download Glottolog data? \n Press [enter] to continue"))
-  glottoget_zenodo(name = "glottolog")
-  glottolog_loadlocal()
+  dirpath <- glottoget_zenodo(name = "glottolog", dirpath = dirpath)
+  glottolog_loadlocal(dirpath = dirpath)
 }
 
 #' Check what's the most recent version of glottolog
@@ -257,12 +251,14 @@ glottolog_date_local <- function(){
 
 #' Load locally stored glottolog data
 #'
+#' @param dirpath Path to directory where glottolog cldf data is stored
+#'
 #' @importFrom rlang .data
 #' @noRd
-glottolog_loadlocal <- function(){
-  exdir <- glottofiles_makedir(paste0("glottolog-cldf-v", glottolog_version_local()))
-  cldf_metadata <- base::list.files(exdir, pattern = "cldf-metadata.json", recursive = TRUE)
-  mdpath <- normalizePath(file.path(exdir, cldf_metadata))
+glottolog_loadlocal <- function(dirpath){
+  if(!dir.exists(dirpath)){stop("Directory not found.")}
+  cldf_metadata <- base::list.files(dirpath, pattern = "cldf-metadata.json", recursive = TRUE)
+  mdpath <- normalizePath(file.path(dirpath, cldf_metadata))
   mddir <- normalizePath(base::dirname(mdpath))
 
   # Load languages file
@@ -299,9 +295,11 @@ glottolog_loadlocal <- function(){
 #' Download database from Zenodo
 #'
 #' @param name Name of a dataset, either wals or glottolog
+#' @param dirpath Path to directory where files should be stored
 #' @param url Zenodo url, something like this: "https://zenodo.org/api/records/1234567"
+#'
 #' @noRd
-glottoget_zenodo <- function(name = NULL, url = NULL){
+glottoget_zenodo <- function(name = NULL, url = NULL, dirpath = NULL){
 
   if(is.null(name) & !is.null(url)){
     base_url <- url
@@ -315,22 +313,22 @@ glottoget_zenodo <- function(name = NULL, url = NULL){
     stop("Unable to download data from Zenodo. Unrecognized name argument. ")
   }
 
+  if(is.null(dirpath)){dirpath <- tempdir()}
+
   req <- curl::curl_fetch_memory(base_url)
   content <- RJSONIO::fromJSON(rawToChar(req$content))
   url <- content$files[[1]]$links[[1]]
-  filename <- base::basename(url)
-  filepath <- glottofiles_makepath(filename)
-  exdir <- glottofiles_makedir(tools::file_path_sans_ext(filename))
 
-  utils::download.file(url = url, destfile = filepath ) # downloads and overwrites (i.e. changes date)
-  utils::unzip(zipfile = filepath, exdir = exdir)
+  filepath <- tempfile()
+  utils::download.file(file.path(url), destfile = filepath)
+  utils::unzip(zipfile = filepath, exdir = dirpath)
 
   if(tolower(name) == "glottolog"){
     message(paste0("Glottolog data downloaded (glottolog ", content$metadata$version,"). This is the most recent version available from ", base_url) )
   } else if(tolower(name) == "wals"){
     message(paste0("WALS data downloaded (wals-", content$metadata$version,"). This is the most recent version available from ", base_url) )
   }
-
+invisible(dirpath)
 
 }
 

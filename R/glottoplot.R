@@ -23,9 +23,11 @@
 #' # Plot glottodist as nmds:
 #' glottodata <- glottoget("demodata", meta = TRUE)
 #' glottodist <- glottodist(glottodata = glottodata)
-#' glottoplot(glottodist = glottodist, type = "nmds", k = 3, color = "family", label = "name", row2id = "glottocode")
+#' glottoplot(glottodist = glottodist, type = "nmds",
+#'  k = 3, color = "family", label = "name", row2id = "glottocode")
 #'
-#' # To create a stress/scree plot, you can run: goeveg::dimcheckMDS(matrix = as.matrix(glottodist), k = k)
+#' # To create a stress/scree plot, you can run:
+#' # goeveg::dimcheckMDS(matrix = as.matrix(glottodist), k = k)
 #'
 #'
 #' # Plot missing data:
