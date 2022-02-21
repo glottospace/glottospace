@@ -25,7 +25,7 @@ glottobooster <- function(glottologdata = NULL, space = TRUE,
                                 L1only = TRUE,
                                 addfamsize = TRUE, addfamsizerank = TRUE){
   if(is.null(glottologdata)){
-    glottologdata <- glottoget_glottolog()
+    glottologdata <- glottospace::glottolog
   }
   if(addfamname == TRUE){glottologdata <- glottobooster_addfamilyname(glottologdata) }
   if(addisolates == TRUE){glottologdata <- glottobooster_addisolates(glottologdata) }

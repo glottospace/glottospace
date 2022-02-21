@@ -226,6 +226,7 @@ glottomap_static_crs <- function(glottodata, label = NULL, color = NULL, ptsize 
                                                               category = 'physical', returnclass = "sf",
                                                               destdir = glottofiles_cachedir())
     } else {
+      invisible(readline(prompt="Are you sure you want to download rivers from naturalearth? \n Press [enter] to continue"))
       rivers10 <- rnaturalearth::ne_download(scale = 10, type = 'rivers_lake_centerlines',
                                                             category = 'physical', returnclass = "sf",
                                                             destdir = glottofiles_cachedir())
@@ -292,6 +293,7 @@ glottomap_static_pacific <- function(glottodata, color = NULL, rivers = FALSE, p
                                          category = 'physical', returnclass = "sf",
                                          destdir = glottofiles_cachedir())
     } else {
+      invisible(readline(prompt="Are you sure you want to download rivers from naturalearth? \n Press [enter] to continue"))
       rivers10 <- rnaturalearth::ne_download(scale = 10, type = 'rivers_lake_centerlines',
                                              category = 'physical', returnclass = "sf",
                                              destdir = glottofiles_cachedir())

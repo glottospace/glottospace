@@ -3,7 +3,7 @@
 \docType{data}
 \name{glottolog}
 \alias{glottolog}
-\title{This is an internally stored version of glottolog data. It is included in the package as a fall-back option in case there is no internet connection.}
+\title{This is an internally stored version of glottolog data. Use glottoget("glottolog", download = TRUE) to download the latest version}
 \format{
 A data frame with XX rows and XX variables:
 \describe{
@@ -31,6 +31,6 @@ A data frame with XX rows and XX variables:
 glottolog
 }
 \description{
-This is an internally stored version of glottolog data. It is included in the package as a fall-back option in case there is no internet connection.
+This is an internally stored version of glottolog data. Use glottoget("glottolog", download = TRUE) to download the latest version
 }
 \keyword{internal}

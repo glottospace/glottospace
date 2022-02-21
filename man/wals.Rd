@@ -226,6 +226,6 @@ A data frame with XX rows and XX variables:
 wals
 }
 \description{
-This is an internally stored version of WALS data. It is included in the package as a fall-back option in case there is no internet connection.
+This is an internally stored version of WALS data. Use glottoget("wals", download = TRUE) to download the latest version
 }
 \keyword{internal}

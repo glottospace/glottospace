@@ -11,10 +11,12 @@
 #' \donttest{
 #' glottoget_wals()
 #' }
-glottoget_wals <- function(days = NULL, valuenames = NULL, paramnames = NULL){
-  if(is.null(days)){days <- 30}
-  if(curl::has_internet() & wals_date_local() < (-days) ){
-    message(paste("Your local version of WALS was downloaded more than ", days, " days ago."))
+glottoget_wals <- function(download = NULL, valuenames = NULL, paramnames = NULL){
+  if(is.null(download)){download <- FALSE}
+  if(download == FALSE ){
+    out <- glottospace::wals
+  } else {
+    message(paste("Your local version of WALS was downloaded more than ", wals_date_local(), " days ago."))
     vremote <- wals_version_remote()
     vlocal <- wals_version_local()
     if(vremote == vlocal){
@@ -24,20 +26,11 @@ glottoget_wals <- function(days = NULL, valuenames = NULL, paramnames = NULL){
     } else if(vremote > vlocal){
       out <- wals_download()
     }
-  } else { # Try to load local data, or else load built-in data.
-    out <- try(
-      expr = wals_loadlocal(valuenames = valuenames, paramnames = paramnames),
-      silent = TRUE
-    )
-    if(any(class(out) == "try-error")){
-      out <- glottospace::wals
-    }
-
   }
   return(out)
 }
 
-#' Reset last modified date of glottolog
+#' Reset last modified date of wals
 #'
 #'
 #' @noRd
@@ -87,27 +80,9 @@ wals_version_remote <- function(){
 #' @noRd
 #'
 wals_download <- function(valuenames = NULL, paramnames = NULL){
-  wals_download_zenodo()
+  invisible(readline(prompt="Are you sure you want to download WALS data? \n Press [enter] to continue"))
+  glottoget_zenodo(name = "wals")
   wals_loadlocal(valuenames = valuenames, paramnames = paramnames)
-}
-
-#' Download most recent version of WALS from zenodo (cldf format)
-#'
-#'
-#' @noRd
-#'
-wals_download_zenodo <- function(){
-  base_url <-  "https://zenodo.org/api/records/3606197" # Newest version is always uploaded here!
-  req <- curl::curl_fetch_memory(base_url)
-  content <- RJSONIO::fromJSON(rawToChar(req$content))
-  url <- content$files[[1]]$links[[1]]
-  filename <- base::basename(url)
-  filepath <- glottofiles_makepath(filename)
-  exdir <- glottofiles_makedir(tools::file_path_sans_ext(filename))
-
-  utils::download.file(url = url, destfile = filepath ) # downloads and overwrites (i.e. changes date)
-  utils::unzip(zipfile = filepath, exdir = exdir)
-  message(paste0("WALS data downloaded (wals-", content$metadata$version,"). This is the most recent version available from https://zenodo.org/record/596476)") )
 }
 
 #' Check which version of WALS is available on your computer
