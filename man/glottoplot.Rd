@@ -23,7 +23,7 @@ glottoplot(
 
 \item{glottodist}{A dist object created with \code{\link{glottodist}}}
 
-\item{type}{The type of plot: "heatmap", "nmds", or "stress". Default is heatmap if nothing is provided.}
+\item{type}{The type of plot: "heatmap", "nmds", or "missing". Default is heatmap if nothing is provided.}
 
 \item{k}{Number of dimensions. Either 2 or 3 for nmds.}
 
@@ -53,6 +53,9 @@ This function offers different types of visualizations for linguistic data and l
 glottodata <- glottoget("demodata", meta = TRUE)
 glottodist <- glottodist(glottodata = glottodata)
 glottoplot(glottodist = glottodist, type = "nmds", k = 3, color = "family", label = "name", row2id = "glottocode")
+
+# To create a stress/scree plot, you can run: goeveg::dimcheckMDS(matrix = as.matrix(glottodist), k = k)
+
 
 # Plot missing data:
 glottodata <- glottoget("demodata", meta = TRUE)

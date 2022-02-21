@@ -16,9 +16,7 @@ LazyData: true
 RoxygenNote: 7.1.2
 Imports: 
     dplyr,
-    Hmisc,
     magrittr,
-    mapview,
     purrr,
     rnaturalearth,
     rnaturalearthdata,
@@ -29,7 +27,6 @@ Imports:
     cluster,
     data.table,
     ggplot2,
-    goeveg,
     htmlwidgets,
     lubridate,
     mapedit,

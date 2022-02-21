@@ -139,3 +139,10 @@ printmessage <- function(x)
 {
   message(paste(utils::capture.output(print(x)), collapse = "\n"))
 }
+
+#' Negated in
+#'
+#' Added here to remove dependency on Hmisc
+#'
+#' @noRd
+`%nin%` <- function(a,b){ ! a %in% b}

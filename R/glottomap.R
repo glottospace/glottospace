@@ -53,7 +53,7 @@ glottomap <- function(glottodata = NULL, color = NULL, label = NULL, type = NULL
 
   if(is.null(glottodata)){
     glottodata <- glottofilter(...)
-    if(mapview::npts(glottodata) == 1 & type == "static"){ #added to solve issue with countries that are not polygons in naturalearthdata (they consist of a single point)
+    if(length(sf::st_geometry(glottodata)) == 1 & type == "static"){ #added to solve issue with countries that are not polygons in naturalearthdata (they consist of a single point)
       # glottodata <- sf::st_buffer(glottodata, dist = 0)
       type <- "dynamic"
       message("The country you are trying to plot is too small for a static map, returning a dynamic map instead.")

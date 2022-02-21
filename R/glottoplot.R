@@ -3,7 +3,7 @@
 #'
 #' This function offers different types of visualizations for linguistic data and linguistic distances.
 #'
-#' @param type The type of plot: "heatmap", "nmds", or "stress". Default is heatmap if nothing is provided.
+#' @param type The type of plot: "heatmap", "nmds", or "missing". Default is heatmap if nothing is provided.
 #' @param glottodata glottodata table
 #' @param glottodist A dist object created with \code{\link{glottodist}}
 #' @param k Number of dimensions. Either 2 or 3 for nmds.
@@ -24,6 +24,9 @@
 #' glottodata <- glottoget("demodata", meta = TRUE)
 #' glottodist <- glottodist(glottodata = glottodata)
 #' glottoplot(glottodist = glottodist, type = "nmds", k = 3, color = "family", label = "name", row2id = "glottocode")
+#'
+#' # To create a stress/scree plot, you can run: goeveg::dimcheckMDS(matrix = as.matrix(glottodist), k = k)
+#'
 #'
 #' # Plot missing data:
 #' glottodata <- glottoget("demodata", meta = TRUE)
@@ -55,10 +58,6 @@ glottoplot <- function(glottodata = NULL, glottodist = NULL, type = NULL, k = NU
     scoresdata <- glottojoin_base(scores)
     glottoplot_nmds(nmds = glottonmds, scoresdata = scoresdata,
                     color = color, ptsize = ptsize, label = label, palette = palette, filename = filename)
-  }
-
-  if(type == "stress"){
-    glottoplot_nmds_stress(glottodist = glottodist, k = k)
   }
 
   if(type == "missing"){
@@ -259,13 +258,6 @@ glottoplot_nmds_3d <- function(nmds, scoresdata, color = NULL, ptsize = NULL, la
     htmlwidgets::saveWidget(nmdsplot, title = "NMDS 3D", filename)
     }
   print(nmdsplot)
-}
-
-
-glottoplot_nmds_stress <- function(glottodist, k = NULL){
-  if(is.null(k)){k <- 6}
-  distmat <- as.matrix(glottodist)
-  goeveg::dimcheckMDS(matrix = distmat, k = k)
 }
 
 #' Plot a heatmap of a distance matrix
