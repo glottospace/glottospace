@@ -188,6 +188,8 @@ glottoget_zenodo <- function(name = NULL, url = NULL, dirpath = NULL){
   } else if(tolower(name) == "wals"){
     # Newest version is always uploaded here!
     base_url <- "https://zenodo.org/api/records/3606197"
+  } else if(name == "dplace"){
+    base_url <- "https://zenodo.org/api/records/3935419"
   } else if(!is.null(name) ){
     stop("Unable to download data from Zenodo. Unrecognized name argument. ")
   }
@@ -214,6 +216,8 @@ glottoget_zenodo <- function(name = NULL, url = NULL, dirpath = NULL){
     message(paste0("Glottolog data downloaded (glottolog ", version,"). This is the most recent version available from ", base_url) )
   } else if(tolower(name) == "wals"){
     message(paste0("WALS data downloaded (wals-", version,"). This is the most recent version available from ", base_url) )
+  } else if(tolower(name) == "dplace"){
+    message(paste0("D-PLACE data downloaded (", version,"). This is the most recent version available from ", base_url) )
   }
   }
 invisible(dirpath)

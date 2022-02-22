@@ -1,7 +1,7 @@
 #' Get glottolog data
 #'
-#' This function checks whether most recent version of glottolog is locally available. If local version is outdated, the newest version will be downloaded.
-#'
+#' This function loads the Glottolog data that is distributed with glottospace or optionally downloads it.
+#' type ?glottolog for more information about the version, and how to cite the data. #'
 #'
 #' @noRd
 #'

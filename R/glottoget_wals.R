@@ -1,6 +1,7 @@
 #' Get WALS data
 #'
-#' This function checks whether most recent version of WALS is locally available. If local version is outdated, the newest version will be downloaded.
+#' This function loads the WALS data that is distributed with glottospace or optionally downloads it.
+#' type ?wals for more information about the version, and how to cite the data.
 #'
 #' @param days After how many days should be checked for a new version?
 #' @param valuenames Should names of the values be added instead of codes?
