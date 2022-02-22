@@ -19,7 +19,7 @@ glottoget_wals <- function(download = NULL, dirpath = NULL, valuenames = NULL, p
   if(download == FALSE & is.null(dirpath)) {
     out <- glottospace::wals
   } else if(download == FALSE & !is.null(dirpath)){
-    out <- glottoget_cldfloadlocal(dirpath = dirpath, valuenames = valuenames, paramnames = paramnames)
+    out <- glottoget_cldf(dirpath = dirpath, valuenames = valuenames, paramnames = paramnames)
   } else if(download == TRUE){
     out <- glottoget_walsdownload(dirpath = dirpath, valuenames = valuenames, paramnames = paramnames)
   }
@@ -37,5 +37,5 @@ glottoget_wals <- function(download = NULL, dirpath = NULL, valuenames = NULL, p
 glottoget_walsdownload <- function(dirpath = NULL, valuenames = NULL, paramnames = NULL){
   invisible(readline(prompt="Are you sure you want to download WALS data? \n Press [enter] to continue"))
   dirpath <- glottoget_zenodo(name = "wals", dirpath = dirpath)
-  glottoget_cldfloadlocal(dirpath = dirpath, valuenames = valuenames, paramnames = paramnames)
+  glottoget_cldf(dirpath = dirpath, valuenames = valuenames, paramnames = paramnames)
 }

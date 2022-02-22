@@ -233,7 +233,7 @@ invisible(dirpath)
 #' @param dirpath Path to directory where cldf data is stored
 #'
 #' @noRd
-glottoget_cldfloadlocal <- function(dirpath, valuenames = NULL, paramnames = NULL){
+glottoget_cldf <- function(dirpath, valuenames = NULL, paramnames = NULL){
   if(!dir.exists(dirpath)){stop("Directory not found.")}
   if(is.null(valuenames)){valuenames <- TRUE}
   if(is.null(paramnames)){paramnames <- FALSE}

@@ -17,7 +17,7 @@
 #'   if(download == FALSE & is.null(dirpath)) {
 #'     out <- glottospace::dplace
 #'   } else if(download == FALSE & !is.null(dirpath)){
-#'     out <- glottoget_cldfloadlocal(dirpath = dirpath, valuenames = valuenames, paramnames = paramnames)
+#'     out <- glottoget_cldf(dirpath = dirpath, valuenames = valuenames, paramnames = paramnames)
 #'   } else if(download == TRUE){
 #'     out <- glottoget_dplacedownload(dirpath = dirpath, valuenames = valuenames, paramnames = paramnames)
 #'   }
@@ -33,7 +33,7 @@
 #' glottoget_dplacedownload <- function(dirpath = NULL, valuenames = NULL, paramnames = NULL){
 #'   invisible(readline(prompt="Are you sure you want to download DPLACE data? \n Press [enter] to continue"))
 #'   dirpath <- glottoget_zenodo(name = "dplace", dirpath = dirpath)
-#'   glottoget_cldfloadlocal(dirpath = dirpath, valuenames = valuenames, paramnames = paramnames)
+#'   glottoget_cldf(dirpath = dirpath, valuenames = valuenames, paramnames = paramnames)
 #' }
 #'
 #'
