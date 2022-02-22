@@ -229,3 +229,13 @@ wals
 This is an internally stored version of WALS data. Use glottoget("wals", download = TRUE) to download the latest version
 }
 \keyword{internal}
+\note{version: v2020.1
+
+
+Cite the source of the dataset as:
+
+
+Dryer, Matthew S. & Haspelmath, Martin (eds.) 2013. The World Atlas of Language Structures Online. Leipzig: Max Planck Institute for Evolutionary Anthropology. (Available online at https://wals.info)
+
+
+##------ Tue Feb 22 13:46:12 2022 ------##}

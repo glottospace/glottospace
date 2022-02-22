@@ -23,7 +23,7 @@ glottobooster(
 
 \item{addisolates}{Add column to identify isolates?}
 
-\item{L1only}{Keep only L1 languages (remove bookkeeping, unclassifiable, sign languges, etc.).}
+\item{L1only}{Keep only L1 languages (remove bookkeeping, unclassifiable, sign languages, etc.).}
 
 \item{addfamsize}{Add column with family size?}
 

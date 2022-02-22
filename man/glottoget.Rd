@@ -4,7 +4,13 @@
 \alias{glottoget}
 \title{Get glottodata from local path or online global databases}
 \usage{
-glottoget(glottodata = NULL, meta = FALSE, download = FALSE, dirpath = NULL)
+glottoget(
+  glottodata = NULL,
+  meta = FALSE,
+  download = FALSE,
+  dirpath = NULL,
+  url = NULL
+)
 }
 \arguments{
 \item{glottodata}{options are:
@@ -27,6 +33,8 @@ spatial coordinates.
 \item{download}{By default internally stored versions of global databases are used. Specify download = TRUE in case you want to download the latest version from a remote server.}
 
 \item{dirpath}{Optional, if you want to store a global CLDF dataset in a specific directory, or load it from a specific directory.}
+
+\item{url}{Zenodo url, something like this: "https://zenodo.org/api/records/3260727"}
 }
 \value{
 A glottodata or glottosubdata object (a data.frame or list, depending on which glottodata is requested)

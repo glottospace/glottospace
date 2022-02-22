@@ -183,6 +183,34 @@ glottolog_version_remote <- function(){
   as.numeric(gsub(pattern = "v", x = content$metadata$version, replacement = ""))
 }
 
+glottoget_remotemeta <- function(name = NULL, url = NULL, info = NULL){
+
+  if(is.null(name) & !is.null(url)){
+    base_url <- url
+  } else if(tolower(name) == "glottolog"){
+    # Newest version is always uploaded here!
+    base_url <- "https://zenodo.org/api/records/3260727"
+  } else if(tolower(name) == "wals"){
+    # Newest version is always uploaded here!
+    base_url <- "https://zenodo.org/api/records/3606197"
+  } else if(!is.null(name) ){
+    stop("Unable to download data from Zenodo. Unrecognized name argument. ")
+  }
+
+  remote <- suppressWarnings(jsonlite::stream_in(url(base_url)))
+
+    version <- remote$metadata$version
+    now <- utils::timestamp()
+    citation <- xml2::xml_text(xml2::read_html(charToRaw(remote$metadata$description), encoding = "UTF-8"))
+
+    metainfo <- paste0(c("version: ", version, "\n\n\n", citation, "\n\n", now),  collapse = "")
+
+    paste0("\\note{", metainfo, "}")
+
+}
+
+
+
 #' Check which version of glottolog is available on your computer
 #'
 #'
@@ -316,7 +344,12 @@ glottoget_zenodo <- function(name = NULL, url = NULL, dirpath = NULL){
     stop("Unable to download data from Zenodo. Unrecognized name argument. ")
   }
 
-  if(is.null(dirpath)){dirpath <- tempdir()}
+  if(is.null(dirpath)){
+    dirpath <- tempdir()
+    if(dir.exists(dirpath)){unlink(x = dirpath, recursive = TRUE)}
+  } else {
+    if(dir.exists(dirpath)){stop("Directory already exists, please choose a different location.")}
+    }
 
   req <- curl::curl_fetch_memory(base_url)
   content <- RJSONIO::fromJSON(rawToChar(req$content))
@@ -326,11 +359,13 @@ glottoget_zenodo <- function(name = NULL, url = NULL, dirpath = NULL){
   utils::download.file(file.path(url), destfile = filepath)
   utils::unzip(zipfile = filepath, exdir = dirpath)
 
+  version <- content$metadata$version
+
   if(!is.null(name)){
   if(tolower(name) == "glottolog"){
-    message(paste0("Glottolog data downloaded (glottolog ", content$metadata$version,"). This is the most recent version available from ", base_url) )
+    message(paste0("Glottolog data downloaded (glottolog ", version,"). This is the most recent version available from ", base_url) )
   } else if(tolower(name) == "wals"){
-    message(paste0("WALS data downloaded (wals-", content$metadata$version,"). This is the most recent version available from ", base_url) )
+    message(paste0("WALS data downloaded (wals-", version,"). This is the most recent version available from ", base_url) )
   }
   }
 invisible(dirpath)

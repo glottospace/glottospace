@@ -20,6 +20,7 @@
 #' }
 #' @source \url{https://glottolog.org/
 #' }
+#' @evalRd glottoget_remotemeta(name = "glottolog")
 "glottolog"
 
 #' WALS data
@@ -240,4 +241,5 @@
 #' }
 #' @source \url{https://wals.info/
 #' }
+#' @evalRd glottoget_remotemeta(name = "wals")
 "wals"
