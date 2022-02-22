@@ -51,6 +51,7 @@ return(glottodata)
 #' @examples
 #' glottodata <- glottofilter(country = "Netherlands")
 glottospace_buffer <- function(glottodata, radius){
+  if(is.null(radius)){stop("Please specify buffer radius")}
   crs_original <- sf::st_crs(glottodata)
 
   pts <- sf::st_transform(glottodata, sf::st_crs("ESRI:54032")) # convert to equidistant projection: https://epsg.io/54032

@@ -19,6 +19,7 @@
 #' @param meta In case 'glottodata' is a path to locally stored data (or demodata/demosubdata): by default, meta sheets are not loaded. Use meta=TRUE if you want to include them.
 #' @param download By default internally stored versions of global databases are used. Specify download = TRUE in case you want to download the latest version from a remote server.
 #' @param dirpath Optional, if you want to store a global CLDF dataset in a specific directory, or load it from a specific directory.
+#' @param url Zenodo url, something like this: "https://zenodo.org/api/records/1234567"
 #'
 #' @family <glottodata>
 #' @return A glottodata or glottosubdata object (a data.frame or list, depending on which glottodata is requested)
@@ -27,7 +28,7 @@
 #' \donttest{
 #' glottoget("glottolog")
 #' }
-glottoget <- function(glottodata = NULL, meta = FALSE, download = FALSE, dirpath = NULL){
+glottoget <- function(glottodata = NULL, meta = FALSE, download = FALSE, dirpath = NULL, url = NULL){
   if(is.null(glottodata)){
     glottodata <- glottoget_glottobase(download = download, dirpath = dirpath)
   } else if(glottodata == "glottobase"){
@@ -42,6 +43,8 @@ glottoget <- function(glottodata = NULL, meta = FALSE, download = FALSE, dirpath
     glottodata <- glottocreate_demosubdata(meta = meta)
   } else if(glottodata == "wals"){
     glottodata <- glottoget_wals(download = download)
+  } else if(!is.null(url)){
+    glottoget_zenodo(url = url, dirpath = dirpath)
   } else if(tools::file_ext(glottodata) != ""){
     glottodata <- glottoget_path(filepath = glottodata)
   } else {message("Unable to load requested glottodata")}
