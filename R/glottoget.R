@@ -9,7 +9,7 @@
 #' \item "glottobase" - Default option, an spatially enhanced version of \href{https://glottolog.org/}{glottolog}. See
 #' \link{glottobooster} for details.
 #' \item "wals" - This is a spatially enhanced version of \href{https://wals.info/}{WALS}.
-#' \item "dplace" - This is a spatially enhanced version of \href{https://d-place.org/}{D-PLACE}.
+#' \item "dplace" - Not yet supported. This is a spatially enhanced version of \href{https://d-place.org/}{D-PLACE}.
 #' \item "glottolog" - This is a restructured (non-spatial) version of \href{https://glottolog.org/}{glottolog}.
 #' \item "glottospace" - A simple dataset with glottocodes and a geometry column. This
 #' is a subset of all languages in \href{https://glottolog.org/}{glottolog} with
@@ -47,7 +47,8 @@ glottoget <- function(glottodata = NULL, meta = FALSE, download = FALSE, dirpath
   } else if(glottodata == "wals"){
     glottodata <- glottoget_wals(download = download)
   } else if(glottodata == "dplace"){
-    glottodata <- glottoget_dplace(download = download)
+    message("Sorry, D-PLACE is not yet supported. Working on it!")
+    # glottodata <- glottoget_dplace(download = download)
   } else if(tools::file_ext(glottodata) != ""){
     glottodata <- glottoget_path(filepath = glottodata)
   } else {message("Unable to load requested glottodata")}

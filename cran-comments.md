@@ -1,4 +1,21 @@
 
+## Fourth resubmission
+
+Dear Uwe Ligges/Gregor Seyer, 
+
+The package was archived because data was stored in ~/.local/share
+
+I have implemented the following changes:
+- A lightweight version of the global databases is stored internally (within the package). These data are used by default (download = FALSE).
+- If the user specifies the argument download = TRUE, the user has to confirm that she/he agrees with downloading the data. If the user does not specify a directory, the data will be stored in a temporary directory.
+
+Thanks again for your time.
+
+All the best,
+Sietze
+
+
+
 ## Third resubmission
 
 Dear Uwe Ligges/Gregor Seyer, 

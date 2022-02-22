@@ -19,7 +19,7 @@ glottoget_wals <- function(download = NULL, dirpath = NULL, valuenames = NULL, p
   if(download == FALSE & is.null(dirpath)) {
     out <- glottospace::wals
   } else if(download == FALSE & !is.null(dirpath)){
-    out <- glottoget_walsloadlocal(dirpath = dirpath, valuenames = valuenames, paramnames = paramnames)
+    out <- glottoget_cldfloadlocal(dirpath = dirpath, valuenames = valuenames, paramnames = paramnames)
   } else if(download == TRUE){
     out <- glottoget_walsdownload(dirpath = dirpath, valuenames = valuenames, paramnames = paramnames)
   }
