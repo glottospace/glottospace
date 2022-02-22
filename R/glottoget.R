@@ -136,54 +136,14 @@ glottoget_glottospace <- function(download = NULL, dirpath = NULL){
 
 
 
-
-
-#' Get glottolog data
+#' Get metadata of remote cldf databases
 #'
-#' This function checks whether most recent version of glottolog is locally available. If local version is outdated, the newest version will be downloaded.
-#'
+#' @param name Name of dataset "wals" or "glottolog"
+#' @param url Optional url
 #'
 #' @noRd
 #'
-#' @examples
-#' glottoget_glottolog()
-glottoget_glottolog <- function(download = NULL, dirpath = NULL){
-  if(is.null(download)){
-    download <- FALSE
-    }
-  if(download == FALSE & is.null(dirpath) ){
-    out <- glottospace::glottolog
-  } else if(download == FALSE & !is.null(dirpath)){
-    out <- glottolog_loadlocal(dirpath = dirpath)
-  } else if(download == TRUE){
-    out <- glottolog_download(dirpath = dirpath)
-  }
-return(out)
-}
-
-#' Download glottolog data
-#'
-#' @noRd
-#'
-glottolog_download <- function(dirpath = NULL){
-  invisible(readline(prompt="Are you sure you want to download Glottolog data? \n Press [enter] to continue"))
-  dirpath <- glottoget_zenodo(name = "glottolog", dirpath = dirpath)
-  glottolog_loadlocal(dirpath = dirpath)
-}
-
-#' Check what's the most recent version of glottolog
-#'
-#' @noRd
-glottolog_version_remote <- function(){
-  base_url <-  "https://zenodo.org/api/records/3260727"
-  message("Checking what's the most recent version of glottolog ... this might take a while")
-  req <- curl::curl_fetch_memory(base_url)
-  content <- RJSONIO::fromJSON(rawToChar(req$content))
-  # title <- gsub(".*:", "", content$metadata$title)
-  as.numeric(gsub(pattern = "v", x = content$metadata$version, replacement = ""))
-}
-
-glottoget_remotemeta <- function(name = NULL, url = NULL, info = NULL){
+glottoget_remotemeta <- function(name = NULL, url = NULL){
 
   if(is.null(name) & !is.null(url)){
     base_url <- url
@@ -209,118 +169,6 @@ glottoget_remotemeta <- function(name = NULL, url = NULL, info = NULL){
 
 }
 
-
-
-#' Check which version of glottolog is available on your computer
-#'
-#'
-#' @noRd
-glottolog_version_localdir <- function(){
-  dirs <- list.dirs(glottofiles_cachedir(), full.names = FALSE, recursive = FALSE)
-  if(purrr::is_empty(dirs)){
-    return(0)
-  } else{
-    glottologdirs <- dirs[grepl(pattern = "glottolog-cldf-v", x = dirs)]
-    if(purrr::is_empty(glottologdirs)){
-      return(0)
-    } else{
-    versions <- gsub(pattern = "glottolog-cldf-v", x = glottologdirs, replacement = "")
-    return(max(as.numeric(versions)))
-    }
-  }
-
-}
-
-#' Check which version of glottolog is available on your computer
-#'
-#'
-#' @noRd
-glottolog_version_local <- function(){
-  files <- base::list.files(glottofiles_cachedir(), full.names = FALSE, recursive = FALSE)
-  if(purrr::is_empty(files)){
-    return(0)
-  } else{
-    glottologfiles <- files[base::grepl(pattern = "glottolog-cldf-v", x = files)]
-    glottologzips <- glottologfiles[grepl(pattern = ".zip", x = glottologfiles)]
-    if(purrr::is_empty(glottologzips)){
-      return(0)
-    } else{
-      versionzips <- base::gsub(pattern = "glottolog-cldf-v", x = glottologzips, replacement = "")
-      versions <- tools::file_path_sans_ext(versionzips)
-      return(max(as.numeric(versions)))
-    }
-  }
-
-}
-
-#' Reset last modified date of glottolog
-#'
-#'
-#' @noRd
-glottolog_version_localdatereset <- function(){
-  v <- glottolog_version_local()
-  newestpath <- glottofiles_makepath(paste0("glottolog-cldf-v", version, ".zip"))
-  file.info(newestpath)$mtime
-  Sys.setFileTime(newestpath, Sys.time())
-}
-
-#' Check how long ago glottolog was last downloaded
-#'
-#' @return Number of days passed since glottolog data was downloaded for the last time
-#' @noRd
-glottolog_date_local <- function(){
-  v <- glottolog_version_local()
- if(v != 0){
-   newestpath <- glottofiles_makepath(paste0("glottolog-cldf-v", v, ".zip"))
-   glottolog_time <- file.info(newestpath)$mtime
-   daysago <- lubridate::as.duration(lubridate::interval(Sys.time(), glottolog_time)) %/% lubridate::as.duration(lubridate::days(1))
-   return(daysago)
- } else{
-   return(-999999)
- }
-}
-
-#' Load locally stored glottolog data
-#'
-#' @param dirpath Path to directory where glottolog cldf data is stored
-#'
-#' @importFrom rlang .data
-#' @noRd
-glottolog_loadlocal <- function(dirpath){
-  if(!dir.exists(dirpath)){stop("Directory not found.")}
-  cldf_metadata <- base::list.files(dirpath, pattern = "cldf-metadata.json", recursive = TRUE)
-  mdpath <- normalizePath(file.path(dirpath, cldf_metadata))
-  mddir <- normalizePath(base::dirname(mdpath))
-
-  # Load languages file
-  languoids <- normalizePath(file.path(mddir, "languages.csv"))
-  languoids <- utils::read.csv(languoids, header = TRUE, encoding = "UTF-8")
-  colnames(languoids) <- base::tolower(colnames(languoids))
-  colnames(languoids)[which(colnames(languoids) == "id")] <- "lang_id"
-
-
-  # Load values file
-  values <- normalizePath(file.path(mddir, "values.csv"))
-  values <- utils::read.csv(values, header = TRUE, encoding = "UTF-8")
-  colnames(values) <- base::tolower(colnames(values))
-  colnames(values)[colnames(values) == "language_id"] <- "lang_id"
-  values <- tidyr::pivot_wider(data = values, names_from = "parameter_id", values_from = "value")
-
-  levels <- values[!is.na(values$level), c("lang_id", "level")]
-  category <- values[!is.na(values$category), c("lang_id", "category")]
-  category$bookkeeping <- base::apply(category[,"category"], 1, function(x){ifelse(tolower(x) == "bookkeeping", TRUE, FALSE)})
-  classification <- values[!is.na(values$classification), c("lang_id", "classification")]
-  classification$parent_id <- base::apply(classification[,"classification"], 1, function(x){sub(".*/", "", x)})
-
-  glottologdata <- languoids %>% dplyr::left_join(levels, by = "lang_id") %>%
-    dplyr::left_join(category, by = "lang_id") %>%
-    dplyr::left_join(classification, by = "lang_id") %>%
-    dplyr::arrange(.data$lang_id)
-
-  colnames(glottologdata)[which(colnames(glottologdata) == "lang_id")] <- "id"
-  glottologdata <- glottologdata %>% dplyr::select(-.data$glottocode, -.data$language_id)
-  invisible(glottologdata)
-}
 
 
 #' Download database from Zenodo
