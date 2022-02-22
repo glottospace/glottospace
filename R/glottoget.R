@@ -19,7 +19,7 @@
 #' @param meta In case 'glottodata' is a path to locally stored data (or demodata/demosubdata): by default, meta sheets are not loaded. Use meta=TRUE if you want to include them.
 #' @param download By default internally stored versions of global databases are used. Specify download = TRUE in case you want to download the latest version from a remote server.
 #' @param dirpath Optional, if you want to store a global CLDF dataset in a specific directory, or load it from a specific directory.
-#' @param url Zenodo url, something like this: "https://zenodo.org/api/records/1234567"
+#' @param url Zenodo url, something like this: "https://zenodo.org/api/records/3260727"
 #'
 #' @family <glottodata>
 #' @return A glottodata or glottosubdata object (a data.frame or list, depending on which glottodata is requested)
@@ -29,7 +29,9 @@
 #' glottoget("glottolog")
 #' }
 glottoget <- function(glottodata = NULL, meta = FALSE, download = FALSE, dirpath = NULL, url = NULL){
-  if(is.null(glottodata)){
+  if(!is.null(url)){
+    glottoget_zenodo(url = url, dirpath = dirpath)
+  } else if(is.null(glottodata)){
     glottodata <- glottoget_glottobase(download = download, dirpath = dirpath)
   } else if(glottodata == "glottobase"){
     glottodata <- glottoget_glottobase(download = download, dirpath = dirpath)
@@ -43,8 +45,6 @@ glottoget <- function(glottodata = NULL, meta = FALSE, download = FALSE, dirpath
     glottodata <- glottocreate_demosubdata(meta = meta)
   } else if(glottodata == "wals"){
     glottodata <- glottoget_wals(download = download)
-  } else if(!is.null(url)){
-    glottoget_zenodo(url = url, dirpath = dirpath)
   } else if(tools::file_ext(glottodata) != ""){
     glottodata <- glottoget_path(filepath = glottodata)
   } else {message("Unable to load requested glottodata")}
@@ -299,7 +299,7 @@ glottolog_loadlocal <- function(dirpath){
 #'
 #' @param name Name of a dataset, either wals or glottolog
 #' @param dirpath Path to directory where files should be stored
-#' @param url Zenodo url, something like this: "https://zenodo.org/api/records/1234567"
+#' @param url Zenodo url, something like this: "https://zenodo.org/api/records/3260727"
 #'
 #' @noRd
 glottoget_zenodo <- function(name = NULL, url = NULL, dirpath = NULL){
@@ -326,10 +326,12 @@ glottoget_zenodo <- function(name = NULL, url = NULL, dirpath = NULL){
   utils::download.file(file.path(url), destfile = filepath)
   utils::unzip(zipfile = filepath, exdir = dirpath)
 
+  if(!is.null(name)){
   if(tolower(name) == "glottolog"){
     message(paste0("Glottolog data downloaded (glottolog ", content$metadata$version,"). This is the most recent version available from ", base_url) )
   } else if(tolower(name) == "wals"){
     message(paste0("WALS data downloaded (wals-", content$metadata$version,"). This is the most recent version available from ", base_url) )
+  }
   }
 invisible(dirpath)
 
