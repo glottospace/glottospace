@@ -146,3 +146,10 @@ printmessage <- function(x)
 #'
 #' @noRd
 `%nin%` <- function(a,b){ ! a %in% b}
+
+release_questions <- function() {
+  c(
+    "Have you updated all internal datasets (run functions in data-raw)?",
+    "Did you go outside for a walk?"
+  )
+}
