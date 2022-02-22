@@ -180,9 +180,7 @@ You can also load glottodata from online databases such as
 the data (‘glottolog’), or an enriched/boosted version (‘glottobase’):
 
 ``` r
-# Two ways to load glottobase:
-data("glottobase")
-#> Warning in data("glottobase"): data set 'glottobase' not found
+# To load glottobase:
 glottobase <- glottoget("glottobase")
 colnames(glottobase)
 #>  [1] "glottocode"       "name"             "macroarea"        "isocode"         
@@ -204,7 +202,7 @@ glottocreate(glottocodes = c("yucu1253", "tani1257"), variables = 3, meta = FALS
 #> 2   tani1257     NA     NA     NA
 ```
 
-I’ve specified meta = FALSE, to indicate that we want to generate a
+We’ve specified meta = FALSE, to indicate that we want to generate a
 ‘flat’ glottodata table. However, when creating glottodata, by default,
 several meta tables are included:
 
@@ -223,7 +221,7 @@ summary(glottodata_meta)
 #> lookup        2     data.frame list
 ```
 
-The majority of these metatables are added for the convenience of the
+The majority of these meta tables are added for the convenience of the
 user. The ‘structure’ table is the only one that is required for some of
 the functions in the glottospace package. A structure table can also be
 added later:
@@ -276,7 +274,7 @@ glottocheck(glottodata, diagnostic = FALSE)
 #> Some rows have missing data.
 ```
 
-I’ve now specified diagnostic = FALSE, but the default is to show some
+We’ve now specified diagnostic = FALSE, but the default is to show some
 more extensive diagnostics (like a data coverage plot).
 
 You can also check the metadata:
@@ -299,6 +297,8 @@ glottocheck(glottodata, checkmeta = TRUE)
 #> All types recognized
 #> All weights are specified
 ```
+
+<img src="man/figures/README-glottocheckmeta-1.png" width="100%" />
 
 ## glottoclean
 
@@ -450,15 +450,14 @@ calculating similarities between languages based on linguistic/cultural
 features
 
 ``` r
-# In order to be able to calculate linguistic distances a structure table is required, that's why I specify meta = TRUE.
+# In order to be able to calculate linguistic distances a structure table is required, that's why we specify meta = TRUE.
 glottodata <- glottoget("demodata", meta = TRUE)
 glottodist <- glottodist(glottodata = glottodata)
-#> Warning in cluster::daisy(x = glottodata, metric = "gower", type = list(symm =
-#> symm, : at least one binary variable has not 2 different levels.
-#> Warning in min(x): no non-missing arguments to min; returning Inf
-#> Warning in max(x): no non-missing arguments to max; returning -Inf
-#> Warning in min(x): no non-missing arguments to min; returning Inf
-#> Warning in max(x): no non-missing arguments to max; returning -Inf
+#> glottocode used as id
+#> For some variables of type 'symm' and 'asymm', it is not clear whether they are TRUE of FALSE. It is highly recommended to run glottoclean() before running glottodist(). Attempting to convert the following values to TRUE/FALSE...
+#> [1] "N" "Y"
+#> Missing values recoded to NA
+#> Values in binary columns (symm/asymm) recoded to TRUE/FALSE
 
 # As we've seen above, in case you have glottodata without a structure table, you can add it:
 glottodata <- glottoget("demodata", meta = FALSE)
@@ -474,21 +473,20 @@ linguistic, cultural, and environmental features.
 ``` r
 glottodata <- glottoget("demodata", meta = TRUE)
 glottodist <- glottodist(glottodata = glottodata)
-#> Warning in cluster::daisy(x = glottodata, metric = "gower", type = list(symm =
-#> symm, : at least one binary variable has not 2 different levels.
-#> Warning in min(x): no non-missing arguments to min; returning Inf
-#> Warning in max(x): no non-missing arguments to max; returning -Inf
-#> Warning in min(x): no non-missing arguments to min; returning Inf
-#> Warning in max(x): no non-missing arguments to max; returning -Inf
+#> glottocode used as id
+#> For some variables of type 'symm' and 'asymm', it is not clear whether they are TRUE of FALSE. It is highly recommended to run glottoclean() before running glottodist(). Attempting to convert the following values to TRUE/FALSE...
+#> [1] "N" "Y"
+#> Missing values recoded to NA
+#> Values in binary columns (symm/asymm) recoded to TRUE/FALSE
 glottoplot(glottodist = glottodist)
 ```
 
-<img src="man/figures/README-glottoplot-1.png" width="100%" /><img src="man/figures/README-glottoplot-2.png" width="100%" />
+<img src="man/figures/README-glottoplot-1.png" width="100%" />
 
 ## glottospace
 
-This family of functions turns glottodata into a spatial object. As I’ve
-illustrated above, these can be either glottopoints or glottopols
+This family of functions turns glottodata into a spatial object. As
+we’ve illustrated above, these can be either glottopoints or glottopols
 
 ``` r
 glottodata <- glottoget("demodata")
@@ -503,10 +501,12 @@ glottomap(glottospacedata)
 ## glottomap
 
 With glottomap you can quickly visualize the location of languages.
-Below I show simple static maps, but you can also create dynamic maps by
-specifying type = “dynamic”.
+Below we show simple static maps, but you can also create dynamic maps
+by specifying type = “dynamic”.
 
-You can pass arguments directly to glottofilter
+To select languages, you don’t need to call glottofilter() first, but
+you can use glottomap() directly. Behind the scenes glottomap() passes
+those arguments on to glottofilter().
 
 ``` r
 glottomap(country = "Colombia")

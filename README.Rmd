@@ -106,8 +106,7 @@ head(glottodata)
 
 You can also load glottodata from online databases such as [glottolog](https://glottolog.org/). You can download a raw version of the data ('glottolog'), or an enriched/boosted version ('glottobase'):
 ``` {r glottogetbase, message = FALSE}
-# Two ways to load glottobase:
-data("glottobase")
+# To load glottobase:
 glottobase <- glottoget("glottobase")
 colnames(glottobase)
 ```
@@ -119,14 +118,14 @@ You can generate empty data structures that help you to add your own data in a s
 glottocreate(glottocodes = c("yucu1253", "tani1257"), variables = 3, meta = FALSE)
 ```
 
-I've specified meta = FALSE, to indicate that we want to generate a 'flat' glottodata table. However, when creating glottodata, by default, several meta tables are included:
+We've specified meta = FALSE, to indicate that we want to generate a 'flat' glottodata table. However, when creating glottodata, by default, several meta tables are included:
 
 ``` {r glottocreate_meta}
 glottodata_meta <- glottocreate(glottocodes = c("yucu1253", "tani1257"), variables = 3)
 summary(glottodata_meta)
 ```
 
-The majority of these metatables are added for the convenience of the user. The 'structure' table is the only one that is required for some of the functions in the glottospace package. A structure table can also be added later:
+The majority of these meta tables are added for the convenience of the user. The 'structure' table is the only one that is required for some of the functions in the glottospace package. A structure table can also be added later:
 
 ``` {r glottocreate_structuretable}
 glottocreate_structuretable(varnames = c("var001", "var002", "var003"))
@@ -146,7 +145,7 @@ If you have your own data, you might want to do some interactive quality checks:
 glottodata <- glottoget("demodata")
 glottocheck(glottodata, diagnostic = FALSE)
 ```
-I've now specified diagnostic = FALSE, but the default is to show some more extensive diagnostics (like a data coverage plot). 
+We've now specified diagnostic = FALSE, but the default is to show some more extensive diagnostics (like a data coverage plot). 
 
 You can also check the metadata:
 
@@ -233,7 +232,7 @@ colovenz <- glottofilter(country = c("Colombia", "Venezuela"))
 Quantify differences and similarities between languages
 glottodistances: calculating similarities between languages based on linguistic/cultural features
 ```{r glottodist}
-# In order to be able to calculate linguistic distances a structure table is required, that's why I specify meta = TRUE.
+# In order to be able to calculate linguistic distances a structure table is required, that's why we specify meta = TRUE.
 glottodata <- glottoget("demodata", meta = TRUE)
 glottodist <- glottodist(glottodata = glottodata)
 
@@ -254,7 +253,7 @@ glottoplot(glottodist = glottodist)
 
 
 ## glottospace
-This family of functions turns glottodata into a spatial object. As I've illustrated above, these can be either glottopoints or glottopols
+This family of functions turns glottodata into a spatial object. As we've illustrated above, these can be either glottopoints or glottopols
 
 ```{r glottospace}
 glottodata <- glottoget("demodata")
@@ -266,9 +265,9 @@ glottomap(glottospacedata)
 
 ## glottomap 
 
-With glottomap you can quickly visualize the location of languages. Below I show simple static maps, but you can also create dynamic maps by specifying type = "dynamic".
+With glottomap you can quickly visualize the location of languages. Below we show simple static maps, but you can also create dynamic maps by specifying type = "dynamic".
 
-You can pass arguments directly to glottofilter
+To select languages, you don't need to call glottofilter() first, but you can use glottomap() directly. Behind the scenes glottomap() passes those arguments on to glottofilter().
 
 ```{r glottomap}
 glottomap(country = "Colombia")
