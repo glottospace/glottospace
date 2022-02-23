@@ -52,13 +52,14 @@ glottoclean <- function(glottodata, structure = NULL, tona = NULL, tofalse = NUL
 #' glottodata <- glottorecode(glottodata, tona = c("?", "missing"))
 glottorecode <- function(glottodata, structure = NULL, tofalse = NULL, totrue = NULL, tona = NULL){
 
+  if(!is.null(tofalse) | !is.null(totrue)){
+    glottodata <- glottorecode_logical(glottodata = glottodata, structure = structure, tofalse = tofalse, totrue = totrue)
+  }
+
   if(!is.null(tona)){
     glottodata <- glottorecode_missing(glottodata, tona = tona)
   }
 
-  if(!is.null(tofalse) | !is.null(totrue)){
-    glottodata <- glottorecode_logical(glottodata = glottodata, structure = structure, tofalse = tofalse, totrue = totrue)
-  }
  glottodata
 }
 

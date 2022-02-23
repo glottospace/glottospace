@@ -44,6 +44,12 @@ glottodist <- function(glottodata, structure = NULL, id = NULL){
     }
   glottodata <- tibble::column_to_rownames(glottodata, id)
 
+  duplo <- sum(duplicated(glottodata) | duplicated(glottodata, fromLast = TRUE))
+  if(duplo != 0){
+    message(paste0("This glottodata contains ", duplo, " rows which have at least one duplicate, and ", nrow(glottodata) - duplo, " unique rows \n"))
+    message(paste0("When plotting, you will see ",  nrow(glottodata) - sum(duplicated(glottodata)), " points (unique rows + one of each duplicate) \n"))
+  }
+
   # structure table:
   if(!("varname" %in% colnames(structure) ) ){
     colnames(structure)[1] <- "varname"

@@ -8,14 +8,17 @@ glottoplot(
   glottodata = NULL,
   glottodist = NULL,
   type = NULL,
-  k = NULL,
-  rm.na = FALSE,
+  glottonmds = NULL,
   color = NULL,
   ptsize = NULL,
   label = NULL,
   filename = NULL,
+  palette = NULL,
+  k = NULL,
+  rm.na = FALSE,
   row2id = NULL,
-  palette = NULL
+  preventoverlap = FALSE,
+  alpha = NULL
 )
 }
 \arguments{
@@ -25,9 +28,7 @@ glottoplot(
 
 \item{type}{The type of plot: "heatmap", "nmds", or "missing". Default is heatmap if nothing is provided.}
 
-\item{k}{Number of dimensions. Either 2 or 3 for nmds.}
-
-\item{rm.na}{Whether na's should be removed (default is FALSE)}
+\item{glottonmds}{A glottonmds object created with \code{\link{glottonmds}}}
 
 \item{color}{glottovar to be used to color features (optional). Run glottovars() to see the options.}
 
@@ -37,12 +38,20 @@ glottoplot(
 
 \item{filename}{Optional filename if output should be saved.}
 
+\item{palette}{Name of color palette, use glottocolpal("all") to see the options}
+
+\item{k}{Number of dimensions. Either 2 or 3 for nmds.}
+
+\item{rm.na}{Whether na's should be removed (default is FALSE)}
+
 \item{row2id}{In case of nmds, specify what each row contains (either 'glottocode' or 'glottosubcode')}
 
-\item{palette}{Name of color palette, use glottocolpal("all") to see the options}
+\item{preventoverlap}{For nmds with 2 dimensions, should overlap between data points be prevented?}
+
+\item{alpha}{For nmds with 2 dimensions: Transparency of points between 0 (very transparent) and 1 (not transparent)}
 }
 \value{
-a visualization of a glotto(sub)data or glottodist object, which can be saved with glottosave()
+a visualization of a glotto(sub)data, glottodist or glottonmds object, which can be saved with glottosave()
 }
 \description{
 This function offers different types of visualizations for linguistic data and linguistic distances.
