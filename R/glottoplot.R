@@ -55,7 +55,7 @@ glottoplot <- function(glottodata = NULL, glottodist = NULL, type = NULL, glotto
   }
 
   if(!is.null(glottonmds)){
-    glottoplot_nmds(nmds = glottonmds,
+    glottoplot_nmds(glottonmds = glottonmds,
                     color = color, ptsize = ptsize, label = label, palette = palette, filename = filename, preventoverlap = preventoverlap, alpha = alpha)
   }
 
