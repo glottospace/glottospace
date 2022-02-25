@@ -66,7 +66,7 @@ return(glottodata)
 #' @noRd
 #' @seealso glottosave
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' glottoget_path()
 #' glottoget_path(filepath = "glottodata.xlsx")
 #' glottoget_path(filepath = "glottodata.gpkg")

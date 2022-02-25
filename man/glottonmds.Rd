@@ -16,7 +16,7 @@ glottonmds(glottodist = NULL, k = NULL, rm.na = FALSE, row2id = NULL)
 \item{row2id}{In case of nmds, specify what each row contains (either 'glottocode' or 'glottosubcode')}
 }
 \value{
-
+a glottonmds object
 }
 \description{
 Nonmetric Multidimensional Scaling for a glottodist object
