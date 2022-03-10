@@ -54,9 +54,9 @@ is_lonlat <- function(object){
 #' @noRd
 #'
 contransform_distmat <- function(dist){
-  if(any(class(dist) == "dist")){
+  if(inherits(dist, what = "dist")){
     distmat <- as.matrix(dist)
-  } else if (any(class(dist) == "matrix")){
+  } else if (inherits(dist, what = "matrix")){
     distmat <- dist
   }
 }
@@ -81,7 +81,7 @@ identicalcrs <- function(x, y){
 #' @noRd
 #'
 is_raster <- function(object){
-  (class(object)[1] == "RasterLayer") | (class(object)[1] == "RasterStack")
+  inherits(object, what = c("RasterLayer", "RasterStack") )
 }
 
 #' Check whether an object is of class sf
@@ -91,7 +91,7 @@ is_raster <- function(object){
 #' @return TRUE/FALSE
 #' @noRd
 is_sf <- function(object){
-  class(object)[1] == "sf"
+  inherits(object, what = "sf" )
 }
 
 

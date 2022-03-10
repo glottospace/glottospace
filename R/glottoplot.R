@@ -190,6 +190,7 @@ if(preventoverlap == FALSE){
 #' glottoplot_nmds_3d(nmds = nmds, scoresdata = scoresdata, color = "family", label = "name")
 #' glottoplot_nmds_3d(nmds = nmds, scoresdata = scoresdata, color = "isolate")
 glottoplot_nmds_3d <- function(nmds, scoresdata, color = NULL, ptsize = NULL, label = NULL, palette = NULL, filename = NULL){
+  rlang::check_installed("plotly", reason = "to use `glottoplot_nmds_3d()`")
   scoresdata <- glottosimplify(scoresdata)
 
   if(is.null(color)){
@@ -233,6 +234,7 @@ glottoplot_nmds_3d <- function(nmds, scoresdata, color = NULL, ptsize = NULL, la
 
   if(!is.null(filename)){
     if( tools::file_ext(filename) == "" ){filename <- paste0(filename, ".html")}
+    rlang::check_installed("htmlwidgets", reason = "to save a 3D nmdsplot")
     htmlwidgets::saveWidget(nmdsplot, title = "NMDS 3D", filename)
     }
   print(nmdsplot)

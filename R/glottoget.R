@@ -92,7 +92,7 @@ glottoget_path <- function(filepath = NULL, simplify = TRUE){
       glottodata <- sf::st_read(dsn = filepath)
     }
 
-  if(simplify == TRUE & length(glottodata) == 1 & any(class(glottodata) == "list") ){
+  if(simplify == TRUE & length(glottodata) == 1 & inherits(glottodata, what = "list" ) ){
     glottodata <- glottodata[[1]]
   }
   return(glottodata)
@@ -204,6 +204,12 @@ glottoget_zenodo <- function(name = NULL, url = NULL, dirpath = NULL){
   } else {
     if(dir.exists(dirpath)){stop("Directory already exists, please choose a different location.")}
     }
+
+  # remote <- suppressWarnings(jsonlite::stream_in(url(base_url)))
+  #
+  # version <- remote$metadata$version
+  # now <- utils::timestamp()
+  # citation <- xml2::xml_text(xml2::read_html(charToRaw(remote$metadata$description), encoding = "UTF-8"))
 
   req <- curl::curl_fetch_memory(base_url)
   content <- RJSONIO::fromJSON(rawToChar(req$content))

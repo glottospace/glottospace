@@ -123,7 +123,7 @@ glottospace_thiessen <- function(glottodata){
 #'
 #' @noRd
 glottospace_coords2sf <- function(glottodata, lon = "longitude", lat = "latitude"){
-  if(class(glottodata)[1] == "sf"){stop("glottodata is already a spatial object")}
+  if(inherits(glottodata, what = "sf" )){stop("glottodata is already a spatial object")}
   glottolatlon <- glottodata %>%
     dplyr::filter(!is.na(!!as.symbol(lon))) %>%
     dplyr::filter(!is.na(!!as.symbol(lat)))
@@ -175,7 +175,7 @@ glottospace_addcountries <- function(glottodata){
 #' glottodata <- glottoget("demodata")
 #' glottospace_addcoords(glottodata)
 glottospace_addcoords <- function(glottodata){
-  if(class(glottodata)[1] != "sf") {
+  if(!inherits(glottodata, what = "sf" )) {
     glottodata <- glottojoin_space(glottodata)
     glottodata <- sf::st_sf(glottodata)
   }

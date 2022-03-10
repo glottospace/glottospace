@@ -35,7 +35,7 @@ glottocode <- function(glottocode){
 #' @examples
 #' glottocode_location("yucu1253")
 glottocode_location <- function(glottocode){
-
+  rlang::check_installed("s2", reason = "to use `glottocode_location()`")
   language <- glottofilter(glottocode = glottocode)
   lon0 = sf::st_coordinates(language)[1]
   lat0 = sf::st_coordinates(language)[2]

@@ -147,8 +147,12 @@ glottojoin_base <- function(glottodata, id = NULL){
 glottojoin_space <- function(glottodata, id = NULL){
   id <- contrans_id2gc(id)
   glottospace <- glottoget_glottospace()
-  glottodata <- dplyr::left_join(x = glottodata, y = glottospace, by = id)
-  sf::st_sf(glottodata)
+  if(!is_sf(glottodata)){
+  glottodata <- merge(x = glottospace, y = glottodata, by = id, all.y = TRUE, all.x = FALSE)
+  } else {
+  message("Object glottodata is already spatial")
+  }
+  glottodata
 }
 
 #' Join glottosubdata (a list of glottodata tables for multiple languages) into a single glottodata object

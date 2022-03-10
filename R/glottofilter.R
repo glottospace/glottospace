@@ -150,6 +150,8 @@ glottofilter <- function(glottodata = NULL,
 #' glottofiltermap(country = "Netherlands")
 #' }
 glottofiltermap <- function(glottodata = NULL, mode = NULL, ...){
+  rlang::check_installed("mapedit", reason = "to use `glottofiltermap()`")
+
   if(purrr::is_empty(glottodata)){
     glottodata <- glottofilter(...)
   }
@@ -196,7 +198,7 @@ char <- as.character(arg)
 if(char[1] == "-"){ # inverse
   if(substring(char[2], 1, 2) == "c("){ # inverse multiple
     selection <- gsub(pattern = "[[:punct:]]", replacement = ",", x = char[2])
-    selection <- stringr::str_split(selection, ",")
+    selection <- strsplit(x = selection, split = ",")
     selection <- selection[[1]]
     selection <- selection[selection %nin% c("c", " ", "")]
   } else {

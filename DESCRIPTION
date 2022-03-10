@@ -1,47 +1,50 @@
-Package: glottospace
 Type: Package
-Title: Language Mapping and Geospatial Analysis of Linguistic and Cultural Data
-Version: 0.0.107
+Package: glottospace
+Title: Language Mapping and Geospatial Analysis of Linguistic and Cultural
+    Data
+Version: 0.0.108
 Author: Sietze Norder
 Maintainer: Sietze Norder <mail@sietzenorder.nl>
-Description: Streamlined workflows for geolinguistic analysis, including: 
-    accessing global linguistic and cultural databases, data import, 
-    data entry, data cleaning, data exploration, mapping, visualization and export. 
+Description: Streamlined workflows for geolinguistic analysis, including:
+    accessing global linguistic and cultural databases, data import, data
+    entry, data cleaning, data exploration, mapping, visualization and
+    export.
+License: GPL (>= 3)
 URL: https://github.com/SietzeN/glottospace
 BugReports: https://github.com/SietzeN/glottospace/issues
-License: GPL (>= 3)
+Depends: 
+    R (>= 4.1.0)
+Imports: 
+    cluster,
+    curl,
+    dplyr,
+    ggplot2,
+    jsonlite,
+    magrittr,
+    purrr,
+    readxl,
+    RJSONIO,
+    rlang,
+    rnaturalearth,
+    rnaturalearthdata,
+    sf,
+    tibble,
+    tidyr,
+    tmap,
+    units,
+    writexl,
+    xml2
+Suggests: 
+    grDevices,
+    htmlwidgets,
+    RColorBrewer,
+    scales,
+    plotly,
+    s2,
+    vegan,
+    mapedit,
+    viridisLite
 Encoding: UTF-8
 Language: en-US
 LazyData: true
 RoxygenNote: 7.1.2
-Imports: 
-    dplyr,
-    magrittr,
-    purrr,
-    rnaturalearth,
-    rnaturalearthdata,
-    sf,
-    tmap,
-    RColorBrewer,
-    RJSONIO,
-    cluster,
-    ggplot2,
-    htmlwidgets,
-    mapedit,
-    plotly,
-    jsonlite,
-    xml2,
-    readxl,
-    s2,
-    scales,
-    stringr,
-    tibble,
-    tidyr,
-    units,
-    vegan,
-    viridisLite,
-    writexl,
-    curl,
-    rlang
-Depends: 
-    R (>= 4.1.0)

@@ -13,8 +13,32 @@
 #' glottocolpal(palette = "turbo", show = TRUE)
 glottocolpal <- function(palette, ncolr = NULL, rev = FALSE, alpha = NULL, show = FALSE){
   viridispals <- c("viridis", "magma", "inferno", "plasma", "cividis", "rocket", "mako", "turbo")
-  colorbrewerpals <- rownames(RColorBrewer::brewer.pal.info)
-  grdevpals <- grDevices::hcl.pals()
+  # dput(as.character(rownames(RColorBrewer::brewer.pal.info))) # intermediate step to reduce dependencies. Output pasted below
+  colorbrewerpals <- c("BrBG", "PiYG", "PRGn", "PuOr", "RdBu", "RdGy", "RdYlBu", "RdYlGn",
+                       "Spectral", "Accent", "Dark2", "Paired", "Pastel1", "Pastel2",
+                       "Set1", "Set2", "Set3", "Blues", "BuGn", "BuPu", "GnBu", "Greens",
+                       "Greys", "Oranges", "OrRd", "PuBu", "PuBuGn", "PuRd", "Purples",
+                       "RdPu", "Reds", "YlGn", "YlGnBu", "YlOrBr", "YlOrRd")
+  # dput(as.character(grDevices::hcl.pals())) # intermediate step to reduce dependencies. Output pasted below
+  grdevpals <- c("Pastel 1", "Dark 2", "Dark 3", "Set 2", "Set 3", "Warm", "Cold",
+                 "Harmonic", "Dynamic", "Grays", "Light Grays", "Blues 2", "Blues 3",
+                 "Purples 2", "Purples 3", "Reds 2", "Reds 3", "Greens 2", "Greens 3",
+                 "Oslo", "Purple-Blue", "Red-Purple", "Red-Blue", "Purple-Orange",
+                 "Purple-Yellow", "Blue-Yellow", "Green-Yellow", "Red-Yellow",
+                 "Heat", "Heat 2", "Terrain", "Terrain 2", "Viridis", "Plasma",
+                 "Inferno", "Rocket", "Mako", "Dark Mint", "Mint", "BluGrn", "Teal",
+                 "TealGrn", "Emrld", "BluYl", "ag_GrnYl", "Peach", "PinkYl", "Burg",
+                 "BurgYl", "RedOr", "OrYel", "Purp", "PurpOr", "Sunset", "Magenta",
+                 "SunsetDark", "ag_Sunset", "BrwnYl", "YlOrRd", "YlOrBr", "OrRd",
+                 "Oranges", "YlGn", "YlGnBu", "Reds", "RdPu", "PuRd", "Purples",
+                 "PuBuGn", "PuBu", "Greens", "BuGn", "GnBu", "BuPu", "Blues",
+                 "Lajolla", "Turku", "Hawaii", "Batlow", "Blue-Red", "Blue-Red 2",
+                 "Blue-Red 3", "Red-Green", "Purple-Green", "Purple-Brown", "Green-Brown",
+                 "Blue-Yellow 2", "Blue-Yellow 3", "Green-Orange", "Cyan-Magenta",
+                 "Tropic", "Broc", "Cork", "Vik", "Berlin", "Lisbon", "Tofino",
+                 "ArmyRose", "Earth", "Fall", "Geyser", "TealRose", "Temps", "PuOr",
+                 "RdBu", "RdGy", "PiYG", "PRGn", "BrBG", "RdYlBu", "RdYlGn", "Spectral",
+                 "Zissou 1", "Cividis", "Roma")
   grdevpals <- grdevpals[order(grdevpals)]
   grdevpals2 <- c("rainbow", "heat", "terrain", "topo", "cm")
 
@@ -27,16 +51,20 @@ glottocolpal <- function(palette, ncolr = NULL, rev = FALSE, alpha = NULL, show 
   }
 
   if(palette %in% viridispals){
+    rlang::check_installed("viridisLite", reason = "to use `glottocolpal()`")
     if(is.null(ncolr)){ncolr <- 20}
     colpal <- viridisLite::viridis(n = ncolr, option = palette, alpha = alpha, direction = {ifelse(rev == FALSE, 1, -1)})
   } else if(palette %in% grdevpals){ # contains palettes from RColorBrewer and viridis. grDevices is more flexible than RColorBrewer and therefore is prioritized
+    rlang::check_installed("grDevices", reason = "to use `glottocolpal()`")
     if(is.null(ncolr)){ncolr <- 20}
     colpal <- grDevices::hcl.colors(n = ncolr, palette = palette, rev = rev, alpha = alpha)
   } else if(palette %in% colorbrewerpals){
+    rlang::check_installed("RColorBrewer", reason = "to use `glottocolpal()`")
     if(is.null(ncolr)){ncolr <- RColorBrewer::brewer.pal.info[colorbrewerpals == palette, "maxcolors"]}
     colpal <- RColorBrewer::brewer.pal(ncolr, palette)
     if(rev == TRUE){colpal <- rev(colpal)}
   } else if(palette %in% grdevpals2){
+    rlang::check_installed("grDevices", reason = "to use `glottocolpal()`")
     if(is.null(ncolr)){ncolr <- 20}
       if(palette == "rainbow"){colpal <- grDevices::rainbow(n = ncolr, rev = rev, alpha = alpha)}
       if(palette == "heat"){colpal <- grDevices::heat.colors(n = ncolr, rev = rev, alpha = alpha)}
@@ -46,6 +74,7 @@ glottocolpal <- function(palette, ncolr = NULL, rev = FALSE, alpha = NULL, show 
     }
 
   if(show == TRUE){
+    rlang::check_installed("scales", reason = "if `show == TRUE`")
     scales::show_col(colours = colpal)
   }
   return(colpal)
@@ -58,8 +87,32 @@ glottocolpal <- function(palette, ncolr = NULL, rev = FALSE, alpha = NULL, show 
 #'
 glottocolpal_options <- function(){
   viridispals <- c("viridis", "magma", "inferno", "plasma", "cividis", "rocket", "mako", "turbo")
-  colorbrewerpals <- rownames(RColorBrewer::brewer.pal.info)
-  grdevpals <- grDevices::hcl.pals()
+  # dput(as.character(rownames(RColorBrewer::brewer.pal.info))) # intermediate step to reduce dependencies. Output pasted below
+  colorbrewerpals <- c("BrBG", "PiYG", "PRGn", "PuOr", "RdBu", "RdGy", "RdYlBu", "RdYlGn",
+                       "Spectral", "Accent", "Dark2", "Paired", "Pastel1", "Pastel2",
+                       "Set1", "Set2", "Set3", "Blues", "BuGn", "BuPu", "GnBu", "Greens",
+                       "Greys", "Oranges", "OrRd", "PuBu", "PuBuGn", "PuRd", "Purples",
+                       "RdPu", "Reds", "YlGn", "YlGnBu", "YlOrBr", "YlOrRd")
+  # dput(as.character(grDevices::hcl.pals())) # intermediate step to reduce dependencies. Output pasted below
+  grdevpals <- c("Pastel 1", "Dark 2", "Dark 3", "Set 2", "Set 3", "Warm", "Cold",
+                 "Harmonic", "Dynamic", "Grays", "Light Grays", "Blues 2", "Blues 3",
+                 "Purples 2", "Purples 3", "Reds 2", "Reds 3", "Greens 2", "Greens 3",
+                 "Oslo", "Purple-Blue", "Red-Purple", "Red-Blue", "Purple-Orange",
+                 "Purple-Yellow", "Blue-Yellow", "Green-Yellow", "Red-Yellow",
+                 "Heat", "Heat 2", "Terrain", "Terrain 2", "Viridis", "Plasma",
+                 "Inferno", "Rocket", "Mako", "Dark Mint", "Mint", "BluGrn", "Teal",
+                 "TealGrn", "Emrld", "BluYl", "ag_GrnYl", "Peach", "PinkYl", "Burg",
+                 "BurgYl", "RedOr", "OrYel", "Purp", "PurpOr", "Sunset", "Magenta",
+                 "SunsetDark", "ag_Sunset", "BrwnYl", "YlOrRd", "YlOrBr", "OrRd",
+                 "Oranges", "YlGn", "YlGnBu", "Reds", "RdPu", "PuRd", "Purples",
+                 "PuBuGn", "PuBu", "Greens", "BuGn", "GnBu", "BuPu", "Blues",
+                 "Lajolla", "Turku", "Hawaii", "Batlow", "Blue-Red", "Blue-Red 2",
+                 "Blue-Red 3", "Red-Green", "Purple-Green", "Purple-Brown", "Green-Brown",
+                 "Blue-Yellow 2", "Blue-Yellow 3", "Green-Orange", "Cyan-Magenta",
+                 "Tropic", "Broc", "Cork", "Vik", "Berlin", "Lisbon", "Tofino",
+                 "ArmyRose", "Earth", "Fall", "Geyser", "TealRose", "Temps", "PuOr",
+                 "RdBu", "RdGy", "PiYG", "PRGn", "BrBG", "RdYlBu", "RdYlGn", "Spectral",
+                 "Zissou 1", "Cividis", "Roma")
   grdevpals <- grdevpals[order(grdevpals)]
   grdevpals2 <- c("rainbow", "heat", "terrain", "topo", "cm")
 

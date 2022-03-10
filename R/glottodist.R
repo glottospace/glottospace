@@ -127,134 +127,134 @@ glottodist <- function(glottodata, structure = NULL, id = NULL){
 
 
 
-#' Calculate distances between languages based on constructions
+#' #' Calculate distances between languages based on constructions
+#' #'
+#' #' @param data data
+#' #' @param index index
+#' #' @param glottocodes glottocodes
+#' #' @param aggregate aggregate
+#' #' @param structure structure
+#' #'
+#' #' @noRd
+#' glottocondist <- function(data = NULL, index = "constructions", glottocodes = NULL, aggregate = "mean", structure = NULL){
 #'
-#' @param data data
-#' @param index index
-#' @param glottocodes glottocodes
-#' @param aggregate aggregate
-#' @param structure structure
 #'
-#' @noRd
-glottocondist <- function(data = NULL, index = "constructions", glottocodes = NULL, aggregate = "mean", structure = NULL){
-
-
-
-  # Calculate distance matrices
-  if(index == "languages"){
-    #
-  }
-
-  if(index == "threshold"){
-    #
-  }
-
-  outmatlang <- round(outmatlang, 3)
-  return(outmatlang)
-}
-
-
-
-
-
-#' Aggregate distances between constructions per language
 #'
-#' @param condist distance matrix based on constructions
-#' @param glottocodes Vector of glottocodes
-#' @param aggregation One of c('mean', 'min', 'sum') indicating how distances should be aggregated to language level.('min' returns best match)
-#' @noRd
-glottocondist_agg <- function(condist, glottocodes, aggregation){
-
-  if(any(class(condist) == "dist")){
-    distmat <- as.matrix(condist)
-  }
-  if(is.matrix(condist)){
-    distmat <- condist
-  }
-
-  outmatlang <- glottocreate_emptydistmat(names = glottocodes)
-
-  for (i in seq_along(glottocodes)) {
-    for (j in seq_along(glottocodes)) {
-      if(glottocodes[i]!=glottocodes[j]) {
-
-        # Subset distance matrix for language a and b
-        a <- stringr::str_detect(rownames(distmat), glottocodes[i])
-        b <- stringr::str_detect(rownames(distmat), glottocodes[j])
-        distmat_ab <- distmat[a,b, drop = F]
-
-        if(!all(is.na(distmat_ab))){
-          # Average of row wise aggregated values
-          avgrow <- mean(apply(distmat_ab, 1, FUN=aggregation, na.rm = TRUE))
-          # TO DO: median, range, IQR, etc.
-          # Average of col wise aggregated values
-          avgcol <- mean(apply(distmat_ab, 2, FUN=aggregation, na.rm = TRUE))
-          # TO DO: output avgrow and avgcol (distance from perspective of lang a and b is not the same)
-          out_ab <- (avgrow + avgcol)/2
-        }
-
-        if(all(is.na(distmat_ab))){
-          # Only NA in both groups
-          out_ab <- NA
-        }
-
-        outmatlang[i,j] <- out_ab
-      } else if(glottocodes[i]==glottocodes[j]) {
-        outmatlang[glottocodes[i],glottocodes[j]] <- 0}
-    }
-  }
-  message('See you later, aggregator!')
-  return(outmatlang)
-}
-
-#' Convert distances between constructions per language
+#'   # Calculate distance matrices
+#'   if(index == "languages"){
+#'     #
+#'   }
 #'
-#' Default is to use all pairwise distances to calculate average.
+#'   if(index == "threshold"){
+#'     #
+#'   }
 #'
-#' @param condist Distance matrix
-#' @param glottocodes Vector of glottocodes
-#' @param groups Vector of two groups (e.g. language families) for which average should be calculated.
-#' @param thresval Threshold value
-#' @param threstype Threshold type
-#' @noRd
+#'   outmatlang <- round(outmatlang, 3)
+#'   return(outmatlang)
+#' }
 #'
-glottocondist_con2lang <- function(condist, glottocodes, groups = NULL, thresval = NULL, threstype = "absolute"){
-
-  distmat <- as.matrix(condist)
-
-  if(is.null(groups) & is.null(thresval)){
-    thr <- mean(condist)
-    message(paste0('Mean between all constructions is: ', round(thr, 3)))
-  }
-  if(!is.null(groups) & is.null(thresval)){
-    if(length(unique(groups)) >2){stop('Maximum number of groups is 2')}
-    group1 <- glottocodes[which(groups %in% unique(groups)[1])]
-    group2 <- glottocodes[which(groups %in% unique(groups)[2])]
-
-    groups <- sub("\\_.*", "", names(condist))
-    a <- groups %in% group1
-    b <- groups %in% group2
-    distmat_ab <- distmat[a,b, drop = F]
-    thr <- mean(distmat_ab)
-    message(paste0('Mean between groups is: ', round(thr, 3)))
-  }
-  if(!is.null(thresval) & is.null(groups)){
-    thr <- thresval
-  }
-  if(!is.null(thresval) & !is.null(groups)){
-    message('Provide either thresval or groups, not both')
-  }
-
-  if(threstype == "absolute"){
-    message('\n +1 = more dissimilar than average, \n -1 less dissimilar than average')
-    distmat <- ifelse(distmat > thr, 1, -1)
-    return(distmat)
-  }
-
-  if(threstype == "center"){
-    message('\n Positive values = more dissimilar than average, \n Negative values = less dissimilar than average')
-    distmat <- distmat - thr # equivalent: scale(x = distmat, center = rep(thr, ncol(distmat)), scale = F)
-    return(distmat)
-  }
-
-}
+#'
+#'
+#'
+#'
+#' #' Aggregate distances between constructions per language
+#' #'
+#' #' @param condist distance matrix based on constructions
+#' #' @param glottocodes Vector of glottocodes
+#' #' @param aggregation One of c('mean', 'min', 'sum') indicating how distances should be aggregated to language level.('min' returns best match)
+#' #' @noRd
+#' glottocondist_agg <- function(condist, glottocodes, aggregation){
+#'
+#'   if(inherits(condist, what = "dist" )){
+#'     distmat <- as.matrix(condist)
+#'   }
+#'   if(is.matrix(condist)){
+#'     distmat <- condist
+#'   }
+#'
+#'   outmatlang <- glottocreate_emptydistmat(names = glottocodes)
+#'
+#'   for (i in seq_along(glottocodes)) {
+#'     for (j in seq_along(glottocodes)) {
+#'       if(glottocodes[i]!=glottocodes[j]) {
+#'
+#'         # Subset distance matrix for language a and b
+#'         a <- stringr::str_detect(rownames(distmat), glottocodes[i])
+#'         b <- stringr::str_detect(rownames(distmat), glottocodes[j])
+#'         distmat_ab <- distmat[a,b, drop = F]
+#'
+#'         if(!all(is.na(distmat_ab))){
+#'           # Average of row wise aggregated values
+#'           avgrow <- mean(apply(distmat_ab, 1, FUN=aggregation, na.rm = TRUE))
+#'           # TO DO: median, range, IQR, etc.
+#'           # Average of col wise aggregated values
+#'           avgcol <- mean(apply(distmat_ab, 2, FUN=aggregation, na.rm = TRUE))
+#'           # TO DO: output avgrow and avgcol (distance from perspective of lang a and b is not the same)
+#'           out_ab <- (avgrow + avgcol)/2
+#'         }
+#'
+#'         if(all(is.na(distmat_ab))){
+#'           # Only NA in both groups
+#'           out_ab <- NA
+#'         }
+#'
+#'         outmatlang[i,j] <- out_ab
+#'       } else if(glottocodes[i]==glottocodes[j]) {
+#'         outmatlang[glottocodes[i],glottocodes[j]] <- 0}
+#'     }
+#'   }
+#'   message('See you later, aggregator!')
+#'   return(outmatlang)
+#' }
+#'
+#' #' Convert distances between constructions per language
+#' #'
+#' #' Default is to use all pairwise distances to calculate average.
+#' #'
+#' #' @param condist Distance matrix
+#' #' @param glottocodes Vector of glottocodes
+#' #' @param groups Vector of two groups (e.g. language families) for which average should be calculated.
+#' #' @param thresval Threshold value
+#' #' @param threstype Threshold type
+#' #' @noRd
+#' #'
+#' glottocondist_con2lang <- function(condist, glottocodes, groups = NULL, thresval = NULL, threstype = "absolute"){
+#'
+#'   distmat <- as.matrix(condist)
+#'
+#'   if(is.null(groups) & is.null(thresval)){
+#'     thr <- mean(condist)
+#'     message(paste0('Mean between all constructions is: ', round(thr, 3)))
+#'   }
+#'   if(!is.null(groups) & is.null(thresval)){
+#'     if(length(unique(groups)) >2){stop('Maximum number of groups is 2')}
+#'     group1 <- glottocodes[which(groups %in% unique(groups)[1])]
+#'     group2 <- glottocodes[which(groups %in% unique(groups)[2])]
+#'
+#'     groups <- sub("\\_.*", "", names(condist))
+#'     a <- groups %in% group1
+#'     b <- groups %in% group2
+#'     distmat_ab <- distmat[a,b, drop = F]
+#'     thr <- mean(distmat_ab)
+#'     message(paste0('Mean between groups is: ', round(thr, 3)))
+#'   }
+#'   if(!is.null(thresval) & is.null(groups)){
+#'     thr <- thresval
+#'   }
+#'   if(!is.null(thresval) & !is.null(groups)){
+#'     message('Provide either thresval or groups, not both')
+#'   }
+#'
+#'   if(threstype == "absolute"){
+#'     message('\n +1 = more dissimilar than average, \n -1 less dissimilar than average')
+#'     distmat <- ifelse(distmat > thr, 1, -1)
+#'     return(distmat)
+#'   }
+#'
+#'   if(threstype == "center"){
+#'     message('\n Positive values = more dissimilar than average, \n Negative values = less dissimilar than average')
+#'     distmat <- distmat - thr # equivalent: scale(x = distmat, center = rep(thr, ncol(distmat)), scale = F)
+#'     return(distmat)
+#'   }
+#'
+#' }

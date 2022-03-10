@@ -133,7 +133,7 @@ glottocreate_data <- function(glottocodes, variables, filename = NULL, meta = TR
     glottosave(glottodata = tablelist, filename = filename)
   }
 
-  if(simplify == TRUE & length(tablelist) == 1 & any(class(tablelist) == "list") ){
+  if(simplify == TRUE & length(tablelist) == 1 & inherits(glottodata, what = "list" ) ){
     tablelist <- tablelist[[1]]
   }
 
@@ -562,7 +562,7 @@ glottocreate_demodata <- function(meta = TRUE){
     demodata <- demo$glottodata
     demo$structure[,"type"] <- c("symm", "factor", "symm")
   } else{
-    demodata <- demo
+    demodata <- demo$glottodata
   }
 
   demodata[,"var001"] <- c("Y", NA, "Y", "N", "N", "N")

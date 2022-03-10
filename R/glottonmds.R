@@ -48,6 +48,7 @@ glottonmds_run <- function(glottodist, k = 2, rm.na = FALSE){
     if(!purrr::is_empty(rmrow)){  distmat <- distmat[-rmrow,] }
   }
 
+  rlang::check_installed("vegan", reason = "to use `glottonmds_run()`")
   vegan::metaMDS(comm = distmat, k = k)
   # Default is to use the monoMDS function in vegan, but also possible to use isoMDS of MASS.
   # If you supply a distance structure to metaMDS, it will be used as such and argument method is ignored.
@@ -71,6 +72,7 @@ glottonmds_run <- function(glottodist, k = 2, rm.na = FALSE){
 #' glottonmds_scores(glottonmds)
 #' }
 glottonmds_scores <- function(glottonmds, row2id = NULL){
+  rlang::check_installed("vegan", reason = "to use `glottonmds_scores()`")
   scores <- as.data.frame(vegan::scores(glottonmds))
   if(is.null(row2id)){row2id <- "glottocode"}
   scores <- tibble::rownames_to_column(scores, row2id)

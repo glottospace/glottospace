@@ -411,9 +411,9 @@ glottocheck_colmissing <- function(data, id, diagnostic = FALSE, rm.na = TRUE){
 #' glottosubdata <- glottoget("demosubdata", meta = FALSE)
 #' glottocheck_isglottosubdata(glottosubdata)
 glottocheck_isglottosubdata <- function(glottodata){
-    all(class(glottodata) == "list" &
+    inherits(glottodata, what = "list" ) &
     !any(names(glottodata) %in% "glottodata") &
-    !purrr::is_empty(colnames(glottodata[[1]])[1] == "glottosubcode"))
+    !purrr::is_empty(colnames(glottodata[[1]])[1] == "glottosubcode")
 }
 
 #' Guess whether an object is glottodata (and not glottosubdata)

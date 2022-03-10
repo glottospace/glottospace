@@ -66,11 +66,11 @@ is_true <- function(x) {
 }
 
 is_dist <- function(object){
-  any(class(object) == "dist")
+  inherits(object, what = "dist" )
 }
 
 is_list <- function(object){
-  any(class(object) == "list")
+  inherits(object, what = "list" )
 }
 
 contrans_tb2df <- function(glottodata){
