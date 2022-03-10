@@ -2,7 +2,7 @@ Type: Package
 Package: glottospace
 Title: Language Mapping and Geospatial Analysis of Linguistic and Cultural
     Data
-Version: 0.0.108
+Version: 0.0.109
 Author: Sietze Norder
 Maintainer: Sietze Norder <mail@sietzenorder.nl>
 Description: Streamlined workflows for geolinguistic analysis, including:
@@ -19,11 +19,9 @@ Imports:
     curl,
     dplyr,
     ggplot2,
-    jsonlite,
     magrittr,
     purrr,
     readxl,
-    RJSONIO,
     rlang,
     rnaturalearth,
     rnaturalearthdata,
@@ -32,18 +30,19 @@ Imports:
     tidyr,
     tmap,
     units,
-    writexl,
-    xml2
+    writexl
 Suggests: 
     grDevices,
     htmlwidgets,
-    RColorBrewer,
-    scales,
-    plotly,
-    s2,
-    vegan,
+    jsonlite,
     mapedit,
-    viridisLite
+    plotly,
+    RColorBrewer,
+    s2,
+    scales,
+    vegan,
+    viridisLite,
+    xml2
 Encoding: UTF-8
 Language: en-US
 LazyData: true

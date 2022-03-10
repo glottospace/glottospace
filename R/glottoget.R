@@ -148,7 +148,8 @@ glottoget_glottospace <- function(download = NULL, dirpath = NULL){
 #' @noRd
 #'
 glottoget_remotemeta <- function(name = NULL, url = NULL){
-
+  rlang::check_installed("jsonlite", reason = "to use `glottoget_remotemeta()`")
+  rlang::check_installed("xml2", reason = "to use `glottoget_remotemeta()`")
   if(is.null(name) & !is.null(url)){
     base_url <- url
   } else if(tolower(name) == "glottolog"){
@@ -183,7 +184,7 @@ glottoget_remotemeta <- function(name = NULL, url = NULL){
 #'
 #' @noRd
 glottoget_zenodo <- function(name = NULL, url = NULL, dirpath = NULL){
-
+  rlang::check_installed("jsonlite", reason = "to use `glottoget_zenodo()`")
   if(is.null(name) & !is.null(url)){
     base_url <- url
   } else if(tolower(name) == "glottolog"){
@@ -199,27 +200,20 @@ glottoget_zenodo <- function(name = NULL, url = NULL, dirpath = NULL){
   }
 
   if(is.null(dirpath)){
-    dirpath <- tempdir()
-    if(dir.exists(dirpath)){unlink(x = dirpath, recursive = TRUE)}
+    dirpath <- tempdir(check = TRUE)
+    # if(dir.exists(dirpath)){unlink(x = dirpath, recursive = TRUE)}
   } else {
     if(dir.exists(dirpath)){stop("Directory already exists, please choose a different location.")}
     }
 
-  # remote <- suppressWarnings(jsonlite::stream_in(url(base_url)))
-  #
-  # version <- remote$metadata$version
-  # now <- utils::timestamp()
-  # citation <- xml2::xml_text(xml2::read_html(charToRaw(remote$metadata$description), encoding = "UTF-8"))
+  remote <- suppressWarnings(jsonlite::stream_in(url(base_url)))
+  url <- remote$files[[1]]$links[[1]]
 
-  req <- curl::curl_fetch_memory(base_url)
-  content <- RJSONIO::fromJSON(rawToChar(req$content))
-  url <- content$files[[1]]$links[[1]]
-
-  filepath <- tempfile()
+  filepath <- file.path(tempfile())
   utils::download.file(file.path(url), destfile = filepath)
   utils::unzip(zipfile = filepath, exdir = dirpath)
 
-  version <- content$metadata$version
+  version <- remote$metadata$version
 
   if(!is.null(name)){
   if(tolower(name) == "glottolog"){
