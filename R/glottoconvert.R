@@ -39,9 +39,9 @@ glottoconvert <- function(data, var, glottocodes = NULL, table = NULL, glottocol
   } else if(is_list(data) & length(data) == 1){
     glottodata <- glottoconvert_table(table = data[[1]], glottocolumn = glottocolumn, var = var, ref = ref, page = page, remark = remark, contributor = contributor)
   } else if(is_list(data) & "glottodata" %in% names(data)){
-    glottodata <- glottoconvert_data(data = data, table = "glottodata", glottocolumn = glottocolumn, var = var, ref = ref, page = page, remark = remark, contributor = contributor)
+    glottodata <- glottoconvert_data(data = data, table = "glottodata", glottocodes = glottocodes, glottocolumn = glottocolumn, var = var, ref = ref, page = page, remark = remark, contributor = contributor)
   } else if(is_list(data) & !is.null(table) ){
-    glottodata <- glottoconvert_data(data = data, table = table, glottocolumn = glottocolumn, var = var, ref = ref, page = page, remark = remark, contributor = contributor)
+    glottodata <- glottoconvert_data(data = data, table = table, glottocolumn = glottocolumn, glottocodes = glottocodes, var = var, ref = ref, page = page, remark = remark, contributor = contributor)
   } else {
     glottodata <- glottoconvert_subdata(data = data, var = var, glottocodes = glottocodes, glottosubcolumn = glottosubcolumn)
   }
@@ -62,12 +62,35 @@ glottoconvert <- function(data, var, glottocodes = NULL, table = NULL, glottocol
 #' @param glottocolumn column name or column id with glottocodes (optional, provide if glottocodes are not stored in a column called 'glottocode')
 #' @param data Dataset to be converted
 #' @param varnamecol In case the dataset contains a structure table, but the varnamecol is not called 'varname', its name should be specified.
+#' @param glottocodes Optional character vector of glottocodes. If no glottocodes are supplied, glottospace will search for them in the sample table. If no sample data is provided, all glottocodes from the glottodata table will be used.
 #'
 #' @return A glottodata object
 #' @noRd
-glottoconvert_data <- function(data, var, table = NULL, glottocolumn = NULL, ref = NULL, page = NULL, remark = NULL, contributor = NULL, varnamecol = NULL){
+glottoconvert_data <- function(data, var, table = NULL, glottocolumn = NULL, glottocodes = NULL, ref = NULL, page = NULL, remark = NULL, contributor = NULL, varnamecol = NULL){
+
+  if(is.null(glottocolumn)){glottocolumn <- "glottocode"}
+  if("sample" %in% names(data) ){
+    sample <- data$sample[["glottocode"]]
+  }
+  if(!is.null(glottocodes) & !purrr::is_empty(sample) ){
+    glottosample <- glottocodes
+    message("Using the glottocodes you specified to transform the data. Please note that the data you provided also contains a 'sample' table with glottocodes. If you would rather want to use those, you should leave the glottocodes argument empty.")
+  } else if(!is.null(glottocodes) & purrr::is_empty(sample)){
+    glottosample <- glottocodes
+    message("Using the glottocodes you specified to transform the data.")
+  } else if(is.null(glottocodes) & !purrr::is_empty(sample) ){
+    glottosample <- sample
+    message("Using the glottocodes in the sample table to transform the data.")
+  } else {
+    glottosample <- NULL
+  }
 
   if(is.null(table)){table <- "glottodata"}
+  if(!is.null(glottosample)){
+  glottosample <- data[[table]][, glottocolumn, drop = TRUE] %in% glottosample
+  data[[table]] <- data[[table]][glottosample, ]
+  }
+
   glottodata <- glottoconvert_table(table = data[[table]], glottocolumn = glottocolumn, var = var, ref = ref, page = page, remark = remark, contributor = contributor)
 
   glottometanames <- names(data) %in% names(glottocreate_metatables())

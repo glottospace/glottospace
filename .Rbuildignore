@@ -13,3 +13,4 @@
 ^CRAN-SUBMISSION$
 ^\.github$
 ^glottodata\.xlsx$
+^wc10$
