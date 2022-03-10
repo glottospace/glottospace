@@ -51,9 +51,11 @@ glottocreate(
 A glottodata or glottosubdata object (either with or without metadata). The output can be a list or a data.frame.
 }
 \description{
-By default, glottodata will be created. In case a groups argument is provided, glottosubdata will be created.
+Creates glottodata/glottosubdata and optionally save it as excel file.
 }
 \details{
+By default, glottodata will be created. In case a groups argument is provided, glottosubdata will be created.
+
 glottodata has one table for all languages (and a number of metatables if meta = TRUE), with one row per glottocode.
 glottosubdata has one table for each language (and a number of metatables if meta = TRUE), with one row per glottosubcode.
 
@@ -74,15 +76,6 @@ glottocreate(glottocodes = c("yucu1253", "tani1257"), variables = 3)
 glottocreate(glottocodes = c("yucu1253", "tani1257"),
 variables = 3, groups = c("a", "b") )
 
-# Creates glottodata/glottosubdata and save excel file in specified directory:
-\donttest{
-glottocreate(glottocodes = c("yucu1253", "tani1257"),
-             variables = 3,
-             filename = file.path(tempdir(), "glottodata.xlsx") )
 
-glottocreate(glottocodes = c("yucu1253", "tani1257"),
-             variables = 3, groups = c("a", "b"),
-             filename = file.path(tempdir(), "glottosubdata.xlsx") )
-}
 }
 \concept{<glottoget><glottocreate>}
