@@ -26,7 +26,6 @@ glottoget(
 is a subset of all languages in \href{https://glottolog.org/}{glottolog} with
 spatial coordinates.
 \item "demodata" - Built-in artificial glottodata (included for demonstration and testing)
-\item "demosubdata" - Built-in artificial glottosubdata (included for demonstration and testing)
 }}
 
 \item{meta}{In case 'glottodata' is a path to locally stored data (or demodata/demosubdata): by default, meta sheets are not loaded. Use meta=TRUE if you want to include them.}

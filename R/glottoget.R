@@ -15,7 +15,6 @@
 #' is a subset of all languages in \href{https://glottolog.org/}{glottolog} with
 #' spatial coordinates.
 #' \item "demodata" - Built-in artificial glottodata (included for demonstration and testing)
-#' \item "demosubdata" - Built-in artificial glottosubdata (included for demonstration and testing)
 #' }
 #' @param meta In case 'glottodata' is a path to locally stored data (or demodata/demosubdata): by default, meta sheets are not loaded. Use meta=TRUE if you want to include them.
 #' @param download By default internally stored versions of global databases are used. Specify download = TRUE in case you want to download the latest version from a remote server.
@@ -65,12 +64,6 @@ return(glottodata)
 #'
 #' @noRd
 #' @seealso glottosave
-#' @examples
-#' \donttest{
-#' glottoget_path()
-#' glottoget_path(filepath = "glottodata.xlsx")
-#' glottoget_path(filepath = "glottodata.gpkg")
-#' }
 glottoget_path <- function(filepath = NULL, simplify = TRUE){
 
   # metasheets <- names(glottocreate_metatables())

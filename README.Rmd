@@ -31,7 +31,7 @@ knitr::opts_chunk$set(
 The **glottospace** package facilitates the geospatial analysis of linguistic and cultural data. The aim of this package is to provide a streamlined workflow for working with spatio-linguistic data, including data import, cleaning, exploration, visualization and export. For example, with **glottospace** you can quickly match your own linguistic data to a location and plot it on a map. You can also calculate distances between languages based on their location or linguistic features and visualize those distances. In addition, with **glottospace** you can easily access global databases such as [glottolog](https://glottolog.org/) and [WALS](https://wals.info/) from R and integrate them with your own data. 
 
 # Development
-We're still actively developing the **glottospace** package by adding new functions and improving existing ones. Although the package is stable, you might find bugs or encounter things you might find confusing. You can help to improve the package by:
+We're still actively developing the **glottospace** package by adding new functions and improving existing ones. Although the package is stable, you might find bugs or encounter things you might find confusing. You can help us to improve the package by:
 
 - Sending an email to [Sietze Norder](mailto:s.j.norder@hum.leidenuniv.nl) with a clear description of the issue or error message.  
 - Opening a new issue in the [glottospace issues page on GitHub](https://github.com/SietzeN/glottospace/issues)

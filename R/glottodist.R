@@ -92,8 +92,8 @@ glottodist <- function(glottodata, structure = NULL, id = NULL){
   if(length(cbinary) != 0){
   allevmat <- sapply(lapply(glottodata[cbinary], as.factor), levels)
   allevuniq <- unique(c(allevmat))
-  if(any(allevuniq %nin% c("T", "TRUE", "True", "true", "F", "FALSE", "False", "false"))){
-    message("For some variables of type 'symm' and 'asymm', it is not clear whether they are TRUE of FALSE. It is highly recommended to run glottoclean() before running glottodist(). Attempting to convert the following values to TRUE/FALSE...")
+  if(any(allevuniq %nin% c(TRUE, FALSE, NA))){
+    message("For some variables of type 'symm' and 'asymm', it is not clear whether they are TRUE, FALSE, or NA. It is highly recommended to run glottoclean() and inspect the results before running glottodist(). \n\n Attempting to convert the following values to TRUE/FALSE/NA...")
     printmessage(allevuniq)
     glottodata[cbinary] <- glottoclean(glottodata[cbinary], structure = structure)
   }

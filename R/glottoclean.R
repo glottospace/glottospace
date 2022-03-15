@@ -2,7 +2,7 @@
 #' Clean glottodata
 #'
 #' This function is a wrapper around glottorecode. This function has some built in default values that are being recoded.
-#' For example, "No" is recoded to FALSE and "?" is recoded to NA.
+#' For example, if column type is 'symm' or 'asymm', values such as "No" and 0 are recoded to FALSE and "?" is recoded to NA.
 #' Use glottorecode directly if you don't want to use these defaults.
 #'
 #' @param glottodata glottodata (either a list or a data.frame)
@@ -18,10 +18,9 @@
 #' glottodata <- glottoclean(glottodata)
 glottoclean <- function(glottodata, structure = NULL, tona = NULL, tofalse = NULL, totrue = NULL){
 
-  all2false <- c("n", "N", "No", "no", "NO", 0)
-  all2true <- c("y", "Y", "Yes", "yes", "YES", 1)
-  all2na <- c("NA", "N A", "N/A", "#N/A", "NA ", " NA", "N /A", "N / A", " N / A", "N / A ", "na", "n a", "n/a",
-                  "na ", " na", "n /a", "n / a", " a / a", "n / a ", "NULL", "null", "", "\\?", "\\*", "\\.")
+  all2false <- glottoclean_all2false()
+  all2true <- glottoclean_all2true()
+  all2na <- glottoclean_all2na()
 
   if(!is.null(tona)){all2na <- c(all2na, tona)}
   if(!is.null(tofalse)){all2false <- c(all2false, tofalse)}
@@ -34,6 +33,19 @@ glottoclean <- function(glottodata, structure = NULL, tona = NULL, tofalse = NUL
                 tona = all2na)
 
   return(glottodata)
+}
+
+glottoclean_all2false <- function(){
+  c("n", "N", "No", "no", "NO", 0, 0.0, "F", "FALSE", "False", "false")
+}
+
+glottoclean_all2true <- function(){
+  c("y", "Y", "Yes", "yes", "YES", 1, 1.0, "T", "TRUE", "True", "true")
+}
+
+glottoclean_all2na <- function(){
+  c("NA", "N A", "N/A", "#N/A", "NA ", " NA", "N /A", "N / A", " N / A", "N / A ", "na", "n a", "n/a",
+    "na ", " na", "n /a", "n / a", " a / a", "n / a ", "NULL", "null", "", "\\?", "\\*", "\\.")
 }
 
 #' Recode values across a glottodataset
