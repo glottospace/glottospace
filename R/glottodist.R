@@ -115,10 +115,12 @@ glottodist <- function(glottodata, structure = NULL, id = NULL){
         weights <- rep(1, nrow(structure))
         message('All weights are NA. Default is to weight all variables equally: all weights set to 1')
   } else{
-  weights <- structure$weight
+  weights <- as.numeric(structure$weight)
+  if(!purrr::is_empty(weights[is.na(weights)])){
+    weights[is.na(weights)]  <- 1
+    message('Some weights are NA. Missing weights set to 1')
   }
-
-
+  }
 
   cluster::daisy(x = glottodata, metric = "gower",
                          type = list(symm = symm, asymm = asymm, ordratio = ordratio, logratio = logratio),

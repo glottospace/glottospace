@@ -71,6 +71,8 @@ glottoconvert_data <- function(data, var, table = NULL, glottocolumn = NULL, glo
   if(is.null(glottocolumn)){glottocolumn <- "glottocode"}
   if("sample" %in% names(data) ){
     sample <- data$sample[["glottocode"]]
+  } else {
+    sample <- NULL
   }
   if(!is.null(glottocodes) & !purrr::is_empty(sample) ){
     glottosample <- glottocodes
@@ -133,6 +135,8 @@ glottoconvert_subdata <- function(data, var, glottocodes = NULL, varnamecol = NU
 
   if("sample" %in% names(data) ){
     sample <- data$sample[["glottocode"]]
+  } else {
+    sample <- NULL
   }
   if(!is.null(glottocodes) & !purrr::is_empty(sample) ){
     glottosample <- glottocodes

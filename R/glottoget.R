@@ -284,4 +284,67 @@ glottoget_cldf <- function(dirpath, valuenames = NULL, paramnames = NULL){
 
 }
 
+#' Load locally stored cldf data
+#'
+#' @param dirpath Path to directory where cldf data is stored
+#'
+#' @noRd
+glottoget_cldf_dplace <- function(dirpath, valuenames = NULL, paramnames = NULL){
+  if(!dir.exists(dirpath)){stop("Directory not found.")}
+  if(is.null(valuenames)){valuenames <- TRUE}
+  if(is.null(paramnames)){paramnames <- FALSE}
+
+  cldf_metadata <- base::list.files(dirpath, pattern = "-metadata.json", recursive = TRUE)
+  mdpath <- normalizePath(file.path(dirpath, cldf_metadata))
+  mddir <- normalizePath(base::dirname(mdpath))
+
+  # Load languages file
+  languoids <- normalizePath(file.path(mddir, "languages.csv"))
+  languoids <- utils::read.csv(languoids, header = TRUE, encoding = "UTF-8")
+  colnames(languoids) <- base::tolower(colnames(languoids))
+  colnames(languoids)[which(colnames(languoids) == "id")] <- "lang_id"
+
+  # Load values file
+  values <- normalizePath(file.path(mddir, "values.csv"))
+  values <- utils::read.csv(values, header = TRUE, encoding = "UTF-8")
+  colnames(values) <- base::tolower(colnames(values))
+  colnames(values)[colnames(values) == "language_id"] <- "lang_id"
+  params <- unique(values$parameter_id)
+  if(valuenames == FALSE){
+    values <- tidyr::pivot_wider(data = values, names_from = "parameter_id", values_from = "value")
+  } else {    # Join values to codes by code_id
+    codes <- normalizePath(file.path(mddir, "codes.csv"))
+    codes <- utils::read.csv(codes, header = TRUE, encoding = "UTF-8")
+    values <- values %>% dplyr::left_join(codes, by = c("code_id" = "ID") )
+    values <- tidyr::pivot_wider(data = values, names_from = "parameter_id", values_from = "Name")
+  }
+
+  # Create empty data frame to store results
+  langs <- unique(values$lang_id)
+  langvals <- data.frame(matrix(ncol = ncol(values), nrow = length(langs)))
+  colnames(langvals) <- colnames(values)
+  langvals[,"lang_id"] <- langs
+
+  for(i in seq_along(langs)){
+    lang <- langs[[i]]
+    langtb <- values[values[,"lang_id"] == lang, params]
+    langvals[langvals["lang_id"] == lang, params] <- apply(X = langtb, MARGIN = 2, FUN = nonna, max1 = TRUE)
+  }
+
+  data <- languoids %>% dplyr::left_join(langvals, by = "lang_id")
+  data <- base::subset(data, select = c("glottocode", params))
+  data <- data[!purrr::is_empty(data$glottocode) & data$glottocode != "", ]
+
+  if(paramnames == TRUE){# Add parameter labels
+    parameters <- normalizePath(file.path(mddir, "parameters.csv"))
+    parameters <- utils::read.csv(parameters, header = TRUE, encoding = "UTF-8")
+    colnames(data)[-1] <- parameters$Name[match(colnames(data), parameters$ID )][-1]
+  }
+
+  data <- glottojoin_base(data)
+  invisible(data)
+
+
+}
+
 
