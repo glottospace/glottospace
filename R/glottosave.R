@@ -17,7 +17,6 @@
 #' \donttest{
 #' glottodata <- glottoget("demodata", meta = FALSE)
 #' # Saves as .xlsx
-#' glottosave(glottodata, filename = "glottodata")
 #' glottosave(glottodata, filename = file.path(tempdir(), "glottodata") )
 #'
 #' glottospacedata <- glottospace(glottodata)
