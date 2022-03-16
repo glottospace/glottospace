@@ -62,6 +62,7 @@ glottocreate <- function(glottocodes, variables,
   } else {
     glottocreate_subdata(glottocodes = glottocodes, variables = variables,
                          filename = filename, meta = meta,
+                         simplify = simplify,
                          groups = groups, n = n,
                          levels = levels,
                          check = check,
@@ -115,14 +116,15 @@ glottocreate_data <- function(glottocodes, variables, filename = NULL, meta = TR
     tablelist <- list("glottodata" = glottodata)
   }
 
+  if(simplify == TRUE & length(tablelist) == 1 & inherits(tablelist, what = "list" ) ){
+    tablelist <- tablelist[[1]]
+  }
 
   if(!is.null(filename)){
     glottosave(glottodata = tablelist, filename = filename)
   }
 
-  if(simplify == TRUE & length(tablelist) == 1 & inherits(glottodata, what = "list" ) ){
-    tablelist <- tablelist[[1]]
-  }
+
 
   tablelist
 }
@@ -146,6 +148,7 @@ glottocreate_data <- function(glottocodes, variables, filename = NULL, meta = TR
 #' @param url Optional url linking to a webpage.
 #' @param check Should glottocodes be checked? Default is FALSE because takes much time to run.
 #' @param levels Optional character vector with levels across all variables
+#' @param simplify By default, if only one table is loaded, the data will be returned as a data.frame (instead of placing the data inside a list of length 1)
 #'
 #' @noRd
 #'
@@ -156,7 +159,7 @@ glottocreate_data <- function(glottocodes, variables, filename = NULL, meta = TR
 #' @examples
 #' glottocreate_subdata(glottocodes = c("yucu1253", "tani1257"),
 #' variables = 3, groups = c("a", "b"), n = 5)
-glottocreate_subdata <- function(glottocodes, variables, groups, filename = NULL, check = FALSE, levels = NULL, n = NULL, meta = TRUE, maintainer = NULL, email = NULL, citation = NULL, url = NULL){
+glottocreate_subdata <- function(glottocodes, variables, groups, filename = NULL, check = FALSE, levels = NULL, n = NULL, meta = TRUE, maintainer = NULL, email = NULL, citation = NULL, url = NULL, simplify = TRUE){
   if(check){
     if(!all(glottocode_exists(glottocodes)) ){stop("Not all glottocodes are valid. Use glottocode_exists() to check which ones. ")}
   }
@@ -187,6 +190,10 @@ glottocreate_subdata <- function(glottocodes, variables, groups, filename = NULL
   glottosubtables <- c(glottosublist, metatables)
   } else {
     glottosubtables <- glottosublist
+  }
+
+  if(simplify == TRUE & length(glottosubtables) == 1 & inherits(glottosubtables, what = "list" ) ){
+    glottosubtables <- glottosubtables[[1]]
   }
 
   if(!is.null(filename)){

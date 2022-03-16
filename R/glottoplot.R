@@ -42,7 +42,7 @@ glottoplot <- function(glottodata = NULL, glottodist = NULL, type = NULL, glotto
                        color = NULL, ptsize = NULL, label = NULL, filename = NULL, palette = NULL,
                        k = NULL, rm.na = FALSE, row2id = NULL,
                        preventoverlap = FALSE, alpha = NULL){
-  if(is.null(type)){type <- "heatmap"}
+
   if(is_dist(glottodata)){
     glottodist <- glottodata
   }
@@ -50,24 +50,33 @@ glottoplot <- function(glottodata = NULL, glottodist = NULL, type = NULL, glotto
     glottodata <- glottodist
   }
 
-  if(type == "heatmap"){
+  if( is.null(type)  ){
+    if(is.null(glottonmds)){
     glottoplot_heatmap(glottodist = glottodist, filename = filename)
-  }
-
-  if(!is.null(glottonmds)){
+    }
+    if(!is.null(glottonmds)){
     glottoplot_nmds(glottonmds = glottonmds,
-                    color = color, ptsize = ptsize, label = label, palette = palette, filename = filename, preventoverlap = preventoverlap, alpha = alpha)
+                      color = color, ptsize = ptsize, label = label, palette = palette, filename = filename, preventoverlap = preventoverlap, alpha = alpha)
+    }
   }
 
-  if(type == "nmds" & !is.null(glottodist)){
-    glottonmds <- glottonmds(glottodist = glottodist, k = k, rm.na = rm.na, row2id = row2id)
-    glottoplot_nmds(glottonmds = glottonmds,
-                    color = color, ptsize = ptsize, label = label, palette = palette, filename = filename, preventoverlap = preventoverlap, alpha = alpha)
+  if( !is.null(type)){
+   if(type == "heatmap"){
+     glottoplot_heatmap(glottodist = glottodist, filename = filename)
+   }
+    if(type == "nmds" & !is.null(glottodist)){
+      glottonmds <- glottonmds(glottodist = glottodist, k = k, rm.na = rm.na, row2id = row2id)
+      glottoplot_nmds(glottonmds = glottonmds,
+                      color = color, ptsize = ptsize, label = label, palette = palette, filename = filename, preventoverlap = preventoverlap, alpha = alpha)
+    }
+    if(type == "missing"){
+      glottoplot_naviewer(data = glottodata, id = "glottocode")
+    }
   }
 
-  if(type == "missing"){
-    glottoplot_naviewer(data = glottodata, id = "glottocode")
-  }
+
+
+
 
 }
 
@@ -89,7 +98,7 @@ glottoplot <- function(glottodata = NULL, glottodist = NULL, type = NULL, glotto
 #' @examples
 #' glottodata <- glottoget("demodata", meta = TRUE)
 #' glottodist <- glottodist(glottodata = glottodata)
-#' glottonmds <- glottonmds(glottodist, k = 2)
+#' glottonmds <- glottonmds(glottodist, k = 2, row2id = "glottocode")
 #'
 #' glottoplot_nmds(glottonmds = glottonmds, color = "family", ptsize = "isolate")
 #' glottoplot_nmds(glottonmds = glottonmds, color = "isolate")

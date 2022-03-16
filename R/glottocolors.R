@@ -145,8 +145,10 @@ glottocolpal_options <- function(){
 #' @param spotcol Name of the column that contains the data to put in the spotlights, as well as remaining background data.
 #' @param spotlight Selection of data to put in the spotlights.
 #' @param spotcontrast Optional column to contrast between data points in the spotlight.
+#' @param bgpal color palette for background points (default is grays)
+#' @param spotpal color palette for spotligbht points
 #' @param bgcontrast Optional column to contrast between background data points
-#' @param palette Color palette. Use glottocolpal() or glottocolpal_options() to see them.
+#'
 #' @return A glottodata object with columns added to be used in visualization.
 #'
 #' @export
@@ -158,8 +160,9 @@ glottocolpal_options <- function(){
 #' spotlight = "Netherlands", spotcontrast = "name")
 #' glottomap(glottodata, color = "color")
 #' }
-glottospotlight <- function(glottodata, spotcol, spotlight, spotcontrast = NULL, bgcontrast = NULL, palette = NULL){
-  if(is.null(palette)){palette = "rainbow"}
+glottospotlight <- function(glottodata, spotcol, spotlight, spotcontrast = NULL, bgcontrast = NULL, bgpal = NULL, spotpal = NULL){
+  if(is.null(spotpal)){spotpal <- "rainbow"}
+  if(is.null(bgpal)){bgpal <- "Grays"}
   if(is_sf(glottodata)){
     data <- sf::st_drop_geometry(glottodata)
     was_sf <- TRUE
@@ -170,27 +173,31 @@ glottospotlight <- function(glottodata, spotcol, spotlight, spotcontrast = NULL,
 
   data$spotlight <- data[,spotcol] %in% spotlight
 
-  data$legend <- NA
+  data$legend <- rep(NA, nrow(data) )
 
-  if(is.null(bgcontrast)){
-    data$legend <- ifelse(data$spotlight == FALSE, data[,spotcol], data$legend)
-  } else{
+  data$legend <- ifelse(data$spotlight == TRUE, data[,spotcol], data$legend)
+
+
+
+  if(!is.null(bgcontrast)){
+  #   data$legend <- ifelse(data$spotlight == FALSE, data[,spotcol], data$legend)
+  # } else{
     data$legend <- ifelse(data$spotlight == FALSE, data[,bgcontrast], data$legend)
   }
 
-  if(is.null(spotcontrast)){
-    data$legend <- ifelse(data$spotlight == TRUE, data[,spotcol], data$legend)
-  } else{
+  if(!is.null(spotcontrast)){
+  #   data$legend <- ifelse(data$spotlight == TRUE, data[,spotcol], data$legend)
+  # } else{
     data$legend <- ifelse(data$spotlight == TRUE, data[,spotcontrast], data$legend)
   }
 
   spotlightnames <- as.factor(data$legend[data$spotlight == TRUE])
   ncolrspot <- length(unique(spotlightnames))
-  colpalspot <- glottocolpal(palette = palette, ncolrspot)
+  colpalspot <- glottocolpal(palette = spotpal, ncolrspot)
 
   bgnames <- as.factor(data$legend[data$spotlight == FALSE])
   ncolrbg <- length(unique(bgnames))
-  colpalbg <- glottocolpal(palette = "Grays", ncolr = ncolrbg)
+  colpalbg <- glottocolpal(palette = bgpal, ncolr = ncolrbg)
 
   data$color[data$spotlight == TRUE] <- colpalspot[spotlightnames]
   data$color[data$spotlight == FALSE] <- colpalbg[bgnames]
