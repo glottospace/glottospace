@@ -12,8 +12,7 @@ glottoget_glottolog <- function(download = NULL, dirpath = NULL){
     download <- FALSE
   }
   if(download == FALSE & is.null(dirpath) ){
-    out <- glottolog
-    message(internalversion_glottolog)
+    out <- glottospace:::glottolog
   } else if(download == FALSE & !is.null(dirpath)){
     out <- glottoget_glottologloadlocal(dirpath = dirpath)
   } else if(download == TRUE){
