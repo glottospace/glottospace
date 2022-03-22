@@ -1,7 +1,7 @@
 #'
 #' This is an internally stored version of glottolog data. Use glottoget("glottolog", download = TRUE) to download the latest version
 #' @keywords internal
-#' @format A data frame with XX rows and XX variables:
+#' @format A data frame based on glottolog
 #' @source \url{https://glottolog.org/
 #' }
 #' @evalRd glottoget_remotemeta(name = "glottolog")
