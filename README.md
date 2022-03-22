@@ -23,8 +23,9 @@ data to a location and plot it on a map. You can also calculate
 distances between languages based on their location or linguistic
 features and visualize those distances. In addition, with
 **glottospace** you can easily access global databases such as
-[glottolog](https://glottolog.org/) and [WALS](https://wals.info/) from
-R and integrate them with your own data.
+[glottolog](https://glottolog.org/), [WALS](https://wals.info/) and
+[D-PLACE](https://d-place.org/) from R and integrate them with your own
+data.
 
 # Development
 
@@ -71,12 +72,19 @@ please cite these data sources and packages as well.
 
 # Installation
 
+You can install the latest release of glottospace from
+[CRAN](https://CRAN.R-project.org/package=glottospace) with:
+
+``` r
+# install.packages("glottospace")
+```
+
 You can install the development version of glottospace from
 [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("SietzeN/glottospace", INSTALL_opts=c("--no-multiarch"))
+# devtools::install_github("SietzeN/glottospace", INSTALL_opts=c("--no-multiarch"))
 ```
 
 # Example
@@ -454,7 +462,9 @@ features
 glottodata <- glottoget("demodata", meta = TRUE)
 glottodist <- glottodist(glottodata = glottodata)
 #> glottocode used as id
-#> For some variables of type 'symm' and 'asymm', it is not clear whether they are TRUE of FALSE. It is highly recommended to run glottoclean() before running glottodist(). Attempting to convert the following values to TRUE/FALSE...
+#> For some variables of type 'symm' and 'asymm', it is not clear whether they are TRUE, FALSE, or NA. It is highly recommended to run glottoclean() and inspect the results before running glottodist(). 
+#> 
+#>  Attempting to convert the following values to TRUE/FALSE/NA...
 #> [1] "N" "Y"
 #> Values in binary columns (symm/asymm) recoded to TRUE/FALSE
 #> Missing values recoded to NA
@@ -474,7 +484,9 @@ linguistic, cultural, and environmental features.
 glottodata <- glottoget("demodata", meta = TRUE)
 glottodist <- glottodist(glottodata = glottodata)
 #> glottocode used as id
-#> For some variables of type 'symm' and 'asymm', it is not clear whether they are TRUE of FALSE. It is highly recommended to run glottoclean() before running glottodist(). Attempting to convert the following values to TRUE/FALSE...
+#> For some variables of type 'symm' and 'asymm', it is not clear whether they are TRUE, FALSE, or NA. It is highly recommended to run glottoclean() and inspect the results before running glottodist(). 
+#> 
+#>  Attempting to convert the following values to TRUE/FALSE/NA...
 #> [1] "N" "Y"
 #> Values in binary columns (symm/asymm) recoded to TRUE/FALSE
 #> Missing values recoded to NA

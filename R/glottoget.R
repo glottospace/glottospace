@@ -316,9 +316,9 @@ glottoget_cldf <- function(dirpath, name){
 
   # Check duplicates:
   duplo <- valsel %>%
-    dplyr::group_by(lang_id, parameter_id) %>%
+    dplyr::group_by(.data$lang_id, .data$parameter_id) %>%
     dplyr::summarise(n = dplyr::n(), .groups = "drop") %>%
-    dplyr::filter(n > 1L)
+    dplyr::filter(.data$n > 1L)
 
   if(nrow(duplo) == 0){
     valselpiv <- tidyr::pivot_wider(data = valsel, names_from = "parameter_id", values_from = "value")

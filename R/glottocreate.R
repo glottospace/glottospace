@@ -556,7 +556,7 @@ glottocreate_demodata <- function(meta = TRUE){
     demodata <- demo$glottodata
     demo$structure[,"type"] <- c("symm", "factor", "symm")
   } else{
-    demodata <- demo$glottodata
+    demodata <- demo
   }
 
   demodata[,"var001"] <- c("Y", NA, "Y", "N", "N", "N")
