@@ -15,7 +15,8 @@ glottoget_dplace <- function(download = NULL, dirpath = NULL, valuenames = NULL,
     download <- FALSE
   }
   if(download == FALSE & is.null(dirpath)) {
-    out <- glottospace::dplace
+    out <- dplace
+    message(internalversion_dplace)
   } else if(download == FALSE & !is.null(dirpath)){
     out <- glottoget_cldf(dirpath = dirpath, name = "dplace")
   } else if(download == TRUE){
