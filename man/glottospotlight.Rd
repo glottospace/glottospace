@@ -10,7 +10,8 @@ glottospotlight(
   spotlight,
   spotcontrast = NULL,
   bgcontrast = NULL,
-  palette = NULL
+  bgpal = NULL,
+  spotpal = NULL
 )
 }
 \arguments{
@@ -24,7 +25,9 @@ glottospotlight(
 
 \item{bgcontrast}{Optional column to contrast between background data points}
 
-\item{palette}{Color palette. Use glottocolpal() or glottocolpal_options() to see them.}
+\item{bgpal}{color palette for background points (default is grays)}
+
+\item{spotpal}{color palette for spotligbht points}
 }
 \value{
 A glottodata object with columns added to be used in visualization.

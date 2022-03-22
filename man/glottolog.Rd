@@ -7,19 +7,7 @@
 \format{
 A data frame with XX rows and XX variables:
 \describe{
-  \item{id}{description}
-  \item{name}{description}
-  \item{macroarea}{description}
-  \item{latitude}{description}
-  \item{longitude}{description}
-  \item{iso639p3code}{description}
-  \item{countries}{description}
-  \item{family_id}{description}
-  \item{level}{description}
-  \item{category}{description}
-  \item{bookkeeping}{description}
-  \item{classification}{description}
-  \item{parent_id}{description}
+  \item{id}{glottocodes, a unique identifier for each languoid}
   ...
 }
 }
@@ -43,4 +31,4 @@ Cite the source of the dataset as:
 Hammarström, Harald & Forkel, Robert & Haspelmath, Martin & Bank, Sebastian. 2021. Glottolog 4.5. Leipzig: Max Planck Institute for Evolutionary Anthropology. (Available online at https://glottolog.org)
 
 
-##------ Tue Mar 15 15:53:50 2022 ------##}
+##------ Tue Mar 22 12:11:23 2022 ------##}
