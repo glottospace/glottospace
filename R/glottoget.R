@@ -162,15 +162,15 @@ glottoget_remotemeta <- function(name = NULL, url = NULL){
     btime <- utils::timestamp()
     citation <- xml2::xml_text(xml2::read_html(charToRaw(remote$metadata$description), encoding = "UTF-8"))
 
-    v <- paste0(c("Version: ", version), collapse = "" )
-    c <- paste0(c("Citation: ", gsub(pattern = "\n", replacement = " ", x = citation)), collapse = "" )
-    b <- paste0(c("Built time: ", btime), collapse = "" )
-
-    paste(c(v,c,b),  sep = "\n")
-
-    # metainfo <- paste0(c("version: ", version, "\n\n\n", citation, "\n\n", now),  collapse = "")
+    # v <- paste0(c("Version: ", version), collapse = "" )
+    # c <- paste0(c("Citation: ", gsub(pattern = "\n", replacement = " ", x = citation)), collapse = "" )
+    # b <- paste0(c("Built time: ", btime), collapse = "" )
     #
-    # paste0("\\note{", metainfo, "}")
+    # paste(c(v,c,b),  sep = "\n")
+
+    metainfo <- paste0(c("version: ", version, "\n\n\n", citation, "\n\n", btime),  collapse = "")
+
+    paste0("\\note{", metainfo, "}")
 
 }
 

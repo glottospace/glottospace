@@ -15,7 +15,7 @@ glottoget_wals <- function(download = NULL, dirpath = NULL){
     download <- FALSE
     }
   if(download == FALSE & is.null(dirpath)) {
-    out <- glottospace:::wals
+    out <- glottospace::wals
   } else if(download == FALSE & !is.null(dirpath)){
     out <- glottoget_cldf(dirpath = dirpath, name = "wals")
   } else if(download == TRUE){
