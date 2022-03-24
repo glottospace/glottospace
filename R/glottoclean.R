@@ -32,15 +32,15 @@ glottoclean <- function(glottodata, structure = NULL, tona = NULL, tofalse = NUL
                 totrue = all2true,
                 tona = all2na)
 
-  return(glottodata)
+  invisible(glottodata)
 }
 
 glottoclean_all2false <- function(){
-  c("n", "N", "No", "no", "NO", 0, 0.0, "F", "FALSE", "False", "false")
+  c("n", "N", "No", "no", "NO", 0, 0.0, "F", "FALSE", "False", "false", "0", "0.0")
 }
 
 glottoclean_all2true <- function(){
-  c("y", "Y", "Yes", "yes", "YES", 1, 1.0, "T", "TRUE", "True", "true")
+  c("y", "Y", "Yes", "yes", "YES", 1, 1.0, "T", "TRUE", "True", "true", "1", "1.0")
 }
 
 glottoclean_all2na <- function(){
@@ -93,7 +93,14 @@ glottorecode_missing <- function(glottodata, tona){
     splitted <- NULL
   }
 
-  glottodata <- data.frame(lapply(glottodata, recode_tona, tona = tona))
+  if(!purrr::is_empty(row.names(glottodata)) ){
+    glottodata <- tibble::rownames_to_column(glottodata, var = "rowname")
+    glottodata <- data.frame(lapply(glottodata, recode_tona, tona = tona)) # this drops row names
+    glottodata <- tibble::column_to_rownames(glottodata, var = "rowname")
+  } else {
+    glottodata <- data.frame(lapply(glottodata, recode_tona, tona = tona))
+  }
+
 
   message("Missing values recoded to NA \n")
 
@@ -143,6 +150,15 @@ glottorecode_logical <- function(glottodata, structure = NULL, totrue = NULL, to
 
   if(!is.null(cbinary)){
     bindat <- data[, cbinary]
+    # Prepare message about what will be converted:
+      allevmat <- sapply(lapply(bindat, as.factor), levels)
+      allevuniq <- unique(unlist(allevmat))
+      notlog <- allevuniq[allevuniq %nin% c(totrue, tofalse)]
+      if(!purrr::is_empty(notlog)){
+        message("\n\n For some variables of type 'symm' and 'asymm' it is unclear whether they are TRUE or FALSE. \n If you do want to convert them, you should specify 'totrue' and 'tofalse'. \n\n The following values are not converted to TRUE or FALSE, but are set to NA:")
+        printmessage(paste(notlog, collapse = ", "))
+        bindat <- recode_df(data = bindat, old = notlog, new = NA)
+      }
     if(!is.null(totrue)){bindat <- recode_df(data = bindat, old = totrue, new = TRUE) }
     if(!is.null(tofalse)){bindat <- recode_df(data = bindat, old = tofalse, new = FALSE) }
     bindat <- apply(bindat, 2, as.logical)

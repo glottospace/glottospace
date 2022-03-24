@@ -36,20 +36,32 @@ list("nmds" = glottonmds, "scoresdata" = scoresdata)
 #' glottonmds <- glottonmds_run(glottodist = glottodist, k = 2)
 glottonmds_run <- function(glottodist, k = 2, rm.na = FALSE){
   distmat <- contransform_distmat(glottodist)
-
+  # glottoplot_naviewer(rownames_to_column(as.data.frame(distmat)), id = "rowname")
   if(rm.na == TRUE){
-    rowna <- rowSums(is.na(distmat))
-    colna <- colSums(is.na(distmat))
+    rowcolna <- rowSums(is.na(distmat))
 
-    rmcol <- which(colSums(is.na(distmat)) > min(colna))
-    rmrow <- which(rowSums(is.na(distmat)) > min(rowna))
-
-    if(!purrr::is_empty(rmcol)){  distmat <- distmat[,-rmcol] }
-    if(!purrr::is_empty(rmrow)){  distmat <- distmat[-rmrow,] }
+    while(max(rowcolna) != 0 ){
+      # Remove columns and rows with largest number of missing values (matrix is symmetrical)
+      rmrowcol <- which.max(rowcolna)
+      if(!purrr::is_empty(rmrowcol)){
+        distmat <- distmat[,-rmrowcol]
+        distmat <- distmat[-rmrowcol,]
+        }
+      rowcolna <- rowSums(is.na(distmat))
+      # glottoplot_naviewer(rownames_to_column(as.data.frame(distmat)), id = "rowname")
+    }
   }
+  message(paste0("Out of the initial ", nrow(glottodist), " data points, ", nrow(glottodist) - nrow(distmat), " have been removed because of missing data. \n Running glottonmds for ", nrow(distmat), " remaining data points."))
 
   rlang::check_installed("vegan", reason = "to use `glottonmds_run()`")
-  vegan::metaMDS(comm = distmat, k = k)
+  tryCatch(
+    expr = {vegan::metaMDS(comm = distmat, k = k)},
+    error = function(e){
+      message("Failed to create glottoNMDS. This might be because glottodist contains NAs. You might consider dropping all rows and columns with NA by specifying rm.na = TRUE")
+      printmessage(e)
+    }
+  )
+
   # Default is to use the monoMDS function in vegan, but also possible to use isoMDS of MASS.
   # If you supply a distance structure to metaMDS, it will be used as such and argument method is ignored.
   # https://github.com/vegandevs/vegan/issues/330

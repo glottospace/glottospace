@@ -58,6 +58,14 @@ glottodist <- function(glottodata, structure = NULL, id = NULL){
 
   if(length(colnames(glottodata)) != length(structure$varname) ){
     message(paste("The number of variables in ", ifelse(id == "glottocode", "glottodata", "glottosubdata"), "differs from the number of variables in the structure table") )
+    nostruc <- colnames(glottodata)[colnames(glottodata) %nin% structure$varname]
+    novar <- structure$varname[structure$varname %nin% colnames(glottodata)]
+    if(!purrr::is_empty(nostruc)){
+      message(paste0("The following variables exist in the data, but are not defined in the structure table (and will be ignored): ", nostruc))
+    }
+    if(!purrr::is_empty(novar)){
+      message(paste0("The following variables are defined in the structure table but do not exist in the data (and will be ignored): ", novar))
+    }
   }
   structure <- suppressMessages(dplyr::left_join(data.frame("varname" = colnames(glottodata)), structure))
 
@@ -87,17 +95,11 @@ glottodist <- function(glottodata, structure = NULL, id = NULL){
   levels <- structure$levels
   }
 
-  # binary columns
+  # clean data
+  glottodata <- glottoclean(glottodata, structure = structure)
+
   cbinary <- c(symm, asymm)
-  if(length(cbinary) != 0){
-  allevmat <- sapply(lapply(glottodata[cbinary], as.factor), levels)
-  allevuniq <- unique(c(allevmat))
-  if(any(allevuniq %nin% c(TRUE, FALSE, NA))){
-    message("For some variables of type 'symm' and 'asymm', it is not clear whether they are TRUE, FALSE, or NA. It is highly recommended to run glottoclean() and inspect the results before running glottodist(). \n\n Attempting to convert the following values to TRUE/FALSE/NA...")
-    printmessage(allevuniq)
-    glottodata[cbinary] <- glottoclean(glottodata[cbinary], structure = structure)
-  }
-  }
+
   # set type
   glottodata[cbinary] <- lapply(glottodata[cbinary], as.logical)
   glottodata[numer] <- lapply(glottodata[numer], as.numeric)
