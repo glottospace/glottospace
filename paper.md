@@ -81,7 +81,7 @@ The **glottospace** package can generate empty data structures to facilitate dat
       - any number of columns with linguistic/cultural features
 
 
-![Examples of glottodata (left) and glottosubdata (right) without metadata tables.]\label{fig:1}(joss_data.png)
+![Examples of glottodata (left) and glottosubdata (right) without metadata tables.\label{fig:1}](joss_data.png)
 
 The glottodata structure is appropriate when one wants to assign one or more features to each language in the dataset (as e.g. in WALS). The glottosubdata structure allows for assigning more complex structures (inventories) to each language in the dataset, which may vary in size from one language to another, such as phoneme inventories (Phoible;  `[@Moran:2019]` construction/morphological inventories (AUTOTYP; `[@Bickel:2022]`, and subordination strategies in SAILS `[@van Gijn:2016]`. 
 
@@ -119,7 +119,7 @@ The glottodata and glottosubdata structures are optimized to be linked with the 
   -	improve reproducibility in data analysis
   
 
-![Isolate languages in South America, with major rivers in the background. This visualisation is generated with **glottospace** using one line of code. Although other map projections are supported, the default projection is the equal-area Eckert IV projection (following `[@McNew:2019]`).]\label{fig:2}(joss_isolates.png)
+![Isolate languages in South America, with major rivers in the background. This visualisation is generated with **glottospace** using one line of code. Although other map projections are supported, the default projection is the equal-area Eckert IV projection (following `[@McNew:2019]`).\label{fig:2}(joss_isolates.png)
  
 To enable this functionality, **glottospace** builds on a combination of spatial and non-spatial packages, including sf `[@Pebesma:2018]`, tmap `[@Tennekes:2018]`, rnaturalearth `[@South:2017]`, ggplot2 `[@Wickham:2016]`, vegan `[@Oksanen:2020]`, and dplyr `[@Wickham:2021]`. The package is currently used by researchers and students in the field of comparative and areal linguistics as well as language typology and cultural anthropology. Furthermore, we are planning to use the package for classroom teaching. 
 
