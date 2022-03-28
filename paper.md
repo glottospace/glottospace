@@ -22,21 +22,25 @@ authors:
     affiliation: "1, 3"
   - name: Alena Witzlack-Makarevich
     orcid: 0000-0003-0138-4635 
-    affiliation: 2
+    affiliation: 4
   - name: Harald Hammarström
     orcid: 0000-0003-0120-6396
-    affiliation: 3
+    affiliation: 5
   - name: Rik van Gijn
     orcid: 0000-0001-9911-2907
     affiliation: 1
 affiliations:
- - name: Lyman Spitzer, Jr. Fellow, Princeton University, USA
-   index: 1
- - name: Institution Name, Country
-   index: 2
- - name: Independent Researcher, Country
-   index: 3
-date: 13 August 2017
+  - name: Leiden University Centre for Linguistics, The Netherlands
+    index: 1
+  - name: University of Freiburg, Department of General Linguistics, Germany
+    index: 2
+  - name: Max-Planck-Institute for Evolutionary Anthropology, Leipzig, Germany
+    index: 3
+  - name: Hebrew University of Jerusalem, Jerusalem, Israel
+    index: 4
+  - name: Uppsala University, Uppsala, Sweden
+    index: 5
+date: 28 March 2022
 bibliography: paper.bib
 
 # Optional fields if submitting to a AAS journal too, see this blog post:
