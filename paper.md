@@ -81,7 +81,7 @@ The **glottospace** package can generate empty data structures to facilitate dat
       - any number of columns with linguistic/cultural features
 
 
-![Isolate languages in South America, with major rivers in the background. This visualisation is generated with **glottospace** using one line of code. Although other map projections are supported, the default projection is the equal-area Eckert IV projection (following `[@McNew:2019]`).  \label{fig:2}](joss_isolates.png)
+![Isolate languages in South America, with major rivers in the background. This visualisation is generated with **glottospace** using one line of code. Although other map projections are supported, the default projection is the equal-area Eckert IV projection (following `[@McNew:2019]`).  \label{fig:2}](joss_data.png)
 
 ![Caption for example figure.\label{fig:example}](joss_data.png)
 
