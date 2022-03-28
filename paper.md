@@ -31,7 +31,7 @@ authors:
     affiliation: "4"
 
   - name: Harald Hammarström
-    orcid: 0003-0120-6396
+    orcid: 0000-0003-0120-6396
     affiliation: "5"
 
   - name: Rik van Gijn
