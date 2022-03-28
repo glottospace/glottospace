@@ -10,33 +10,33 @@ tags:
   - comparative anthropology
 
 authors:
-name: Sietze Norder
-orcid: 0000-0003-4692-4543
-affiliation: "1"
+  - name: Sietze Norder
+    orcid: 0000-0003-4692-4543
+    affiliation: "1"
 
-name: Laura Becker
-orcid: 0000-0002-1835-9404
-affiliation: "2"
+  - name: Laura Becker
+    orcid: 0000-0002-1835-9404
+    affiliation: "2"
 
-name: Hedvig Skirgård
-orcid: 0000-0002-7748-2381
-affiliation: "3"
+  - name: Hedvig Skirgård
+    orcid: 0000-0002-7748-2381
+    affiliation: "3"
 
-name: Leonardo Arias
-orcid: 0000-0001-6460-7934
-affiliation: "1, 3"
+  - name: Leonardo Arias
+    orcid: 0000-0001-6460-7934
+    affiliation: "1, 3"
 
-name: Alena Witzlack-Makarevich
-orcid: 0000-0003-0138-4635 
-affiliation: "4"
+  - name: Alena Witzlack-Makarevich
+    orcid: 0000-0003-0138-4635 
+    affiliation: "4"
 
-name: Harald Hammarström
-orcid: 0003-0120-6396
-affiliation: "5"
+  - name: Harald Hammarström
+    orcid: 0003-0120-6396
+    affiliation: "5"
 
-name: Rik van Gijn
-orcid: 0000-0001-9911-2907
-affiliation: "1"
+  - name: Rik van Gijn
+    orcid: 0000-0001-9911-2907
+    affiliation: "1"
 
 affiliations: 
   - name: Leiden University Centre for Linguistics, The Netherlands
