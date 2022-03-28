@@ -1,101 +1,112 @@
 ---
 title: 'glottospace: R package for language mapping and geospatial analysis of linguistic and cultural data'
 tags:
-  - Language mapping
-  - geolinguistics
-  - linguistic diversity
-  - geographic information systems
-  - comparative linguistics
-  - comparative anthropology
+  - Python
+  - astronomy
+  - dynamics
+  - galactic dynamics
+  - milky way
 authors:
-  - name: Sietze Norder
-    orcid: 0000-0003-4692-4543
-    affiliation: 1
-  - name: Laura Becker
-    orcid: 0000-0002-1835-9404
+  - name: Adrian M. Price-Whelan^[Co-first author] # note this makes a footnote saying 'Co-first author'
+    orcid: 0000-0000-0000-0000
+    affiliation: "1, 2" # (Multiple affiliations must be quoted)
+  - name: Author Without ORCID^[Co-first author] # note this makes a footnote saying 'Co-first author'
     affiliation: 2
-  - name: Hedvig Skirgård
-    orcid: 0000-0002-7748-2381
+  - name: Author with no affiliation^[Corresponding author]
     affiliation: 3
-  - name: Leonardo Arias
-    orcid: 0000-0001-6460-7934
-    affiliation: "1, 3"
-  - name: Alena Witzlack-Makarevich
-    orcid: 0000-0003-0138-4635 
-    affiliation: 4
-  - name: Harald Hammarström
-    orcid: 0000-0003-0120-6396
-    affiliation: 5
-  - name: Rik van Gijn
-    orcid: 0000-0001-9911-2907
-    affiliation: 1
-affiliations: 
-  - name: Leiden University Centre for Linguistics, The Netherlands
-    index: 1
-  - name: University of Freiburg, Department of General Linguistics, Germany
-    index: 2
-  - name: Max-Planck-Institute for Evolutionary Anthropology, Leipzig, Germany
-    index: 3
-  - name: Hebrew University of Jerusalem, Jerusalem, Israel
-    index: 4
-  - name: Uppsala University, Uppsala, Sweden
-    index: 5
-date: 28 March 2022
+affiliations:
+ - name: Lyman Spitzer, Jr. Fellow, Princeton University, USA
+   index: 1
+ - name: Institution Name, Country
+   index: 2
+ - name: Independent Researcher, Country
+   index: 3
+date: 13 August 2017
 bibliography: paper.bib
+
+# Optional fields if submitting to a AAS journal too, see this blog post:
+# https://blog.joss.theoj.org/2018/12/a-new-collaboration-with-aas-publishing
+aas-doi: 10.3847/xxxxx <- update this with the DOI from AAS once you know it.
+aas-journal: Astrophysical Journal <- The name of the AAS journal.
+---
 
 # Summary
 
-The glottospace R package facilitates the geospatial analysis of linguistic and cultural data. The aim of the package is to provide a streamlined workflow for geolinguistic analysis, including data entry, data import, cleaning, exploration, language mapping and visualisation, and export. Glottospace is also intended as an R interface to global linguistic and cultural databases such as Glottolog, WALS, and D-PLACE, contributing to improved reproducibility of data analysis.
+The forces on stars, galaxies, and dark matter under external gravitational
+fields lead to the dynamical evolution of structures in the universe. The orbits
+of these bodies are therefore key to understanding the formation, history, and
+future state of galaxies. The field of "galactic dynamics," which aims to model
+the gravitating components of galaxies to study their structure and evolution,
+is now well-established, commonly taught, and frequently used in astronomy.
+Aside from toy problems and demonstrations, the majority of problems require
+efficient numerical tools, many of which require the same base code (e.g., for
+performing numerical orbit integration).
 
 # Statement of need
 
-Several databases exist that capture aspects of linguistic and cultural diversity globally. However,  there is a lack of interfaces to facilitate the access and manipulation of these databases, specially within the R environment `[@R Core Team:2022]`, or to link these databases with data collected by researchers at smaller scales, or for a particular set of languages. **glottospace** aims to fill this gap by offering a set of functions that automate common tasks in analysing, visualising, and mapping (geo)linguistic data. In essence, the **glottospace** package provides four things: 
+`Gala` is an Astropy-affiliated Python package for galactic dynamics. Python
+enables wrapping low-level languages (e.g., C) for speed without losing
+flexibility or ease-of-use in the user-interface. The API for `Gala` was
+designed to provide a class-based and user-friendly interface to fast (C or
+Cython-optimized) implementations of common operations such as gravitational
+potential and force evaluation, orbit integration, dynamical transformations,
+and chaos indicators for nonlinear dynamics. `Gala` also relies heavily on and
+interfaces well with the implementations of physical units and astronomical
+coordinate systems in the `Astropy` package [@astropy] (`astropy.units` and
+`astropy.coordinates`).
 
-1.	Simplified access to global linguistic and cultural databases
-1.	Standardized data structures for data collection, import, cleaning, and checking
-1.	Functionalities to merge data from various linguistic and cultural datasets
-1.	Streamlined workflows for geolinguistic data analysis and visualisation
+`Gala` was designed to be used by both astronomical researchers and by
+students in courses on gravitational dynamics or astronomy. It has already been
+used in a number of scientific publications [@Pearson:2017] and has also been
+used in graduate courses on Galactic dynamics to, e.g., provide interactive
+visualizations of textbook material [@Binney:2008]. The combination of speed,
+design, and support for Astropy functionality in `Gala` will enable exciting
+scientific explorations of forthcoming data releases from the *Gaia* mission
+[@gaia] by students and experts alike.
 
-We will now describe each of these elements in more detail.
+# Mathematics
 
-Existing global databases of linguistic and cultural diversity, such as Glottolog `[@Hammarström:2021]`, WALS `[@Dryer:2013]`, and D-PLACE `[@Kirby:2016]`, are structured according to the cross-linguistic data format `[@Forkel :2018]`, allowing for the integration of different databases. One way in which languages can be matched across databases is by using glottocodes, i.e. unique identifiers of languages, dialects and language families `[@Forkel:2021]`. These glottocodes often have geospatial coordinates associated with them, allowing for geospatial analysis and visualisation. With **glottospace**, users can easily access the most recent version of these databases. Researchers can query those databases, use them as a benchmark, or supplement their own data with additional information (like geospatial coordinates, language family).  
+Single dollars ($) are required for inline mathematics e.g. $f(x) = e^{\pi/x}$
 
-The **glottospace** package can generate empty data structures to facilitate data entry, or convert existing databases (for example stored in an Excel or CSV file) into two standardized data structures \autoref{fig:1}: 
-*	glottodata: a single data table (and optionally, metadata tables)
-  +	One row for each glottocode
-  +	Any number of columns with linguistic/cultural features
-*	glottosubdata: multiple data tables (and optionally, metadata tables)
-  +	One table for each glottocode
-    -	One row for each glottosubcode
-    -	Any number of columns with linguistic/cultural features
+Double dollars make self-standing equations:
 
-![Examples of glottodata (left) and glottosubdata (right) without metadata tables.\label{fig:1}](joss_glottodata_subdata.png)
- 
-The glottodata structure is appropriate when one wants to assign one or more features to each language in the dataset (as e.g. in WALS). The glottosubdata structure allows for assigning more complex structures (inventories) to each language in the dataset, which may vary in size from one language to another, such as phoneme inventories (Phoible;  `[@Moran:2019]` construction/morphological inventories (AUTOTYP; `[@Bickel:2022]`, and subordination strategies in SAILS `[@van Gijn:2016]`. 
+$$\Theta(x) = \left\{\begin{array}{l}
+0\textrm{ if } x < 0\cr
+1\textrm{ else}
+\end{array}\right.$$
 
-Although all metadata tables that can be generated for glotto(sub)data are optional, some of these tables can greatly facilitate the automation and reproducibility of further analysis. Examples of metadata tables that can be generated by **glottospace** are:
-*	structure table: specify the type, possible levels, weight, group, and subgroup for each variable
-*	description table: provide a description, reference, and remark for each variable
-*	references table: provide a reference and page number for each glottocode (or variable)
-*	remarks table: provide additional remarks for each glottocode (or variable)
-*	contributors table: add the names of people who contributed the data 
-*	sample: specify a subset of glottocodes that should be used in further analysis
-*	readme: add information about the person responsible for the data, including contact details and how to cite the data.
+You can also use plain \LaTeX for equations
+\begin{equation}\label{eq:fourier}
+\hat f(\omega) = \int_{-\infty}^{\infty} f(x) e^{i\omega x} dx
+\end{equation}
+and refer to \autoref{eq:fourier} from text.
 
-The glottodata and glottosubdata structures are optimized to be linked with the aforementioned global databases, and allow for streamlined workflows for the analysis and visualisation of linguistic and cultural data. For example, with one line of code, glottospace users can map a set of languages as either points or polygons, and colour them by a particular feature. However, language mapping and visualisation is just one aspect of the package’s functionality, the aim of **glottospace** is to streamline entire workflows, facilitating common tasks such as: 
-*	read user data from a local path
-*	convert data into glottodata or glottosubdata structures
-*	perform quality checks and data cleaning (e.g. missing values, inconsistencies, undefined glottocodes, etc.)
-*	analyse languages and cultures based on relevant features (e.g. lexicon, phonemes, gender roles, subsistence strategies, etc.)
-*	create different kinds of maps and visualisations for a set of languages
-*	Export visualisations, maps, and datasets to be used in publications \autoref{fig:2}
-*	Improve reproducibility in data analysis
+# Citations
 
-![Isolate languages in South America, with major rivers in the background. This visualisation is generated with **glottospace** using one line of code. Although other map projections are supported, the default projection is the equal-area Eckert IV projection (following `[@McNew:2019]`).  \label{fig:2}](joss_isolates.png)
- 
-To enable this functionality, **glottospace** builds on a combination of spatial and non-spatial packages, including sf `[@Pebesma:2018]`, tmap `[@Tennekes:2018]`, rnaturalearth `[@South:2017]`, ggplot2 `[@Wickham:2016]`, vegan `[@Oksanen:2020]`, and dplyr `[@Wickham:2021]`. The package is currently used by researchers and students in the field of comparative and areal linguistics as well as language typology and cultural anthropology. Furthermore, we are planning to use the package for classroom teaching. 
+Citations to entries in paper.bib should be in
+[rMarkdown](http://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html)
+format.
+
+If you want to cite a software repository URL (e.g. something on GitHub without a preferred
+citation) then you can do it with the example BibTeX entry below for @fidgit.
+
+For a quick reference, the following citation commands can be used:
+- `@author:2001`  ->  "Author et al. (2001)"
+- `[@author:2001]` -> "(Author et al., 2001)"
+- `[@author1:2001; @author2:2001]` -> "(Author1 et al., 2001; Author2 et al., 2002)"
+
+# Figures
+
+Figures can be included like this:
+![Caption for example figure.\label{fig:example}](figure.png)
+and referenced from text using \autoref{fig:example}.
+
+Figure sizes can be customized by adding an optional second parameter:
+![Caption for example figure.](figure.png){ width=20% }
 
 # Acknowledgements
-Sietze Norder, Leonardo Arias, and Rik van Gijn were supported by the European Research Council under the EU H2020 and Research and Innovation program (SAPPHIRE grant 818854). The authors would like to thank Simon Greenhill and Robert Forkel for brainstorming about linguistic data formats and functionality of the package. 
+
+We acknowledge contributions from Brigitta Sipocz, Syrtis Major, and Semyeong
+Oh, and support from Kathryn Johnston during the genesis of this project.
 
 # References
