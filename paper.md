@@ -1,12 +1,11 @@
 ---
-Title: 'glottospace: R package for language mapping and geospatial analysis of linguistic and cultural data'
+title: 'Gala: A Python package for galactic dynamics'
 tags:
-  - Language mapping
-  - geolinguistics
-  - linguistic diversity
-  - geographic information systems
-  - comparative linguistics
-  - comparative anthropology
+  - Python
+  - astronomy
+  - dynamics
+  - galactic dynamics
+  - milky way
 authors:
   - name: Adrian M. Price-Whelan^[Co-first author] # note this makes a footnote saying 'Co-first author'
     orcid: 0000-0000-0000-0000
