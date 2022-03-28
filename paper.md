@@ -19,27 +19,29 @@ authors:
     affiliation: 3
   - name: Leonardo Arias
     orcid: 0000-0001-6460-7934
-    affiliation: "1, 3"
+    affiliation: "1, 4"
   - name: Alena Witzlack-Makarevich
     orcid: 0000-0003-0138-4635 
-    affiliation: 4
+    affiliation: 5
   - name: Harald Hammarström
     orcid: 0000-0003-0120-6396
-    affiliation: 5
+    affiliation: 6
   - name: Rik van Gijn
     orcid: 0000-0001-9911-2907
     affiliation: 1
 affiliations:
-  - name: Leiden University Centre for Linguistics, The Netherlands
+  - name: Leiden University Centre for Linguistics, Leiden University, Leiden, The Netherlands
     index: 1
-  - name: University of Freiburg, Department of General Linguistics, Germany
+  - name: Department of General Linguistics, University of Freiburg, Freiburg im Breisgau, Germany
     index: 2
-  - name: Max-Planck-Institute for Evolutionary Anthropology, Leipzig, Germany
+  - name: Department of Linguistic and Cultural Evolution, Max-Planck-Institute for Evolutionary Anthropology, Leipzig, Germany
     index: 3
-  - name: Hebrew University of Jerusalem, Jerusalem, Israel
+  - name: Department of Evolutionary Genetics, Max-Planck-Institute for Evolutionary Anthropology, Leipzig, Germany
     index: 4
-  - name: Uppsala University, Uppsala, Sweden
+  - name: Hebrew University of Jerusalem, Jerusalem, Israel
     index: 5
+  - name: Uppsala University, Uppsala, Sweden
+    index: 6
 date: 28 March 2022
 bibliography: paper.bib
 
@@ -79,8 +81,11 @@ The **glottospace** package can generate empty data structures to facilitate dat
       - any number of columns with linguistic/cultural features
 
 
+![Isolate languages in South America, with major rivers in the background. This visualisation is generated with **glottospace** using one line of code. Although other map projections are supported, the default projection is the equal-area Eckert IV projection (following `[@McNew:2019]`).  \label{fig:2}](joss_isolates.png)
 
-![Examples of glottodata (left) and glottosubdata (right) without metadata tables.  \label{fig:1}](joss_data.png)
+![Caption for example figure.\label{fig:example}](joss_data.png)
+
+![Examples of glottodata (left) and glottosubdata (right) without metadata tables.\label{fig:1}](joss_data.png)
 
 The glottodata structure is appropriate when one wants to assign one or more features to each language in the dataset (as e.g. in WALS). The glottosubdata structure allows for assigning more complex structures (inventories) to each language in the dataset, which may vary in size from one language to another, such as phoneme inventories (Phoible;  `[@Moran:2019]` construction/morphological inventories (AUTOTYP; `[@Bickel:2022]`, and subordination strategies in SAILS `[@van Gijn:2016]`. 
 
