@@ -140,7 +140,7 @@ glottorecode_logical <- function(glottodata, structure = NULL, totrue = NULL, to
     data <- glottodata[["glottodata"]]
     gdstructure <- TRUE
   } else if(glottocheck_isglottosubdata(glottodata)){
-    message("not yet supported. Run glottojoin() first")
+    stop("glottosubdata not yet supported. Run glottojoin() first")
     gdstructure <- FALSE
   } else{
     data <- glottodata
