@@ -23,9 +23,6 @@ authors:
   - name: Alena Witzlack-Makarevich
     orcid: 0000-0003-0138-4635 
     affiliation: 5
-  - name: Harald Hammarström
-    orcid: 0000-0003-0120-6396
-    affiliation: 6
   - name: Rik van Gijn
     orcid: 0000-0001-9911-2907
     affiliation: 1
@@ -40,8 +37,6 @@ affiliations:
     index: 4
   - name: Hebrew University of Jerusalem, Jerusalem, Israel
     index: 5
-  - name: Uppsala University, Uppsala, Sweden
-    index: 6
 date: 28 March 2022
 bibliography: paper.bib
 
@@ -128,6 +123,6 @@ The glottodata and glottosubdata structures are optimized to be linked with the 
 To enable this functionality, **glottospace** builds on a combination of spatial and non-spatial packages, including sf `[@Pebesma:2018]`, tmap `[@Tennekes:2018]`, rnaturalearth `[@South:2017]`, ggplot2 `[@Wickham:2016]`, vegan `[@Oksanen:2020]`, and dplyr `[@Wickham:2021]`. The package is currently used by researchers and students in the field of comparative and areal linguistics as well as language typology and cultural anthropology. Furthermore, we are planning to use the package for classroom teaching. 
 
 # Acknowledgements
-Sietze Norder, Leonardo Arias, and Rik van Gijn were supported by the European Research Council under the EU H2020 and Research and Innovation program (SAPPHIRE grant 818854). The authors would like to thank Simon Greenhill and Robert Forkel for brainstorming about linguistic data formats and functionality of the package. 
+Sietze Norder, Leonardo Arias, and Rik van Gijn were supported by the European Research Council under the EU H2020 and Research and Innovation program (SAPPHIRE grant 818854). The authors would like to thank Simon Greenhill, Robert Forkel and Harald Hammarström for brainstorming about linguistic data formats and the functionality of the package. 
 
 # References
