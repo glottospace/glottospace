@@ -8,13 +8,27 @@ tags:
   - comparative linguistics
   - comparative anthropology
 authors:
-  - name: Adrian M. Price-Whelan^[Co-first author] # note this makes a footnote saying 'Co-first author'
-    orcid: 0000-0000-0000-0000
-    affiliation: "1, 2" # (Multiple affiliations must be quoted)
-  - name: Author Without ORCID^[Co-first author] # note this makes a footnote saying 'Co-first author'
+  - name: Sietze Norder
+    orcid: 0000-0003-4692-4543
+    affiliation: 1
+  - name: Laura Becker
+    orcid: 0000-0002-1835-9404
     affiliation: 2
-  - name: Author with no affiliation^[Corresponding author]
+  - name: Hedvig Skirgård
+    orcid: 0000-0002-7748-2381
     affiliation: 3
+  - name: Leonardo Arias
+    orcid: 0000-0001-6460-7934
+    affiliation: "1, 3"
+  - name: Alena Witzlack-Makarevich
+    orcid: 0000-0003-0138-4635 
+    affiliation: 2
+  - name: Harald Hammarström
+    orcid: 0000-0003-0120-6396
+    affiliation: 3
+  - name: Rik van Gijn
+    orcid: 0000-0001-9911-2907
+    affiliation: 1
 affiliations:
  - name: Lyman Spitzer, Jr. Fellow, Princeton University, USA
    index: 1
