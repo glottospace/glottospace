@@ -76,7 +76,20 @@ The **glottospace** package can generate empty data structures to facilitate dat
       - any number of columns with linguistic/cultural features
 
 
-![Examples of glottodata (left) and glottosubdata (right) without metadata tables.\label{fig:1}](joss_data.png)
+![Examples of glottodata (left) and glottosubdata (right) without metadata tables.\label{fig:joss_data_lr2}](joss_data_lr.png)
+
+![Shows only text. Examples of glottodata (left) and glottosubdata (right) without metadata tables.](joss_data.png){ width=100% }
+
+![Examples of glottodata (left) and glottosubdata (right) without metadata tables.](joss_data.png){ width=100% }
+
+![TEST WITH LARGER FIGURE. Examples of glottodata (top) and glottosubdata (bottom) without metadata tables.](joss_data6.png){ width=100% }
+
+![What about this. Larger figure and rename number. Examples of glottodata (top) and glottosubdata (bottom) without metadata tables[].  \label{fig:dataxx4}](joss_data6.png)
+
+![WORKS: Check 6 with larger figure. Isolate languages in South America, with major rivers in the background. This visualisation is generated with **glottospace** using one line of code. Although other map projections are supported, the default projection is the equal-area Eckert IV projection (following `[@McNew:2019]`).  \label{fig:data6}](joss_data6.png)
+
+![Check lr with larger figure. Isolate languages in South America, with major rivers in the background. This visualisation is generated with **glottospace** using one line of code. Although other map projections are supported, the default projection is the equal-area Eckert IV projection (following `[@McNew:2019]`).  \label{fig:data_lr}](joss_data_6_lr.png)
+
 
 The glottodata structure is appropriate when one wants to assign one or more features to each language in the dataset (as e.g. in WALS). The glottosubdata structure allows for assigning more complex structures (inventories) to each language in the dataset, which may vary in size from one language to another, such as phoneme inventories (Phoible;  `[@Moran:2019]` construction/morphological inventories (AUTOTYP; `[@Bickel:2022]`, and subordination strategies in SAILS `[@van Gijn:2016]`. 
 
@@ -114,34 +127,8 @@ The glottodata and glottosubdata structures are optimized to be linked with the 
   -	improve reproducibility in data analysis
   
 
-![1. This doesn't. Isolate languages in South America, with major rivers in the background. This visualisation is generated with **glottospace** using one line of code. Although other map projections are supported, the default projection is the equal-area Eckert IV projection (following `[@McNew:2019]`).\label{fig:2}(joss_isolates.png)
-
 ![2. This works. Isolate languages in South America, with major rivers in the background. This visualisation is generated with **glottospace** using one line of code. Although other map projections are supported, the default projection is the equal-area Eckert IV projection (following `[@McNew:2019]`).  \label{fig:2}](joss_isolates.png)
 
-![This doesn't work. Examples of glottodata (left) and glottosubdata (right) without metadata tables[].  \label{fig:2}](joss_data.png)
-
-![Shows only text. Examples of glottodata (left) and glottosubdata (right) without metadata tables.](joss_data.png){ width=100% }
-
-![TEST WITH LARGER FIGURE. Examples of glottodata (top) and glottosubdata (bottom) without metadata tables.](joss_data.png){ width=100% }
-
-![What about this. Larger figure and rename number. Examples of glottodata (top) and glottosubdata (bottom) without metadata tables[].  \label{fig:dataxx4}](joss_data.png)
-
-![This doesn't work. Isolate languages in South America, with major rivers in the background. This visualisation is generated with **glottospace** using one line of code. Although other map projections are supported, the default projection is the equal-area Eckert IV projection (following `[@McNew:2019]`).  \label{fig:1}](joss_data.png)
-
-![THIS FAILS Isolate languages in South America, with major rivers in the background. This visualisation is generated with **glottospace** using one line of code. Although other map projections are supported, the default projection is the equal-area Eckert IV projection (following `[@McNew:2019]`).  \label{fig:data}](joss_data.png)
-
-![THIS WORKS Isolate languages in South America, with major rivers in the background. This visualisation is generated with **glottospace** using one line of code. Although other map projections are supported, the default projection is the equal-area Eckert IV projection (following `[@McNew:2019]`).  \label{fig:data}](joss_isolates.png)
-
-![check3 Isolate languages in South America, with major rivers in the background. This visualisation is generated with **glottospace** using one line of code. Although other map projections are supported, the default projection is the equal-area Eckert IV projection (following `[@McNew:2019]`).  \label{fig:data2}](joss_data2.png)
-
-![THIS WORKS. FILE WAS PROBABLY TOO SMALL. Isolate languages in South America, with major rivers in the background. This visualisation is generated with **glottospace** using one line of code. Although other map projections are supported, the default projection is the equal-area Eckert IV projection (following `[@McNew:2019]`).  \label{fig:data3}](joss_data3.png)
-
-![Check with larger figure. Isolate languages in South America, with major rivers in the background. This visualisation is generated with **glottospace** using one line of code. Although other map projections are supported, the default projection is the equal-area Eckert IV projection (following `[@McNew:2019]`).  \label{fig:data4}](joss_data4.png)
-
-![Check 5 with larger figure. Isolate languages in South America, with major rivers in the background. This visualisation is generated with **glottospace** using one line of code. Although other map projections are supported, the default projection is the equal-area Eckert IV projection (following `[@McNew:2019]`).  \label{fig:data5}](joss_data5.png)
-
-![Check 6 with larger figure. Isolate languages in South America, with major rivers in the background. This visualisation is generated with **glottospace** using one line of code. Although other map projections are supported, the default projection is the equal-area Eckert IV projection (following `[@McNew:2019]`).  \label{fig:data6}](joss_data6.png)
- 
 To enable this functionality, **glottospace** builds on a combination of spatial and non-spatial packages, including sf `[@Pebesma:2018]`, tmap `[@Tennekes:2018]`, rnaturalearth `[@South:2017]`, ggplot2 `[@Wickham:2016]`, vegan `[@Oksanen:2020]`, and dplyr `[@Wickham:2021]`. The package is currently used by researchers and students in the field of comparative and areal linguistics as well as language typology and cultural anthropology. Furthermore, we are planning to use the package for classroom teaching. 
 
 # Acknowledgements
