@@ -88,7 +88,7 @@ The **glottospace** package can generate empty data structures to facilitate dat
 
 ![WORKS: Check 6 with larger figure. Isolate languages in South America, with major rivers in the background. This visualisation is generated with **glottospace** using one line of code. Although other map projections are supported, the default projection is the equal-area Eckert IV projection (following `[@McNew:2019]`).  \label{fig:data6}](joss_data6.png)
 
-![Check lr with larger figure. Isolate languages in South America, with major rivers in the background. This visualisation is generated with **glottospace** using one line of code. Although other map projections are supported, the default projection is the equal-area Eckert IV projection (following `[@McNew:2019]`).  \label{fig:data_lr}](joss_data_6_lr.png)
+![Check lr with larger figure. Isolate languages in South America, with major rivers in the background. This visualisation is generated with **glottospace** using one line of code. Although other map projections are supported, the default projection is the equal-area Eckert IV projection (following `[@McNew:2019]`).  \label{fig:data_lr}](joss_data_lr.png)
 
 
 The glottodata structure is appropriate when one wants to assign one or more features to each language in the dataset (as e.g. in WALS). The glottosubdata structure allows for assigning more complex structures (inventories) to each language in the dataset, which may vary in size from one language to another, such as phoneme inventories (Phoible;  `[@Moran:2019]` construction/morphological inventories (AUTOTYP; `[@Bickel:2022]`, and subordination strategies in SAILS `[@van Gijn:2016]`. 
