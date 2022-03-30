@@ -59,8 +59,7 @@ We will now describe each of these elements in more detail.
 
 Existing global databases of linguistic and cultural diversity, such as Glottolog `[@Hammarström:2021]`, WALS `[@Dryer:2013]`, and D-PLACE `[@Kirby:2016]`, are structured according to the cross-linguistic data format `[@Forkel :2018]`, allowing for the integration of different databases. One way in which languages can be matched across databases is by using glottocodes, i.e. unique identifiers of languages, dialects and language families `[@Forkel:2021]`. These glottocodes often have geospatial coordinates associated with them, allowing for geospatial analysis and visualisation. With **glottospace**, users can easily access the most recent version of these databases. Researchers can query those databases, use them as a benchmark, or supplement their own data with additional information (like geospatial coordinates, language family).  
 
-The **glottospace** package can generate empty data structures to facilitate data entry, or convert existing databases (for example stored in an Excel or CSV file) into two standardized data structures \autoref{fig:1}: 
-
+The **glottospace** package can generate empty data structures to facilitate data entry, or convert existing databases (for example stored in an Excel or CSV file) into two standardized data structures \autoref{fig:data}: 
   - glottodata: a single data table (and optionally, metadata tables)
   
     - one row for each glottocode
@@ -76,20 +75,7 @@ The **glottospace** package can generate empty data structures to facilitate dat
       - any number of columns with linguistic/cultural features
 
 
-![Examples of glottodata (left) and glottosubdata (right) without metadata tables.\label{fig:joss_data_lr2}](joss_data_lr.png)
-
-![Shows only text. Examples of glottodata (left) and glottosubdata (right) without metadata tables.](joss_data.png){ width=100% }
-
-![Examples of glottodata (left) and glottosubdata (right) without metadata tables.](joss_data.png){ width=100% }
-
-![TEST WITH LARGER FIGURE. Examples of glottodata (top) and glottosubdata (bottom) without metadata tables.](joss_data6.png){ width=100% }
-
-![What about this. Larger figure and rename number. Examples of glottodata (top) and glottosubdata (bottom) without metadata tables[].  \label{fig:dataxx4}](joss_data6.png)
-
-![WORKS: Check 6 with larger figure. Isolate languages in South America, with major rivers in the background. This visualisation is generated with **glottospace** using one line of code. Although other map projections are supported, the default projection is the equal-area Eckert IV projection (following `[@McNew:2019]`).  \label{fig:data6}](joss_data6.png)
-
-![Check lr with larger figure. Isolate languages in South America, with major rivers in the background. This visualisation is generated with **glottospace** using one line of code. Although other map projections are supported, the default projection is the equal-area Eckert IV projection (following `[@McNew:2019]`).  \label{fig:data_lr}](joss_data_lr.png)
-
+![Examples of glottodata (left) and glottosubdata (right) without metadata tables.\label{fig:data}](joss_data.png)
 
 The glottodata structure is appropriate when one wants to assign one or more features to each language in the dataset (as e.g. in WALS). The glottosubdata structure allows for assigning more complex structures (inventories) to each language in the dataset, which may vary in size from one language to another, such as phoneme inventories (Phoible;  `[@Moran:2019]` construction/morphological inventories (AUTOTYP; `[@Bickel:2022]`, and subordination strategies in SAILS `[@van Gijn:2016]`. 
 
@@ -122,12 +108,12 @@ The glottodata and glottosubdata structures are optimized to be linked with the 
   
   -	create different kinds of maps and visualisations for a set of languages
   
-  -	export visualisations, maps, and datasets to be used in publications \autoref{fig:2}
+  -	export visualisations, maps, and datasets to be used in publications \autoref{fig:map}
   
   -	improve reproducibility in data analysis
   
 
-![2. This works. Isolate languages in South America, with major rivers in the background. This visualisation is generated with **glottospace** using one line of code. Although other map projections are supported, the default projection is the equal-area Eckert IV projection (following `[@McNew:2019]`).  \label{fig:2}](joss_isolates.png)
+![Isolate languages in South America, with major rivers in the background. This visualisation is generated with **glottospace** using one line of code. Although other map projections are supported, the default projection is the equal-area Eckert IV projection (following `[@McNew:2019]`).  \label{fig:map}](joss_map.png)
 
 To enable this functionality, **glottospace** builds on a combination of spatial and non-spatial packages, including sf `[@Pebesma:2018]`, tmap `[@Tennekes:2018]`, rnaturalearth `[@South:2017]`, ggplot2 `[@Wickham:2016]`, vegan `[@Oksanen:2020]`, and dplyr `[@Wickham:2021]`. The package is currently used by researchers and students in the field of comparative and areal linguistics as well as language typology and cultural anthropology. Furthermore, we are planning to use the package for classroom teaching. 
 
