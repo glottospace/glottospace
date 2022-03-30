@@ -35,7 +35,16 @@ glottosave <- function(glottodata, filename = NULL){
 
   if(is.null(filename)){filename <- deparse(substitute(glottodata))}
 
-  if(glottocheck_isglottodata(glottodata)){
+  if(inherits(glottodata, what = "dist")){
+    if(tools::file_ext(filename) != ".xlsx"){
+      filename <- tools::file_path_sans_ext(filename)
+      filename <- paste0(filename, ".xlsx")
+    }
+    glottodata <- as.data.frame(as.matrix(glottodata))
+    glottodata <- tibble::rownames_to_column(glottodata, var = "glottodist")
+    writexl::write_xlsx(glottodata, path = filename)
+    message(paste("Glottodist object saved as", normalizePath(filename) ))
+  } else if(glottocheck_isglottodata(glottodata)){
     if(tools::file_ext(filename) != ".xlsx"){
       filename <- tools::file_path_sans_ext(filename)
       filename <- paste0(filename, ".xlsx")

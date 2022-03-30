@@ -23,4 +23,4 @@ This is an internally stored version of D-PLACE data. Use glottoget("dplace", do
 
 This dataset contains the data from D-PLACE, the Database of Places, Language, Culture and Environment, serialized as CLDF StructureDataset.
 
-##------ Mon Mar 28 13:10:55 2022 ------##}
+##------ Wed Mar 30 17:12:16 2022 ------##}
