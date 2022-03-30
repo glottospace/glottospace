@@ -121,3 +121,5 @@ To enable this functionality, **glottospace** builds on a combination of spatial
 Sietze Norder, Leonardo Arias, and Rik van Gijn were supported by the European Research Council under the EU H2020 and Research and Innovation program (SAPPHIRE grant 818854). The authors would like to thank Simon Greenhill, Robert Forkel and Harald Hammarström for brainstorming about linguistic data formats and the functionality of the package. 
 
 # References
+
+Test reference: `[@Pearson:2017]`
