@@ -124,6 +124,8 @@ The glottodata and glottosubdata structures are optimized to be linked with the 
 
 ![TEST WITH LARGER FIGURE. Examples of glottodata (top) and glottosubdata (bottom) without metadata tables.](joss_data.png){ width=100% }
 
+![What about this. Larger figure and rename number. Examples of glottodata (top) and glottosubdata (bottom) without metadata tables[].  \label{fig:dataxx4}](joss_data.png)
+
 ![This doesn't work. Isolate languages in South America, with major rivers in the background. This visualisation is generated with **glottospace** using one line of code. Although other map projections are supported, the default projection is the equal-area Eckert IV projection (following `[@McNew:2019]`).  \label{fig:1}](joss_data.png)
 
 ![THIS FAILS Isolate languages in South America, with major rivers in the background. This visualisation is generated with **glottospace** using one line of code. Although other map projections are supported, the default projection is the equal-area Eckert IV projection (following `[@McNew:2019]`).  \label{fig:data}](joss_data.png)
