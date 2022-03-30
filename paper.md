@@ -75,7 +75,7 @@ The **glottospace** package can generate empty data structures to facilitate dat
       - any number of columns with linguistic/cultural features
 
 
-![Examples of glottodata (left) and glottosubdata (right) without metadata tables.\label{fig:data}](joss_data_lr.png)
+![Examples of glottodata (left) and glottosubdata (right) without metadata tables.\label{fig:data}](joss_data_lr2.png)
 
 The glottodata structure is appropriate when one wants to assign one or more features to each language in the dataset (as e.g. in WALS). The glottosubdata structure allows for assigning more complex structures (inventories) to each language in the dataset, which may vary in size from one language to another, such as phoneme inventories (Phoible;  `[@Moran:2019]` construction/morphological inventories (AUTOTYP; `[@Bickel:2022]`, and subordination strategies in SAILS `[@van Gijn:2016]`. 
 
