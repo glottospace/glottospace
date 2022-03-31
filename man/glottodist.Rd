@@ -11,7 +11,7 @@ glottodist(glottodata, structure = NULL, id = NULL)
 
 \item{structure}{If glottodata is a table without a structure table, you can add it separately. To create a structure table, you should run glottocreate_structuretable() and you can add it with glottocreate_addtable()}
 
-\item{id}{By default, glottodist looks for a column named 'glottocode', if the id is in a different column, this should be specified.}
+\item{id}{By default, glottodist looks for a column named 'glottocode' or 'glottosubcode', if the id is in a different column, this should be specified.}
 }
 \value{
 object of class \code{dist}

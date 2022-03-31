@@ -9,7 +9,8 @@ glottoclean(
   structure = NULL,
   tona = NULL,
   tofalse = NULL,
-  totrue = NULL
+  totrue = NULL,
+  id = NULL
 )
 }
 \arguments{
@@ -22,6 +23,8 @@ glottoclean(
 \item{tofalse}{Optional additional values to recode to FALSE (besides default)}
 
 \item{totrue}{Optional additional values to recode to TRUE (besides default)}
+
+\item{id}{By default, glottoclean looks for a column named 'glottocode', if the id is in a different column, this should be specified.}
 }
 \value{
 A cleaned-up version of the original glottodata object (either a list or a data.frame, depending on the input)
