@@ -17,6 +17,9 @@
 #' @examples
 #' glottodata <- glottoget("demodata", meta = TRUE)
 #' glottodata <- glottoclean(glottodata)
+#'
+#' glottosubdata <- glottoget("demosubdata", meta = TRUE)
+#' glottodata <- glottoclean(glottosubdata)
 glottoclean <- function(glottodata, structure = NULL, tona = NULL, tofalse = NULL, totrue = NULL, id = NULL){
 
   # Convert to glottodata
