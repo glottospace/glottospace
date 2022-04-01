@@ -232,9 +232,10 @@ invisible(dirpath)
 #'
 #' @param dirpath Path to directory where cldf data is stored
 #' @param name Name of a dataset, either glottolog, wals or dplace
+#' @param valuenames Do you want to add names instead of codes?
 #'
 #' @noRd
-glottoget_cldf <- function(dirpath, name){
+glottoget_cldf <- function(dirpath, name, valuenames = FALSE){
   if(!dir.exists(dirpath)){stop("Directory not found.")}
 
   cldf_metadata <- base::list.files(dirpath, pattern = "-metadata.json", recursive = TRUE)
@@ -254,6 +255,14 @@ glottoget_cldf <- function(dirpath, name){
   colnames(values) <- base::tolower(colnames(values))
   colnames(values)[colnames(values) == "language_id"] <- "lang_id"
   params <- unique(values$parameter_id)
+
+  if(valuenames == TRUE) {    # Join values to codes by code_id
+    codes <- normalizePath(file.path(mddir, "codes.csv"))
+    codes <- utils::read.csv(codes, header = TRUE, encoding = "UTF-8")
+    values <- values %>% dplyr::left_join(codes, by = c("code_id" = "ID") )
+    values$value <- NULL
+    values <- dplyr::rename(.data = values, value = Name)
+  }
 
   valsel <- values[, c("lang_id", "parameter_id", "value")]
 
