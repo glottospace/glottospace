@@ -37,4 +37,7 @@ Use glottorecode directly if you don't want to use these defaults.
 \examples{
 glottodata <- glottoget("demodata", meta = TRUE)
 glottodata <- glottoclean(glottodata)
+
+glottosubdata <- glottoget("demosubdata", meta = TRUE)
+glottodata <- glottoclean(glottosubdata)
 }

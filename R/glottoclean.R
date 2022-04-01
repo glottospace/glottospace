@@ -30,13 +30,15 @@ glottoclean <- function(glottodata, structure = NULL, tona = NULL, tofalse = NUL
   }
 
   # Simplified glottodata table and separate structure table
-  if(glottocheck_hasmeta(glottodata) & is.null(structure)){
+  if(glottocheck_hasmeta(glottodata) & !is.null(structure)){
+    glottodata <- glottosimplify(glottodata)
+    splitted <- NULL
+  } else if(!glottocheck_hasmeta(glottodata) & !is.null(structure)){
+    splitted <- NULL
+  } else if(glottocheck_hasmeta(glottodata) & is.null(structure)){
     splitted <- glottosplitmergemeta(glottodata)
     glottodata <- splitted[[1]]
     structure <- splitted[[2]][["structure"]]
-  } else if(glottocheck_hasmeta(glottodata) & !is.null(structure)){
-    glottodata <- glottosimplify(glottodata)
-    splitted <- NULL
   } else if(!glottocheck_hasmeta(glottodata) & is.null(structure)){
     stop("structure table not found, please add one to glottodata or provide it separately.")
   }

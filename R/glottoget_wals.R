@@ -24,6 +24,39 @@ glottoget_wals <- function(download = NULL, dirpath = NULL){
   return(out)
 }
 
+#' Add codes to WALS
+#'
+#' @param dirpath Path to directory where cldf data is stored
+#' @param name Name of a dataset, either glottolog, wals or dplace
+#'
+#' @noRd
+glottoget_addwalscodes <- function(wals, dirpath, name){
+  if(!dir.exists(dirpath)){stop("Directory not found.")}
+
+  cldf_metadata <- base::list.files(dirpath, pattern = "-metadata.json", recursive = TRUE)
+  cldfid <- grep(pattern = tolower(name), x = tolower(cldf_metadata))
+  mdpath <- normalizePath(file.path(dirpath, cldf_metadata[[cldfid]]))
+  mddir <- normalizePath(base::dirname(mdpath))
+
+  # Load codes file
+  codes <- normalizePath(file.path(mddir, "codes.csv"))
+  codes <- utils::read.csv(codes, header = TRUE, encoding = "UTF-8")
+
+  ws <- wals[, colnames(wals) == "143A"]
+  colnames(ws)[1] <- "Number"
+  wc <- codes[codes$Parameter_ID == "143A",]
+  dplyr::left_join(ws, wc, by = "Number")
+
+  # new <- sf::st_drop_geometry(ws)
+  # new[] <- wc$Name[match(unlist(ws), wc$Number)]
+
+  # wals %>%
+  #   tidyr::pivot_longer(cols = `143A`) %>%
+  #   dplyr::left_join(codes, by = "Number") %>%
+  #   tidyr::spread(key = Number, value = Name)
+
+}
+
 #' Download WALS data from zenodo, and select relevant data from cldf data
 #'
 #'
