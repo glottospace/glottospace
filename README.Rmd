@@ -25,6 +25,7 @@ knitr::opts_chunk$set(
 [![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![R-CMD-check](https://github.com/SietzeN/glottospace/workflows/R-CMD-check/badge.svg)](https://github.com/SietzeN/glottospace/actions)
+[![status](https://joss.theoj.org/papers/c93a1ccb6835a15c6026ea1ddc28b50c/status.svg)](https://joss.theoj.org/papers/c93a1ccb6835a15c6026ea1ddc28b50c)
 <!-- badges: end -->
 
 # Introduction
@@ -200,9 +201,7 @@ glottosearch(search = "Yucuni", columns = c("name", "family"))
 
 ```
 
-checking for non-standard things in the check directory ... NOTE
-Found the following files/directories:checking for non-standard things in the check directory ... NOTE
-Found the following files/directories:fraSometimes you don't find a match:
+Sometimes you don't find a match:
 ```{r glottosearch3}
 glottosearch(search = "matsigenka")[,"name"]
 ```
