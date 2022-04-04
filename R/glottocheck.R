@@ -41,6 +41,34 @@ glottocheck <- function(glottodata, diagnostic = TRUE, checkmeta = FALSE){
 
 }
 
+#' Guess id of glottodata
+#'
+#' Guess whether the id of glottodata is glottocode or glottosubcode
+#'
+#' @param glottodata glottodata to check
+#' @param id optional, if id is specified, the function will return original id
+#' @noRd
+#' @return
+#'
+#' @examples
+glottocheck_id <- function(glottodata, id = NULL){
+  if(is.null(id)){
+    if("glottocode" %in% colnames(glottodata) & "glottosubcode" %nin% colnames(glottodata)){
+      id <- "glottocode"
+      message("glottocode used as id")
+    } else if("glottocode" %nin% colnames(glottodata) & "glottosubcode" %in% colnames(glottodata)){
+      id <- "glottosubcode"
+      message("glottosubcode used as id")
+    } else if(all(c("glottocode", "glottosubcode") %in% colnames(glottodata)) ){
+      id <- "glottocode"
+      message("Data contains glottocodes AND glottosubcodes, glottocode used as id. If this is not what you want, please specify id.")
+    } else if(all(c("glottocode", "glottosubcode") %nin% colnames(glottodata)) ){
+      stop("Please provide an id, or add a 'glottocode' or 'glottosubcode' column to your data")
+    }
+  }
+  id
+}
+
 #' Quality check of user-provided glottodata
 #'
 #' Go through a user-provided glottodataset and check whether:

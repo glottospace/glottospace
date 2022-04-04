@@ -57,7 +57,9 @@ glottoclean <- function(glottodata, structure = NULL, tona = NULL, tofalse = NUL
                 totrue = all2true,
                 tona = all2na)
 
-  glottodata <- glottoclean_type(glottodata = glottodata, structure = structure, id = id)
+
+
+  # glottodata <- glottoclean_type(glottodata = glottodata, structure = structure, id = id)
 
   if(!is.null(splitted)){
     glottodata <- glottosplitmergemeta(glottodata = glottodata, splitted = splitted)
@@ -76,126 +78,6 @@ glottoclean_all2true <- function(){
 glottoclean_all2na <- function(){
   c("NA", "N A", "N/A", "#N/A", "NA ", " NA", "N /A", "N / A", " N / A", "N / A ", "na", "n a", "n/a",
     "na ", " na", "n /a", "n / a", " a / a", "n / a ", "NULL", "null", "", "\\?", "\\*", "\\.")
-}
-
-#' Set types in glottodata
-#'
-#' @param glottodata glottodata without meta tables
-#' @param structure structure table
-#' @param id By default, glottoclean_type looks for a column named 'glottocode', if the id is in a different column, this should be specified.
-#'
-#' @return a simplified glottodata table (tibble) with column types specified
-#' @noRd
-#'
-#' @examples
-#' glottodata <- glottoget("demodata", meta = TRUE)
-#' glottoclean_type(glottodata, structure = glottodata[["structure"]])
-glottoclean_type <- function(glottodata, structure, id = NULL){
-
-  glottodata <- glottosimplify(glottodata)
-  if(is.null(structure) ){
-    stop("Please provide a structure table.")
-  }
-
-  # Set id:
-  if(is.null(id)){
-    if("glottocode" %in% colnames(glottodata) & "glottosubcode" %nin% colnames(glottodata)){
-      id <- "glottocode"
-      message("glottocode used as id")
-    } else if("glottocode" %nin% colnames(glottodata) & "glottosubcode" %in% colnames(glottodata)){
-      id <- "glottosubcode"
-      message("glottosubcode used as id")
-    } else if(all(c("glottocode", "glottosubcode") %in% colnames(glottodata)) ){
-      id <- "glottocode"
-      message("Data contains glottocodes AND glottosubcodes, glottocode used as id. If this is not what you want, please specify id.")
-    } else if(all(c("glottocode", "glottosubcode") %nin% colnames(glottodata)) ){
-      stop("Please provide an id, or add a 'glottocode' or 'glottosubcode' column to your data")
-    }
-  }
-
-  duplo <- sum(duplicated(glottodata) | duplicated(glottodata, fromLast = TRUE))
-  if(duplo != 0){
-    message(paste0("This glottodata contains ", duplo, " rows which have at least one duplicate, and ", nrow(glottodata) - duplo, " unique rows \n"))
-    message(paste0("When plotting, you will see ",  nrow(glottodata) - sum(duplicated(glottodata)), " points (unique rows + one of each duplicate) \n"))
-  }
-
-  # structure table:
-  if(!("varname" %in% colnames(structure) ) ){
-    colnames(structure)[1] <- "varname"
-    message("The structure table does not contain a 'varname' column, using the first column instead.")
-  }
-
-  rownames(glottodata) <- NULL
-  glottodata <- tibble::column_to_rownames(glottodata, id)
-
-  if(length(colnames(glottodata)) != length(structure$varname) ){
-    message(paste("The number of variables in ", ifelse(id == "glottocode", "glottodata", "glottosubdata"), "differs from the number of variables in the structure table") )
-    nostruc <- colnames(glottodata)[colnames(glottodata) %nin% structure$varname]
-    novar <- structure$varname[structure$varname %nin% colnames(glottodata)]
-    if(!purrr::is_empty(nostruc)){
-      message(paste0("The following variables exist in the data, but are not defined in the structure table (and will be ignored): ", nostruc))
-    }
-    if(!purrr::is_empty(novar)){
-      message(paste0("The following variables are defined in the structure table but do not exist in the data (and will be ignored): ", novar))
-    }
-  }
-  structure <- suppressMessages(dplyr::left_join(data.frame("varname" = colnames(glottodata)), structure))
-
-  # type
-  if(!("type" %in% colnames(structure) ) ){
-    stop('No type column found in structure. Please add a type column.')
-  }
-
-  dropvars <- which(structure$type %nin% glottocreate_lookuptable()$type_lookup )
-  if(!purrr::is_empty(dropvars)){
-    dropvarnames <- paste0(colnames(glottodata)[dropvars], collapse = ",")
-    message(paste0("The following variables are ignored in distance calculation (their type is not one of the pre-specified types): \n", dropvarnames))
-    glottodata <- glottodata[,-dropvars]
-    structure <- structure[-dropvars, ]
-  }
-
-  symm <- which(structure$type == "symm")
-  asymm <- which(structure$type == "asymm")
-  numer <- which(structure$type == "numeric")
-  fact <- which(structure$type == "factor")
-  ordfact <- which(structure$type == "ordered")
-  ordratio <- which(structure$type == "ordratio")
-  logratio <- which(structure$type == "logratio")
-
-  # levels
-  if(any(colnames(structure) == "levels")){
-    levels <- structure$levels
-  }
-
-  cbinary <- c(symm, asymm)
-
-  # set type
-  glottodata[cbinary] <- lapply(glottodata[cbinary], as.logical)
-  glottodata[numer] <- lapply(glottodata[numer], as.numeric)
-  glottodata[fact] <- lapply(glottodata[fact], as.factor)
-  if(!purrr::is_empty(ordfact)){
-    glottodata[ordfact] <- mapply(FUN = as.ordfact, x = glottodata[ordfact], levels = levels[ordfact])
-  }
-  glottodata[ordratio] <- lapply(glottodata[ordratio], as.numeric)
-  glottodata[logratio] <- lapply(glottodata[logratio], as.numeric)
-
-  glottodata <- tibble::rownames_to_column(glottodata, id)
-  glottodata <- tibble::as_tibble(glottodata)
-
-  # weights
-  if(all(is.na(structure$weight))){
-    weights <- rep(1, nrow(structure))
-    message('All weights are NA. Default is to weight all variables equally: all weights set to 1')
-  } else{
-    weights <- as.numeric(structure$weight)
-    if(!purrr::is_empty(weights[is.na(weights)])){
-      weights[is.na(weights)]  <- 1
-      message('Some weights are NA. Missing weights set to 1')
-    }
-  }
-
-  glottodata
-
 }
 
 #' Recode values across a glottodataset
@@ -290,13 +172,9 @@ glottorecode_missing <- function(glottodata, tona){
     splitted <- NULL
   }
 
-  if(!purrr::is_empty(row.names(glottodata)) ){
-    glottodata <- tibble::rownames_to_column(glottodata, var = "rowname")
-    glottodata <- data.frame(lapply(glottodata, recode_tona, tona = tona)) # this drops row names
-    glottodata <- tibble::column_to_rownames(glottodata, var = "rowname")
-  } else {
-    glottodata <- data.frame(lapply(glottodata, recode_tona, tona = tona))
-  }
+  glottocols <- colnames(glottodata)
+  glottodata <- data.frame(lapply(glottodata, recode_tona, tona = tona)) # As a side-effect, this drops row names, and changes colnames
+  colnames(glottodata) <- glottocols
 
 
   message("Missing values recoded to NA \n")

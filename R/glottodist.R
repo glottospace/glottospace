@@ -1,9 +1,8 @@
-
 #' Calculate distances between languages
 #'
 #' @param glottodata glottodata or glottosubdata, either with or without structure table.
 #' @param structure If glottodata is a table without a structure table, you can add it separately. To create a structure table, you should run glottocreate_structuretable() and you can add it with glottocreate_addtable()
-#' @param id By default, glottodist looks for a column named 'glottocode' or 'glottosubcode', if the id is in a different column, this should be specified.
+#' @param id By default, glottodist looks for a column named 'glottocode', if the id is in a different column, this should be specified.
 #' @return object of class \code{dist}
 #' @export
 #'
@@ -17,7 +16,7 @@ glottodist <- function(glottodata, structure = NULL, id = NULL){
     glottodata <- glottojoin(glottodata)
   } else if(!glottocheck_isglottodata(glottodata)){
     message("glottodata object does not adhere to glottodata/glottosubdata format. Use glottocreate() or glottoconvert().")
-  }
+    }
 
   if(glottocheck_hasmeta(glottodata) & is.null(structure)){
     splitted <- glottosplitmergemeta(glottodata)
@@ -29,6 +28,48 @@ glottodist <- function(glottodata, structure = NULL, id = NULL){
     stop("structure table not found, please add one to glottodata or provide it separately.")
   }
 
+  id <- glottocheck_id(glottodata, id = id)
+
+  duplo <- sum(duplicated(glottodata) | duplicated(glottodata, fromLast = TRUE))
+  if(duplo != 0){
+    message(paste0("This glottodata contains ", duplo, " rows which have at least one duplicate, and ", nrow(glottodata) - duplo, " unique rows \n"))
+    message(paste0("When plotting, you will see ",  nrow(glottodata) - sum(duplicated(glottodata)), " points (unique rows + one of each duplicate) \n"))
+  }
+
+  # structure table:
+  if(!("varname" %in% colnames(structure) ) ){
+    colnames(structure)[1] <- "varname"
+    message("The structure table does not contain a 'varname' column, trying with the first column instead.")
+  }
+
+  glottodata <- tibble::column_to_rownames(glottodata, id)
+
+   if(length(colnames(glottodata)) != length(structure$varname) ){
+    message(paste("The number of variables in ", ifelse(id == "glottocode", "glottodata", "glottosubdata"), "differs from the number of variables in the structure table") )
+    nostruc <- colnames(glottodata)[colnames(glottodata) %nin% structure$varname]
+    novar <- structure$varname[structure$varname %nin% colnames(glottodata)]
+    if(!purrr::is_empty(nostruc)){
+      message(paste0("The following variables exist in the data, but are not defined in the structure table (and will be ignored): ", nostruc))
+    }
+    if(!purrr::is_empty(novar)){
+      message(paste0("The following variables are defined in the structure table but do not exist in the data (and will be ignored): ", novar))
+    }
+  }
+  structure <- suppressMessages(dplyr::left_join(data.frame("varname" = colnames(glottodata)), structure))
+
+  # type
+  if(!("type" %in% colnames(structure) ) ){
+    stop('No type column found in structure. Please add a type column.')
+  }
+
+  dropvars <- which(structure$type %nin% glottocreate_lookuptable()$type_lookup )
+  if(!purrr::is_empty(dropvars)){
+    dropvarnames <- paste0(colnames(glottodata)[dropvars], collapse = ",")
+    message(paste0("The following variables are ignored in distance calculation (their type is not one of the pre-specified types): \n", dropvarnames))
+    glottodata <- glottodata[,-dropvars]
+    structure <- structure[-dropvars, ]
+  }
+
   symm <- which(structure$type == "symm")
   asymm <- which(structure$type == "asymm")
   numer <- which(structure$type == "numeric")
@@ -37,170 +78,48 @@ glottodist <- function(glottodata, structure = NULL, id = NULL){
   ordratio <- which(structure$type == "ordratio")
   logratio <- which(structure$type == "logratio")
 
-  # clean data
-  glottodata <- glottoclean(glottodata, structure = structure)
-  glottodata <- glottosimplify(glottodata)
-  rownames(glottodata) <- NULL
-  # glottodata:
-  if(is.null(id)){
-    if("glottocode" %in% colnames(glottodata) & "glottosubcode" %nin% colnames(glottodata)){
-      id <- "glottocode"
-      message("glottocode used as id")
-    } else if("glottocode" %nin% colnames(glottodata) & "glottosubcode" %in% colnames(glottodata)){
-      id <- "glottosubcode"
-      message("glottosubcode used as id")
-    } else if(all(c("glottocode", "glottosubcode") %in% colnames(glottodata)) ){
-      id <- "glottocode"
-      message("Data contains glottocodes AND glottosubcodes, glottocode used as id. If this is not what you want, please specify id.")
-    } else if(all(c("glottocode", "glottosubcode") %nin% colnames(glottodata)) ){
-      stop("Please provide an id, or add a 'glottocode' or 'glottosubcode' column to your data")
-    }
+  # levels
+  if(any(colnames(structure) == "levels")){
+  levels <- structure$levels
   }
-  glottodata <- tibble::column_to_rownames(glottodata, id)
 
-  weights <- structure$weight
+  # clean data
+  glottodata <- tibble::rownames_to_column(glottodata, id)
+  glottodata <- glottoclean(glottodata, structure = structure)
+  rownames(glottodata) <- NULL
+  glottodata <- tibble::column_to_rownames(glottodata, id) # required for cluster::daisy
 
-  cluster::daisy(x = glottodata, metric = "gower",
-                 type = list(symm = symm, asymm = asymm, ordratio = ordratio, logratio = logratio),
-                 weights = weights)
+  cbinary <- c(symm, asymm)
+
+  # set type
+  glottodata[cbinary] <- lapply(glottodata[cbinary], as.logical)
+  glottodata[numer] <- lapply(glottodata[numer], as.numeric)
+  glottodata[fact] <- lapply(glottodata[fact], as.factor)
+  if(!purrr::is_empty(ordfact)){
+  glottodata[ordfact] <- mapply(FUN = as.ordfact, x = glottodata[ordfact], levels = levels[ordfact])
+  }
+  glottodata[ordratio] <- lapply(glottodata[ordratio], as.numeric)
+  glottodata[logratio] <- lapply(glottodata[logratio], as.numeric)
+
+
+
+  # weights
+  if(all(is.na(structure$weight))){
+        weights <- rep(1, nrow(structure))
+        message('All weights are NA. Default is to weight all variables equally: all weights set to 1')
+  } else{
+  weights <- as.numeric(structure$weight)
+  if(!purrr::is_empty(weights[is.na(weights)])){
+    weights[is.na(weights)]  <- 1
+    message('Some weights are NA. Missing weights set to 1')
+  }
+  }
+
+  invisible(cluster::daisy(x = glottodata, metric = "gower",
+                         type = list(symm = symm, asymm = asymm, ordratio = ordratio, logratio = logratio),
+                         weights = weights))
+  message("glottodist created")
 }
-
-#'
-#' #' Calculate distances between languages
-#' #'
-#' #' @param glottodata glottodata or glottosubdata, either with or without structure table.
-#' #' @param structure If glottodata is a table without a structure table, you can add it separately. To create a structure table, you should run glottocreate_structuretable() and you can add it with glottocreate_addtable()
-#' #' @param id By default, glottodist looks for a column named 'glottocode', if the id is in a different column, this should be specified.
-#' #' @return object of class \code{dist}
-#' #' @export
-#' #'
-#' #' @examples
-#' #' glottodata <- glottoget("demodata", meta = TRUE)
-#' #' glottodist <- glottodist(glottodata = glottodata)
-#' glottodist <- function(glottodata, structure = NULL, id = NULL){
-#'   rlang::check_installed("cluster", reason = "to use `glottodist()`")
-#'
-#'   if(glottocheck_isglottosubdata(glottodata)){
-#'     glottodata <- glottojoin(glottodata)
-#'   } else if(!glottocheck_isglottodata(glottodata)){
-#'     message("glottodata object does not adhere to glottodata/glottosubdata format. Use glottocreate() or glottoconvert().")
-#'     }
-#'
-#'   if(glottocheck_hasmeta(glottodata) & is.null(structure)){
-#'     splitted <- glottosplitmergemeta(glottodata)
-#'     glottodata <- splitted[[1]]
-#'     structure <- splitted[[2]][["structure"]]
-#'   } else if(glottocheck_hasmeta(glottodata) & !is.null(structure)){
-#'     glottodata <- glottodata[["glottodata"]]
-#'   } else if(!glottocheck_hasmeta(glottodata) & is.null(structure)){
-#'     stop("structure table not found, please add one to glottodata or provide it separately.")
-#'   }
-#'
-#'   # glottodata:
-#'   if(is.null(id)){
-#'     if("glottocode" %in% colnames(glottodata) & "glottosubcode" %nin% colnames(glottodata)){
-#'       id <- "glottocode"
-#'       message("glottocode used as id")
-#'     } else if("glottocode" %nin% colnames(glottodata) & "glottosubcode" %in% colnames(glottodata)){
-#'       id <- "glottosubcode"
-#'       message("glottosubcode used as id")
-#'     } else if(all(c("glottocode", "glottosubcode") %in% colnames(glottodata)) ){
-#'       id <- "glottocode"
-#'       message("Data contains glottocodes AND glottosubcodes, glottocode used as id. If this is not what you want, please specify id.")
-#'     } else if(all(c("glottocode", "glottosubcode") %nin% colnames(glottodata)) ){
-#'       stop("Please provide an id, or add a 'glottocode' or 'glottosubcode' column to your data")
-#'     }
-#'     }
-#'
-#'   duplo <- sum(duplicated(glottodata) | duplicated(glottodata, fromLast = TRUE))
-#'   if(duplo != 0){
-#'     message(paste0("This glottodata contains ", duplo, " rows which have at least one duplicate, and ", nrow(glottodata) - duplo, " unique rows \n"))
-#'     message(paste0("When plotting, you will see ",  nrow(glottodata) - sum(duplicated(glottodata)), " points (unique rows + one of each duplicate) \n"))
-#'   }
-#'
-#'   # structure table:
-#'   if(!("varname" %in% colnames(structure) ) ){
-#'     colnames(structure)[1] <- "varname"
-#'     message("The structure table does not contain a 'varname' column, trying with the first column instead.")
-#'   }
-#'
-#'   glottodata <- tibble::column_to_rownames(glottodata, id)
-#'
-#'    if(length(colnames(glottodata)) != length(structure$varname) ){
-#'     message(paste("The number of variables in ", ifelse(id == "glottocode", "glottodata", "glottosubdata"), "differs from the number of variables in the structure table") )
-#'     nostruc <- colnames(glottodata)[colnames(glottodata) %nin% structure$varname]
-#'     novar <- structure$varname[structure$varname %nin% colnames(glottodata)]
-#'     if(!purrr::is_empty(nostruc)){
-#'       message(paste0("The following variables exist in the data, but are not defined in the structure table (and will be ignored): ", nostruc))
-#'     }
-#'     if(!purrr::is_empty(novar)){
-#'       message(paste0("The following variables are defined in the structure table but do not exist in the data (and will be ignored): ", novar))
-#'     }
-#'   }
-#'   structure <- suppressMessages(dplyr::left_join(data.frame("varname" = colnames(glottodata)), structure))
-#'
-#'   # type
-#'   if(!("type" %in% colnames(structure) ) ){
-#'     stop('No type column found in structure. Please add a type column.')
-#'   }
-#'
-#'   dropvars <- which(structure$type %nin% glottocreate_lookuptable()$type_lookup )
-#'   if(!purrr::is_empty(dropvars)){
-#'     dropvarnames <- paste0(colnames(glottodata)[dropvars], collapse = ",")
-#'     message(paste0("The following variables are ignored in distance calculation (their type is not one of the pre-specified types): \n", dropvarnames))
-#'     glottodata <- glottodata[,-dropvars]
-#'     structure <- structure[-dropvars, ]
-#'   }
-#'
-#'   symm <- which(structure$type == "symm")
-#'   asymm <- which(structure$type == "asymm")
-#'   numer <- which(structure$type == "numeric")
-#'   fact <- which(structure$type == "factor")
-#'   ordfact <- which(structure$type == "ordered")
-#'   ordratio <- which(structure$type == "ordratio")
-#'   logratio <- which(structure$type == "logratio")
-#'
-#'   # levels
-#'   if(any(colnames(structure) == "levels")){
-#'   levels <- structure$levels
-#'   }
-#'
-#'   # clean data
-#'   glottodata <- tibble::rownames_to_column(glottodata, id)
-#'   glottodata <- glottoclean(glottodata, structure = structure)
-#'   rownames(glottodata) <- NULL
-#'   glottodata <- tibble::column_to_rownames(glottodata, id)
-#'
-#'   cbinary <- c(symm, asymm)
-#'
-#'   # set type
-#'   glottodata[cbinary] <- lapply(glottodata[cbinary], as.logical)
-#'   glottodata[numer] <- lapply(glottodata[numer], as.numeric)
-#'   glottodata[fact] <- lapply(glottodata[fact], as.factor)
-#'   if(!purrr::is_empty(ordfact)){
-#'   glottodata[ordfact] <- mapply(FUN = as.ordfact, x = glottodata[ordfact], levels = levels[ordfact])
-#'   }
-#'   glottodata[ordratio] <- lapply(glottodata[ordratio], as.numeric)
-#'   glottodata[logratio] <- lapply(glottodata[logratio], as.numeric)
-#'
-#'
-#'
-#'   # weights
-#'   if(all(is.na(structure$weight))){
-#'         weights <- rep(1, nrow(structure))
-#'         message('All weights are NA. Default is to weight all variables equally: all weights set to 1')
-#'   } else{
-#'   weights <- as.numeric(structure$weight)
-#'   if(!purrr::is_empty(weights[is.na(weights)])){
-#'     weights[is.na(weights)]  <- 1
-#'     message('Some weights are NA. Missing weights set to 1')
-#'   }
-#'   }
-#'
-#'   cluster::daisy(x = glottodata, metric = "gower",
-#'                          type = list(symm = symm, asymm = asymm, ordratio = ordratio, logratio = logratio),
-#'                          weights = weights)
-#' }
 
 
 
