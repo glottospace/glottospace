@@ -115,9 +115,9 @@ glottodist <- function(glottodata, structure = NULL, id = NULL){
   }
   }
 
-  invisible(cluster::daisy(x = glottodata, metric = "gower",
+  cluster::daisy(x = glottodata, metric = "gower",
                          type = list(symm = symm, asymm = asymm, ordratio = ordratio, logratio = logratio),
-                         weights = weights))
+                         weights = weights)
   message("glottodist created")
 }
 
