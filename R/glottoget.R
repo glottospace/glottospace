@@ -69,11 +69,7 @@ glottoget_path <- function(filepath = NULL, simplify = TRUE){
 
   if(tools::file_ext(filepath) == "xlsx" | tools::file_ext(filepath) == "xls"){
     sheetnames <- readxl::excel_sheets(filepath)
-  # if(meta == TRUE){
-  #   sheetnames <- sheetnames
-  # } else {
-  #   sheetnames <- sheetnames[sheetnames %nin% metasheets]
-  # }
+
   glottodata <- base::lapply(X = sheetnames,
                          FUN = readxl::read_excel, path = filepath)
   names(glottodata) <- sheetnames
