@@ -437,15 +437,22 @@ glottocheck_colmissing <- function(data, id, diagnostic = FALSE, rm.na = TRUE){
 #' @examples
 #' glottosubdata <- glottoget("demosubdata", meta = FALSE)
 #' glottocheck_isglottosubdata(glottosubdata)
-glottocheck_isglottosubdata <- function(glottodata){
-  if(inherits(glottodata, what = "list" )  ){
-    if(!any(names(glottodata) %in% "glottodata") ){
-      return(!purrr::is_empty(colnames(glottodata[[1]])[1] == "glottosubcode") )
+#'
+#' glottosubdata <- glottosimplify(glottosubdata)
+#' glottocheck_isglottosubdata(glottosubdata)
+glottocheck_isglottosubdata <- function(glottosubdata){
+  if(inherits(glottosubdata, what = "list")  ){
+    if(!any(names(glottosubdata) %in% "glottodata") ){
+      return(!purrr::is_empty(colnames(glottosubdata[[1]])[1] == "glottosubcode") )
     } else { # 'glottodata' exists in names
       return(FALSE)
     }
   } else{ # doesn't inherit list
-    return(FALSE)
+    if(!purrr::is_empty(colnames(glottosubdata)[1])){
+      return(colnames(glottosubdata)[1] == "glottosubcode")
+    } else {
+      return(FALSE)
+    }
   }
 }
 
@@ -462,10 +469,10 @@ glottocheck_isglottosubdata <- function(glottodata){
 #' glottocheck_isglottodata(glottodata)
 glottocheck_isglottodata <- function(glottodata){
   glottodata <- contrans_tb2df(glottodata)
-  if(is_list(glottodata)){
+  if(inherits(glottodata, what = "list")){
     if("glottodata" %in% names(glottodata)){
       if(!purrr::is_empty(colnames(glottodata[["glottodata"]])[1])){
-        return(colnames(glottodata[["glottodata"]])[1] %in% c("glottocode", "glottosubcode"))
+        return(colnames(glottodata[["glottodata"]])[1] == "glottocode")
       } else {
         return(FALSE)
       }
@@ -474,7 +481,7 @@ glottocheck_isglottodata <- function(glottodata){
     }
   } else {
     if(!purrr::is_empty(colnames(glottodata)[1])){
-      return(colnames(glottodata)[1] %in% c("glottocode", "glottosubcode"))
+      return(colnames(glottodata)[1] == "glottocode")
     } else {
       return(FALSE)
     }

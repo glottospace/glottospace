@@ -14,7 +14,8 @@
 #' \item "glottospace" - A simple dataset with glottocodes and a geometry column. This
 #' is a subset of all languages in \href{https://glottolog.org/}{glottolog} with
 #' spatial coordinates.
-#' \item "demodata" - Built-in artificial glottodata (included for demonstration and testing)
+#' \item "demodata" - Built-in artificial glottodata (included for demonstration and testing).
+#' \item "demosubdata" - Built-in artificial glottosubdata (included for demonstration and testing)
 #' }
 #' @param meta In case 'glottodata' is a path to locally stored data (or demodata/demosubdata): by default, meta sheets are not loaded. Use meta=TRUE if you want to include them.
 #' @param download By default internally stored versions of global databases are used. Specify download = TRUE in case you want to download the latest version from a remote server.
@@ -58,12 +59,11 @@ return(glottodata)
 #' Load glottodata/glottosubdata from a file
 #'
 #' @param filepath Path to glottodata file with extension (.xlsx .xls .gpkg .shp). If no filepath is specified, an artificial demo dataset will be created.
-#' @param simplify By default, if only one sheet is loaded, the data will be returned as a data.frame (instead of placing the data inside a list of length 1)
 #' @family <glottodata>
 #'
 #' @noRd
 #' @seealso glottosave
-glottoget_path <- function(filepath = NULL, simplify = TRUE){
+glottoget_path <- function(filepath = NULL){
 
   # metasheets <- names(glottocreate_metatables())
 
@@ -80,9 +80,6 @@ glottoget_path <- function(filepath = NULL, simplify = TRUE){
       glottodata <- sf::st_read(dsn = filepath)
     }
 
-  if(simplify == TRUE & length(glottodata) == 1 & inherits(glottodata, what = "list" ) ){
-    glottodata <- glottodata[[1]]
-  }
   return(glottodata)
 }
 
@@ -257,7 +254,7 @@ glottoget_cldf <- function(dirpath, name, valuenames = FALSE){
     codes <- utils::read.csv(codes, header = TRUE, encoding = "UTF-8")
     values <- values %>% dplyr::left_join(codes, by = c("code_id" = "ID") )
     values$value <- NULL
-    values <- dplyr::rename(.data = values, value = Name)
+    values <- dplyr::rename(.data = values, value = .data$Name)
   }
 
   valsel <- values[, c("lang_id", "parameter_id", "value")]

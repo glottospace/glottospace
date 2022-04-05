@@ -16,7 +16,7 @@ glottosimplify(
 \arguments{
 \item{glottodata}{glottodata or glottosubdata.}
 
-\item{droplist}{By default if glottodata is a list of tables, only the glottodata table is returned.}
+\item{droplist}{By default, if only one sheet is loaded, the data will be returned as a data.frame (instead of placing the data inside a list of length 1)}
 
 \item{dropmeta}{By default all metadata is removed.}
 
