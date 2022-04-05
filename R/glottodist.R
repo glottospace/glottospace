@@ -2,18 +2,24 @@
 #'
 #' @param glottodata glottodata or glottosubdata, either with or without structure table.
 #' @param structure If glottodata is a table without a structure table, you can add it separately. To create a structure table, you should run glottocreate_structuretable() and you can add it with glottocreate_addtable()
-#' @param id By default, glottodist looks for a column named 'glottocode', if the id is in a different column, this should be specified.
 #' @return object of class \code{dist}
 #' @export
 #'
 #' @examples
 #' glottodata <- glottoget("demodata", meta = TRUE)
 #' glottodist <- glottodist(glottodata = glottodata)
-glottodist <- function(glottodata, structure = NULL, id = NULL){
+#'
+#' glottosubdata <- glottoget("demosubdata", meta = TRUE)
+#' glottodist <- glottodist(glottodata = glottosubdata)
+#'
+glottodist <- function(glottodata, structure = NULL){
   rlang::check_installed("cluster", reason = "to use `glottodist()`")
 
   if(glottocheck_isglottosubdata(glottodata)){
     glottodata <- glottojoin(glottodata)
+    id <- "glottosubcode"
+  } else if(glottocheck_isglottodata(glottodata)){
+    id <- "glottocode"
   } else if(!glottocheck_isglottodata(glottodata)){
     message("glottodata object does not adhere to glottodata/glottosubdata format. Use glottocreate() or glottoconvert().")
     }
@@ -23,12 +29,11 @@ glottodist <- function(glottodata, structure = NULL, id = NULL){
     glottodata <- splitted[[1]]
     structure <- splitted[[2]][["structure"]]
   } else if(glottocheck_hasmeta(glottodata) & !is.null(structure)){
-    glottodata <- glottodata[["glottodata"]]
+    splitted <- glottosplitmergemeta(glottodata)
+    glottodata <- splitted[[1]]
   } else if(!glottocheck_hasmeta(glottodata) & is.null(structure)){
     stop("structure table not found, please add one to glottodata or provide it separately.")
   }
-
-  id <- glottocheck_id(glottodata, id = id)
 
   duplo <- sum(duplicated(glottodata) | duplicated(glottodata, fromLast = TRUE))
   if(duplo != 0){
