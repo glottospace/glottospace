@@ -7,7 +7,7 @@
 #' \item A filepath to locally stored glottodata with file extension (.xlsx .xls .gpkg
 #' .shp). See also: options meta and simplify.
 #' \item "glottobase" - Default option, an spatially enhanced version of \href{https://glottolog.org/}{glottolog}. See
-#' \link{glottobooster} for details.
+#' \link{glottobooster} for details. If glottodata = NULL, "glottobase" will be loaded.
 #' \item "wals" - This is a spatially enhanced version of \href{https://wals.info/}{WALS}.
 #' \item "dplace" - Not yet supported. This is a spatially enhanced version of \href{https://d-place.org/}{D-PLACE}.
 #' \item "glottolog" - This is a restructured (non-spatial) version of \href{https://glottolog.org/}{glottolog}.
