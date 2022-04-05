@@ -159,14 +159,13 @@ glottojoin_space <- function(glottodata, id = NULL){
 #'
 #'
 #' @param glottosubdata A list of glottodata objects. Column names across languages should be identical.
-#' @param add_glottocode Should a new column be added with glottocodes?
 #'
 #' @return A glottosubdata object
 #' @noRd
 #' @examples
 #' glottosubdata <- glottoget("demosubdata")
 #' glottojoin_subdata(glottosubdata = glottosubdata)
-glottojoin_subdata <- function(glottosubdata, add_glottocode = TRUE){
+glottojoin_subdata <- function(glottosubdata){
 
   splitted <- glottosplitmergemeta(glottosubdata)
   glottosubdata <- splitted[[1]]
@@ -174,11 +173,6 @@ glottojoin_subdata <- function(glottosubdata, add_glottocode = TRUE){
   glottocheck_lscolcount(glottosubdata) # stops if number of columns is not identical
   glottosubdata <- do.call("rbind", glottosubdata) # alternative approaches: data.table::rbindlist or plyr::rbind.fill
   glottosubdata <- tibble::remove_rownames(glottosubdata)
-
-  if(add_glottocode == TRUE){
-  glottocodes <- glottoconvert_subcodes(glottosubdata$glottosubcode)
-  glottosubdata <- tibble::add_column(glottosubdata, glottocode = glottocodes, .after = "glottosubcode")
-  }
 
   if(any(!is.na(splitted[[2]]))){glottosubdata <- c("glottosubdata" = list(glottosubdata), splitted[[2]]) }
 
