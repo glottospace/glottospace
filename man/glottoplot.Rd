@@ -9,7 +9,7 @@ glottoplot(
   glottodist = NULL,
   type = NULL,
   glottonmds = NULL,
-  color = NULL,
+  colorby = NULL,
   ptsize = NULL,
   label = NULL,
   filename = NULL,
@@ -18,7 +18,8 @@ glottoplot(
   rm.na = FALSE,
   row2id = NULL,
   preventoverlap = FALSE,
-  alpha = NULL
+  alpha = NULL,
+  colorvec = NULL
 )
 }
 \arguments{
@@ -30,11 +31,11 @@ glottoplot(
 
 \item{glottonmds}{A glottonmds object created with \code{\link{glottonmds}}}
 
-\item{color}{glottovar to be used to color features (optional). Run glottovars() to see the options.}
+\item{colorby}{Name of variable to be used to color features (optional). Run glottovars() to see the options.}
 
 \item{ptsize}{Size of points between 0 and 1 (optional)}
 
-\item{label}{glottovar to be used to label features (optional). Run glottovars() to see the options.}
+\item{label}{Name of variable to be used to label features (optional). Run glottovars() to see the options.}
 
 \item{filename}{Optional filename if output should be saved.}
 
@@ -49,6 +50,13 @@ glottoplot(
 \item{preventoverlap}{For nmds with 2 dimensions, should overlap between data points be prevented?}
 
 \item{alpha}{For nmds with 2 dimensions: Transparency of points between 0 (very transparent) and 1 (not transparent)}
+
+\item{colorvec}{Vector specifying colors for individual values and legend
+order (non-matching values are omitted), for example:
+c("Arawakan" = "rosybrown1", "Yucuna"  = "red",
+"Tucanoan" = "lightskyblue1", "Tanimuca-Retuarã" = "blue", "Naduhup" =
+"gray70", "Kakua-Nukak" = "gray30")
+See the 'values' argument in ggplot2::scale_color_manual() for details.}
 }
 \value{
 a visualization of a glotto(sub)data, glottodist or glottonmds object, which can be saved with glottosave()
@@ -62,7 +70,7 @@ This function offers different types of visualizations for linguistic data and l
 glottodata <- glottoget("demodata", meta = TRUE)
 glottodist <- glottodist(glottodata = glottodata)
 glottoplot(glottodist = glottodist, type = "nmds",
- k = 3, color = "family", label = "name", row2id = "glottocode")
+ k = 3, colorby = "family", label = "name", row2id = "glottocode")
 
 # To create a stress/scree plot, you can run:
 # goeveg::dimcheckMDS(matrix = as.matrix(glottodist), k = k)

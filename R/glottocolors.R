@@ -142,12 +142,12 @@ glottocolpal_options <- function(){
 #' other plots.
 #'
 #' @param glottodata User-provided glottodata
-#' @param spotcol Name of the column that contains the data to put in the spotlights, as well as remaining background data.
+#' @param spotcol Name of the column that contains the data to put in the spotlights (as well as remaining background data).
 #' @param spotlight Selection of data to put in the spotlights.
 #' @param spotcontrast Optional column to contrast between data points in the spotlight.
 #' @param bgpal color palette for background points (default is grays)
 #' @param spotpal color palette for spotligbht points
-#' @param bgcontrast Optional column to contrast between background data points
+#' @param bgcol Optional column to contrast between background data points
 #'
 #' @return A glottodata object with columns added to be used in visualization.
 #'
@@ -160,7 +160,7 @@ glottocolpal_options <- function(){
 #' spotlight = "Netherlands", spotcontrast = "name")
 #' glottomap(glottodata, color = "color")
 #' }
-glottospotlight <- function(glottodata, spotcol, spotlight, spotcontrast = NULL, bgcontrast = NULL, bgpal = NULL, spotpal = NULL){
+glottospotlight <- function(glottodata, spotcol, spotlight, spotcontrast = NULL, spotpal = NULL, bgcol = NULL, bgpal = NULL){
   if(is.null(spotpal)){spotpal <- "rainbow"}
   if(is.null(bgpal)){bgpal <- "Grays"}
   if(is_sf(glottodata)){
@@ -179,10 +179,10 @@ glottospotlight <- function(glottodata, spotcol, spotlight, spotcontrast = NULL,
 
 
 
-  if(!is.null(bgcontrast)){
+  if(!is.null(bgcol)){
   #   data$legend <- ifelse(data$spotlight == FALSE, data[,spotcol], data$legend)
   # } else{
-    data$legend <- ifelse(data$spotlight == FALSE, data[,bgcontrast], data$legend)
+    data$legend <- ifelse(data$spotlight == FALSE, data[,bgcol], data$legend)
   }
 
   if(!is.null(spotcontrast)){

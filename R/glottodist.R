@@ -102,6 +102,10 @@ glottodist <- function(glottodata, structure = NULL, id = NULL){
   glottodata[logratio] <- lapply(glottodata[logratio], as.numeric)
 
 
+  if(glottocheck_twolevels(glottodata)==FALSE){
+    message("\n\n Because there are variables with less than two levels, the following warning messages might be generated. \n For factors: \n 'In min(x) : no non-missing arguments to min; returning Inf' \n 'In max(x) : no non-missing arguments to max; returning -Inf' \n And for symm/asymm: 'at least one binary variable has not 2 different levels' ")
+    message("It is adviced to remove those variables from the data (run glottocheck() to see which ones). \n\n")
+  }
 
   # weights
   if(all(is.na(structure$weight))){

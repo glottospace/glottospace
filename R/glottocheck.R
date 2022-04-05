@@ -50,7 +50,6 @@ glottocheck <- function(glottodata, diagnostic = TRUE, checkmeta = FALSE){
 #' @noRd
 #' @return
 #'
-#' @examples
 glottocheck_id <- function(glottodata, id = NULL){
   if(is.null(id)){
     if("glottocode" %in% colnames(glottodata) & "glottosubcode" %nin% colnames(glottodata)){
