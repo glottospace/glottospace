@@ -441,7 +441,7 @@ glottocheck_colmissing <- function(data, id, diagnostic = FALSE, rm.na = TRUE){
 #' glottosubdata <- glottosimplify(glottosubdata)
 #' glottocheck_isglottosubdata(glottosubdata)
 glottocheck_isglottosubdata <- function(glottosubdata){
- glottocheck_isglottosubdata_complex(glottosubdata) | glottocheck_isglottosubdata_simplified(glottodata)
+ glottocheck_isglottosubdata_complex(glottosubdata) | glottocheck_isglottosubdata_simplified(glottodata) | inherits(x = glottosubdata, what = "glottosubdata")
   }
 
 #' Guess whether an object is (simplified) glottosubdata
@@ -502,6 +502,9 @@ glottocheck_isglottosubdata_complex <- function(glottosubdata){
 #' glottodata <- glottoget("demodata", meta = TRUE)
 #' glottocheck_isglottodata(glottodata)
 glottocheck_isglottodata <- function(glottodata){
+  if(inherits(x = glottodata, what = "glottodata")){
+    return(TRUE)
+  } else {
   glottodata <- contrans_tb2df(glottodata)
   if(inherits(glottodata, what = "list")){
     if("glottodata" %in% names(glottodata)){
@@ -519,6 +522,7 @@ glottocheck_isglottodata <- function(glottodata){
     } else {
       return(FALSE)
     }
+  }
   }
 }
 

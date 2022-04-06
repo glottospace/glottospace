@@ -124,9 +124,11 @@ glottodist <- function(glottodata, structure = NULL){
   }
   }
 
-  cluster::daisy(x = glottodata, metric = "gower",
+  glottodist <- cluster::daisy(x = glottodata, metric = "gower",
                          type = list(symm = symm, asymm = asymm, ordratio = ordratio, logratio = logratio),
                          weights = weights)
+  glottodist <- add_class(object = glottodist, class = "glottodist")
+  glottodist
 
 }
 

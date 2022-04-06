@@ -153,3 +153,13 @@ release_questions <- function() {
     "Did you go outside for a walk?"
   )
 }
+
+#' Add S3 class to object
+#'
+#'
+#' @noRd
+add_class <- function(object, class){
+  oldunique <- class(object)[class(object) %nin% class]
+  class(object) <- c(oldunique, class)
+  invisible(object)
+}

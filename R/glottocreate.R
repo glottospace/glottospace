@@ -125,7 +125,7 @@ glottocreate_data <- function(glottocodes, variables, filename = NULL, meta = TR
   }
 
 
-
+  tablelist <- add_class(object = tablelist, class = "glottodata")
   tablelist
 }
 
@@ -200,6 +200,7 @@ glottocreate_subdata <- function(glottocodes, variables, groups, filename = NULL
     glottosave(glottodata = glottosubtables, filename = filename)
   }
 
+  glottosubtables <- add_class(object = glottosubtables, class = "glottosubdata")
   glottosubtables
 }
 
