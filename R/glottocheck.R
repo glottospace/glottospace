@@ -441,7 +441,7 @@ glottocheck_colmissing <- function(data, id, diagnostic = FALSE, rm.na = TRUE){
 #' glottosubdata <- glottosimplify(glottosubdata)
 #' glottocheck_isglottosubdata(glottosubdata)
 glottocheck_isglottosubdata <- function(glottosubdata){
- glottocheck_isglottosubdata_complex(glottosubdata) | glottocheck_isglottosubdata_simplified(glottodata) | inherits(x = glottosubdata, what = "glottosubdata")
+ glottocheck_isglottosubdata_complex(glottosubdata) | glottocheck_isglottosubdata_simplified(glottosubdata) | inherits(x = glottosubdata, what = "glottosubdata")
   }
 
 #' Guess whether an object is (simplified) glottosubdata
