@@ -7,7 +7,7 @@
 #' @param dropmeta By default all metadata is removed.
 #' @param dropspatial By default spatial properties are removed.
 #' @param submerge By default, glottosubdata tables are merged into a single glottodata table.
-#' @param droplist By default if glottodata is a list of tables, only the glottodata table is returned.
+#' @param droplist By default, if only one sheet is loaded, the data will be returned as a data.frame (instead of placing the data inside a list of length 1)
 #' @param dropunits By default units are kept.
 #' @return a simplified version of the original dataset, either a data.frame/tibble or a list (depending on the selected options)
 #'
@@ -20,16 +20,16 @@ glottosimplify <- function(glottodata, droplist = TRUE, dropmeta = TRUE, dropspa
 
   glottodata <- contrans_tb2df(glottodata)
 
-  if(droplist == TRUE){
-    glottodata <- glottosimplify_droplist(glottodata)
-  }
-
   if(dropmeta == TRUE){
     glottodata <- glottosimplify_dropmeta(glottodata)
   }
 
   if(submerge == TRUE){
     glottodata <- glottosimplify_submerge(glottodata)
+  }
+
+  if(droplist == TRUE){
+    glottodata <- glottosimplify_droplist(glottodata)
   }
 
   if(dropspatial == TRUE){
@@ -50,7 +50,7 @@ glottosimplify <- function(glottodata, droplist = TRUE, dropmeta = TRUE, dropspa
 #'
 glottosimplify_dropmeta <- function(glottodata){
   if(glottocheck_hasmeta(glottodata)){
-    glottodata[!(names(glottodata) %in% c("structure", "metadata",  "references", "readme", "lookup"))]
+    glottodata[!(names(glottodata) %in% names(glottocreate_metadatatables()))]
   } else {
     glottodata
   }
@@ -67,17 +67,19 @@ glottosimplify_langtabs <- function(glottodata){
 
 #' Drop list structure of glottodata
 #'
-#' Select glottodatatable from a glottodatalist
+#' Select glottodata table or glottosubdata table from a glottodatalist
 #'
 #' @param glottodata glottodatalist
 #' @noRd
 #'
 glottosimplify_droplist <- function(glottodata){
-  if(glottocheck_isglottodata(glottodata) & is_list(glottodata)){
-    return(glottodata$glottodata)
-    } else {
-    return(glottodata)
+  if(glottocheck_isglottodata(glottodata) | glottocheck_isglottosubdata(glottodata)){
+    if(length(glottodata) == 1 & inherits(glottodata, what = "list" ) ){
+      glottodata <- glottodata[names(glottodata) %in% c("glottodata", "glottosubdata")]
+      glottodata <- glottodata[[1]]
+    }
   }
+  return(glottodata)
 }
 
 #' Drop spatial properties from glottodata

@@ -40,7 +40,7 @@
 #'
 #' # highlight 10 largest families:
 #' glottodata <- glottospotlight(glottodata = glottodata, spotcol =
-#' "family", spotlight = families$family[1:10], spotcontrast = "family", bgcontrast = "family")
+#' "family", spotlight = families$family[1:10], spotcontrast = "family", bgcol = "family")
 #'
 #' # Or, place 10 largest families in background
 #' glottodata <- glottospotlight(glottodata = glottodata, spotcol =

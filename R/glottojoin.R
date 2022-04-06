@@ -158,25 +158,26 @@ glottojoin_space <- function(glottodata, id = NULL){
 #' Join glottosubdata (a list of glottodata tables for multiple languages) into a single glottodata object
 #'
 #'
-#' @param glottosubdata A list of glottodata objects. Column names across languages should be identical.
+#' @param glottosubdata glottosubdata object. Column names across languages should be identical.
 #'
-#' @return A single glottodata object
+#' @return A glottosubdata object
 #' @noRd
 #' @examples
 #' glottosubdata <- glottoget("demosubdata")
 #' glottojoin_subdata(glottosubdata = glottosubdata)
 glottojoin_subdata <- function(glottosubdata){
+  if(glottocheck_isglottosubdata_complex(glottosubdata)){
 
   splitted <- glottosplitmergemeta(glottosubdata)
-  glottodata <- splitted[[1]]
+  glottosubdata <- splitted[[1]]
 
-  glottocheck_lscolcount(glottodata) # stops if number of columns is not identical
-  glottodata <- do.call("rbind", glottodata) # alternative approaches: data.table::rbindlist or plyr::rbind.fill
-  glottodata <- tibble::remove_rownames(glottodata)
+  glottocheck_lscolcount(glottosubdata) # stops if number of columns is not identical
+  glottosubdata <- do.call("rbind", glottosubdata) # alternative approaches: data.table::rbindlist or plyr::rbind.fill
+  glottosubdata <- tibble::remove_rownames(glottosubdata)
 
-  if(any(!is.na(splitted[[2]]))){glottodata <- c("glottodata" = list(glottodata), splitted[[2]]) }
-
-  return(glottodata)
+  if(any(!is.na(splitted[[2]]))){glottosubdata <- c("glottosubdata" = list(glottosubdata), splitted[[2]]) }
+  }
+  return(glottosubdata)
 
 }
 
