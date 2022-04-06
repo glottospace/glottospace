@@ -4,7 +4,7 @@
 #'
 #' @param glottodata options are:
 #' \itemize{
-#' \item A filepath to locally stored glottodata with file extension (.xlsx .xls .gpkg
+#' \item A filepath to locally stored glottodata or glottosubdata with file extension (.xlsx .xls .gpkg
 #' .shp). See also: options meta and simplify.
 #' \item "glottobase" - Default option, an spatially enhanced version of \href{https://glottolog.org/}{glottolog}. See
 #' \link{glottobooster} for details. If glottodata = NULL, "glottobase" will be loaded.
@@ -17,7 +17,7 @@
 #' \item "demodata" - Built-in artificial glottodata (included for demonstration and testing).
 #' \item "demosubdata" - Built-in artificial glottosubdata (included for demonstration and testing)
 #' }
-#' @param meta In case 'glottodata' is a path to locally stored data (or demodata/demosubdata): by default, meta sheets are not loaded. Use meta=TRUE if you want to include them.
+#' @param meta In case 'glottodata' is demodata/demosubdata: by default, meta sheets are not loaded. Use meta=TRUE if you want to include them.
 #' @param download By default internally stored versions of global databases are used. Specify download = TRUE in case you want to download the latest version from a remote server.
 #' @param dirpath Optional, if you want to store a global CLDF dataset in a specific directory, or load it from a specific directory.
 #' @param url Zenodo url, something like this: "https://zenodo.org/api/records/3260727"

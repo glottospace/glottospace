@@ -435,16 +435,30 @@ glottocheck_colmissing <- function(data, id, diagnostic = FALSE, rm.na = TRUE){
 #'
 #' @noRd
 #' @examples
-#' glottosubdata <- glottoget("demosubdata", meta = FALSE)
+#' glottosubdata <- glottoget("demosubdata")
 #' glottocheck_isglottosubdata(glottosubdata)
 #'
 #' glottosubdata <- glottosimplify(glottosubdata)
 #' glottocheck_isglottosubdata(glottosubdata)
 glottocheck_isglottosubdata <- function(glottosubdata){
+ glottocheck_isglottosubdata_complex(glottosubdata) | glottocheck_isglottosubdata_simplified(glottodata)
+  }
+
+#' Guess whether an object is (simplified) glottosubdata
+#'
+#' @param glottodata User-provided glottodata
+#'
+#' @noRd
+#' @examples
+#' glottosubdata <- glottoget("demosubdata")
+#'
+#' glottosubdata <- glottosimplify(glottosubdata)
+#' glottocheck_isglottosubdata_simplified(glottosubdata)
+glottocheck_isglottosubdata_simplified <- function(glottosubdata){
   if(inherits(glottosubdata, what = "list")  ){
-    if(!any(names(glottosubdata) %in% "glottodata") ){
+    if(any(names(glottosubdata) %in% "glottosubdata") ){
       return(!purrr::is_empty(colnames(glottosubdata[[1]])[1] == "glottosubcode") )
-    } else { # 'glottodata' exists in names
+    } else { # 'glottosubdata' does not exist in names
       return(FALSE)
     }
   } else{ # doesn't inherit list
@@ -456,6 +470,26 @@ glottocheck_isglottosubdata <- function(glottosubdata){
   }
 }
 
+#' Guess whether an object is (complex) glottosubdata
+#'
+#' @param glottosubdata glottosubdata
+#'
+#' @noRd
+#' @examples
+#' glottosubdata <- glottoget("demosubdata", meta = TRUE)
+#'
+#' glottocheck_isglottosubdata_complex(glottosubdata)
+glottocheck_isglottosubdata_complex <- function(glottosubdata){
+  if(inherits(glottosubdata, what = "list")  ){
+    if(all(names(glottosubdata) %nin% c("glottosubdata", "glottodata") ) ){
+      return(!purrr::is_empty(colnames(glottosubdata[[1]])[1] == "glottosubcode") )
+    } else { # 'glottosubdata' or 'glottodata' does exist in names
+      return(FALSE)
+    }
+  } else{ # doesn't inherit list
+      return(FALSE)
+  }
+}
 
 #' Guess whether an object is glottodata (and not glottosubdata)
 #'

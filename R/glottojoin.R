@@ -158,7 +158,7 @@ glottojoin_space <- function(glottodata, id = NULL){
 #' Join glottosubdata (a list of glottodata tables for multiple languages) into a single glottodata object
 #'
 #'
-#' @param glottosubdata A list of glottodata objects. Column names across languages should be identical.
+#' @param glottosubdata glottosubdata object. Column names across languages should be identical.
 #'
 #' @return A glottosubdata object
 #' @noRd
@@ -166,6 +166,7 @@ glottojoin_space <- function(glottodata, id = NULL){
 #' glottosubdata <- glottoget("demosubdata")
 #' glottojoin_subdata(glottosubdata = glottosubdata)
 glottojoin_subdata <- function(glottosubdata){
+  if(glottocheck_isglottosubdata_complex(glottosubdata)){
 
   splitted <- glottosplitmergemeta(glottosubdata)
   glottosubdata <- splitted[[1]]
@@ -175,7 +176,7 @@ glottojoin_subdata <- function(glottosubdata){
   glottosubdata <- tibble::remove_rownames(glottosubdata)
 
   if(any(!is.na(splitted[[2]]))){glottosubdata <- c("glottosubdata" = list(glottosubdata), splitted[[2]]) }
-
+  }
   return(glottosubdata)
 
 }

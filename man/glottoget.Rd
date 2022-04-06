@@ -15,7 +15,7 @@ glottoget(
 \arguments{
 \item{glottodata}{options are:
 \itemize{
-\item A filepath to locally stored glottodata with file extension (.xlsx .xls .gpkg
+\item A filepath to locally stored glottodata or glottosubdata with file extension (.xlsx .xls .gpkg
 .shp). See also: options meta and simplify.
 \item "glottobase" - Default option, an spatially enhanced version of \href{https://glottolog.org/}{glottolog}. See
 \link{glottobooster} for details. If glottodata = NULL, "glottobase" will be loaded.
@@ -29,7 +29,7 @@ spatial coordinates.
 \item "demosubdata" - Built-in artificial glottosubdata (included for demonstration and testing)
 }}
 
-\item{meta}{In case 'glottodata' is a path to locally stored data (or demodata/demosubdata): by default, meta sheets are not loaded. Use meta=TRUE if you want to include them.}
+\item{meta}{In case 'glottodata' is demodata/demosubdata: by default, meta sheets are not loaded. Use meta=TRUE if you want to include them.}
 
 \item{download}{By default internally stored versions of global databases are used. Specify download = TRUE in case you want to download the latest version from a remote server.}
 
