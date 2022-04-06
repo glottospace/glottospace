@@ -20,19 +20,17 @@ glottodist <- function(glottodata, structure = NULL){
     id <- "glottosubcode"
   } else if(glottocheck_isglottodata(glottodata)){
     id <- "glottocode"
-  } else if(!glottocheck_isglottodata(glottodata)){
-    message("glottodata object does not adhere to glottodata/glottosubdata format. Use glottocreate() or glottoconvert().")
+  } else {
+    stop("glottodata object does not adhere to glottodata/glottosubdata format. Use glottocreate() or glottoconvert().")
     }
 
-  if(glottocheck_hasmeta(glottodata) & is.null(structure)){
+  if(!glottocheck_hasstructure(glottodata) ){
+    stop("structure table not found. You can create one using glottocreate_structuretable() and add it with glottocreate_addtable().")
+  } else{
     splitted <- glottosplitmergemeta(glottodata)
     glottodata <- splitted[[1]]
+    glottodata <- glottosimplify(glottodata)
     structure <- splitted[[2]][["structure"]]
-  } else if(glottocheck_hasmeta(glottodata) & !is.null(structure)){
-    splitted <- glottosplitmergemeta(glottodata)
-    glottodata <- splitted[[1]]
-  } else if(!glottocheck_hasmeta(glottodata) & is.null(structure)){
-    stop("structure table not found, please add one to glottodata or provide it separately.")
   }
 
   duplo <- sum(duplicated(glottodata) | duplicated(glottodata, fromLast = TRUE))

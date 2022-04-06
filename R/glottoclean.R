@@ -10,6 +10,7 @@
 #' @param tofalse Optional additional values to recode to FALSE (besides default)
 #' @param totrue Optional additional values to recode to TRUE (besides default)
 #' @param id By default, glottoclean looks for a column named 'glottocode', if the id is in a different column, this should be specified.
+#' @param structure By default, glottoclean looks for a structure table. If it doesn't exist in the data, it should be provided.
 #'
 #' @return A cleaned-up version of the original glottodata object (either a list or a data.frame, depending on the input)
 #' @export
@@ -19,22 +20,21 @@
 #'
 #' glottosubdata <- glottoget("demosubdata", meta = TRUE)
 #' glottosubdata <- glottoclean(glottosubdata)
-glottoclean <- function(glottodata, tona = NULL, tofalse = NULL, totrue = NULL, id = NULL){
+glottoclean <- function(glottodata, structure = NULL, tona = NULL, tofalse = NULL, totrue = NULL, id = NULL){
 
-  # Convert to glottodata
-  if(glottocheck_isglottosubdata(glottodata)){
-    glottodata <- glottojoin(glottodata)
-  } else if(!glottocheck_isglottodata(glottodata)){
-    message("glottodata object does not adhere to glottodata/glottosubdata format. Use glottocreate() or glottoconvert().")
+  if(sum(!glottocheck_isglottodata(glottodata) | !glottocheck_isglottosubdata(glottodata))==2){
+    stop("glottodata object does not adhere to glottodata/glottosubdata format. Use glottocreate() or glottoconvert().")
   }
 
-  if(!glottocheck_hasstructure(glottodata) ){
-    stop("structure table not found. You can create one using glottocreate_structuretable() and add it with glottocreate_addtable().")
-  } else{
-  splitted <- glottosplitmergemeta(glottodata)
-  glottodata <- splitted[[1]]
-  glottodata <- glottosimplify(glottodata)
-  structure <- splitted[[2]][["structure"]]
+  if(glottocheck_hasstructure(glottodata) ){
+    splitted <- glottosplitmergemeta(glottodata)
+    glottodata <- splitted[[1]]
+    glottodata <- glottosimplify(glottodata)
+    structure <- splitted[[2]][["structure"]]
+  } else if(!is.null(structure)){
+    glottodata <- glottosimplify(glottodata)
+  } else {
+    stop("structure table not found. You can create one using glottocreate_structuretable() and add it with glottocreate_addtable(), or add it separately.")
   }
 
   all2false <- glottoclean_all2false()
