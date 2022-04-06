@@ -4,19 +4,10 @@
 \alias{glottoclean}
 \title{Clean glottodata}
 \usage{
-glottoclean(
-  glottodata,
-  structure = NULL,
-  tona = NULL,
-  tofalse = NULL,
-  totrue = NULL,
-  id = NULL
-)
+glottoclean(glottodata, tona = NULL, tofalse = NULL, totrue = NULL, id = NULL)
 }
 \arguments{
 \item{glottodata}{glottodata (either a list or a data.frame)}
-
-\item{structure}{Optional structure table (should be provided if glottodata doesn't contain any)}
 
 \item{tona}{Optional additional values to recode to NA (besides default)}
 
@@ -39,5 +30,5 @@ glottodata <- glottoget("demodata", meta = TRUE)
 glottodata <- glottoclean(glottodata)
 
 glottosubdata <- glottoget("demosubdata", meta = TRUE)
-glottodata <- glottoclean(glottosubdata)
+glottosubdata <- glottoclean(glottosubdata)
 }

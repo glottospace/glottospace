@@ -229,14 +229,24 @@ glottojoin_data <- function(glottodata, with, type = "left", id = NULL, ...){
 #' glottojoin_meta(glottodata, glottometa)
 glottojoin_meta <- function(glottodata, glottometa){
 
-  stopifnot(glottocheck_isglottodata(glottodata) | glottocheck_isglottosubdata(glottodata) )
   stopifnot(glottocheck_hasmeta(glottometa))
 
-  if(is_sf(glottodata)){
+  if(glottocheck_isglottodata(glottodata)){
+      if(is_sf(glottodata)){
     glottodata <- list("glottodata" = glottodata)
   } else if(!is_list(glottodata)){
     glottodata <- list("glottodata" = glottodata)
     names(glottodata) <- "glottodata"
+  }
+  } else if(glottocheck_isglottosubdata(glottodata)){
+    if(is_sf(glottodata)){
+      glottodata <- list("glottosubdata" = glottodata)
+    } else if(!is_list(glottodata)){
+      glottodata <- list("glottosubdata" = glottodata)
+      names(glottodata) <- "glottosubdata"
+    }
+  } else{
+    stop("Input is not glottodata or glottosubdata")
   }
 
   c(glottodata, glottometa)

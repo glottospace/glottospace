@@ -9,7 +9,6 @@
 #' @param tona Optional additional values to recode to NA (besides default)
 #' @param tofalse Optional additional values to recode to FALSE (besides default)
 #' @param totrue Optional additional values to recode to TRUE (besides default)
-#' @param structure Optional structure table (should be provided if glottodata doesn't contain any)
 #' @param id By default, glottoclean looks for a column named 'glottocode', if the id is in a different column, this should be specified.
 #'
 #' @return A cleaned-up version of the original glottodata object (either a list or a data.frame, depending on the input)
@@ -19,8 +18,8 @@
 #' glottodata <- glottoclean(glottodata)
 #'
 #' glottosubdata <- glottoget("demosubdata", meta = TRUE)
-#' glottodata <- glottoclean(glottosubdata)
-glottoclean <- function(glottodata, structure = NULL, tona = NULL, tofalse = NULL, totrue = NULL, id = NULL){
+#' glottosubdata <- glottoclean(glottosubdata)
+glottoclean <- function(glottodata, tona = NULL, tofalse = NULL, totrue = NULL, id = NULL){
 
   # Convert to glottodata
   if(glottocheck_isglottosubdata(glottodata)){
@@ -29,18 +28,13 @@ glottoclean <- function(glottodata, structure = NULL, tona = NULL, tofalse = NUL
     message("glottodata object does not adhere to glottodata/glottosubdata format. Use glottocreate() or glottoconvert().")
   }
 
-  # Simplified glottodata table and separate structure table
-  if(glottocheck_hasmeta(glottodata) & !is.null(structure)){
-    glottodata <- glottosimplify(glottodata)
-    splitted <- NULL
-  } else if(!glottocheck_hasmeta(glottodata) & !is.null(structure)){
-    splitted <- NULL
-  } else if(glottocheck_hasmeta(glottodata) & is.null(structure)){
-    splitted <- glottosplitmergemeta(glottodata)
-    glottodata <- splitted[[1]]
-    structure <- splitted[[2]][["structure"]]
-  } else if(!glottocheck_hasmeta(glottodata) & is.null(structure)){
-    stop("structure table not found, please add one to glottodata or provide it separately.")
+  if(!glottocheck_hasstructure(glottodata) ){
+    stop("structure table not found. You can create one using glottocreate_structuretable() and add it with glottocreate_addtable().")
+  } else{
+  splitted <- glottosplitmergemeta(glottodata)
+  glottodata <- splitted[[1]]
+  glottodata <- glottosimplify(glottodata)
+  structure <- splitted[[2]][["structure"]]
   }
 
   all2false <- glottoclean_all2false()
@@ -51,19 +45,12 @@ glottoclean <- function(glottodata, structure = NULL, tona = NULL, tofalse = NUL
   if(!is.null(tofalse)){all2false <- c(all2false, tofalse)}
   if(!is.null(totrue)){all2true <- c(all2true, totrue)}
 
-  glottodata <- glottorecode(glottodata = glottodata,
-                structure = structure,
-                tofalse = all2false,
-                totrue = all2true,
-                tona = all2na)
+  glottodata <- glottorecode_logical(glottodata = glottodata, structure = structure, tofalse = all2false, totrue = all2true)
 
+  glottodata <- glottorecode_missing(glottodata, tona = all2na)
 
+  glottodata <- glottosplitmergemeta(glottodata = glottodata, splitted = splitted)
 
-  # glottodata <- glottoclean_type(glottodata = glottodata, structure = structure, id = id)
-
-  if(!is.null(splitted)){
-    glottodata <- glottosplitmergemeta(glottodata = glottodata, splitted = splitted)
-  }
   invisible(glottodata)
 }
 
@@ -94,7 +81,7 @@ glottoclean_all2na <- function(){
 #' @examples
 #' glottodata <- glottoget("demodata", meta = TRUE)
 #' glottodata <- glottorecode(glottodata, tona = c("?", "missing"))
-glottorecode <- function(glottodata, structure = NULL, tofalse = NULL, totrue = NULL, tona = NULL){
+glottorecode <- function(glottodata, structure, tofalse = NULL, totrue = NULL, tona = NULL){
 
   if(!is.null(tofalse) | !is.null(totrue)){
     glottodata <- glottorecode_logical(glottodata = glottodata, structure = structure, tofalse = tofalse, totrue = totrue)
@@ -117,19 +104,13 @@ glottorecode <- function(glottodata, structure = NULL, tofalse = NULL, totrue = 
 #' @noRd
 #' @examples
 #' glottodata <- glottoget("demodata", meta = TRUE)
-#' glottorecode_logical(glottodata, totrue = c("y", "Y", 1), tofalse = c("n", "N", 0))
-glottorecode_logical <- function(glottodata, structure = NULL, totrue = NULL, tofalse = NULL){
+#' glottorecode_logical(glottodata, totrue = c("y", "Y", 1), tofalse = c("n", "N", 0), structure = glottodata[["structure"]])
+#'
+#' glottosubdata <- glottoget("demosubdata", meta = TRUE)
+#' glottorecode_logical(glottosubdata, totrue = c("y", "Y", 1), tofalse = c("n", "N", 0), structure = glottosubdata[["structure"]])
+glottorecode_logical <- function(glottodata, structure, totrue = NULL, tofalse = NULL){
 
-  if(!glottocheck_hasstructure(glottodata) & is.null(structure)){
-    stop("Please provide a structure table with at least a type column. Run glottocreate_structuretable() to create it.")
-  } else if(is.null(structure)){
-    splitted <- glottosplitmergemeta(glottodata)
-    data <- splitted[[1]]
-    structure <- splitted[[2]][["structure"]]
-  } else{ # structure is provided
-    splitted <- glottosplitmergemeta(glottodata)
-    data <- splitted[[1]]
-  }
+  data <- glottosimplify(glottodata)
 
   types <- structure$type
   cbinary <- structure$varname[which(types == "asymm" | types == "symm")]
@@ -151,7 +132,7 @@ glottorecode_logical <- function(glottodata, structure = NULL, totrue = NULL, to
     data[, cbinary] <- bindat
     message("Values in binary columns (symm/asymm) recoded to TRUE/FALSE \n")
   }
-  glottosplitmergemeta(glottodata = data, splitted = splitted)
+  data
 }
 
 #' Recode missing values to NA
@@ -163,14 +144,12 @@ glottorecode_logical <- function(glottodata, structure = NULL, totrue = NULL, to
 #' @examples
 #' glottodata <- glottoget("demodata", meta = TRUE)
 #' glottorecode_missing(glottodata, tona = "?")
+#'
+#' glottosubdata <- glottoget("demosubdata", meta = TRUE)
+#' glottorecode_missing(glottosubdata, tona = "?")
 glottorecode_missing <- function(glottodata, tona){
 
-  if(glottocheck_isglottodata(glottodata)){
-    splitted <- glottosplitmergemeta(glottodata)
-    glottodata <- splitted[[1]]
-  } else{
-    splitted <- NULL
-  }
+  glottodata <- glottosimplify(glottodata)
 
   glottocols <- colnames(glottodata)
   glottodata <- data.frame(lapply(glottodata, recode_tona, tona = tona)) # As a side-effect, this drops row names, and changes colnames
@@ -179,9 +158,6 @@ glottorecode_missing <- function(glottodata, tona){
 
   message("Missing values recoded to NA \n")
 
-  if(!is.null(splitted)){
-    glottodata <- glottosplitmergemeta(glottodata = glottodata, splitted = splitted)
-  }
   glottodata
 }
 
