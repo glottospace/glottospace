@@ -1,18 +1,20 @@
 
-#' Clean glottodata
+#' Clean glottodata/glottosubdata
 #'
-#' This function is a wrapper around glottorecode. This function has some built in default values that are being recoded.
-#' For example, if column type is 'symm' or 'asymm', values such as "No" and 0 are recoded to FALSE and "?" is recoded to NA.
-#' Use glottorecode directly if you don't want to use these defaults.
+#' This function cleans glottodata/glottosubdata and returns a simplified glottodata/glottosubdata object containing only the cleaned data table and a structure table.
+#'
+#' This function has some built in default values that are being recoded:
+#' For example, if column type is 'symm' or 'asymm', values such as "No" and 0 are recoded to FALSE
+#' Values such as "?" are recoded to NA.
+#'
 #'
 #' @param glottodata glottodata (either a list or a data.frame)
 #' @param tona Optional additional values to recode to NA (besides default)
 #' @param tofalse Optional additional values to recode to FALSE (besides default)
 #' @param totrue Optional additional values to recode to TRUE (besides default)
 #' @param id By default, glottoclean looks for a column named 'glottocode', if the id is in a different column, this should be specified.
-#' @param structure By default, glottoclean looks for a structure table. If it doesn't exist in the data, it should be provided.
 #'
-#' @return A cleaned-up version of the original glottodata object (either a list or a data.frame, depending on the input)
+#' @return A cleaned-up and simplified version of the original glottodata object
 #' @export
 #' @examples
 #' glottodata <- glottoget("demodata", meta = TRUE)
@@ -20,21 +22,17 @@
 #'
 #' glottosubdata <- glottoget("demosubdata", meta = TRUE)
 #' glottosubdata <- glottoclean(glottosubdata)
-glottoclean <- function(glottodata, structure = NULL, tona = NULL, tofalse = NULL, totrue = NULL, id = NULL){
+glottoclean <- function(glottodata, tona = NULL, tofalse = NULL, totrue = NULL, id = NULL){
 
   if(sum(!glottocheck_isglottodata(glottodata) | !glottocheck_isglottosubdata(glottodata))==2){
     stop("glottodata object does not adhere to glottodata/glottosubdata format. Use glottocreate() or glottoconvert().")
   }
 
-  if(glottocheck_hasstructure(glottodata) ){
-    splitted <- glottosplitmergemeta(glottodata)
-    glottodata <- splitted[[1]]
+  if(!glottocheck_hasstructure(glottodata) ){
+    stop("structure table not found. You can create one using glottocreate_structuretable() and add it with glottocreate_addtable().")
+  } else{
+    structure <- glottodata[["structure"]]
     glottodata <- glottosimplify(glottodata)
-    structure <- splitted[[2]][["structure"]]
-  } else if(!is.null(structure)){
-    glottodata <- glottosimplify(glottodata)
-  } else {
-    stop("structure table not found. You can create one using glottocreate_structuretable() and add it with glottocreate_addtable(), or add it separately.")
   }
 
   all2false <- glottoclean_all2false()
@@ -49,7 +47,9 @@ glottoclean <- function(glottodata, structure = NULL, tona = NULL, tofalse = NUL
 
   glottodata <- glottorecode_missing(glottodata, tona = all2na)
 
-  glottodata <- glottosplitmergemeta(glottodata = glottodata, splitted = splitted)
+  glottodata <- glottojoin(glottodata, structure)
+
+  glottodata <- contrans_glottoclass(glottodata)
 
   invisible(glottodata)
 }

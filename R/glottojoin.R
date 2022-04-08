@@ -32,37 +32,40 @@
 glottojoin <- function(glottodata, with = NULL, id = NULL, rm.na = FALSE, type = "left"){
   if(glottocheck_isglottosubdata(glottodata) ){
     if(is.null(with)){# join glottosubdata
-    joined <- glottojoin_subdata(glottosubdata = glottodata)
+    return(glottojoin_subdata(glottosubdata = glottodata) )
   } else if (glottocheck_hasmeta(with) & is.null(id)){
-    joined <- glottojoin_meta(glottodata = glottodata, glottometa = with)
+    return(glottojoin_meta(glottodata = glottodata, glottometa = with) )
+  } else if (glottocheck_isstructure(with)){
+    return(glottojoin_structure(glottodata = glottodata, structure = with) )
   } else {
     message("Unable to join glottosubdata with this type of data.")
   }
-  return(joined)
+
   } else if(glottocheck_isglottodata(glottodata) & !is.null(with)){
     glottodata <- glottosplit(glottodata)[[1]]
       if(is_dist(with)){
-      joined <- glottojoin_dist(glottodata = glottodata, id = id, dist = with, rm.na = rm.na)
+        return(glottojoin_dist(glottodata = glottodata, id = id, dist = with, rm.na = rm.na) )
       } else if(glottocheck_hasmeta(with)){
-      joined <- glottojoin_meta(glottodata = glottodata, glottometa = with)
+        return( glottojoin_meta(glottodata = glottodata, glottometa = with) )
+      } else if(glottocheck_isstructure(with)){
+        return(glottojoin_structure(glottodata = glottodata, structure = with) )
       } else if(glottocheck_isglottodata(with)){
-        joined <- glottojoin_data(glottodata = glottodata, with = with, type = type)
+        return(glottojoin_data(glottodata = glottodata, with = with, type = type) )
       } else if(is.character(with)){
           if(with == "glottobase"){
-            joined <- glottojoin_base(glottodata = glottodata, id = id)
+            return(glottojoin_base(glottodata = glottodata, id = id) )
           } else if(with == "glottospace"){
-            joined <- glottojoin_space(glottodata = glottodata, id = id)
+            return(glottojoin_space(glottodata = glottodata, id = id) )
           }
       } else(message("Unable to join glottodata with this type of data.") )
-    return(joined)
+
   } else if (!is.null(with) ){
     message("Input data is not glottodata or glottosubdata. Trying to join anyway. ")
     if(glottocheck_hasmeta(with) & is.null(id)){
-      joined <- c("glottodata" = list(glottodata), with)
+      return(c("data" = list(glottodata), with) )
     } else {
-    joined <- glottojoin_data(glottodata = glottodata, with = with, type = type, id = id)
+      return(glottojoin_data(glottodata = glottodata, with = with, type = type, id = id))
     }
-    return(joined)
   }
 
 
@@ -146,9 +149,11 @@ glottojoin_base <- function(glottodata, id = NULL){
 #' glottojoin_space(glottodata)
 glottojoin_space <- function(glottodata, id = NULL){
   id <- contrans_id2gc(id)
-  glottospace <- glottoget_glottospace()
   if(!is_sf(glottodata)){
-  glottodata <- merge(x = glottospace, y = glottodata, by = id, all.y = TRUE, all.x = FALSE)
+  # glottodata <- merge(x = glottospace, y = glottodata, by = id, all.y = TRUE, all.x = FALSE)
+  glottospace <- glottoget_glottospace()
+  glottodata <- dplyr::left_join(x = glottodata, y = glottospace, by = id)
+  glottodata <- sf::st_sf(glottodata)
   } else {
   message("Object glottodata is already spatial")
   }
@@ -250,6 +255,47 @@ glottojoin_meta <- function(glottodata, glottometa){
   }
 
   c(glottodata, glottometa)
+
+
+}
+
+
+#' Join glottodata with structure table
+#'
+#' @param glottodata glottodata/glottosubdata table
+#' @param glottometa A structure table
+#' @noRd
+#'
+#' @examples
+#' glottodata <- glottoget("demodata", meta = TRUE)
+#' structure <- glottodata[["structure"]]
+#' glottodata <- glottosimplify(glottodata)
+#' glottojoin_structure(glottodata, structure)
+glottojoin_structure <- function(glottodata, structure){
+
+  glottodata <- glottosimplify(glottodata)
+
+  if(glottocheck_isglottodata(glottodata)){
+    if(is_sf(glottodata)){
+      glottodata <- list("glottodata" = glottodata)
+    } else if(!is_list(glottodata)){
+      glottodata <- list("glottodata" = glottodata)
+      names(glottodata) <- "glottodata"
+    }
+  } else if(glottocheck_isglottosubdata(glottodata)){
+    if(is_sf(glottodata)){
+      glottodata <- list("glottosubdata" = glottodata)
+    } else if(!is_list(glottodata)){
+      glottodata <- list("glottosubdata" = glottodata)
+      names(glottodata) <- "glottosubdata"
+    }
+  } else{
+    stop("Input is not glottodata or glottosubdata")
+  }
+
+  structure <- list("structure" = structure)
+
+  c(glottodata, structure)
 
 
 }

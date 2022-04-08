@@ -154,12 +154,4 @@ release_questions <- function() {
   )
 }
 
-#' Add S3 class to object
-#'
-#'
-#' @noRd
-add_class <- function(object, class){
-  oldunique <- class(object)[class(object) %nin% class]
-  class(object) <- c(oldunique, class)
-  invisible(object)
-}
+

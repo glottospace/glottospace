@@ -19,9 +19,8 @@
 #' }
 glottospace <- function(glottodata, method = NULL, radius = NULL){
 
-  stopifnot(glottocheck_isglottodata(glottodata))
-  splitted <- glottosplitmergemeta(glottodata)
-  glottodata <- splitted[[1]]
+  if(glottocheck_isglottosubdata(glottodata)){stop("A spatial object can only be created from glottodata, not from glottosubdata.")}
+  glottodata <- glottosimplify(glottodata)
 
   if(!is_sf(glottodata)){
     glottodata <- glottospace_addcoords(glottodata)
@@ -37,7 +36,7 @@ glottospace <- function(glottodata, method = NULL, radius = NULL){
   }
   }
 
-  glottodata <- glottosplitmergemeta(glottodata = glottodata, splitted = splitted)
+  glottodata <- contrans_glottoclass(glottodata)
 
 return(glottodata)
 }

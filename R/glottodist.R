@@ -1,7 +1,6 @@
 #' Calculate distances between languages
 #'
 #' @param glottodata glottodata or glottosubdata, either with or without structure table.
-#' @param structure If glottodata is a table without a structure table, you can add it separately. To create a structure table, you should run glottocreate_structuretable() and you can add it with glottocreate_addtable()
 #' @return object of class \code{dist}
 #' @export
 #'
@@ -12,7 +11,7 @@
 #' glottosubdata <- glottoget("demosubdata", meta = TRUE)
 #' glottodist <- glottodist(glottodata = glottosubdata)
 #'
-glottodist <- function(glottodata, structure = NULL){
+glottodist <- function(glottodata){
   rlang::check_installed("cluster", reason = "to use `glottodist()`")
 
   if(glottocheck_isglottosubdata(glottodata)){
@@ -26,12 +25,11 @@ glottodist <- function(glottodata, structure = NULL){
 
   if(!glottocheck_hasstructure(glottodata) ){
     stop("structure table not found. You can create one using glottocreate_structuretable() and add it with glottocreate_addtable().")
-  } else{
-    splitted <- glottosplitmergemeta(glottodata)
-    glottodata <- splitted[[1]]
-    glottodata <- glottosimplify(glottodata)
-    structure <- splitted[[2]][["structure"]]
   }
+
+  glottodata <- glottoclean(glottodata)
+  structure <- glottodata[["structure"]]
+  glottodata <- glottosimplify(glottodata)
 
   duplo <- sum(duplicated(glottodata) | duplicated(glottodata, fromLast = TRUE))
   if(duplo != 0){
@@ -85,12 +83,6 @@ glottodist <- function(glottodata, structure = NULL){
   if(any(colnames(structure) == "levels")){
   levels <- structure$levels
   }
-
-  # clean data
-  glottodata <- tibble::rownames_to_column(glottodata, id)
-  glottodata <- glottoclean(glottodata, structure = structure)
-  rownames(glottodata) <- NULL
-  glottodata <- tibble::column_to_rownames(glottodata, id) # required for cluster::daisy
 
   cbinary <- c(symm, asymm)
 

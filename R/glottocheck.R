@@ -169,6 +169,26 @@ glottocheck_hasmeta <- glottocheck_hasstructure <- function(glottodata){
   any(is_list(glottodata)) & any(names(glottodata) %in% "structure")
 }
 
+#' Check whether object is likely to be a structure table
+#'
+#'
+#' @param structure structure table
+#'
+#' @noRd
+#' @family <glottocheck>
+#' @examples
+#' glottodata <- glottoget("demodata", meta = TRUE)
+#' structure <- glottodata[["structure"]]
+#' glottocheck_isstructure(structure)
+glottocheck_isstructure <- function(structure){
+  if(!is.null(colnames(structure))){
+    return(all(colnames(structure) %in% colnames(glottocreate_structuretable())))
+  } else {
+    return(FALSE)
+  }
+}
+
+
 glottocheck_metatypes <- function(glottodata){
   if(!all(glottodata$structure$type %in% glottocreate_lookuptable()[,"type_lookup"]) ){
     message("Some types were not recognized, maybe there was a spelling error? Type glottocreate_lookuptable() to see the possible levels.")
