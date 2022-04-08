@@ -10,7 +10,7 @@ glottospotlight(
   spotlight,
   spotcontrast = NULL,
   spotpal = NULL,
-  bgcol = NULL,
+  bgcontrast = NULL,
   bgpal = NULL
 )
 }
@@ -25,7 +25,7 @@ glottospotlight(
 
 \item{spotpal}{color palette for spotligbht points}
 
-\item{bgcol}{Optional column to contrast between background data points}
+\item{bgcontrast}{Optional column to contrast between background data points}
 
 \item{bgpal}{color palette for background points (default is grays)}
 }

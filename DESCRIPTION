@@ -2,7 +2,7 @@ Type: Package
 Package: glottospace
 Title: Language Mapping and Geospatial Analysis of Linguistic and Cultural
     Data
-Version: 0.0.111.9001
+Version: 0.0.111.9006
 Author: Sietze Norder
 Maintainer: Sietze Norder <mail@sietzenorder.nl>
 Description: Streamlined workflows for geolinguistic analysis, including:

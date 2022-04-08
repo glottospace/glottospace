@@ -9,7 +9,7 @@ glottoplot(
   glottodist = NULL,
   type = NULL,
   glottonmds = NULL,
-  colorby = NULL,
+  color = NULL,
   ptsize = NULL,
   label = NULL,
   filename = NULL,
@@ -31,7 +31,7 @@ glottoplot(
 
 \item{glottonmds}{A glottonmds object created with \code{\link{glottonmds}}}
 
-\item{colorby}{Name of variable to be used to color features (optional). Run glottovars() to see the options.}
+\item{color}{Name of variable to be used to color features (optional). Run glottovars() to see the options.}
 
 \item{ptsize}{Size of points between 0 and 1 (optional)}
 
@@ -70,7 +70,7 @@ This function offers different types of visualizations for linguistic data and l
 glottodata <- glottoget("demodata", meta = TRUE)
 glottodist <- glottodist(glottodata = glottodata)
 glottoplot(glottodist = glottodist, type = "nmds",
- k = 3, colorby = "family", label = "name", row2id = "glottocode")
+ k = 3, color = "family", label = "name", row2id = "glottocode")
 
 # To create a stress/scree plot, you can run:
 # goeveg::dimcheckMDS(matrix = as.matrix(glottodist), k = k)

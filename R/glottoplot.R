@@ -6,7 +6,7 @@
 #' @param type The type of plot: "heatmap", "nmds", or "missing". Default is heatmap if nothing is provided.
 #' @param glottodata glottodata table
 #' @param glottodist A dist object created with \code{\link{glottodist}}
-#' @param colorby Name of variable to be used to color features (optional). Run glottovars() to see the options.
+#' @param color Name of variable to be used to color features (optional). Run glottovars() to see the options.
 #' @param label Name of variable to be used to label features (optional). Run glottovars() to see the options.
 #' @param ptsize Size of points between 0 and 1 (optional)
 #' @param filename Optional filename if output should be saved.
@@ -33,7 +33,7 @@
 #' glottodata <- glottoget("demodata", meta = TRUE)
 #' glottodist <- glottodist(glottodata = glottodata)
 #' glottoplot(glottodist = glottodist, type = "nmds",
-#'  k = 3, colorby = "family", label = "name", row2id = "glottocode")
+#'  k = 3, color = "family", label = "name", row2id = "glottocode")
 #'
 #' # To create a stress/scree plot, you can run:
 #' # goeveg::dimcheckMDS(matrix = as.matrix(glottodist), k = k)
@@ -45,7 +45,7 @@
 #' glottoplot(glottodata = glottodata, type = "missing")
 #' }
 glottoplot <- function(glottodata = NULL, glottodist = NULL, type = NULL, glottonmds = NULL,
-                       colorby = NULL, ptsize = NULL, label = NULL, filename = NULL, palette = NULL,
+                       color = NULL, ptsize = NULL, label = NULL, filename = NULL, palette = NULL,
                        k = NULL, rm.na = FALSE, row2id = NULL,
                        preventoverlap = FALSE, alpha = NULL, colorvec = NULL){
 
@@ -62,7 +62,7 @@ glottoplot <- function(glottodata = NULL, glottodist = NULL, type = NULL, glotto
     }
     if(!is.null(glottonmds)){
     glottoplot_nmds(glottonmds = glottonmds,
-                      colorby = colorby, ptsize = ptsize, label = label, palette = palette, filename = filename, preventoverlap = preventoverlap, alpha = alpha)
+                      color = color, ptsize = ptsize, label = label, palette = palette, filename = filename, preventoverlap = preventoverlap, alpha = alpha)
     }
   }
 
@@ -73,7 +73,7 @@ glottoplot <- function(glottodata = NULL, glottodist = NULL, type = NULL, glotto
     if(type == "nmds" & !is.null(glottodist)){
       glottonmds <- glottonmds(glottodist = glottodist, k = k, rm.na = rm.na, row2id = row2id)
       glottoplot_nmds(glottonmds = glottonmds,
-                      colorby = colorby, ptsize = ptsize, label = label, palette = palette, filename = filename, preventoverlap = preventoverlap, alpha = alpha)
+                      color = color, ptsize = ptsize, label = label, palette = palette, filename = filename, preventoverlap = preventoverlap, alpha = alpha)
     }
     if(type == "missing"){
       glottoplot_naviewer(data = glottodata, id = "glottocode")
@@ -91,7 +91,7 @@ glottoplot <- function(glottodata = NULL, glottodist = NULL, type = NULL, glotto
 #' Plot nmds in 2d or 3d
 #'
 #' @param glottonmds An glottonmds object
-#' @param colorby Name of column to color by
+#' @param color Name of column to color by
 #' @param ptsize ptsize
 #' @param label label
 #' @param palette color palette
@@ -112,19 +112,19 @@ glottoplot <- function(glottodata = NULL, glottodist = NULL, type = NULL, glotto
 #' glottodist <- glottodist(glottodata = glottodata)
 #' glottonmds <- glottonmds(glottodist, k = 2, row2id = "glottocode")
 #'
-#' glottoplot_nmds(glottonmds = glottonmds, colorby = "family", ptsize = "isolate")
-#' glottoplot_nmds(glottonmds = glottonmds, colorby = "isolate")
-glottoplot_nmds <- function(glottonmds, colorby = NULL, ptsize = NULL, label = NULL, palette = NULL, filename = NULL, preventoverlap = FALSE, alpha = NULL, colorvec = NULL){
+#' glottoplot_nmds(glottonmds = glottonmds, color = "family", ptsize = "isolate")
+#' glottoplot_nmds(glottonmds = glottonmds, color = "isolate")
+glottoplot_nmds <- function(glottonmds, color = NULL, ptsize = NULL, label = NULL, palette = NULL, filename = NULL, preventoverlap = FALSE, alpha = NULL, colorvec = NULL){
 
   nmds <- glottonmds[[1]]
   scoresdata <- glottonmds[[2]]
 
   if(nmds$ndim == 2){
-    glottoplot_nmds_2d(nmds = nmds, scoresdata = scoresdata, colorby = colorby, ptsize = ptsize, label = label, filename = filename, preventoverlap = preventoverlap, alpha = alpha, colorvec = colorvec)
+    glottoplot_nmds_2d(nmds = nmds, scoresdata = scoresdata, color = color, ptsize = ptsize, label = label, filename = filename, preventoverlap = preventoverlap, alpha = alpha, colorvec = colorvec)
   }
 
   if(nmds$ndim == 3){
-    glottoplot_nmds_3d(nmds = nmds, scoresdata = scoresdata, colorby = colorby, ptsize = ptsize, label = label, palette = palette, filename = filename)
+    glottoplot_nmds_3d(nmds = nmds, scoresdata = scoresdata, color = color, ptsize = ptsize, label = label, palette = palette, filename = filename)
   }
 
 }
@@ -133,7 +133,7 @@ glottoplot_nmds <- function(glottonmds, colorby = NULL, ptsize = NULL, label = N
 #'
 #' @param nmds An nmds object
 #' @param scoresdata scoresdata
-#' @param colorby colorby
+#' @param color color
 #' @param ptsize ptsize
 #' @param label label
 #' @param preventoverlap Should overlap between data points be avoided?
@@ -157,9 +157,9 @@ glottoplot_nmds <- function(glottonmds, colorby = NULL, ptsize = NULL, label = N
 #' scores <- glottonmds_scores(nmds)
 #' scoresdata <- glottojoin_base(scores)
 #'
-#' glottoplot_nmds_2d(nmds = nmds, scoresdata = scoresdata, colorby = "family", ptsize = "isolate")
-#' glottoplot_nmds_2d(nmds = nmds, scoresdata = scoresdata, colorby = "isolate")
-glottoplot_nmds_2d <- function(nmds, scoresdata, colorby = NULL, ptsize = NULL, label = NULL, filename = NULL, alpha = NULL, preventoverlap = FALSE, colorvec = NULL){
+#' glottoplot_nmds_2d(nmds = nmds, scoresdata = scoresdata, color = "family", ptsize = "isolate")
+#' glottoplot_nmds_2d(nmds = nmds, scoresdata = scoresdata, color = "isolate")
+glottoplot_nmds_2d <- function(nmds, scoresdata, color = NULL, ptsize = NULL, label = NULL, filename = NULL, alpha = NULL, preventoverlap = FALSE, colorvec = NULL){
 
   scoresdata <- glottosimplify(scoresdata)
    duplo <- sum(duplicated(scoresdata[,c("NMDS1", "NMDS2")]) | duplicated(scoresdata[,c("NMDS1", "NMDS2")], fromLast = TRUE))
@@ -169,7 +169,7 @@ glottoplot_nmds_2d <- function(nmds, scoresdata, colorby = NULL, ptsize = NULL, 
   }
 if(preventoverlap == FALSE){
   if(is.null(alpha)){alpha <- 1}
-    nmdsplot <- ggplot2::ggplot(data = scoresdata, ggplot2::aes_string(x="NMDS1",y="NMDS2", col = colorby) ) +
+    nmdsplot <- ggplot2::ggplot(data = scoresdata, ggplot2::aes_string(x="NMDS1",y="NMDS2", col = color) ) +
       ggplot2::geom_point(size = ptsize, alpha = alpha) +
       {if(!is.null(label))ggplot2::geom_text(ggplot2::aes_string(label = label), hjust = 0, vjust = 0, show.legend = FALSE)} +
       ggplot2::coord_equal()+
@@ -178,7 +178,7 @@ if(preventoverlap == FALSE){
       ggplot2::theme(panel.background = ggplot2::element_blank(), legend.key=ggplot2::element_rect(fill="white"))
 } else{
   if(is.null(alpha)){alpha <- .3}
-  nmdsplot <- ggplot2::ggplot(data = scoresdata, ggplot2::aes_string(x="NMDS1",y="NMDS2", col = colorby) ) +
+  nmdsplot <- ggplot2::ggplot(data = scoresdata, ggplot2::aes_string(x="NMDS1",y="NMDS2", col = color) ) +
     ggplot2::geom_point(size = ptsize, alpha = alpha, position = ggplot2::position_jitter(width = 0.01, height = 0.01, seed = 22)) +
     {if(!is.null(label))ggplot2::geom_text(position = ggplot2::position_jitter(width = 0.01, height = 0.01, seed = 22), ggplot2::aes_string(label = label), hjust = 0, vjust = 0, show.legend = FALSE)} +
     ggplot2::coord_equal()+
@@ -201,7 +201,7 @@ if(preventoverlap == FALSE){
 #'
 #' @param nmds An nmds object
 #' @param scoresdata scoresdata
-#' @param colorby color
+#' @param color color
 #' @param ptsize ptsize
 #' @param label label
 #' @param filename optional filename if output should be saved.
@@ -215,14 +215,14 @@ if(preventoverlap == FALSE){
 #' scores <- glottonmds_scores(nmds)
 #' scoresdata <- glottojoin_base(scores)
 #'
-#' glottoplot_nmds_3d(nmds = nmds, scoresdata = scoresdata, colorby = "family", label = "name")
-#' glottoplot_nmds_3d(nmds = nmds, scoresdata = scoresdata, colorby = "isolate")
-glottoplot_nmds_3d <- function(nmds, scoresdata, colorby = NULL, ptsize = NULL, label = NULL, palette = NULL, filename = NULL){
+#' glottoplot_nmds_3d(nmds = nmds, scoresdata = scoresdata, color = "family", label = "name")
+#' glottoplot_nmds_3d(nmds = nmds, scoresdata = scoresdata, color = "isolate")
+glottoplot_nmds_3d <- function(nmds, scoresdata, color = NULL, ptsize = NULL, label = NULL, palette = NULL, filename = NULL){
   rlang::check_installed("plotly", reason = "to use `glottoplot_nmds_3d()`")
   scoresdata <- glottosimplify(scoresdata)
 
-  if(is.null(colorby)){
-    colorby <- "allsame"
+  if(is.null(color)){
+    color <- "allsame"
     scoresdata$allsame <- "allsame"
   }
 
@@ -230,14 +230,14 @@ glottoplot_nmds_3d <- function(nmds, scoresdata, colorby = NULL, ptsize = NULL, 
     palette = "turbo"
   }
 
-  colpal <- glottocolpal(palette = palette, ncolr = length(unique(scoresdata[[colorby]])) )
-  # colpal[as.factor(scoresdata[[colorby]])]
+  colpal <- glottocolpal(palette = palette, ncolr = length(unique(scoresdata[[color]])) )
+  # colpal[as.factor(scoresdata[[color]])]
 
   nmdsplot <- plotly::plot_ly(type="scatter3d", mode="markers", colors = colpal)
-  for (i in unique(scoresdata[[colorby]])) {
+  for (i in unique(scoresdata[[color]])) {
 
     nmdsplot <- plotly::add_trace(nmdsplot,
-                   data = scoresdata[scoresdata[[colorby]] == i,],
+                   data = scoresdata[scoresdata[[color]] == i,],
                    legendgroup = i,
                    x = ~NMDS1,
                    y = ~NMDS2,
@@ -245,10 +245,10 @@ glottoplot_nmds_3d <- function(nmds, scoresdata, colorby = NULL, ptsize = NULL, 
                    type = 'scatter3d',
                    mode = 'markers',
                    size = ptsize,
-                   color = ~.data[[colorby]],
+                   color = ~.data[[color]],
                    hoverinfo = "text",
                    text = {if(!is.null(label))~.data[[label]]},
-                   showlegend = ifelse(colorby == "allsame", FALSE, TRUE))
+                   showlegend = ifelse(color == "allsame", FALSE, TRUE))
   }
 
    nmdsplot <- nmdsplot %>% plotly::layout(
