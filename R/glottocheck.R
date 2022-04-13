@@ -51,6 +51,7 @@ glottocheck <- function(glottodata, diagnostic = TRUE, checkmeta = FALSE){
 #' @return
 #'
 glottocheck_id <- function(glottodata, id = NULL){
+  glottodata <- glottosimplify(glottodata)
   if(is.null(id)){
     if("glottocode" %in% colnames(glottodata) & "glottosubcode" %nin% colnames(glottodata)){
       id <- "glottocode"
@@ -152,7 +153,7 @@ glottocheck_metadata <- function(glottodata){
   } else {message("No structure table found in glottodata")}
 }
 
-#' Check whether glottodata contains metadata
+#' Check whether glottodata contains structure table / metadata
 #'
 #' In fact, this function only checks whether glottodata contains a structure table, because the structure table is the only table that is required by some glottospace functions. All other tables are for humans, not computers;-).
 #'
@@ -169,6 +170,20 @@ glottocheck_hasmeta <- glottocheck_hasstructure <- function(glottodata){
   any(is_list(glottodata)) & any(names(glottodata) %in% "structure")
 }
 
+#' Check whether glottodata contains a sample table
+#'
+#'
+#' @param glottodata glottodata
+#'
+#' @noRd
+#' @family <glottocheck>
+#' @examples
+#' glottodata <- glottoget("demodata", meta = TRUE)
+#' glottocheck_hassample(glottodata)
+glottocheck_hassample <- function(glottodata){
+  any(is_list(glottodata)) & any(names(glottodata) %in% "sample")
+}
+
 #' Check whether object is likely to be a structure table
 #'
 #'
@@ -182,7 +197,7 @@ glottocheck_hasmeta <- glottocheck_hasstructure <- function(glottodata){
 #' glottocheck_isstructure(structure)
 glottocheck_isstructure <- function(structure){
   if(!is.null(colnames(structure))){
-    return(all(colnames(structure) %in% colnames(glottocreate_structuretable())))
+    return(all(colnames(glottocreate_structuretable()[1:4]) %in% colnames(structure) ))
   } else {
     return(FALSE)
   }

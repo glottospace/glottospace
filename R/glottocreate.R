@@ -329,7 +329,7 @@ glottocreate_glottotable <- function(glottocodes, varnames){
 #' glottocreate_structuretable(varnames = c("var001", "var002", "var003"))
 glottocreate_structuretable <- function(varnames = NULL){
 structure <- data.frame(matrix(nrow = length(varnames), ncol = 6) )
-colnames(structure) <- c("varname", "type", "levels", "weight", "groups", "subgroups")
+colnames(structure) <- c("varname", "type", "levels", "weight", "group", "subgroup")
 if(!is.null(varnames)){
 structure[,"varname"] <- varnames
 structure[,"weight"] <- 1
@@ -471,8 +471,8 @@ glottocreate_contributorssubtable <- function(glottosubcodes = NULL, varnames = 
 #' @noRd
 glottocreate_sampletable <- function(glottocodes = NULL){
   if(is.null(glottocodes)){glottocodes <- NA}
-  sample <- data.frame(matrix(nrow = length(glottocodes), ncol = 1  ) )
-  colnames(sample) <- c("glottocode")
+  sample <- data.frame(matrix(nrow = length(glottocodes), ncol = 3  ) )
+  colnames(sample) <- c("glottocode", "group", "subgroup")
   sample[,"glottocode"] <- glottocodes
   sample
 }
@@ -556,6 +556,8 @@ glottocreate_demodata <- function(meta = TRUE){
   if(meta == TRUE){
     demodata <- demo$glottodata
     demo$structure[,"type"] <- c("symm", "factor", "symm")
+    demo$sample[,"group"] <- c("A","A", "A", "B", "B", "B")
+    demo$sample[,"subgroup"] <- c("A","A", "B", "B", "C", "D")
   } else{
     demodata <- demo
   }

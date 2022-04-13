@@ -38,9 +38,9 @@ glottodist <- function(glottodata){
   }
 
   # structure table:
-  if(!("varname" %in% colnames(structure) ) ){
-    colnames(structure)[1] <- "varname"
-    message("The structure table does not contain a 'varname' column, trying with the first column instead.")
+  if("varname" %nin% colnames(structure) ){
+    # colnames(structure)[1] <- "varname"
+    stop("The structure table does not contain a 'varname' column, please add it.")
   }
 
   glottodata <- tibble::column_to_rownames(glottodata, id)

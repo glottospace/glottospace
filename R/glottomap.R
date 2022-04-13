@@ -65,16 +65,6 @@ glottomap <- function(glottodata = NULL, color = NULL, label = NULL, type = NULL
     }
   }
 
-  if(!is.null(color) ){
-    nrcat <- nrow(unique(glottosimplify(glottodata[,color])))
-    if(nrcat > 30){
-      tmap::tmap_options(max.categories = nrcat)
-    }
-  }
-
-  if(is.null(lbsize) & type == "static"){lbsize <- 0.75}
-  if(!is.null(lbsize) & type == "dynamic"){lbsize <- NULL}
-
   if(type == "dynamic"){
     map <- glottomap_dynamic(glottodata = glottodata, label = label, color = color, ptsize = ptsize, alpha = alpha, palette = palette, nclass = nclass, numcat = numcat)
   }
@@ -116,8 +106,16 @@ glottomap_dynamic <- function(glottodata, label = NULL, color = NULL, ptsize = N
     suppressMessages(tmap::tmap_mode("view"))
   if(is.null(ptsize)){ptsize <- 0.08}
   if(is.null(label)){label <- NA}
-  if(is.null(color)){color <- "black"}
   if(is.null(alpha)){alpha <- 0.55}
+
+  if(!is.null(color) ){
+    nrcat <- nrow(unique(glottosimplify(glottodata[,color])))
+    if(nrcat > 30){
+      tmap::tmap_options(max.categories = nrcat)
+    }
+  } else{
+    color <- "black"
+  }
 
     tmap::tm_basemap("Esri.WorldTopoMap") +
         {if(is_polygon(glottodata))
@@ -160,6 +158,15 @@ glottomap_dynamic <- function(glottodata, label = NULL, color = NULL, ptsize = N
 #' }
 glottomap_static <- function(glottodata, projection = NULL, label = NULL, color = NULL, ptsize = 1, lbsize = NULL, alpha = 1, palette = NULL, rivers = FALSE, nclass = NULL, numcat = FALSE){
   if(is.null(projection)){projection <- "eqarea"}
+  if(is.null(lbsize)){lbsize <- 0.75}
+  if(!is.null(color) ){
+    nrcat <- nrow(unique(glottosimplify(glottodata[,color])))
+    if(nrcat > 30){
+      tmap::tmap_options(max.categories = nrcat)
+    }
+  } else{
+    color <- "black"
+  }
 
   if(projection == "pacific" | projection == "Pacific" | projection == "pacific-centered" | projection == "Pacific-centered"){
     glottomap_static_pacific(glottodata = glottodata, color = color)
@@ -244,7 +251,7 @@ glottomap_static_crs <- function(glottodata, label = NULL, color = NULL, ptsize 
     {if(glottospotlight_legend(glottodata)[[1]]){tmap::tm_add_legend(col = glottospotlight_legend(glottodata)$col, labels = glottospotlight_legend(glottodata)$labels)} }
 }
 
-#' Create a static (Pacific-centered) map with glottodata
+#' Create a static (Pacific-centered) world map with glottodata
 #'
 #' This function returns a static map with glottodata. Data is projected using the Robinson projection centered at the Pacific.
 #'
@@ -255,9 +262,9 @@ glottomap_static_crs <- function(glottodata, label = NULL, color = NULL, ptsize 
 #'
 #' @examples
 #' glottodata <- glottofilter(location = "Australia")
-#' glottomap_static_pacific(glottodata)
+#' glottomap_static_pacific(glottodata, color = "family")
 glottomap_static_pacific <- function(glottodata, color = NULL, rivers = FALSE, ptsize = NULL){
-  if(is.null(ptsize)){ptsize <- 0.5}
+  if(is.null(ptsize)){ptsize <- 1}
   if(is.null(color)){
     glottodata[,"color"] <- "black"
   color <- "color"}
@@ -295,3 +302,27 @@ glottomap_static_pacific <- function(glottodata, color = NULL, rivers = FALSE, p
 
 }
 
+#' Show location of glottocode on globe
+#'
+#' @param glottocode
+#'
+#' @noRd
+#' @examples
+#' glottomap_glottocode("yucu1253")
+glottomap_glottocode <- function(glottocode){
+  rlang::check_installed("s2", reason = "to use `glottocode_location()`")
+  language <- glottofilter(glottocode = glottocode)
+  lon0 = sf::st_coordinates(language)[1]
+  lat0 = sf::st_coordinates(language)[2]
+  language <- s2::as_s2_geography(paste0("POINT(", lon0, " ", lat0, ")") )
+
+  earth = s2::as_s2_geography(TRUE)
+  continents = s2::s2_data_countries()
+  oceans = s2::s2_difference(earth, s2::s2_union_agg(continents))
+  b = s2::s2_buffer_cells(language, 9800000) # visible half
+  i = s2::s2_intersection(b, oceans) # visible ocean
+  continents = s2::s2_intersection(b, continents)
+  plot(sf::st_transform(sf::st_as_sfc(i), paste0("+proj=ortho +lat_0=",lat0, " +lon_0=",lon0) ), col = 'lightblue')
+  plot(sf::st_transform(sf::st_as_sfc(continents), paste0("+proj=ortho +lat_0=",lat0, " +lon_0=",lon0) ), col = "lightgrey", add = TRUE)
+  plot(sf::st_transform(sf::st_as_sfc(language), paste0("+proj=ortho +lat_0=",lat0, " +lon_0=",lon0) ), col = "darkred", pch = 1, cex = 3, lwd = 2, add = TRUE)
+}

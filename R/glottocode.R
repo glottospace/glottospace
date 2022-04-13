@@ -27,30 +27,7 @@ glottocode <- function(glottocode){
 }
 
 
-#' Show location of glottocode on globe
-#'
-#' @param glottocode
-#'
-#' @noRd
-#' @examples
-#' glottocode_location("yucu1253")
-glottocode_location <- function(glottocode){
-  rlang::check_installed("s2", reason = "to use `glottocode_location()`")
-  language <- glottofilter(glottocode = glottocode)
-  lon0 = sf::st_coordinates(language)[1]
-  lat0 = sf::st_coordinates(language)[2]
-  language <- s2::as_s2_geography(paste0("POINT(", lon0, " ", lat0, ")") )
 
-  earth = s2::as_s2_geography(TRUE)
-  continents = s2::s2_data_countries()
-  oceans = s2::s2_difference(earth, s2::s2_union_agg(continents))
-  b = s2::s2_buffer_cells(language, 9800000) # visible half
-  i = s2::s2_intersection(b, oceans) # visible ocean
-  continents = s2::s2_intersection(b, continents)
-  plot(sf::st_transform(sf::st_as_sfc(i), paste0("+proj=ortho +lat_0=",lat0, " +lon_0=",lon0) ), col = 'lightblue')
-  plot(sf::st_transform(sf::st_as_sfc(continents), paste0("+proj=ortho +lat_0=",lat0, " +lon_0=",lon0) ), col = "lightgrey", add = TRUE)
-  plot(sf::st_transform(sf::st_as_sfc(language), paste0("+proj=ortho +lat_0=",lat0, " +lon_0=",lon0) ), col = "darkred", pch = 1, cex = 3, lwd = 2, add = TRUE)
-}
 
 
 #' Check whether a set of glottocodes exist in glottolog

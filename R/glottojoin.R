@@ -33,6 +33,8 @@ glottojoin <- function(glottodata, with = NULL, id = NULL, rm.na = FALSE, type =
   if(glottocheck_isglottosubdata(glottodata) ){
     if(is.null(with)){# join glottosubdata
     return(glottojoin_subdata(glottosubdata = glottodata) )
+  } else if(is_dist(with)){
+    return(glottojoin_dist(glottodata = glottodata, dist = with, rm.na = rm.na) )
   } else if (glottocheck_hasmeta(with) & is.null(id)){
     return(glottojoin_meta(glottodata = glottodata, glottometa = with) )
   } else if (glottocheck_isstructure(with)){
@@ -44,7 +46,7 @@ glottojoin <- function(glottodata, with = NULL, id = NULL, rm.na = FALSE, type =
   } else if(glottocheck_isglottodata(glottodata) & !is.null(with)){
     glottodata <- glottosplit(glottodata)[[1]]
       if(is_dist(with)){
-        return(glottojoin_dist(glottodata = glottodata, id = id, dist = with, rm.na = rm.na) )
+        return(glottojoin_dist(glottodata = glottodata, dist = with, rm.na = rm.na) )
       } else if(glottocheck_hasmeta(with)){
         return( glottojoin_meta(glottodata = glottodata, glottometa = with) )
       } else if(glottocheck_isstructure(with)){
@@ -76,7 +78,6 @@ glottojoin <- function(glottodata, with = NULL, id = NULL, rm.na = FALSE, type =
 #' @param glottodata User-provided glottodata
 #' @param dist A dist object
 #' @param rm.na Default is to keep NAs.
-#' @param id Column with IDs in \code{glottodata} that match names of dist object. By default, the "glottocode" column is used.
 #' @return Data frame
 #' @noRd
 #'
@@ -87,11 +88,11 @@ glottojoin <- function(glottodata, with = NULL, id = NULL, rm.na = FALSE, type =
 #'
 #' # After joining, you can subset the distance columns by using the IDs:
 #' glottodata_dist[, glottodata_dist$glottocode]
-glottojoin_dist <- function(glottodata, id = NULL, dist, rm.na = FALSE){
+glottojoin_dist <- function(glottodata, dist, rm.na = FALSE){
 
   glottodata <- glottosimplify(glottodata)
 
-  id <- contrans_id2gc(id)
+  id <- glottocheck_id(glottodata)
   distmat <- as.matrix(dist)
 
   if(rm.na == TRUE){
