@@ -190,36 +190,43 @@ glottoclean_colnamerepair_table <- function(table){
 #' @param view Should NA plots be generated during the process?
 #' @noRd
 #' @return A distance matrix
-#'
+#' @examples
+#' glottosubdata <- glottoget("demosubdata", meta = TRUE)
+#' glottodist <- glottodist(glottosubdata)
+#' glottodist <- glottoclean_dist_rmna(glottodist = glottodist, view = TRUE)
 glottoclean_dist_rmna <- function(glottodist, view = FALSE){
   distmat <- contransform_distmat(glottodist)
-  if(view){glottoplot_naviewer(rownames_to_column(as.data.frame(distmat)), id = "rowname")}
-  rowcolna <- rowSums(is.na(distmat))
+  if(view){glottoplot_naviewer(tibble::rownames_to_column(as.data.frame(distmat)), id = "rowname")}
+  rowcolna <- rowSums(is.na(distmat)) # count number of NAs in each row.
 
   while(max(rowcolna) != 0 ){
     # Remove columns and rows with largest number of missing values (matrix is symmetrical)
-    rmrowcol <- which.max(rowcolna)
+    maxval <- max(rowcolna)
+    rmrowcol <- which(rowcolna == maxval) # There can be multiple that have the same maximum value
+    # This is another possibility, but there can be draws, and therefore the result can be different each time: rmrowcol <- which.max(rowcolna)
     if(!purrr::is_empty(rmrowcol)){
       distmat <- distmat[,-rmrowcol]
       distmat <- distmat[-rmrowcol,]
+    } else{
+      distmat
     }
     rowcolna <- rowSums(is.na(distmat))
-    if(view){glottoplot_naviewer(rownames_to_column(as.data.frame(distmat)), id = "rowname")}
+    if(view){glottoplot_naviewer(tibble::rownames_to_column(as.data.frame(distmat)), id = "rowname")}
   }
   message(paste0("Out of the initial ", nrow(glottodist), " data points, ", nrow(glottodist) - nrow(distmat), " have been removed because of missing data. \n ", nrow(distmat), " remaining data points."))
   distmat
 }
 
-#' Subset glottodata based on sample table or glottocodes
+#' #' Subset glottodata based on sample table or glottocodes
+#' #'
+#' #' @param glottodata glottodata or glottosubdata
+#' #'
+#' #' @return A simplified version of glottodata containing only the selected glottocodes.
+#' #'
+#' #' @examples
+#' #' glottodata <- glottoget("demodata", meta = TRUE)
+#' glottoclean_selectsample <- function(glottodata){
 #'
-#' @param glottodata glottodata or glottosubdata
+#'   # if(glottocheck_hassample(glottodata))
 #'
-#' @return A simplified version of glottodata containing only the selected glottocodes.
-#'
-#' @examples
-#' glottodata <- glottoget("demodata", meta = TRUE)
-glottoclean_selectsample <- function(glottodata){
-
-  # if(glottocheck_hassample(glottodata))
-
-}
+#' }

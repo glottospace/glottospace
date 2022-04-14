@@ -1,42 +1,68 @@
-
-
 #' Permanova across all groups (overall)
 #'
 #' @param glottodata glottodata or glottosubdata
 #' @param sample sample table
+#' @param comparison Either "overall" or "pairwise"
+#' @param permutations Number of permutations (default is 1000)
 #'
 #' @noRd
 #'
 #' @examples
 #' glottodata <- glottoget("demodata", meta = TRUE)
-#' glottostat_permanovall(glottodata)
-glottostat_permanovall <- function(glottodata, sample = NULL, permutations = NULL){
+#' glottostat_permanova(glottodata, comparison = "pairwise")
+#'
+#' glottodata[["sample"]][,2] <- glottodata[["sample"]][,3]
+#' glottostat_permanova(glottodata, comparison = "pairwise")
+#'
+#' glottosubdata <- glottoget("demosubdata", meta = TRUE)
+#' glottostat_permanova(glottodata = glottosubdata, comparison = "pairwise")
+glottostat_permanova <- function(glottodata, comparison = NULL, sample = NULL, permutations = NULL){
 
-if(is.null(permutations)){permutations <- 1000}
+  if(is.null(permutations)){permutations <- 1000}
+  if(is.null(comparison)){comparison <- "overall"}
 
-if(glottocheck_hassample(glottodata) & is.null(sample)){
-  glottosample <- glottodata[["sample"]]
-} else if(glottocheck_hassample(glottodata) & !is.null(sample)){
-  glottosample <- sample
-} else if(!glottocheck_hassample(glottodata) & !is.null(sample)){
-  glottosample <- sample
-} else if(!glottocheck_hassample(glottodata) & is.null(sample)){
-  stop("Please provide a sample table")
+  if(glottocheck_hassample(glottodata) & is.null(sample)){
+    glottosample <- glottodata[["sample"]]
+  } else if(glottocheck_hassample(glottodata) & !is.null(sample)){
+    glottosample <- sample
+  } else if(!glottocheck_hassample(glottodata) & !is.null(sample)){
+    glottosample <- sample
+  } else if(!glottocheck_hassample(glottodata) & is.null(sample)){
+    stop("Please provide a sample table")
+  }
+
+  if("group" %nin% colnames(glottosample)){stop("There is no group column in the sample table. Use glottocreate_sampletable()")}
+  if(all(is.na(glottosample$group))){stop("Please add groups to the sample table. Use glottocreate_sampletable()")}
+
+  id <- glottocheck_id(glottodata)
+
+  glottodist <- glottodist(glottodata)
+  metadist <- glottojoin_dist(glottodata = glottodata, glottodist = glottodist, rm.na = TRUE)
+  if(id == "glottosubcode"){
+    metadist$glottocode <- glottoconvert_subcodes(metadist$glottosubcode)
+    metadist <- glottojoin_data(glottodata = metadist, with = glottosample, type = "left", id = "glottocode")
+  } else{
+    metadist <- glottojoin(glottodata = metadist, with = glottosample, id = "glottocode")
+  }
+
+  if(comparison == "overall"){
+    resultsdf <- glottostat_permanovall(metadist = metadist, id = id, permutations = permutations)
+  } else if(comparison == "pairwise"){
+    resultsdf <- glottostat_permanovapairs(metadist = metadist, id = id, permutations = permutations)
+  } else{stop("Please specify the type of comparison ('overall' or 'pairwise') ")}
+return(resultsdf)
 }
 
-if("group" %nin% colnames(glottosample)){stop("There is no group column in the sample table. Use glottocreate_sampletable()")}
-if(all(is.na(glottosample$group))){stop("Please add groups to the sample table. Use glottocreate_sampletable()")}
 
-id <- glottocheck_id(glottodata)
-
-glottodist <- glottodist(glottodata)
-metadist <- glottojoin_dist(glottodata = glottodata, dist = glottodist, rm.na = TRUE)
-if(id == "glottosubcode"){
-  metadist$glottocode <- glottoconvert_subcodes(metadist$glottosubcode)
-  metadist <- glottojoin_data(glottodata = metadist, with = glottosample, type = "left", id = "glottocode")
-} else{
-  metadist <- glottojoin(glottodata = metadist, with = glottosample, id = "glottocode")
-}
+#' Permanova across all groups (overall)
+#'
+#' @param metadist glottodata/glottsubdata joined with glottodist
+#' @param id Either 'glottocode' or 'glottosubcode'
+#' @param permutations Number of permutations (default is 1000)
+#'
+#' @noRd
+#'
+glottostat_permanovall <- function(metadist, id, permutations){
 
 condist <- metadist %>%
   dplyr::select(dplyr::all_of(metadist[,id]))
@@ -59,35 +85,15 @@ resultsdf
 
 #' Permanova across all groups (pairwise)
 #'
-#' @param glottodata glottodata
-#' @param sample sample table
+#' @param metadist glottodata/glottsubdata joined with glottodist
+#' @param id Either 'glottocode' or 'glottosubcode'
+#' @param permutations Number of permutations (default is 1000)
 #'
 #' @noRd
 #'
-#' @examples
-#' glottodata <- glottoget("demodata", meta = TRUE)
-#' glottostat_permanovapairs(glottodata)
-glottostat_permanovapairs <- function(glottodata, sample = NULL, permutations = NULL){
+glottostat_permanovapairs <- function(metadist, id, permutations){
 
-  if(is.null(permutations)){permutations <- 1000}
-
-  if(glottocheck_hassample(glottodata) & is.null(sample)){
-    glottosample <- glottodata[["sample"]]
-  } else if(glottocheck_hassample(glottodata) & !is.null(sample)){
-    glottosample <- sample
-  } else if(!glottocheck_hassample(glottodata) & !is.null(sample)){
-    glottosample <- sample
-  } else if(!glottocheck_hassample(glottodata) & is.null(sample)){
-    stop("Please provide a sample table")
-  }
-
-  id <- glottocheck_id(glottodata)
-
-  glottodist <- glottodist(glottodata)
-  metadist <- glottojoin(glottodata = glottodata, with = glottodist)
-  metadist <- glottojoin(glottodata = metadist, with = glottosample)
-
-  # Create empty data.frame to store results
+   # Create empty data.frame to store results
   groupnames <- unique(metadist$group)
   resultsdf <- data.frame(matrix(nrow = choose(length(groupnames), 2), ncol = 4) )
   colnames(resultsdf) <- c("group1", "group2", "p-value", "significance")

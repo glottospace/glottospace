@@ -362,3 +362,21 @@ glottoconvert_subcodes <- function(glottosubcodes, check = FALSE){
   glottosubcodes_splitted <- strsplit(glottosubcodes, split = "_")
   sapply(glottosubcodes_splitted, `[[`, 1)
 }
+
+#' Conditionally transforms dist object to distance matrix
+#'
+#' If dist object is not a distance matrix it will be converted.
+#'
+#' @param dist dist object
+#'
+#' @return distance matrix
+#' @noRd
+#'
+contransform_distmat <- function(dist){
+  if(inherits(dist, what = "dist")){
+    distmat <- as.matrix(dist)
+  } else if (inherits(dist, what = "matrix")){
+    distmat <- dist
+  }
+  distmat
+}
