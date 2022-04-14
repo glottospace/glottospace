@@ -590,13 +590,13 @@ glottocreate_demosubdata <- function(meta = TRUE){
     demo$sample[,"group"] <- c("A", "B")
   }
 
-  demo[[1]][,"var001"] <- sample(c("Y", "N", NA), size = 10, replace = TRUE)
-  demo[[1]][,"var002"] <- sample(c("a", "b", NA), size = 10, replace = TRUE)
-  demo[[1]][,"var003"] <- sample(c("Y", "N", NA), size = 10, replace = TRUE)
+  demo[[1]][,"var001"] <- rep(c("Y", "N"), 5)
+  demo[[1]][,"var002"] <- rep(c("a", "b"), 5)
+  demo[[1]][,"var003"] <- rep(c("Y", "N", "N", "Y", NA), 2)
 
-  demo[[2]][,"var001"] <- sample(c("Y", "N", NA), size = 10, replace = TRUE)
-  demo[[2]][,"var002"] <- sample(c("a", "b", NA), size = 10, replace = TRUE)
-  demo[[2]][,"var003"] <- sample(c("Y", "N", NA), size = 10, replace = TRUE)
+  demo[[2]][,"var001"] <- rep(c("Y", NA, "Y", "Y", "N"), 2)
+  demo[[2]][,"var002"] <- rep(c("a", "a", "a", "b", "b"), 2)
+  demo[[2]][,"var003"] <- rep(c("N", "Y"), 5)
 
   demo
 }

@@ -201,9 +201,12 @@ glottoclean_dist_rmna <- function(glottodist, view = FALSE){
 
   while(max(rowcolna) != 0 ){
     # Remove columns and rows with largest number of missing values (matrix is symmetrical)
+
     maxval <- max(rowcolna)
     rmrowcol <- which(rowcolna == maxval) # There can be multiple that have the same maximum value
-    # This is another possibility, but there can be draws, and therefore the result can be different each time: rmrowcol <- which.max(rowcolna)
+    # This is another possibility, but there can be draws, and therefore the result can be different each time:
+    # rmrowcol <- which.max(rowcolna)
+
     if(!purrr::is_empty(rmrowcol)){
       distmat <- distmat[,-rmrowcol]
       distmat <- distmat[-rmrowcol,]

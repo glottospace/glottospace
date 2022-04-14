@@ -10,6 +10,7 @@
 #'
 #' glottosubdata <- glottoget("demosubdata", meta = TRUE)
 #' glottodist <- glottodist(glottodata = glottosubdata)
+#' # glottoplot(glottodist)
 glottodist <- function(glottodata){
   rlang::check_installed("cluster", reason = "to use `glottodist()`")
 

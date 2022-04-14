@@ -21,5 +21,5 @@ glottodist <- glottodist(glottodata = glottodata)
 
 glottosubdata <- glottoget("demosubdata", meta = TRUE)
 glottodist <- glottodist(glottodata = glottosubdata)
-
+# glottoplot(glottodist)
 }
