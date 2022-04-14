@@ -78,6 +78,8 @@ You can install the latest release of glottospace from
 
 ``` r
 # install.packages("glottospace")
+# If you receive the message 'loading failed for 'i386', you can try:
+# install.packages("glottospace", INSTALL_opts = "--no-multiarch")
 ```
 
 You can install the development version of glottospace from
@@ -264,6 +266,9 @@ glottocreate(glottocodes = c("yucu1253", "tani1257"),
 #> 2 tani1257_a_0002     NA     NA     NA
 #> 3 tani1257_b_0001     NA     NA     NA
 #> 4 tani1257_b_0002     NA     NA     NA
+#> 
+#> attr(,"class")
+#> [1] "list"          "glottosubdata"
 ```
 
 ## glottocheck
@@ -441,12 +446,11 @@ filter, select, query
 
 ``` r
 eurasia <- glottofilter(continent = c("Europe", "Asia"))
-wari <- glottofilter(glottodata = glottodata, glottocode = "wari1268")
-#> No search results. You might consider using glottosearch() first
-indo_european <- glottofilter(glottodata = glottodata, family = 'Indo-European')
-south_america <- glottofilter(glottodata = glottodata, continent = "South America")
+wari <- glottofilter(glottocode = "wari1268")
+indo_european <- glottofilter(family = 'Indo-European')
+south_america <- glottofilter(continent = "South America")
 colovenz <- glottofilter(country = c("Colombia", "Venezuela"))
-# arawtuca <- glottofilter(glottodata = glottodata, expression = family %in% c("Arawakan", "Tucanoan"))
+# arawtuca <- glottofilter(expression = family %in% c("Arawakan", "Tucanoan"))
 ```
 
 ## glottodist
@@ -459,9 +463,9 @@ features
 # In order to be able to calculate linguistic distances a structure table is required, that's why we specify meta = TRUE.
 glottodata <- glottoget("demodata", meta = TRUE)
 glottodist <- glottodist(glottodata = glottodata)
-#> glottocode used as id
 #> Values in binary columns (symm/asymm) recoded to TRUE/FALSE
 #> Missing values recoded to NA
+#> All variables have two or more levels (excluding NA)
 
 # As we've seen above, in case you have glottodata without a structure table, you can add it:
 glottodata <- glottoget("demodata", meta = FALSE)
@@ -477,9 +481,9 @@ linguistic, cultural, and environmental features.
 ``` r
 glottodata <- glottoget("demodata", meta = TRUE)
 glottodist <- glottodist(glottodata = glottodata)
-#> glottocode used as id
 #> Values in binary columns (symm/asymm) recoded to TRUE/FALSE
 #> Missing values recoded to NA
+#> All variables have two or more levels (excluding NA)
 glottoplot(glottodist = glottodist)
 ```
 

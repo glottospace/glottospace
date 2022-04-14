@@ -24,3 +24,4 @@ glottodata <- glottoget("demodata", meta = FALSE)
 structuretable <- glottocreate_structuretable(varnames = colnames(glottodata)[-1])
 glottodata <- glottocreate_addtable(glottodata, table = structuretable, name = "structure")
 }
+\keyword{internal}

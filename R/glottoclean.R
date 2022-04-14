@@ -183,3 +183,43 @@ glottoclean_colnamerepair_table <- function(table){
   colnames(table) <- gsub("\\...[0-9]*$","",colnames(table))
   table
 }
+
+#' Remove missing values from a distance matrix
+#'
+#' @param glottodist glottodist object
+#' @param view Should NA plots be generated during the process?
+#' @noRd
+#' @return A distance matrix
+#'
+glottoclean_dist_rmna <- function(glottodist, view = FALSE){
+  distmat <- contransform_distmat(glottodist)
+  if(view){glottoplot_naviewer(rownames_to_column(as.data.frame(distmat)), id = "rowname")}
+  rowcolna <- rowSums(is.na(distmat))
+
+  while(max(rowcolna) != 0 ){
+    # Remove columns and rows with largest number of missing values (matrix is symmetrical)
+    rmrowcol <- which.max(rowcolna)
+    if(!purrr::is_empty(rmrowcol)){
+      distmat <- distmat[,-rmrowcol]
+      distmat <- distmat[-rmrowcol,]
+    }
+    rowcolna <- rowSums(is.na(distmat))
+    if(view){glottoplot_naviewer(rownames_to_column(as.data.frame(distmat)), id = "rowname")}
+  }
+  message(paste0("Out of the initial ", nrow(glottodist), " data points, ", nrow(glottodist) - nrow(distmat), " have been removed because of missing data. \n ", nrow(distmat), " remaining data points."))
+  distmat
+}
+
+#' Subset glottodata based on sample table or glottocodes
+#'
+#' @param glottodata glottodata or glottosubdata
+#'
+#' @return A simplified version of glottodata containing only the selected glottocodes.
+#'
+#' @examples
+#' glottodata <- glottoget("demodata", meta = TRUE)
+glottoclean_selectsample <- function(glottodata){
+
+  # if(glottocheck_hassample(glottodata))
+
+}

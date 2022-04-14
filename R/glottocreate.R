@@ -467,8 +467,11 @@ glottocreate_contributorssubtable <- function(glottosubcodes = NULL, varnames = 
 #' create sample table for glottodata
 #'
 #' @param glottocodes Character vector of glottocodes
-#'
-#' @noRd
+#' @keywords internal
+#' @return A sample table
+#' @export
+#' @examples
+#' glottocreate_sampletable(glottocodes = c("yucu1253", "tani1257"))
 glottocreate_sampletable <- function(glottocodes = NULL){
   if(is.null(glottocodes)){glottocodes <- NA}
   sample <- data.frame(matrix(nrow = length(glottocodes), ncol = 3  ) )
@@ -584,6 +587,7 @@ glottocreate_demosubdata <- function(meta = TRUE){
 
   if(meta == TRUE){
     demo$structure[,"type"] <- c("symm", "factor", "symm")
+    demo$sample[,"group"] <- c("A", "B")
   }
 
   demo[[1]][,"var001"] <- sample(c("Y", "N", NA), size = 10, replace = TRUE)
@@ -602,7 +606,7 @@ glottocreate_demosubdata <- function(meta = TRUE){
 #' @param glottodata A glottodata table, or a list of glottodata tables
 #' @param table A table to be added
 #' @param name A name for the table
-#'
+#' @keywords internal
 #' @return a glottodata object with structure table added to it.
 #' @export
 #'

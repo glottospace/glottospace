@@ -34,7 +34,7 @@ glottojoin <- function(glottodata, with = NULL, id = NULL, rm.na = FALSE, type =
     if(is.null(with)){# join glottosubdata
     return(glottojoin_subdata(glottosubdata = glottodata) )
   } else if(is_dist(with)){
-    return(glottojoin_dist(glottodata = glottodata, dist = with, rm.na = rm.na) )
+    return(glottojoin_dist(glottodata = glottodata, id = id, dist = with, rm.na = rm.na) )
   } else if (glottocheck_hasmeta(with) & is.null(id)){
     return(glottojoin_meta(glottodata = glottodata, glottometa = with) )
   } else if (glottocheck_isstructure(with)){
@@ -46,7 +46,7 @@ glottojoin <- function(glottodata, with = NULL, id = NULL, rm.na = FALSE, type =
   } else if(glottocheck_isglottodata(glottodata) & !is.null(with)){
     glottodata <- glottosplit(glottodata)[[1]]
       if(is_dist(with)){
-        return(glottojoin_dist(glottodata = glottodata, dist = with, rm.na = rm.na) )
+        return(glottojoin_dist(glottodata = glottodata, id = id, dist = with, rm.na = rm.na) )
       } else if(glottocheck_hasmeta(with)){
         return( glottojoin_meta(glottodata = glottodata, glottometa = with) )
       } else if(glottocheck_isstructure(with)){
@@ -77,6 +77,7 @@ glottojoin <- function(glottodata, with = NULL, id = NULL, rm.na = FALSE, type =
 #'
 #' @param glottodata User-provided glottodata
 #' @param dist A dist object
+#' @param id By default, 'glottocode' or 'glottosubcode' is used as id. However, if id is specified, join between data and dist object will be done based on another column.
 #' @param rm.na Default is to keep NAs.
 #' @return Data frame
 #' @noRd
@@ -88,22 +89,18 @@ glottojoin <- function(glottodata, with = NULL, id = NULL, rm.na = FALSE, type =
 #'
 #' # After joining, you can subset the distance columns by using the IDs:
 #' glottodata_dist[, glottodata_dist$glottocode]
-glottojoin_dist <- function(glottodata, dist, rm.na = FALSE){
+glottojoin_dist <- function(glottodata, dist, id = NULL, rm.na = FALSE){
 
   glottodata <- glottosimplify(glottodata)
 
+  if(is.null(id)){
   id <- glottocheck_id(glottodata)
-  distmat <- as.matrix(dist)
+  }
 
   if(rm.na == TRUE){
-    rowna <- rowSums(is.na(distmat))
-    colna <- colSums(is.na(distmat))
-
-    rmcol <- which(colSums(is.na(distmat)) > min(colna))
-    rmrow <- which(rowSums(is.na(distmat)) > min(rowna))
-
-    if(!purrr::is_empty(rmcol)){  distmat <- distmat[,-rmcol] }
-    if(!purrr::is_empty(rmrow)){  distmat <- distmat[-rmrow,] }
+    distmat <- glottoclean_dist_rmna(glottodist = dist)
+  } else{
+    distmat <- contransform_distmat(dist = dist)
   }
 
   distdf <- as.data.frame(distmat)

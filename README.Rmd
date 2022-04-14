@@ -52,6 +52,8 @@ You can install the latest release of glottospace from [CRAN](https://CRAN.R-pro
 
 ``` r
 # install.packages("glottospace")
+# If you receive the message 'loading failed for 'i386', you can try:
+# install.packages("glottospace", INSTALL_opts = "--no-multiarch")
 ```
 
 You can install the development version of glottospace from [GitHub](https://github.com/) with:
@@ -224,11 +226,11 @@ filter, select, query
 
 ```{r glottofilter}
 eurasia <- glottofilter(continent = c("Europe", "Asia"))
-wari <- glottofilter(glottodata = glottodata, glottocode = "wari1268")
-indo_european <- glottofilter(glottodata = glottodata, family = 'Indo-European')
-south_america <- glottofilter(glottodata = glottodata, continent = "South America")
+wari <- glottofilter(glottocode = "wari1268")
+indo_european <- glottofilter(family = 'Indo-European')
+south_america <- glottofilter(continent = "South America")
 colovenz <- glottofilter(country = c("Colombia", "Venezuela"))
-# arawtuca <- glottofilter(glottodata = glottodata, expression = family %in% c("Arawakan", "Tucanoan"))
+# arawtuca <- glottofilter(expression = family %in% c("Arawakan", "Tucanoan"))
 
 ```
 

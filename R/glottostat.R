@@ -2,7 +2,7 @@
 
 #' Permanova across all groups (overall)
 #'
-#' @param glottodata glottodata
+#' @param glottodata glottodata or glottosubdata
 #' @param sample sample table
 #'
 #' @noRd
@@ -24,11 +24,19 @@ if(glottocheck_hassample(glottodata) & is.null(sample)){
   stop("Please provide a sample table")
 }
 
+if("group" %nin% colnames(glottosample)){stop("There is no group column in the sample table. Use glottocreate_sampletable()")}
+if(all(is.na(glottosample$group))){stop("Please add groups to the sample table. Use glottocreate_sampletable()")}
+
 id <- glottocheck_id(glottodata)
 
 glottodist <- glottodist(glottodata)
-metadist <- glottojoin(glottodata = glottodata, with = glottodist)
-metadist <- glottojoin(glottodata = metadist, with = glottosample)
+metadist <- glottojoin_dist(glottodata = glottodata, dist = glottodist, rm.na = TRUE)
+if(id == "glottosubcode"){
+  metadist$glottocode <- glottoconvert_subcodes(metadist$glottosubcode)
+  metadist <- glottojoin_data(glottodata = metadist, with = glottosample, type = "left", id = "glottocode")
+} else{
+  metadist <- glottojoin(glottodata = metadist, with = glottosample, id = "glottocode")
+}
 
 condist <- metadist %>%
   dplyr::select(dplyr::all_of(metadist[,id]))

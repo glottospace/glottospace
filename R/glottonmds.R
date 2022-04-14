@@ -35,23 +35,14 @@ list("nmds" = glottonmds, "scoresdata" = scoresdata)
 #' glottodist <- glottodist(glottodata = glottodata)
 #' glottonmds <- glottonmds_run(glottodist = glottodist, k = 2)
 glottonmds_run <- function(glottodist, k = 2, rm.na = FALSE){
-  distmat <- contransform_distmat(glottodist)
-  # glottoplot_naviewer(rownames_to_column(as.data.frame(distmat)), id = "rowname")
-  if(rm.na == TRUE){
-    rowcolna <- rowSums(is.na(distmat))
 
-    while(max(rowcolna) != 0 ){
-      # Remove columns and rows with largest number of missing values (matrix is symmetrical)
-      rmrowcol <- which.max(rowcolna)
-      if(!purrr::is_empty(rmrowcol)){
-        distmat <- distmat[,-rmrowcol]
-        distmat <- distmat[-rmrowcol,]
-        }
-      rowcolna <- rowSums(is.na(distmat))
-      # glottoplot_naviewer(rownames_to_column(as.data.frame(distmat)), id = "rowname")
-    }
+
+
+  if(rm.na == TRUE){
+    distmat <- glottoclean_dist_rmna(glottodist)
+  } else{
+    distmat <- contransform_distmat(glottodist)
   }
-  message(paste0("Out of the initial ", nrow(glottodist), " data points, ", nrow(glottodist) - nrow(distmat), " have been removed because of missing data. \n Running glottonmds for ", nrow(distmat), " remaining data points."))
 
   rlang::check_installed("vegan", reason = "to use `glottonmds_run()`")
   tryCatch(
