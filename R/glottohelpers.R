@@ -144,8 +144,12 @@ printmessage <- function(x)
 #'
 #' Added here to remove dependency on Hmisc
 #'
-#' @noRd
-`%nin%` <- function(a,b){ ! a %in% b}
+#' @export
+#' @keywords internal
+`%nin%` <- function(a,b){
+  ! a %in% b
+  # `%nin%` <- Negate(`%in%`)
+  }
 
 release_questions <- function() {
   c(

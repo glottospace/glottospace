@@ -310,7 +310,7 @@ glottomap_static_pacific <- function(glottodata, color = NULL, rivers = FALSE, p
 #' @examples
 #' glottomap_glottocode("yucu1253")
 glottomap_glottocode <- function(glottocode){
-  rlang::check_installed("s2", reason = "to use `glottocode_location()`")
+  rlang::check_installed("s2", reason = "to use `glottomap_glottocode()`")
   language <- glottofilter(glottocode = glottocode)
   lon0 = sf::st_coordinates(language)[1]
   lat0 = sf::st_coordinates(language)[2]

@@ -5,7 +5,8 @@
 #' @param comparison Either "overall" or "pairwise"
 #' @param permutations Number of permutations (default is 1000)
 #'
-#' @noRd
+#' @keywords invisible
+#' @export
 #'
 #' @examples
 #' glottodata <- glottoget("demodata", meta = TRUE)
@@ -107,7 +108,7 @@ glottostat_permanovapairs <- function(metadist, id, permutations){
     dplyr::filter(group == group1 | group == group2)
 
   condist12 <- metadist12 %>%
-    dplyr::select(all_of(.[[id]]))
+    dplyr::select(dplyr::all_of(.[[id]]))
 
   pair <- vegan::adonis2(condist12 ~ group, data = metadist12, permutations = permutations)
   p <- round(pair[["Pr(>F)"]][1], 4)
