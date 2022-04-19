@@ -39,11 +39,14 @@ glottojoin <- function(glottodata, with = NULL, id = NULL, rm.na = FALSE, type =
     return(glottojoin_meta(glottodata = glottodata, glottometa = with) )
   } else if (glottocheck_isstructure(with)){
     return(glottojoin_structure(glottodata = glottodata, structure = with) )
+  } else if(glottocheck_hasmeta(with) & is.null(id) & is.null(type)){
+    return(c("data" = list(glottodata), with) )
   } else {
-    message("Unable to join glottosubdata with this type of data.")
+    return(glottojoin_data(glottodata = glottodata, with = with, type = type, id = id))
+  }
   }
 
-  } else if(glottocheck_isglottodata(glottodata) & !is.null(with)){
+    if(glottocheck_isglottodata(glottodata) & !is.null(with)){
     glottodata <- glottosplit(glottodata)[[1]]
       if(is_dist(with)){
         return(glottojoin_dist(glottodata = glottodata, id = id, glottodist = with, rm.na = rm.na) )
@@ -59,17 +62,12 @@ glottojoin <- function(glottodata, with = NULL, id = NULL, rm.na = FALSE, type =
           } else if(with == "glottospace"){
             return(glottojoin_space(glottodata = glottodata, id = id) )
           }
-      } else(message("Unable to join glottodata with this type of data.") )
-
-  } else if (!is.null(with) ){
-    message("Input data is not glottodata or glottosubdata. Trying to join anyway. ")
-    if(glottocheck_hasmeta(with) & is.null(id)){
-      return(c("data" = list(glottodata), with) )
-    } else {
-      return(glottojoin_data(glottodata = glottodata, with = with, type = type, id = id))
-    }
+      } else if(glottocheck_hasmeta(with) & is.null(id) & is.null(type)){
+        return(c("data" = list(glottodata), with) )
+      } else {
+        return(glottojoin_data(glottodata = glottodata, with = with, type = type, id = id))
+      }
   }
-
 
 }
 

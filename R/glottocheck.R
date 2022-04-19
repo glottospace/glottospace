@@ -537,9 +537,7 @@ glottocheck_isglottosubdata_complex <- function(glottosubdata){
 #' glottodata <- glottoget("demodata", meta = TRUE)
 #' glottocheck_isglottodata(glottodata)
 glottocheck_isglottodata <- function(glottodata){
-  if(inherits(x = glottodata, what = "glottodata")){
-    return(TRUE)
-  } else {
+
   glottodata <- contrans_tb2df(glottodata)
   if(inherits(glottodata, what = "list")){
     if("glottodata" %in% names(glottodata)){
@@ -558,7 +556,7 @@ glottocheck_isglottodata <- function(glottodata){
       return(FALSE)
     }
   }
-  }
+
 }
 
 

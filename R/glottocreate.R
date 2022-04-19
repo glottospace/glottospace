@@ -317,6 +317,55 @@ glottocreate_glottotable <- function(glottocodes, varnames){
   glottodata
 }
 
+#' Add structure table to glottodata or glottosubdata
+#'
+#' @param glottodata glottodata or glottosubdata
+#'
+#' @return glottodata/glottosubdata with a structure table
+#' @export
+#'
+#' @examples
+#' glottodata <- glottoget("demodata")
+#' glottocreate_addstructure(glottodata)
+glottocreate_addstructure <- function(glottodata){
+  if(!any(glottocheck_isglottodata(glottodata) | glottocheck_isglottosubdata(glottodata)) ){
+    stop("Input should be glottodata or glottosubdata")}
+  if(glottocheck_hasstructure(glottodata) ){stop("Glottodata already contains a structure table")}
+
+  structuretable <- glottocreate_structuretable(varnames = colnames(glottodata)[-1])
+  glottodata <- glottocreate_addtable(glottodata = glottodata, table = structuretable, name = "structure")
+  return(glottodata)
+}
+
+#' Add sample table to glottodata or glottosubdata
+#'
+#' @param glottodata glottodata or glottosubdata
+#'
+#' @return glottodata/glottosubdata with a sample table
+#' @export
+#'
+#' @examples
+#' glottodata <- glottoget("demodata")
+#' glottocreate_addsample(glottodata)
+glottocreate_addsample <- function(glottodata){
+  if(glottocheck_isglottodata(glottodata)){
+    glottotmp <- glottosimplify(glottodata)
+    glottocodes <- glottotmp$glottocode
+  } else if (glottocheck_isglottosubdata(glottodata)){
+    glottotmp <- glottosimplify(glottodata)
+    glottocodes <- glottoconvert_subcodes(glottotmp$glottosubcode)
+    glottocodes <- unique(glottocodes)
+  } else{
+    stop("Input should be glottodata or glottosubdata")
+  }
+
+  if(glottocheck_hassample(glottodata) ){stop("Glottodata already contains a sample table")}
+
+  sampletable <- glottocreate_sampletable(glottocodes = glottocodes)
+  glottodata <- glottocreate_addtable(glottodata = glottodata, table = sampletable, name = "sample")
+  return(glottodata)
+}
+
 #' Create structure table for glottodata
 #'
 #' This function creates a new structure table, it can be added to glottodata using glottocreate_addtable()
@@ -622,8 +671,12 @@ glottocreate_addtable <- function(glottodata, table, name){
     }
   names(table) <- name
 
-  if(!is_list(glottodata)){
+  if(!is_list(glottodata) & glottocheck_isglottodata(glottodata)){
     glottodata <- list("glottodata" = glottodata)
+  }
+
+  if(!is_list(glottodata) & glottocheck_isglottosubdata(glottodata)){
+    glottodata <- list("glottosubdata" = glottodata)
   }
 
   c(glottodata, table)

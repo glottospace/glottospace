@@ -34,7 +34,7 @@ glottoconvert <- function(data, var, glottocodes = NULL, table = NULL, glottocol
     stop("Please indicate how variable columns are distinguished from other columns.")
   }
 
-  if(!is_list(data) ){
+  if(!is_list(data) & is.null(glottosubcolumn)){
     glottodata <- glottoconvert_table(table = data, glottocolumn = glottocolumn, var = var, ref = ref, page = page, remark = remark, contributor = contributor)
   } else if(is_list(data) & length(data) == 1){
     glottodata <- glottoconvert_table(table = data[[1]], glottocolumn = glottocolumn, var = var, ref = ref, page = page, remark = remark, contributor = contributor)
@@ -42,6 +42,8 @@ glottoconvert <- function(data, var, glottocodes = NULL, table = NULL, glottocol
     glottodata <- glottoconvert_data(data = data, table = "glottodata", glottocodes = glottocodes, glottocolumn = glottocolumn, var = var, ref = ref, page = page, remark = remark, contributor = contributor)
   } else if(is_list(data) & !is.null(table) ){
     glottodata <- glottoconvert_data(data = data, table = table, glottocolumn = glottocolumn, glottocodes = glottocodes, var = var, ref = ref, page = page, remark = remark, contributor = contributor)
+  } else if(!is_list(data) & !is.null(glottosubcolumn)){
+    glottodata <- glottoconvert_subtable(table = data, glottosubcolumn = glottosubcolumn, var = var)
   } else {
     glottodata <- glottoconvert_subdata(data = data, var = var, glottocodes = glottocodes, glottosubcolumn = glottosubcolumn)
   }
