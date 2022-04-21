@@ -4,7 +4,7 @@
 \alias{glottocheck}
 \title{Quality check of glottodata or glottosubdata}
 \usage{
-glottocheck(glottodata, diagnostic = TRUE, checkmeta = FALSE)
+glottocheck(glottodata, diagnostic = TRUE, checkmeta = TRUE)
 }
 \arguments{
 \item{glottodata}{User-provided glottodata}

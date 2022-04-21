@@ -116,6 +116,11 @@ glottorecode_logical <- function(glottodata, structure, totrue = NULL, tofalse =
   cbinary <- structure$varname[which(types == "asymm" | types == "symm")]
 
   if(!purrr::is_empty(cbinary)){
+    strucbin <- cbinary[cbinary %nin% colnames(data)]
+    if(!purrr::is_empty(strucbin)){
+      stop(paste0("The following binary variables are in the structure table, but there are no such columns in the data: ", paste0(strucbin, collapse = ", "), "\n Please check whether the spelling is identical, remove the rows from the structure table, or add the columns to the data"))
+    }
+
     bindat <- data[, cbinary]
     # Prepare message about what will be converted:
       allevmat <- sapply(lapply(bindat, as.factor), levels)

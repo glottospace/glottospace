@@ -24,7 +24,7 @@
 #' glottodata <- glottoget("demodata")
 #' glottocheck(glottodata, diagnostic = FALSE)
 #' }
-glottocheck <- function(glottodata, diagnostic = TRUE, checkmeta = FALSE){
+glottocheck <- function(glottodata, diagnostic = TRUE, checkmeta = TRUE){
   if(glottocheck_isglottosubdata(glottodata) == FALSE){
     glottocheck_data(glottodata = glottodata, diagnostic = diagnostic)
   } else{
@@ -150,6 +150,7 @@ glottocheck_metadata <- function(glottodata){
   if(glottocheck_hasstructure(glottodata)){
     glottocheck_metatypes(glottodata)
     glottocheck_metaweights(glottodata)
+    glottocheck_metanames(glottodata)
   } else {message("No structure table found in glottodata")}
 }
 
@@ -206,8 +207,33 @@ glottocheck_isstructure <- function(structure){
 
 glottocheck_metatypes <- function(glottodata){
   if(!all(glottodata$structure$type %in% glottocreate_lookuptable()[,"type_lookup"]) ){
-    message("Some types were not recognized, maybe there was a spelling error? Type glottocreate_lookuptable() to see the possible levels.")
+    message(paste0("The following types were not recognized: ",
+            unique(glottodata$structure$type[glottodata$structure$type %nin% glottocreate_lookuptable()[,"type_lookup"]]),
+            "\n maybe there was a spelling error? Check the lookup table to see the possible levels."))
+
   } else{message("All types recognized")}
+}
+
+glottocheck_metanames <- function(glottodata){
+
+  structure <- glottodata[["structure"]]
+
+
+  data <- glottosimplify(glottodata)
+
+  if(glottocheck_isstructure(structure)){
+    strucvars <- structure$varname
+    strucnindat <- strucvars[strucvars %nin% colnames(data)]
+    datninstruc <- colnames(data)[colnames(data) %nin% strucvars]
+    if(!purrr::is_empty(strucnindat)){
+      message(paste0("The following variables are in the structure table, but there are no such columns in the data: ", paste0(strucnindat, collapse = ", "), "\n Please check whether the spelling is identical, remove the rows from the structure table, or add the columns to the data. \n\n"))
+    }
+    if(!purrr::is_empty(datninstruc)){
+      message(paste0("The following variables are in the data, but there are no such columns variables defined in the structure table: ", paste0(datninstruc, collapse = ", "), "\n Please check whether the spelling is identical, remove the rows from the structure table, or add the columns to the data. \n\n"))
+    }
+  } else{
+    message("Structure table does not have the correct format. Please check whether the first column is called 'varname' ")
+  }
 }
 
 glottocheck_metaweights <- function(glottodata){
