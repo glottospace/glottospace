@@ -73,7 +73,7 @@ glottoplot <- function(glottodata = NULL, glottodist = NULL, type = NULL, glotto
     if(type == "nmds" & !is.null(glottodist)){
       glottonmds <- glottonmds(glottodist = glottodist, k = k, rm.na = rm.na, row2id = row2id)
       glottoplot_nmds(glottonmds = glottonmds,
-                      color = color, ptsize = ptsize, label = label, palette = palette, filename = filename, preventoverlap = preventoverlap, alpha = alpha)
+                      color = color, ptsize = ptsize, label = label, palette = palette, filename = filename, preventoverlap = preventoverlap, alpha = alpha, colorvec = colorvec)
     }
     if(type == "missing"){
       glottoplot_naviewer(data = glottodata, id = "glottocode")
@@ -167,6 +167,8 @@ glottoplot_nmds_2d <- function(nmds, scoresdata, color = NULL, ptsize = NULL, la
     message(paste0("Due to overlap, not all of the ", nrow(scoresdata), " datapoints are visible \n"))
     message(paste0("You might consider specifying preventoverlap = TRUE \n"))
   }
+
+   if(is.null(ptsize)){ptsize <- 2}
 if(preventoverlap == FALSE){
   if(is.null(alpha)){alpha <- 1}
     nmdsplot <- ggplot2::ggplot(data = scoresdata, ggplot2::aes_string(x="NMDS1",y="NMDS2", col = color) ) +
@@ -217,7 +219,7 @@ if(preventoverlap == FALSE){
 #'
 #' glottoplot_nmds_3d(nmds = nmds, scoresdata = scoresdata, color = "family", label = "name")
 #' glottoplot_nmds_3d(nmds = nmds, scoresdata = scoresdata, color = "isolate")
-glottoplot_nmds_3d <- function(nmds, scoresdata, color = NULL, ptsize = NULL, label = NULL, palette = NULL, filename = NULL){
+glottoplot_nmds_3d <- function(nmds, scoresdata, color = NULL, ptsize = 2, label = NULL, palette = NULL, filename = NULL){
   rlang::check_installed("plotly", reason = "to use `glottoplot_nmds_3d()`")
   scoresdata <- glottosimplify(scoresdata)
 
@@ -225,6 +227,8 @@ glottoplot_nmds_3d <- function(nmds, scoresdata, color = NULL, ptsize = NULL, la
     color <- "allsame"
     scoresdata$allsame <- "allsame"
   }
+
+  if(is.null(ptsize)){ptsize <- 2}
 
   if(is.null(palette)){
     palette = "turbo"
