@@ -116,8 +116,8 @@ glottoplot <- function(glottodata = NULL, glottodist = NULL, type = NULL, glotto
 #' glottoplot_nmds(glottonmds = glottonmds, color = "isolate")
 glottoplot_nmds <- function(glottonmds, color = NULL, ptsize = NULL, label = NULL, palette = NULL, filename = NULL, preventoverlap = FALSE, alpha = NULL, colorvec = NULL){
 
-  nmds <- glottonmds[[1]]
-  scoresdata <- glottonmds[[2]]
+  nmds <- glottonmds$nmds
+  scoresdata <- glottonmds$scoresdata
 
   if(nmds$ndim == 2){
     glottoplot_nmds_2d(nmds = nmds, scoresdata = scoresdata, color = color, ptsize = ptsize, label = label, filename = filename, preventoverlap = preventoverlap, alpha = alpha, colorvec = colorvec)
@@ -164,7 +164,7 @@ glottoplot_nmds_2d <- function(nmds, scoresdata, color = NULL, ptsize = NULL, la
   scoresdata <- glottosimplify(scoresdata)
    duplo <- sum(duplicated(scoresdata[,c("NMDS1", "NMDS2")]) | duplicated(scoresdata[,c("NMDS1", "NMDS2")], fromLast = TRUE))
   if(duplo != 0 & preventoverlap == FALSE){
-    message(paste0("Due to overlap, not all of the ", nrow(scoresdata), " datapoints are visible \n"))
+    message(paste0("Due to overlap, ", duplo, " of the ", nrow(scoresdata), " datapoints are not visible \n"))
     message(paste0("You might consider specifying preventoverlap = TRUE \n"))
   }
 
