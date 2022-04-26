@@ -45,7 +45,7 @@
 #' # Or, place 10 largest families in background
 #' glottodata <- glottospotlight(glottodata = glottodata, spotcol =
 #' "family", spotlight = families$family[-c(1:10)], spotcontrast = "family", bgcontrast = "family")
-#' glottomap(glottodata, color = "color")
+#' glottomap(glottodata, color = "colpal")
 #' }
 glottomap <- function(glottodata = NULL, color = NULL, label = NULL, type = NULL, ptsize = NULL, alpha = NULL, lbsize = NULL, palette = NULL, rivers = FALSE, nclass = NULL, numcat = FALSE, filename = NULL, projection = NULL, mode = NULL, ...){
   palette <- glottocolpal(palette = palette)

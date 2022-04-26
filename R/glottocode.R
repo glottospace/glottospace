@@ -19,7 +19,7 @@
 glottocode <- function(glottocode){
   if(length(glottocode) > 1){stop("Please provide a single glottocode")}
   if(glottocode_exists(glottocode)){
-    glottocode_location(glottocode)
+    glottomap_glottocode(glottocode)
     glottocode_online(glottocode)
   } else{
     message("glottocode not found. You may use glottosearch() to search for it. ")

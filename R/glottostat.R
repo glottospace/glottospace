@@ -105,7 +105,7 @@ glottostat_permanovapairs <- function(metadist, id, permutations){
     group2 <- resultsdf[i, "group2"]
 
   metadist12 <- metadist %>%
-    dplyr::filter(group == group1 | group == group2)
+    dplyr::filter(.data$group == group1 | group == group2)
 
   condist12 <- metadist12 %>%
     dplyr::select(dplyr::all_of(.[[id]]))
