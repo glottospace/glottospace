@@ -124,7 +124,7 @@ glottoplot_nmds <- function(glottonmds, color = NULL, ptsize = NULL, label = NUL
   }
 
   if(nmds$ndim == 3){
-    glottoplot_nmds_3d(nmds = nmds, scoresdata = scoresdata, color = color, ptsize = ptsize, label = label, palette = palette, filename = filename)
+    glottoplot_nmds_3d(nmds = nmds, scoresdata = scoresdata, color = color, ptsize = ptsize, label = label, palette = palette, filename = filename, colorvec = colorvec)
   }
 
 }
@@ -206,7 +206,14 @@ if(preventoverlap == FALSE){
 #' @param color color
 #' @param ptsize ptsize
 #' @param label label
+#' @param palette optional palette
+#' @param colorvec Optional vector specifying colors for individual values and legend
+#'   order (non-matching values are omitted), for example:
+#'   c("Arawakan" = "rosybrown1", "Yucuna"  = "red",
+#'   "Tucanoan" = "lightskyblue1", "Tanimuca-Retuarã" = "blue", "Naduhup" =
+#'   "gray70", "Kakua-Nukak" = "gray30")
 #' @param filename optional filename if output should be saved.
+#'
 #' @noRd
 #'
 #'
@@ -219,7 +226,7 @@ if(preventoverlap == FALSE){
 #'
 #' glottoplot_nmds_3d(nmds = nmds, scoresdata = scoresdata, color = "family", label = "name")
 #' glottoplot_nmds_3d(nmds = nmds, scoresdata = scoresdata, color = "isolate")
-glottoplot_nmds_3d <- function(nmds, scoresdata, color = NULL, ptsize = 2, label = NULL, palette = NULL, filename = NULL){
+glottoplot_nmds_3d <- function(nmds, scoresdata, color = NULL, ptsize = 2, label = NULL, palette = NULL, filename = NULL, colorvec = NULL){
   rlang::check_installed("plotly", reason = "to use `glottoplot_nmds_3d()`")
   scoresdata <- glottosimplify(scoresdata)
 
@@ -234,7 +241,11 @@ glottoplot_nmds_3d <- function(nmds, scoresdata, color = NULL, ptsize = 2, label
     palette = "turbo"
   }
 
+  if(is.null(colorvec)){
   colpal <- glottocolpal(palette = palette, ncolr = length(unique(scoresdata[[color]])) )
+  } else{
+    colpal <- colorvec
+  }
   # colpal[as.factor(scoresdata[[color]])]
 
   nmdsplot <- plotly::plot_ly(type="scatter3d", mode="markers", colors = colpal)

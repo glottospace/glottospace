@@ -199,11 +199,11 @@ glottospotlight <- function(glottodata, spotcol, spotlight, spotcontrast = NULL,
   ncolrbg <- length(unique(bgnames))
   colpalbg <- glottocolpal(palette = bgpal, ncolr = ncolrbg)
 
-  data$color[data$spotlight == TRUE] <- colpalspot[spotlightnames]
-  data$color[data$spotlight == FALSE] <- colpalbg[bgnames]
+  data$colpal[data$spotlight == TRUE] <- colpalspot[spotlightnames]
+  data$colpal[data$spotlight == FALSE] <- colpalbg[bgnames]
 
   if(was_sf == TRUE){
-    glottodata <- suppressMessages(dplyr::left_join(glottodata, data[, c("glottocode", "spotlight", "legend", "color")]))
+    glottodata <- suppressMessages(dplyr::left_join(glottodata, data[, c("glottocode", "spotlight", "legend", "colpal")]))
     return(glottodata)
   } else {
     return(data)
