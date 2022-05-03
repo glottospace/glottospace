@@ -43,6 +43,6 @@ other plots.
 glottodata <- glottofilter(country = c("Netherlands", "Germany", "Belgium") )
 glottodata <- glottospotlight(glottodata = glottodata, spotcol = "country",
 spotlight = "Netherlands", spotcontrast = "name")
-glottomap(glottodata, color = "color")
+glottomap(glottodata, color = "legend")
 }
 }
