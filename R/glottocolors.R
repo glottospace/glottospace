@@ -158,7 +158,7 @@ glottocolpal_options <- function(){
 #' glottodata <- glottofilter(country = c("Netherlands", "Germany", "Belgium") )
 #' glottodata <- glottospotlight(glottodata = glottodata, spotcol = "country",
 #' spotlight = "Netherlands", spotcontrast = "name")
-#' glottomap(glottodata, color = "color")
+#' glottomap(glottodata, color = "legend")
 #' }
 glottospotlight <- function(glottodata, spotcol, spotlight, spotcontrast = NULL, spotpal = NULL, bgcontrast = NULL, bgpal = NULL){
   if(is.null(spotpal)){spotpal <- "rainbow"}
