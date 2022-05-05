@@ -39,6 +39,7 @@ Suggests:
     RColorBrewer,
     s2,
     scales,
+    testthat (>= 3.0.0),
     vegan,
     viridisLite,
     xml2
@@ -46,3 +47,4 @@ Encoding: UTF-8
 Language: en-US
 LazyData: true
 RoxygenNote: 7.1.2
+Config/testthat/edition: 3
