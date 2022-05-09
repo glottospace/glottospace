@@ -2,7 +2,7 @@
 % Please edit documentation in R/glottostat.R
 \name{glottostat_permanova}
 \alias{glottostat_permanova}
-\title{Permanova across all groups (overall)}
+\title{Permanova across all groups (overall or pairwise)}
 \usage{
 glottostat_permanova(
   glottodata,
@@ -16,12 +16,12 @@ glottostat_permanova(
 
 \item{comparison}{Either "overall" or "pairwise"}
 
-\item{sample}{sample table}
+\item{sample}{sample table (optional). By default, searches for sample table in glottodata/glottosubdata.}
 
-\item{permutations}{Number of permutations (default is 1000)}
+\item{permutations}{Number of permutations (default is 999)}
 }
 \description{
-Permanova across all groups (overall)
+Permanova across all groups (overall or pairwise)
 }
 \examples{
 glottodata <- glottoget("demodata", meta = TRUE)

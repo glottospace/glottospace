@@ -1,9 +1,9 @@
-#' Permanova across all groups (overall)
+#' Permanova across all groups (overall or pairwise)
 #'
 #' @param glottodata glottodata or glottosubdata
-#' @param sample sample table
+#' @param sample sample table (optional). By default, searches for sample table in glottodata/glottosubdata.
 #' @param comparison Either "overall" or "pairwise"
-#' @param permutations Number of permutations (default is 1000)
+#' @param permutations Number of permutations (default is 999)
 #'
 #' @keywords invisible
 #' @export
@@ -19,7 +19,7 @@
 #' glottostat_permanova(glottodata = glottosubdata, comparison = "pairwise")
 glottostat_permanova <- function(glottodata, comparison = NULL, sample = NULL, permutations = NULL){
 
-  if(is.null(permutations)){permutations <- 1000}
+  if(is.null(permutations)){permutations <- 999}
   if(is.null(comparison)){comparison <- "overall"}
 
   if(glottocheck_hassample(glottodata) & is.null(sample)){
@@ -61,7 +61,7 @@ return(resultsdf)
 #'
 #' @param metadist glottodata/glottsubdata joined with glottodist
 #' @param id Either 'glottocode' or 'glottosubcode'
-#' @param permutations Number of permutations (default is 1000)
+#' @param permutations Number of permutations (default is 999)
 #'
 #' @noRd
 #'
@@ -90,7 +90,7 @@ resultsdf
 #'
 #' @param metadist glottodata/glottsubdata joined with glottodist
 #' @param id Either 'glottocode' or 'glottosubcode'
-#' @param permutations Number of permutations (default is 1000)
+#' @param permutations Number of permutations (default is 999)
 #'
 #' @noRd
 #'
@@ -109,11 +109,12 @@ glottostat_permanovapairs <- function(metadist, id, permutations){
   metadist12 <- metadist %>%
     dplyr::filter(.data$group == group1 | .data$group == group2) #  alternative: metadist12 <- metadist[metadist$group %in% c(group1, group2),]
 
+  # Select distance matrix
   condist12 <- metadist12 %>%
-    dplyr::select(dplyr::all_of(.[[id]]))
+    dplyr::select(dplyr::all_of(.[[id]])) %>% as.dist()
 
   pair <- vegan::adonis2(condist12 ~ group, data = metadist12, permutations = permutations)
-  p <- round(pair[["Pr(>F)"]][1], 4)
+  p <- round(pair[["Pr(>F)"]][1], 5)
 
   resultsdf[i, "p-value"] <- p
   resultsdf[i, "significance"] <- pvalstars(p)
@@ -121,7 +122,7 @@ glottostat_permanovapairs <- function(metadist, id, permutations){
   }
 
   # # p values adjusted.
-  resultsdf[, "p-value (adj)"] <- stats::p.adjust(resultsdf[, "p-value"], method = "BH")
+  resultsdf[, "p-value (adj)"] <- round(stats::p.adjust(resultsdf[, "p-value"], method = "BH"), 5)
   resultsdf[, "sign (adj)"] <- sapply(X = resultsdf[, "p-value (adj)"], FUN = pvalstars)
 
   resultsdf
