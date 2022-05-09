@@ -2,9 +2,12 @@
 #'
 #'
 #' @noRd
+#' @examples
+#'
+#' glottoget("demodata")
 add_class <- function(object, class){
   oldunique <- class(object)[class(object) %nin% class]
-  class(object) <- c(oldunique, class)
+  class(object) <- c(class, oldunique)
   invisible(object)
 }
 

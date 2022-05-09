@@ -177,7 +177,8 @@ glottojoin_subdata <- function(glottosubdata){
   glottosubdata <- splitted[[1]]
 
   glottocheck_lscolcount(glottosubdata) # stops if number of columns is not identical
-  glottosubdata <- do.call("rbind", glottosubdata) # alternative approaches: data.table::rbindlist or plyr::rbind.fill
+  # glottosubdata <- do.call("rbind", glottosubdata) # This changes the class of the object to glottodata which is not desirable. Alternative approaches: data.table::rbindlist or plyr::rbind.fill
+  glottosubdata <- plyr::rbind.fill(glottosubdata)
   glottosubdata <- tibble::remove_rownames(glottosubdata)
 
   if(any(!is.na(splitted[[2]]))){glottosubdata <- c("glottosubdata" = list(glottosubdata), splitted[[2]]) }

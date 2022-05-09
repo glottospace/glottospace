@@ -8,8 +8,7 @@
 
 # xfun::gsub_dir(dir = "C:/Users/sjnor/surfdrive/PROJECTS_SN/Rpackages/glottospace/R", pattern = "glottoget_cldf", replacement = "glottoget_cldf")
 
-# Add test for each user function.
-# https://r-pkgs.org/tests.html
+
 
 
 

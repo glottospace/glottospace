@@ -47,8 +47,10 @@ glottostat_permanova <- function(glottodata, comparison = NULL, sample = NULL, p
   }
 
   if(comparison == "overall"){
+    message("Running overall permanova")
     resultsdf <- glottostat_permanovall(metadist = metadist, id = id, permutations = permutations)
   } else if(comparison == "pairwise"){
+    message("Running pairwise permanova")
     resultsdf <- glottostat_permanovapairs(metadist = metadist, id = id, permutations = permutations)
   } else{stop("Please specify the type of comparison ('overall' or 'pairwise') ")}
 return(resultsdf)
@@ -105,7 +107,7 @@ glottostat_permanovapairs <- function(metadist, id, permutations){
     group2 <- resultsdf[i, "group2"]
 
   metadist12 <- metadist %>%
-    dplyr::filter(.data$group == group1 | group == group2)
+    dplyr::filter(.data$group == group1 | .data$group == group2) #  alternative: metadist12 <- metadist[metadist$group %in% c(group1, group2),]
 
   condist12 <- metadist12 %>%
     dplyr::select(dplyr::all_of(.[[id]]))
