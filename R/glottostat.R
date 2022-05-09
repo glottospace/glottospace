@@ -98,6 +98,7 @@ glottostat_permanovapairs <- function(metadist, id, permutations){
 
    # Create empty data.frame to store results
   groupnames <- unique(metadist$group)
+  groupnames <- groupnames[!is.na(groupnames)]
   resultsdf <- data.frame(matrix(nrow = choose(length(groupnames), 2), ncol = 4) )
   colnames(resultsdf) <- c("group1", "group2", "p-value", "significance")
   resultsdf[,c("group1", "group2")] <- t(utils::combn(groupnames, 2))
