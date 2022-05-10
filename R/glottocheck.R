@@ -198,7 +198,7 @@ glottocheck_hassample <- function(glottodata){
 #' glottocheck_isstructure(structure)
 glottocheck_isstructure <- function(structure){
   if(!is.null(colnames(structure))){
-    return(all(colnames(glottocreate_structuretable()[1:4]) %in% colnames(structure) ))
+    return(all(c("varname", "type", "weight") %in% colnames(structure) ))
   } else {
     return(FALSE)
   }
