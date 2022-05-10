@@ -13,6 +13,7 @@
 #' @param tofalse Optional additional values to recode to FALSE (besides default)
 #' @param totrue Optional additional values to recode to TRUE (besides default)
 #' @param id By default, glottoclean looks for a column named 'glottocode', if the id is in a different column, this should be specified.
+#' @param glottosample Should the sample table be used to subset the data?
 #'
 #' @return A cleaned-up and simplified version of the original glottodata object
 #' @export
@@ -22,7 +23,7 @@
 #'
 #' glottosubdata <- glottoget("demosubdata", meta = TRUE)
 #' glottosubdata <- glottoclean(glottosubdata)
-glottoclean <- function(glottodata, tona = NULL, tofalse = NULL, totrue = NULL, id = NULL){
+glottoclean <- function(glottodata, tona = NULL, tofalse = NULL, totrue = NULL, id = NULL, glottosample = FALSE){
 
   if(sum(!glottocheck_isglottodata(glottodata) | !glottocheck_isglottosubdata(glottodata))==2){
     stop("glottodata object does not adhere to glottodata/glottosubdata format. Use glottocreate() or glottoconvert().")
@@ -32,8 +33,16 @@ glottoclean <- function(glottodata, tona = NULL, tofalse = NULL, totrue = NULL, 
     stop("structure table not found. You can create one using glottocreate_structuretable() and add it with glottocreate_addtable().")
   } else{
     structure <- glottodata[["structure"]]
-    glottodata <- glottosimplify(glottodata)
   }
+
+  if(glottocheck_hassample(glottodata) & glottosample == TRUE){
+    sampletable <- glottodata[["sample"]]
+    glottodata <- glottoclean_selectsample(glottodata)
+  } else{
+    sampletable <- NULL
+  }
+
+  glottodata <- glottosimplify(glottodata)
 
   all2false <- glottoclean_all2false()
   all2true <- glottoclean_all2true()
@@ -48,6 +57,8 @@ glottoclean <- function(glottodata, tona = NULL, tofalse = NULL, totrue = NULL, 
   glottodata <- glottorecode_missing(glottodata, tona = all2na)
 
   glottodata <- glottojoin(glottodata, structure)
+
+  if(!is.null(sampletable)){glottocreate_addtable(glottodata, table = sampletable, name = "sample")}
 
   glottodata <- contrans_glottoclass(glottodata)
 
@@ -225,16 +236,53 @@ glottoclean_dist_rmna <- function(glottodist, view = FALSE){
   distmat
 }
 
-#' #' Subset glottodata based on sample table or glottocodes
-#' #'
-#' #' @param glottodata glottodata or glottosubdata
-#' #'
-#' #' @return A simplified version of glottodata containing only the selected glottocodes.
-#' #'
-#' #' @examples
-#' #' glottodata <- glottoget("demodata", meta = TRUE)
-#' glottoclean_selectsample <- function(glottodata){
+#' Subset glottodata based on sample table or glottocodes
 #'
-#'   # if(glottocheck_hassample(glottodata))
+#' @param glottodata glottodata or glottosubdata with a sample table
 #'
-#' }
+#' @return A simplified version of glottodata containing only the selected glottocodes.
+#' @noRd
+#' @examples
+#' glottodata <- glottoget("demodata", meta = TRUE)
+#' glottoclean_selectsample(glottodata)
+#'
+#' glottosubdata <- glottoget("demosubdata", meta = TRUE)
+#' glottoclean_selectsample(glottosubdata)
+glottoclean_selectsample <- function(glottodata){
+  if(glottocheck_hassample(glottodata)){
+    sampletable <- glottodata[["sample"]]
+    glottosample <- sampletable[,"glottocode"]
+  } else{
+    message("Data does not contain a sample table")
+    return()
+  }
+
+  if(glottocheck_isglottodata(glottodata)){
+    glottodata <- glottosimplify(glottodata)
+    glottocodes_dropped <- glottodata[glottodata[,"glottocode", drop = TRUE] %nin% glottosample, "glottocode"]
+    if(!purrr::is_empty(glottocodes_dropped)){
+      message(paste("Using the glottocodes in the sample table to subset the data. \n Data for the following glottocodes are removed from the data because they are not in the sample table: \n", glottocodes_dropped))
+    }
+    glottodata <- glottodata[glottodata[,"glottocode", drop = TRUE] %in% glottosample, ]
+    return(glottodata)
+  }
+
+  if(glottocheck_isglottosubdata_complex(glottodata)){
+    glottodatanames <- names(glottodata) %in% glottosample
+    if(sum(glottodatanames) == 0){
+      stop("Unable to find tables in your dataset that match the specified glottocodes.
+         Please check whether your table names are actually glottocodes (and only glottocodes),
+         and not something like 'abcd1234_something'. ")
+    } else {
+      glottodata <- glottodata[glottodatanames]
+      glottodata <- glottosimplify(glottodata)
+    }
+    return(glottodata)
+  }
+
+  if(glottocheck_isglottosubdata_simplified(glottodata)){
+    glottodata <- glottodata[glottoconvert_subcodes(glottodata$glottosubcode) %in% glottosample, ]
+    return(glottodata)
+  }
+
+}

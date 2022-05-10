@@ -4,7 +4,14 @@
 \alias{glottoclean}
 \title{Clean glottodata/glottosubdata}
 \usage{
-glottoclean(glottodata, tona = NULL, tofalse = NULL, totrue = NULL, id = NULL)
+glottoclean(
+  glottodata,
+  tona = NULL,
+  tofalse = NULL,
+  totrue = NULL,
+  id = NULL,
+  glottosample = FALSE
+)
 }
 \arguments{
 \item{glottodata}{glottodata (either a list or a data.frame)}
@@ -16,6 +23,8 @@ glottoclean(glottodata, tona = NULL, tofalse = NULL, totrue = NULL, id = NULL)
 \item{totrue}{Optional additional values to recode to TRUE (besides default)}
 
 \item{id}{By default, glottoclean looks for a column named 'glottocode', if the id is in a different column, this should be specified.}
+
+\item{glottosample}{Should the sample table be used to subset the data?}
 }
 \value{
 A cleaned-up and simplified version of the original glottodata object
