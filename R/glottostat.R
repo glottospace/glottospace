@@ -12,7 +12,8 @@
 #' glottodata <- glottoget("demodata", meta = TRUE)
 #' glottostat_permanova(glottodata, comparison = "pairwise")
 #'
-#' glottodata[["sample"]][,2] <- glottodata[["sample"]][,3]
+#' # Use subgroup as group
+#' glottodata[["sample"]][,"group"] <- glottodata[["sample"]][,"group"]
 #' glottostat_permanova(glottodata, comparison = "pairwise")
 #'
 #' glottosubdata <- glottoget("demosubdata", meta = TRUE)
@@ -91,11 +92,13 @@ resultsdf
 #' @param metadist glottodata/glottsubdata joined with glottodist
 #' @param id Either 'glottocode' or 'glottosubcode'
 #' @param permutations Number of permutations (default is 999)
+#' @param adj P-value adjustment method. Default is 'bonferroni'. see ?stats::p.adjust for alternatives.
 #'
 #' @noRd
 #'
-glottostat_permanovapairs <- function(metadist, id, permutations){
+glottostat_permanovapairs <- function(metadist, id, permutations, adj = NULL){
 
+  if(is.null(adj)){adj <- "bonferroni"}
    # Create empty data.frame to store results
   groupnames <- unique(metadist$group)
   groupnames <- groupnames[!is.na(groupnames)]
@@ -114,8 +117,10 @@ glottostat_permanovapairs <- function(metadist, id, permutations){
   condist12 <- metadist12 %>%
     dplyr::select(dplyr::all_of(.[[id]])) %>% as.dist()
 
+  # permutations <- permute::how(nperm = permutations)
+  # permute::setBlocks(permutations) <- with(metadist12, glottocode)
   pair <- vegan::adonis2(condist12 ~ group, data = metadist12, permutations = permutations)
-  p <- round(pair[["Pr(>F)"]][1], 5)
+  p <- round(pair[["Pr(>F)"]][1],3)
 
   resultsdf[i, "p-value"] <- p
   resultsdf[i, "significance"] <- pvalstars(p)
@@ -123,7 +128,7 @@ glottostat_permanovapairs <- function(metadist, id, permutations){
   }
 
   # # p values adjusted.
-  resultsdf[, "p-value (adj)"] <- round(stats::p.adjust(resultsdf[, "p-value"], method = "BH"), 5)
+  resultsdf[, "p-value (adj)"] <- round(stats::p.adjust(resultsdf[, "p-value"], method = adj), 3)
   resultsdf[, "sign (adj)"] <- sapply(X = resultsdf[, "p-value (adj)"], FUN = pvalstars)
 
   resultsdf

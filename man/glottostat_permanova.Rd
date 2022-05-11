@@ -27,7 +27,8 @@ Permanova across all groups (overall or pairwise)
 glottodata <- glottoget("demodata", meta = TRUE)
 glottostat_permanova(glottodata, comparison = "pairwise")
 
-glottodata[["sample"]][,2] <- glottodata[["sample"]][,3]
+# Use subgroup as group
+glottodata[["sample"]][,"group"] <- glottodata[["sample"]][,"group"]
 glottostat_permanova(glottodata, comparison = "pairwise")
 
 glottosubdata <- glottoget("demosubdata", meta = TRUE)
