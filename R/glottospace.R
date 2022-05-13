@@ -86,9 +86,10 @@ glottospace_thiessen <- function(glottodata){
 
   # Select boundaries
   countries <- unique(pols$country)
-  countrypols <- rnaturalearth::ne_countries(country = countries, returnclass = "sf", scale = "medium")
+  worldpol <- glottospace::worldpol
+  countrypols <- worldpol[worldpol$country %in% countries,]
   continents <- unique(countrypols$continent)
-  continentpols <- rnaturalearth::ne_countries(continent = continents, returnclass = "sf", scale = "medium")
+  continentpols <- worldpol[worldpol$continent %in% continents,]
 
   # Threshold above which Thiessen polygons should be cropped to continental boundaries (instead of countries).
   if(sum(countrypols$name %in% continentpols$name) / length(continentpols$name) > 0.8){
@@ -153,12 +154,7 @@ glottospace_addcountries <- function(glottodata){
   glottodata <- glottospace_addcoords(glottodata)
 
   # Adding names of countries and continents
-  world <- rnaturalearth::ne_countries(returnclass = "sf", scale = "medium")
-  world <- world[, c("admin", "continent", "sovereignt")]
-  names(world)[1] <- "country"
-  names(world)[3] <- "sovereignty"
-
-  world <- sf::st_make_valid(world)
+  world <- glottospace::worldpol
   sf::st_join(x = glottodata, y = world, left = TRUE)
 }
 

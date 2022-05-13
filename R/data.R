@@ -26,3 +26,11 @@
 #' }
 #' @evalRd glottoget_remotemeta(name = "dplace")
 "dplace"
+
+#'
+#' This is an internally stored version of political boundaries of the world (obtained from rnaturalearth).
+#' @keywords internal
+#' @format An sf object
+#' @source \url{https://www.naturalearthdata.com/
+#' }
+"worldpol"

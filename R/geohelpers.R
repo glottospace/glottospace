@@ -139,3 +139,26 @@ bbox_expand <- function(bbox, f = 0.2){
   bbox[4] <- bbox[4] + (f * yrange) # ymax - top
   bbox
 }
+
+#' Download political boundaries for the whole world from naturalearth
+#'
+#' Added because some countries are missing when using rnaturalearth::ne_countries()
+#'
+#' @return
+#' @noRd
+#'
+#' @examples
+#' # tmap::tmap_mode("view")
+#' ne <- geoget_worldpol()
+#' tmap::tm_shape(ne) +tmap::tm_polygons()
+geoget_worldpol <- function(){
+  suppressMessages(sf::sf_use_s2(FALSE))
+  basemap <- rnaturalearth::ne_download(scale = 50, type = "map_units", category = "cultural", returnclass = "sf") %>%
+    sf::st_make_valid()
+
+  colnames(basemap) <- tolower(colnames(basemap))
+  basemap <- basemap[,c("admin", "sovereignt", "type", "geounit", "continent", "adm0_a3")]
+  names(basemap)[names(basemap)=="admin"] <- "country"
+  names(basemap)[names(basemap)=="sovereignt"] <- "sovereignty"
+  basemap
+}

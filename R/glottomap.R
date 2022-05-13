@@ -213,7 +213,7 @@ glottomap_static_crs <- function(glottodata, label = NULL, color = NULL, ptsize 
   if(is.null(alpha)){alpha <- 0.55}
 
   # wrld_proj <- geoget_basemap(crs = "+proj=eck4", attributes = FALSE) # function migrated to geospace package
-  wrld_basemap <- rnaturalearth::ne_countries(scale = 50, returnclass = "sf")
+  wrld_basemap <- glottospace::worldpol
   wrld_wrap <- sf::st_wrap_dateline(wrld_basemap, options = c("WRAPDATELINE=YES","DATELINEOFFSET=180"), quiet = TRUE)
   wrld_proj <- sf::st_transform(wrld_wrap, crs = crs)
   wrld_proj <- wrld_proj %>% sf::st_make_valid()
