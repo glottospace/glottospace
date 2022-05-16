@@ -26,6 +26,10 @@ glottospace <- function(glottodata, method = NULL, radius = NULL){
     glottodata <- glottospace_addcoords(glottodata)
   }
 
+  if(all(c("country", "continent") %nin% names(glottodata))){
+    glottodata <- glottospace_addcountries(glottodata)
+  }
+
   if(!is.null(method)){
   if(method == "thiessen" | method == "voronoi"){
     glottodata <- glottospace_thiessen(glottodata = glottodata)
