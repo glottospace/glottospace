@@ -92,7 +92,7 @@ glottospace_thiessen <- function(glottodata){
   continentpols <- worldpol[worldpol$continent %in% continents,]
 
   # Threshold above which Thiessen polygons should be cropped to continental boundaries (instead of countries).
-  if(sum(countrypols$name %in% continentpols$name) / length(continentpols$name) > 0.8){
+  if(sum(countrypols$country %in% continentpols$country) / length(continentpols$country) > 0.8){
     boundarypols <- continentpols
   } else {
     boundarypols <- countrypols
