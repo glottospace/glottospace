@@ -56,6 +56,8 @@ glottoclean <- function(glottodata, tona = NULL, tofalse = NULL, totrue = NULL, 
 
   glottodata <- glottorecode_missing(glottodata, tona = all2na)
 
+  glottodata <- glottoclean_twolevels(glottodata)
+
   glottodata <- glottojoin(glottodata, structure)
 
   if(!is.null(sampletable)){glottocreate_addtable(glottodata, table = sampletable, name = "sample")}
@@ -285,4 +287,41 @@ glottoclean_selectsample <- function(glottodata){
     return(glottodata)
   }
 
+}
+
+
+#' Which variables have less than two levels (excluding NA).
+#'
+#' This function returns the names of variables with less than two levels (excluding NA).
+#' @param data glottodata without metadata
+#'
+#' @return A character vector
+#' @noRd
+#'
+#' @examples
+#' glottodata <- glottoget("demodata", meta = FALSE)
+#' glottoclean_twolevels(data = glottodata)
+glottoclean_twolevels <- function(data){
+  data <- as.data.frame(data)
+  lslevels <- lapply(data, unique)
+  lslevels <- lapply(lslevels, factor, exclude = NA)
+
+  # summary of data:
+  lslevelsrmna <- lapply(lslevels, levels)
+  lslevelscount <- lapply(lslevelsrmna, length)
+  lslevels_lgl <- lapply(lslevelscount, function(x) {x < 2})
+  lslevdf <- t(as.data.frame(lslevels_lgl))
+
+  # How many variables have less than two levels? Which variables?
+  totbelow2 <- sum(lslevdf)
+  vecbelow2 <- rownames(lslevdf)[lslevdf]
+  namesbelow2 <- paste0(vecbelow2, collapse = ",")
+
+  if(totbelow2 != 0){
+    message(paste0(totbelow2, " variables with less than two levels have been removed: \n\n",  namesbelow2))
+    data[, colnames(data) %nin% vecbelow2]
+  } else {
+    message("All variables have two or more levels (excluding NA)")
+    data
+  }
 }

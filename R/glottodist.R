@@ -48,12 +48,14 @@ glottodist <- function(glottodata){
    if(length(colnames(glottodata)) != length(structure$varname) ){
     message(paste("The number of variables in ", ifelse(id == "glottocode", "glottodata", "glottosubdata"), "differs from the number of variables in the structure table") )
     nostruc <- colnames(glottodata)[colnames(glottodata) %nin% structure$varname]
+    namesnostruc <- paste0(nostruc, collapse = ",")
     novar <- structure$varname[structure$varname %nin% colnames(glottodata)]
+    namesnovar <- paste0(novar, collapse = ",")
     if(!purrr::is_empty(nostruc)){
-      message(paste0("The following variables exist in the data, but are not defined in the structure table (and will be ignored): ", nostruc))
+      message(paste0("The following variables exist in the data, but are not defined in the structure table (and will be ignored): ", namesnostruc))
     }
     if(!purrr::is_empty(novar)){
-      message(paste0("The following variables are defined in the structure table but do not exist in the data (and will be ignored): ", novar))
+      message(paste0("The following variables are defined in the structure table but do not exist in the data (and will be ignored): ", namesnovar))
     }
   }
   structure <- suppressMessages(dplyr::left_join(data.frame("varname" = colnames(glottodata)), structure))
@@ -99,7 +101,8 @@ glottodist <- function(glottodata){
 
   if(glottocheck_twolevels(glottodata)==FALSE){
     message("\n\n Because there are variables with less than two levels, the following warning messages might be generated. \n For factors: \n 'In min(x) : no non-missing arguments to min; returning Inf' \n 'In max(x) : no non-missing arguments to max; returning -Inf' \n And for symm/asymm: 'at least one binary variable has not 2 different levels' ")
-    message("It is adviced to remove those variables from the data (run glottocheck() to see which ones). \n\n")
+    message("It is adviced to remove those variables from the data. You can do this by running glottoclean()")
+    message("run glottocheck() to see which ones). \n\n")
   }
 
   # weights
