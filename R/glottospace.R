@@ -40,7 +40,7 @@ glottospace <- function(glottodata, method = NULL, radius = NULL){
   }
   }
 
-  glottodata <- contrans_glottoclass(glottodata)
+  # glottodata <- contrans_glottoclass(glottodata)
 
 return(glottodata)
 }

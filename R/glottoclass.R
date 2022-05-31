@@ -19,14 +19,13 @@ add_class <- function(object, class){
 #' @noRd
 contrans_glottoclass <- function(data){
   if(glottocheck_isglottodata(data) & !is_sf(data)){
-    return(add_class(data, "glottodata"))
+    data <- add_class(data, "glottodata")
   } else if(glottocheck_isglottosubdata(data) & !is_sf(data)){
-    return(add_class(data, "glottosubdata"))
+    data <- add_class(data, "glottosubdata")
   } else if(glottocheck_isglottodata(data) & is_sf(data)){
-    return(add_class(data, c("glottodata", "glottospace") ))
+    data <- add_class(data, c("glottodata", "glottospace") )
   } else if(glottocheck_isglottosubdata(data) & is_sf(data)){
-    return(add_class(data, c("glottodata", "glottospace") ))
-  } else {
-    return(data)
+    data <- add_class(data, c("glottosubdata", "glottospace") )
   }
+  return(data)
 }
