@@ -44,7 +44,7 @@ glottosave <- function(glottodata, filename = NULL){
     glottodata <- tibble::rownames_to_column(glottodata, var = "glottodist")
     writexl::write_xlsx(glottodata, path = filename)
     message(paste("Glottodist object saved as", normalizePath(filename) ))
-  } else if(glottocheck_isglottodata(glottodata)){
+  } else if(glottocheck_isglottodata(glottodata) & !is_sf(glottodata) ){
     if(tools::file_ext(filename) != ".xlsx"){
       filename <- tools::file_path_sans_ext(filename)
       filename <- paste0(filename, ".xlsx")
@@ -52,7 +52,7 @@ glottosave <- function(glottodata, filename = NULL){
     # if(file.exists(filename) & overwrite == FALSE){stop("File already exists, use overwrite = TRUE")}
     writexl::write_xlsx(glottodata, path = filename) # works better than openxlsx, which omitted some columns..
     message(paste("Glottodata (glottodata) saved as", normalizePath(filename) ))
-  } else if(glottocheck_isglottosubdata(glottodata)){
+  } else if(glottocheck_isglottosubdata(glottodata) & !is_sf(glottodata) ){
       if(tools::file_ext(filename) != ".xlsx"){
         filename <- tools::file_path_sans_ext(filename)
         filename <- paste0(filename, ".xlsx")
