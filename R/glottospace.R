@@ -75,7 +75,12 @@ glottospace_buffer <- function(glottodata, radius){
 #'
 #' @examples
 #' glottodata <- glottofilter(country = "Netherlands")
+#' glottopols <- glottospace_thiessen(glottodata)
+#' glottomap(glottopols)
+#'
 #' glottodata <- glottofilter(continent = "South America")
+#' glottopols <- glottospace_thiessen(glottodata)
+#' glottomap(glottopols)
 glottospace_thiessen <- function(glottodata){
   crs_original <- sf::st_crs(glottodata)
   pts <- sf::st_transform(glottodata, sf::st_crs("ESRI:54032")) # convert to equidistant projection: https://epsg.io/54032
@@ -89,17 +94,17 @@ glottospace_thiessen <- function(glottodata){
   pols <- sf::st_set_geometry(pols, "geometry")
 
   # Select boundaries
-  countries <- unique(pols$country)
+  geounits <- unique(pols$geounit)
   worldpol <- glottospace::worldpol
-  countrypols <- worldpol[worldpol$country %in% countries,]
-  continents <- unique(countrypols$continent)
+  geounitpols <- worldpol[worldpol$geounit %in% geounits,]
+  continents <- unique(geounitpols$continent)
   continentpols <- worldpol[worldpol$continent %in% continents,]
 
   # Threshold above which Thiessen polygons should be cropped to continental boundaries (instead of countries).
-  if(sum(countrypols$country %in% continentpols$country) / length(continentpols$country) > 0.8){
+  if(sum(geounitpols$geounit %in% continentpols$geounit) / length(continentpols$geounit) > 0.8){
     boundarypols <- continentpols
   } else {
-    boundarypols <- countrypols
+    boundarypols <- geounitpols
   }
 
   boundarypols <- sf::st_transform(boundarypols, crs = sf::st_crs("ESRI:54032") ) %>% sf::st_geometry()
