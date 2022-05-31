@@ -11,6 +11,7 @@
 #' @param L1only Keep only L1 languages (remove bookkeeping, unclassifiable, sign languages, etc.).
 #' @param addfamsize Add column with family size?
 #' @param addfamsizerank Add column with family size rank?
+#' @param rename Rename columns "id" to "glottocode" and "iso639p3code" to "isocode"
 #'
 #' @family <glottobooster>
 #' @return glottologdata object, either a spatial object (class: sf) or a data.frame.
@@ -23,7 +24,8 @@
 glottobooster <- function(glottologdata = NULL, space = TRUE,
                                 addfamname = TRUE, addisolates = TRUE,
                                 L1only = TRUE,
-                                addfamsize = TRUE, addfamsizerank = TRUE){
+                                addfamsize = TRUE, addfamsizerank = TRUE,
+                          rename = TRUE){
   if(is.null(glottologdata)){
     glottologdata <- glottospace::glottolog
   }
@@ -35,7 +37,9 @@ glottobooster <- function(glottologdata = NULL, space = TRUE,
   if(addfamsize == TRUE){glottologdata <- glottobooster_addfamilysize(glottologdata) }
   if(addfamsizerank == TRUE){glottologdata <- glottobooster_addfamilysizerank(glottologdata) }
 
+  if(rename == TRUE){
   glottologdata <- glottologdata %>% dplyr::rename("glottocode" = "id", "isocode" = "iso639p3code")
+  }
 
   if(space == TRUE){
     glottologdata <- glottospace_coords2sf(glottologdata)
@@ -61,7 +65,9 @@ glottobooster <- function(glottologdata = NULL, space = TRUE,
 #' @param addfamsizerank Add column with family size rank?
 #' @param rmbookkeeping Remove bookkeeping rows and delete bookkeeping column?
 #' @param rmartifam Remove rows that refer to artificial families?
+#' @param rename Rename columns "id" to "glottocode" and "iso639p3code" to "isocode"
 #' @param rmsignlangs Remove rows with sign languages?
+#'
 #' @family <glottobooster>
 #' @export
 #' @keywords internal
@@ -76,7 +82,7 @@ glottoboosterflex <- function(glottologdata = NULL, space = TRUE,
                              rmdialects = TRUE, rmfamilies = TRUE,
                              addfamsize = TRUE, addfamsizerank = TRUE,
                              rmbookkeeping = TRUE, rmartifam = TRUE,
-                             rmsignlangs = TRUE){
+                             rmsignlangs = TRUE, rename = TRUE){
   if(is.null(glottologdata)){
     glottologdata <- glottoget_glottolog()
   }
@@ -92,7 +98,9 @@ glottoboosterflex <- function(glottologdata = NULL, space = TRUE,
   if(addfamsize == TRUE){glottologdata <- glottobooster_addfamilysize(glottologdata) }
   if(addfamsizerank == TRUE){glottologdata <- glottobooster_addfamilysizerank(glottologdata) }
 
+  if(rename == TRUE){
   glottologdata <- glottologdata %>% dplyr::rename("glottocode" = "id", "isocode" = "iso639p3code")
+  }
 
   if(space == TRUE){
     glottologdata <- glottospace_coords2sf(glottologdata)

@@ -18,13 +18,13 @@ glottolog
 This is an internally stored version of glottolog data. Use glottoget("glottolog", download = TRUE) to download the latest version
 }
 \keyword{internal}
-\note{version: v4.5
+\note{version: v4.6
 
 
 Cite the source of the dataset as:
 
 
-Hammarström, Harald & Forkel, Robert & Haspelmath, Martin & Bank, Sebastian. 2021. Glottolog 4.5. Leipzig: Max Planck Institute for Evolutionary Anthropology. (Available online at https://glottolog.org)
+Hammarström, Harald & Forkel, Robert & Haspelmath, Martin & Bank, Sebastian. 2022. Glottolog 4.6. Leipzig: Max Planck Institute for Evolutionary Anthropology. (Available online at https://glottolog.org)
 
 
-##------ Thu May 19 13:16:33 2022 ------##}
+##------ Tue May 31 09:32:10 2022 ------##}

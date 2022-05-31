@@ -11,7 +11,8 @@ glottobooster(
   addisolates = TRUE,
   L1only = TRUE,
   addfamsize = TRUE,
-  addfamsizerank = TRUE
+  addfamsizerank = TRUE,
+  rename = TRUE
 )
 }
 \arguments{
@@ -28,6 +29,8 @@ glottobooster(
 \item{addfamsize}{Add column with family size?}
 
 \item{addfamsizerank}{Add column with family size rank?}
+
+\item{rename}{Rename columns "id" to "glottocode" and "iso639p3code" to "isocode"}
 }
 \value{
 glottologdata object, either a spatial object (class: sf) or a data.frame.

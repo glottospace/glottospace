@@ -15,7 +15,8 @@ glottoboosterflex(
   addfamsizerank = TRUE,
   rmbookkeeping = TRUE,
   rmartifam = TRUE,
-  rmsignlangs = TRUE
+  rmsignlangs = TRUE,
+  rename = TRUE
 )
 }
 \arguments{
@@ -40,6 +41,8 @@ glottoboosterflex(
 \item{rmartifam}{Remove rows that refer to artificial families?}
 
 \item{rmsignlangs}{Remove rows with sign languages?}
+
+\item{rename}{Rename columns "id" to "glottocode" and "iso639p3code" to "isocode"}
 }
 \value{
 glottologdata object, either a spatial object (class: sf) or a data.frame.

@@ -56,7 +56,7 @@ glottoclean <- function(glottodata, tona = NULL, tofalse = NULL, totrue = NULL, 
 
   glottodata <- glottorecode_missing(glottodata, tona = all2na)
 
-  glottodata <- glottoclean_twolevels(glottodata)
+  glottodata <- glottoclean_twolevels(glottodata) # drop variables with less than two levels (no changes to structure table)
 
   glottodata <- glottojoin(glottodata, structure)
 
