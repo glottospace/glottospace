@@ -76,6 +76,8 @@ glottonmds_run <- function(glottodist, k = 2, rm.na = FALSE){
 #' }
 glottonmds_scores <- function(glottonmds, row2id = NULL){
   rlang::check_installed("vegan", reason = "to use `glottonmds_scores()`")
+  if(all(is.na(glottonmds$species))){glottonmds$species <- NULL} # added to fix issue with versioning.
+
   scores <- as.data.frame(vegan::scores(glottonmds))
   if(is.null(row2id)){row2id <- "glottocode"}
   scores <- tibble::rownames_to_column(scores, row2id)
