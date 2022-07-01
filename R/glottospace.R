@@ -83,7 +83,7 @@ glottospace_buffer <- function(glottodata, radius){
 #' glottomap(glottopols)
 glottospace_thiessen <- function(glottodata){
   crs_original <- sf::st_crs(glottodata)
-  pts <- sf::st_transform(glottodata, sf::st_crs("ESRI:54032")) # convert to equidistant projection: https://epsg.io/54032
+  pts <- sf::st_transform(glottodata, sf::st_crs("ESRI:54032")) # convert to World Azimuthal Equidistant projection: https://epsg.io/54032
 
   pols <- sf::st_collection_extract(sf::st_voronoi(do.call(c, sf::st_geometry(pts))))
   pols <- sf::st_set_crs(x = pols, value = sf::st_crs(pts))

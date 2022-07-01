@@ -162,3 +162,4 @@ geoget_worldpol <- function(){
   names(basemap)[names(basemap)=="sovereignt"] <- "sovereignty"
   basemap
 }
+
