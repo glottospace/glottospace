@@ -183,10 +183,10 @@ glottoconvert_subdata <- function(data, var, glottocodes = NULL, varnamecol = NU
       newvarnames <- gsub(pattern = var, x = glottometatables[["structure"]][oldvarids, "varname", drop = TRUE], replacement = "")
       glottometatables[["structure"]][oldvarids, "varname", drop = TRUE] <- newvarnames
     }
-    if("sample" %in% names(glottometatables)){
-      glottodata[["sample"]] <- glottometatables[["sample"]]
-      glottometatables[["sample"]] <- NULL
-    }
+    # if("sample" %in% names(glottometatables)){
+    #   glottodata[["sample"]] <- glottometatables[["sample"]]
+    #   glottometatables[["sample"]] <- NULL
+    # }
     glottosubdata <- c(glottodatatables, glottometatables)
   }
 
