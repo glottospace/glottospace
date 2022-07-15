@@ -39,7 +39,7 @@ glottostat_permanova <- function(glottodata, comparison = NULL, sample = NULL, p
   id <- glottocheck_id(glottodata)
 
   glottodist <- glottodist(glottodata)
-  metadist <- glottojoin_dist(glottodata = glottodata, glottodist = glottodist, rm.na = TRUE)
+  metadist <- glottojoin_dist(glottodata = glottodata, glottodist = glottodist, na.rm = TRUE)
   if(id == "glottosubcode"){
     metadist$glottocode <- glottoconvert_subcodes(metadist$glottosubcode)
     metadist <- glottojoin_data(glottodata = metadist, with = glottosample, type = "left", id = "glottocode")

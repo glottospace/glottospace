@@ -13,7 +13,7 @@
 #' @param palette Name of color palette, use glottocolpal("all") to see the options
 #' @param glottonmds A glottonmds object created with \code{\link{glottonmds}}
 #' @param k Number of dimensions. Either 2 or 3 for nmds.
-#' @param rm.na Whether na's should be removed (default is FALSE)
+#' @param na.rm Whether na's should be removed (default is FALSE)
 #' @param row2id In case of nmds, specify what each row contains (either 'glottocode' or 'glottosubcode')
 #' @param preventoverlap For nmds with 2 dimensions, should overlap between data points be prevented?
 #' @param alpha For nmds with 2 dimensions: Transparency of points between 0 (very transparent) and 1 (not transparent)
@@ -46,7 +46,7 @@
 #' }
 glottoplot <- function(glottodata = NULL, glottodist = NULL, type = NULL, glottonmds = NULL,
                        color = NULL, ptsize = NULL, label = NULL, filename = NULL, palette = NULL,
-                       k = NULL, rm.na = FALSE, row2id = NULL,
+                       k = NULL, na.rm = FALSE, row2id = NULL,
                        preventoverlap = FALSE, alpha = NULL, colorvec = NULL){
 
   if(is_dist(glottodata)){
@@ -71,7 +71,7 @@ glottoplot <- function(glottodata = NULL, glottodist = NULL, type = NULL, glotto
      glottoplot_heatmap(glottodist = glottodist, filename = filename)
    }
     if(type == "nmds" & !is.null(glottodist)){
-      glottonmds <- glottonmds(glottodist = glottodist, k = k, rm.na = rm.na, row2id = row2id)
+      glottonmds <- glottonmds(glottodist = glottodist, k = k, na.rm = na.rm, row2id = row2id)
       glottoplot_nmds(glottonmds = glottonmds,
                       color = color, ptsize = ptsize, label = label, palette = palette, filename = filename, preventoverlap = preventoverlap, alpha = alpha, colorvec = colorvec)
     }
@@ -328,7 +328,7 @@ glottoplot_heatmap <- function(glottodist, filename = NULL){
 #'
 #' @param data Any dataset
 #' @param id column name with IDs
-#' @param rm.na Whether rows without id should be removed.
+#' @param na.rm Whether rows without id should be removed.
 #' @noRd
 #'
 #' @examples
@@ -336,9 +336,9 @@ glottoplot_heatmap <- function(glottodist, filename = NULL){
 #' glottodata <- glottoclean(glottodata = glottodata)
 #' data <- glottodata[[1]]
 #' glottoplot_naviewer(data, id = "glottocode")
-glottoplot_naviewer <- function(data, id = NULL, rm.na = TRUE){
+glottoplot_naviewer <- function(data, id = NULL, na.rm = TRUE){
   data <- as.data.frame(data)
-  if(rm.na == TRUE){data <- data[!is.na(data[[id]]), ]}
+  if(na.rm == TRUE){data <- data[!is.na(data[[id]]), ]}
   if(!is.null(id)){
     datamissing <- data[,colnames(data) != id ]
   } else {

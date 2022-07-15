@@ -5,7 +5,7 @@
 #' @param glottodata glottodata or glottosubdata
 #' @param with Optional: glottodata (class data.frame), a dist object (class dist), or the name of a glottodatabase ("glottobase" or "glottospace")
 #' @param id By default, data is joined by a column named "glottocode" or "glottosubcode". In case you want to join using another column, the column name should be specified.
-#' @param rm.na Only used when joining with a dist object. By default NAs are kept.
+#' @param na.rm Only used when joining with a dist object. By default NAs are kept.
 #' @param type In case two glottodata objects are joined, you can specify the type of join: "left" (default), "right", "full", or "inner"
 #'
 #' @seealso glottosplit
@@ -29,12 +29,12 @@
 #' variables = 3, groups = c("a", "b"), n = 2, meta = FALSE)
 #' glottodatatable <- glottojoin(glottodata = glottosubdata)
 #' }
-glottojoin <- function(glottodata, with = NULL, id = NULL, rm.na = FALSE, type = "left"){
+glottojoin <- function(glottodata, with = NULL, id = NULL, na.rm = FALSE, type = "left"){
   if(glottocheck_isglottosubdata(glottodata) ){
     if(is.null(with)){# join glottosubdata
     return(glottojoin_subdata(glottosubdata = glottodata) )
   } else if(is_dist(with)){
-    return(glottojoin_dist(glottodata = glottodata, id = id, glottodist = with, rm.na = rm.na) )
+    return(glottojoin_dist(glottodata = glottodata, id = id, glottodist = with, na.rm = na.rm) )
   } else if (glottocheck_hasmeta(with) & is.null(id)){
     return(glottojoin_meta(glottodata = glottodata, glottometa = with) )
   } else if (glottocheck_isstructure(with)){
@@ -49,7 +49,7 @@ glottojoin <- function(glottodata, with = NULL, id = NULL, rm.na = FALSE, type =
     if(glottocheck_isglottodata(glottodata) & !is.null(with)){
     glottodata <- glottosplit(glottodata)[[1]]
       if(is_dist(with)){
-        return(glottojoin_dist(glottodata = glottodata, id = id, glottodist = with, rm.na = rm.na) )
+        return(glottojoin_dist(glottodata = glottodata, id = id, glottodist = with, na.rm = na.rm) )
       } else if(glottocheck_hasmeta(with)){
         return( glottojoin_meta(glottodata = glottodata, glottometa = with) )
       } else if(glottocheck_isstructure(with)){
@@ -76,7 +76,7 @@ glottojoin <- function(glottodata, with = NULL, id = NULL, rm.na = FALSE, type =
 #' @param glottodata User-provided glottodata
 #' @param glottodist A glottodist object
 #' @param id By default, 'glottocode' or 'glottosubcode' is used as id. However, if id is specified, join between data and dist object will be done based on another column.
-#' @param rm.na Default is to keep NAs.
+#' @param na.rm Default is to keep NAs.
 #' @return Data frame
 #' @noRd
 #'
@@ -90,8 +90,8 @@ glottojoin <- function(glottodata, with = NULL, id = NULL, rm.na = FALSE, type =
 #'
 #' glottosubdata <- glottoget("demosubdata", meta = TRUE)
 #' dist <- glottodist(glottodata = glottosubdata)
-#' glottodata_dist <- glottojoin_dist(glottodata = glottosubdata, glottodist = dist, rm.na = TRUE)
-glottojoin_dist <- function(glottodata, glottodist, id = NULL, rm.na = FALSE){
+#' glottodata_dist <- glottojoin_dist(glottodata = glottosubdata, glottodist = dist, na.rm = TRUE)
+glottojoin_dist <- function(glottodata, glottodist, id = NULL, na.rm = FALSE){
 
   glottodata <- glottosimplify(glottodata)
 
@@ -99,7 +99,7 @@ glottojoin_dist <- function(glottodata, glottodist, id = NULL, rm.na = FALSE){
   id <- glottocheck_id(glottodata)
   }
 
-  if(rm.na == TRUE){
+  if(na.rm == TRUE){
     distmat <- glottoclean_dist_rmna(glottodist = glottodist)
   } else{
     distmat <- contransform_distmat(dist = glottodist)

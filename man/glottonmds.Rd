@@ -4,14 +4,14 @@
 \alias{glottonmds}
 \title{Nonmetric Multidimensional Scaling for a glottodist object}
 \usage{
-glottonmds(glottodist = NULL, k = NULL, rm.na = FALSE, row2id = NULL)
+glottonmds(glottodist = NULL, k = NULL, na.rm = FALSE, row2id = NULL)
 }
 \arguments{
 \item{glottodist}{A glottodist object}
 
 \item{k}{Number of dimensions. Either 2 or 3 for nmds.}
 
-\item{rm.na}{Whether na's should be removed (default is FALSE)}
+\item{na.rm}{Whether na's should be removed (default is FALSE)}
 
 \item{row2id}{In case of nmds, specify what each row contains (either 'glottocode' or 'glottosubcode')}
 }

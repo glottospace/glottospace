@@ -4,7 +4,7 @@
 #'
 #' @param glottodist A glottodist object
 #' @param k Number of dimensions. Either 2 or 3 for nmds.
-#' @param rm.na Whether na's should be removed (default is FALSE)
+#' @param na.rm Whether na's should be removed (default is FALSE)
 #' @param row2id In case of nmds, specify what each row contains (either 'glottocode' or 'glottosubcode')
 #' @examples
 #' glottodata <- glottoget("demodata", meta = TRUE)
@@ -15,9 +15,9 @@
 #' @return a glottonmds object which can be plotted using glottoplot(glottonmds = ). See ?monoMDS for more details.
 #' @export
 #'
-glottonmds <- function(glottodist = NULL, k = NULL, rm.na = FALSE, row2id = NULL){
+glottonmds <- function(glottodist = NULL, k = NULL, na.rm = FALSE, row2id = NULL){
   if(is.null(k)){stop("Please specify k (number of dimensions)")}
-  glottonmds <- glottonmds_run(glottodist = glottodist, k = k, rm.na = rm.na)
+  glottonmds <- glottonmds_run(glottodist = glottodist, k = k, na.rm = na.rm)
   if(is.null(row2id)){stop("Please specify row2id ('glottocode' or 'glottosubcode')")}
   scores <- glottonmds_scores(glottonmds, row2id = row2id)
   if(row2id == "glottosubcode"){
@@ -32,7 +32,7 @@ list("nmds" = glottonmds, "scoresdata" = scoresdata)
 #'
 #' @param k Number of dimensions
 #' @param dist dist object or distance matrix
-#' @param rm.na Whether NAs should be removed (default is FALSE)
+#' @param na.rm Whether NAs should be removed (default is FALSE)
 #' @family <glottoplot>
 #'
 #' @noRd
@@ -41,11 +41,11 @@ list("nmds" = glottonmds, "scoresdata" = scoresdata)
 #' glottodata <- glottoget("demodata", meta = TRUE)
 #' glottodist <- glottodist(glottodata = glottodata)
 #' glottonmds <- glottonmds_run(glottodist = glottodist, k = 2)
-glottonmds_run <- function(glottodist, k = 2, rm.na = FALSE){
+glottonmds_run <- function(glottodist, k = 2, na.rm = FALSE){
 
 
 
-  if(rm.na == TRUE){
+  if(na.rm == TRUE){
     distmat <- glottoclean_dist_rmna(glottodist)
   } else{
     distmat <- contransform_distmat(glottodist)
@@ -55,7 +55,7 @@ glottonmds_run <- function(glottodist, k = 2, rm.na = FALSE){
   tryCatch(
     expr = {vegan::metaMDS(comm = distmat, k = k)},
     error = function(e){
-      message("Failed to create glottoNMDS. This might be because glottodist contains NAs. You might consider dropping all rows and columns with NA by specifying rm.na = TRUE")
+      message("Failed to create glottoNMDS. This might be because glottodist contains NAs. You might consider dropping all rows and columns with NA by specifying na.rm = TRUE")
       printmessage(e)
     }
   )

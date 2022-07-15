@@ -459,10 +459,10 @@ glottocheck_glottosubcol <- function(glottosubdata){
 #' @param data A dataset
 #' @param id Column name or index with unique id's
 #' @param diagnostic Whether diagnostic messages should be shown
-#' @param rm.na Whether rows without id should be removed.
+#' @param na.rm Whether rows without id should be removed.
 #' @noRd
-glottocheck_rowmissing <- function(data, id, diagnostic = FALSE, rm.na = TRUE){
-  if(rm.na == TRUE){data <- data[!is.na(data[[id]]), ]}
+glottocheck_rowmissing <- function(data, id, diagnostic = FALSE, na.rm = TRUE){
+  if(na.rm == TRUE){data <- data[!is.na(data[[id]]), ]}
   datamissing <- tibble::column_to_rownames(data, var = id)
   datamissing$count <- rowSums(is.na(datamissing) )
   if(any(datamissing$count != 0)){
@@ -478,10 +478,10 @@ glottocheck_rowmissing <- function(data, id, diagnostic = FALSE, rm.na = TRUE){
 #' @param data A dataset
 #' @param id Column name or index with unique id's
 #' @param diagnostic Whether diagnostic messages should be shown
-#' @param rm.na Whether rows without id should be removed.
+#' @param na.rm Whether rows without id should be removed.
 #' @noRd
-glottocheck_colmissing <- function(data, id, diagnostic = FALSE, rm.na = TRUE){
-  if(rm.na == TRUE){data <- data[!is.na(data[[id]]), ]}
+glottocheck_colmissing <- function(data, id, diagnostic = FALSE, na.rm = TRUE){
+  if(na.rm == TRUE){data <- data[!is.na(data[[id]]), ]}
   datamissing <- tibble::column_to_rownames(data, var = id)
   datamissing <- rbind(datamissing, "count" = colSums(is.na(datamissing) ) )
   if(any(datamissing["count", ] != 0)){
