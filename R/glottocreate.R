@@ -18,10 +18,10 @@
 #' @param simplify By default, if a glottodata table is created without metadata, the data will be returned as a data.frame (instead of placing the data inside a list of length 1)
 #' @param groups Character vector of group names (only for glottosubdata)
 #' @param n Optional, number of records to be assigned to each group (only for glottosubdata)
-#' @param maintainer Name of the person/organization maintaining the data (optional)
-#' @param email Email address of maintainer/contact person (optional)
-#' @param citation How to cite the data (optional)
-#' @param url Optional url linking to a webpage.
+#' @param maintainer Name of the person/organization maintaining the data (optional, added to readme tab)
+#' @param email Email address of maintainer/contact person (optional, added to readme tab)
+#' @param citation How to cite the data (optional, added to readme tab)
+#' @param url Link to a webpage (optional, added to readme tab).
 #' @param levels Optional character vector with levels across all variables
 #' @param check Should glottocodes be checked? Default is FALSE because takes much time to run.
 #'
@@ -42,6 +42,10 @@
 #' # Creates glottosubdata table (stored in a list)
 #' glottocreate(glottocodes = c("yucu1253", "tani1257"),
 #' variables = 3, groups = c("a", "b") )
+#'
+#' # Create glottodata table and add some information to the readme table:
+#' glottocreate(glottocodes = c("yucu1253", "tani1257"), variables = 3,
+#' maintainer = "Your name", email = "yourname@domain.com")
 #'
 #'
 glottocreate <- function(glottocodes, variables,

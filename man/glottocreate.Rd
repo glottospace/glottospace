@@ -39,13 +39,13 @@ glottocreate(
 
 \item{check}{Should glottocodes be checked? Default is FALSE because takes much time to run.}
 
-\item{maintainer}{Name of the person/organization maintaining the data (optional)}
+\item{maintainer}{Name of the person/organization maintaining the data (optional, added to readme tab)}
 
-\item{email}{Email address of maintainer/contact person (optional)}
+\item{email}{Email address of maintainer/contact person (optional, added to readme tab)}
 
-\item{citation}{How to cite the data (optional)}
+\item{citation}{How to cite the data (optional, added to readme tab)}
 
-\item{url}{Optional url linking to a webpage.}
+\item{url}{Link to a webpage (optional, added to readme tab).}
 }
 \value{
 A glottodata or glottosubdata object (either with or without metadata). The output can be a list or a data.frame.
@@ -75,6 +75,10 @@ glottocreate(glottocodes = c("yucu1253", "tani1257"), variables = 3)
 # Creates glottosubdata table (stored in a list)
 glottocreate(glottocodes = c("yucu1253", "tani1257"),
 variables = 3, groups = c("a", "b") )
+
+# Create glottodata table and add some information to the readme table:
+glottocreate(glottocodes = c("yucu1253", "tani1257"), variables = 3,
+maintainer = "Your name", email = "yourname@domain.com")
 
 
 }
