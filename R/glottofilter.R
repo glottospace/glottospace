@@ -14,7 +14,7 @@
 #' @param colname A column name
 #' @param select Character vector of things to select (only if colname is provided)
 #' @param drop Character vector of things to drop (only if colname is provided)
-#' @param expression A regular expression
+#' @param expression A logical expression
 #' @param sovereignty Sovereignty
 #' @param macroarea Glottolog macroarea
 #'

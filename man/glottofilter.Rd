@@ -43,7 +43,7 @@ glottofilter(
 
 \item{macroarea}{Glottolog macroarea}
 
-\item{expression}{A regular expression}
+\item{expression}{A logical expression}
 
 \item{isocodes}{A character vector of iso639p3codes}
 
