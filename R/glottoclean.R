@@ -64,6 +64,7 @@ glottoclean <- function(glottodata, tona = NULL, tofalse = NULL, totrue = NULL, 
 
   glottodata <- contrans_glottoclass(glottodata)
 
+  message("\n glottodata has been cleaned.")
   invisible(glottodata)
 }
 

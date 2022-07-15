@@ -16,8 +16,15 @@ glottonmds(glottodist = NULL, k = NULL, rm.na = FALSE, row2id = NULL)
 \item{row2id}{In case of nmds, specify what each row contains (either 'glottocode' or 'glottosubcode')}
 }
 \value{
-a glottonmds object
+a glottonmds object which can be plotted using glottoplot(glottonmds = ). See ?monoMDS for more details.
 }
 \description{
-Nonmetric Multidimensional Scaling for a glottodist object
+This is a wrapper around the monoMDS function in the vegan package.
+}
+\examples{
+glottodata <- glottoget("demodata", meta = TRUE)
+glottodist <- glottodist(glottodata = glottodata)
+glottonmds <- glottonmds(glottodist, k = 2, row2id = "glottocode")
+glottoplot(glottonmds = glottonmds)
+
 }

@@ -1,11 +1,18 @@
 #' Nonmetric Multidimensional Scaling for a glottodist object
 #'
+#' This is a wrapper around the monoMDS function in the vegan package.
+#'
 #' @param glottodist A glottodist object
 #' @param k Number of dimensions. Either 2 or 3 for nmds.
 #' @param rm.na Whether na's should be removed (default is FALSE)
 #' @param row2id In case of nmds, specify what each row contains (either 'glottocode' or 'glottosubcode')
+#' @examples
+#' glottodata <- glottoget("demodata", meta = TRUE)
+#' glottodist <- glottodist(glottodata = glottodata)
+#' glottonmds <- glottonmds(glottodist, k = 2, row2id = "glottocode")
+#' glottoplot(glottonmds = glottonmds)
 #'
-#' @return a glottonmds object
+#' @return a glottonmds object which can be plotted using glottoplot(glottonmds = ). See ?monoMDS for more details.
 #' @export
 #'
 glottonmds <- function(glottodist = NULL, k = NULL, rm.na = FALSE, row2id = NULL){
