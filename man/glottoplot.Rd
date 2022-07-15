@@ -31,11 +31,11 @@ glottoplot(
 
 \item{glottonmds}{A glottonmds object created with \code{\link{glottonmds}}}
 
-\item{color}{Name of variable to be used to color features (optional). Run glottovars() to see the options.}
+\item{color}{Name of variable to be used to color features (optional). See 'Details' below.}
 
 \item{ptsize}{Size of points between 0 and 1 (optional)}
 
-\item{label}{Name of variable to be used to label features (optional). Run glottovars() to see the options.}
+\item{label}{Name of variable to be used to label features (optional). See 'Details' below.}
 
 \item{filename}{Optional filename if output should be saved.}
 
@@ -82,3 +82,4 @@ glottodata <- glottosimplify(glottodata)
 glottoplot(glottodata = glottodata, type = "missing")
 }
 }
+\details{If no glottodata object is provided, then you have the following options for the 'color' and 'label' arguments: ', 'glottocode', 'name', 'macroarea', 'isocode', 'countries', 'family_id', 'classification', 'parent_id', 'family', 'isolate', 'family_size', 'family_size_rank', 'country', 'sovereignty', 'type', 'geounit', 'continent', 'adm0_a3', '}

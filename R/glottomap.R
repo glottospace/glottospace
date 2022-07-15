@@ -5,8 +5,8 @@
 #' Alternatively, by specifying type = "filter", you can select languages by drawing/clicking on a map.
 #'
 #' @param glottodata Optional, user-provided glottodata. In case no glottodata is provided, you can pass arguments directly to glottofilter.
-#' @param color glottovar, column name, or column index to be used to color features (optional). Run glottovars() to see glottovars
-#' @param label glottovar, column name, or column index to be used to label features (optional). Run glottovars() to see glottovars
+#' @param color glottovar, column name, or column index to be used to color features (optional). See 'Details' below.
+#' @param label glottovar, column name, or column index to be used to label features (optional). See 'Details' below.
 #' @param type One of: "static", "dynamic", or "filter". Default is "static".
 #' @param ptsize Size of points between 0 and 1
 #' @param lbsize Size of labels between 0 and 1
@@ -20,8 +20,7 @@
 #' @param projection For static maps, you can choose one of the following: 'eqarea' (equal-area Eckert IV, default), 'pacific' (Pacific-centered), or any other Coordinate Reference System, specified using an EPSG code (https://epsg.io/).
 #' @param filename Optional filename if you want to save resulting map
 #' @param ... Additional parameters to glottofilter
-#'
-#' @family <glottomap>
+#' @evalRd glottovars()
 #' @return a map created from a glotto(sub)data object and can be saved with glottosave()
 #' @export
 #'

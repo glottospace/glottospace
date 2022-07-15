@@ -25,9 +25,9 @@ glottomap(
 \arguments{
 \item{glottodata}{Optional, user-provided glottodata. In case no glottodata is provided, you can pass arguments directly to glottofilter.}
 
-\item{color}{glottovar, column name, or column index to be used to color features (optional). Run glottovars() to see glottovars}
+\item{color}{glottovar, column name, or column index to be used to color features (optional). See 'Details' below.}
 
-\item{label}{glottovar, column name, or column index to be used to label features (optional). Run glottovars() to see glottovars}
+\item{label}{glottovar, column name, or column index to be used to label features (optional). See 'Details' below.}
 
 \item{type}{One of: "static", "dynamic", or "filter". Default is "static".}
 
@@ -84,4 +84,4 @@ glottodata <- glottospotlight(glottodata = glottodata, spotcol =
 glottomap(glottodata, color = "colpal")
 }
 }
-\concept{<glottomap>}
+\details{If no glottodata object is provided, then you have the following options for the 'color' and 'label' arguments: ', 'glottocode', 'name', 'macroarea', 'isocode', 'countries', 'family_id', 'classification', 'parent_id', 'family', 'isolate', 'family_size', 'family_size_rank', 'country', 'sovereignty', 'type', 'geounit', 'continent', 'adm0_a3', '}

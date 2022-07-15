@@ -6,8 +6,8 @@
 #' @param type The type of plot: "heatmap", "nmds", or "missing". Default is heatmap if nothing is provided.
 #' @param glottodata glottodata table
 #' @param glottodist A dist object created with \code{\link{glottodist}}
-#' @param color Name of variable to be used to color features (optional). Run glottovars() to see the options.
-#' @param label Name of variable to be used to label features (optional). Run glottovars() to see the options.
+#' @param color Name of variable to be used to color features (optional). See 'Details' below.
+#' @param label Name of variable to be used to label features (optional). See 'Details' below.
 #' @param ptsize Size of points between 0 and 1 (optional)
 #' @param filename Optional filename if output should be saved.
 #' @param palette Name of color palette, use glottocolpal("all") to see the options
@@ -23,7 +23,7 @@
 #'   "Tucanoan" = "lightskyblue1", "Tanimuca-Retuarã" = "blue", "Naduhup" =
 #'   "gray70", "Kakua-Nukak" = "gray30")
 #'   See the 'values' argument in ggplot2::scale_color_manual() for details.
-#'
+#' @evalRd glottovars()
 #' @return a visualization of a glotto(sub)data, glottodist or glottonmds object, which can be saved with glottosave()
 #' @export
 #'

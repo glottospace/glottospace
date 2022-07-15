@@ -13,7 +13,10 @@ geodata_rename_column <- function(geodata, oldname, newname){
 }
 
 glottovars <- function(){
-  colnames(glottoget("glottobase"))
+  glottovars <- colnames(sf::st_drop_geometry(glottoget("glottobase")))
+  vartext <- "If no glottodata object is provided, then you have the following options for the 'color' and 'label' arguments: "
+  glottovars <- paste0(c(vartext, glottovars, ""), collapse = "', '")
+  paste0("\\details{", glottovars, "}")
 }
 
 recode_df <- function(data, old, new){
