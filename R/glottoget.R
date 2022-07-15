@@ -9,7 +9,7 @@
 #' \item "glottobase" - Default option, an spatially enhanced version of \href{https://glottolog.org/}{glottolog}. See
 #' \link{glottobooster} for details. If glottodata = NULL, "glottobase" will be loaded.
 #' \item "wals" - This is a spatially enhanced version of \href{https://wals.info/}{WALS}.
-#' \item "dplace" - Not yet supported. This is a spatially enhanced version of \href{https://d-place.org/}{D-PLACE}.
+#' \item "dplace" - This is a spatially enhanced version of \href{https://d-place.org/}{D-PLACE}.
 #' \item "glottolog" - This is a restructured (non-spatial) version of \href{https://glottolog.org/}{glottolog}.
 #' \item "glottospace" - A simple dataset with glottocodes and a geometry column. This
 #' is a subset of all languages in \href{https://glottolog.org/}{glottolog} with
