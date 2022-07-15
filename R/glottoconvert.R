@@ -1,6 +1,8 @@
 
 #' Convert a linguistic dataset into glottodata or glottosubdata
 #'
+#' This function is mainly intended for 'messy' datasets that are not in glottodata/glottosubdata structure.
+#'
 #' @param data A dataset that should be converted into glottodata/glottosubdata. This will generally be an excel file loaded with glottoget().
 #'
 #' The dataset will be converted into glottodata if:
@@ -25,7 +27,16 @@
 #' @param glottocolumn column name or column id with glottocodes (optional, provide if glottocodes are not stored in a column called 'glottocode')
 #' @param glottosubcolumn Column name or column id with glottosubcodes (optional, provide if glottosubcodes are not stored in a column called 'glottosubcode')
 #' @param varnamecol In case the dataset contains a structure table, but the varnamecol is not called 'varname', its name should be specified.
+#' @examples
+#' # Create a messy dataset:
+#' glottodata <- glottoget("demodata")
+#' glottodata <- cbind(glottodata, data.frame("redundant" = c(1:6)))
 #'
+#' # In this messy dataset there's no way to determine which columns contain the relevant variables...
+#' # Therefore we manually add a character string to distinguish the relevant columns:
+#' colnames(glottodata)[2:3] <- paste0("var_", colnames(glottodata)[2:3] )
+#'
+#' glottoconverted <- glottoconvert(glottodata, var = "var_")
 #' @export
 #' @return A glottodata or glottosubdata object (either a list or data.frame)
 glottoconvert <- function(data, var, glottocodes = NULL, table = NULL, glottocolumn = NULL, glottosubcolumn = NULL, ref = NULL, page = NULL, remark = NULL, contributor = NULL, varnamecol = NULL){

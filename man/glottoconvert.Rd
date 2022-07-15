@@ -58,5 +58,16 @@ Otherwise, glottospace will attempt to convert the dataset into glottosubdata. T
 A glottodata or glottosubdata object (either a list or data.frame)
 }
 \description{
-Convert a linguistic dataset into glottodata or glottosubdata
+This function is mainly intended for 'messy' datasets that are not in glottodata/glottosubdata structure.
+}
+\examples{
+# Create a messy dataset:
+glottodata <- glottoget("demodata")
+glottodata <- cbind(glottodata, data.frame("redundant" = c(1:6)))
+
+# In this messy dataset there's no way to determine which columns contain the relevant variables...
+# Therefore we manually add a character string to distinguish the relevant columns:
+colnames(glottodata)[2:3] <- paste0("var_", colnames(glottodata)[2:3] )
+
+glottoconverted <- glottoconvert(glottodata, var = "var_")
 }
