@@ -131,23 +131,25 @@ glottofilter <- function(glottodata = NULL,
   }
 }
 
-#' Filter languages from a map
+#' Filter languages interactively from a map
 #'
-#' Select languages by drawing or clicking on a map
+#' Select languages by drawing or clicking on a map. The output should be assigned to a new object. In case you want to select languages based on a (non-spatial) condition, you might want to use glottofilter() instead.
 #'
 #' @param glottodata Spatial glottodata object
-#' @param mode Either "draw" or "click"
+#' @param mode You can choose here whether you want to interactively select languages by clicking on them (mode = 'click', default) or by drawing a shape around them (mode = 'draw').
 #' @param ... Additional arguments to pass to glottofilter
 #' @export
 #' @return A set of languages selected from the original glottodata object
 #'
 #' @examples
 #' \dontrun{
-#' selected <- glottofiltermap()
+#' # Interactive selection by clicking on languages:
+#' selected <- glottofiltermap(continent = "South America")
 #' glottomap(selected)
 #'
-#' glottofiltermap(continent = "South America")
-#' glottofiltermap(country = "Netherlands")
+#' # Interactive selection by drawing a shape:
+#' selected <- glottofiltermap(continent = "South America", mode = "draw")
+#' glottomap(selected)
 #' }
 glottofiltermap <- function(glottodata = NULL, mode = NULL, ...){
   rlang::check_installed("mapedit", reason = "to use `glottofiltermap()`")
@@ -156,7 +158,7 @@ glottofiltermap <- function(glottodata = NULL, mode = NULL, ...){
     glottodata <- glottofilter(...)
   }
 
-  if(is.null(mode)){mode <- "draw"}
+  if(is.null(mode)){mode <- "click"}
 
   suppressMessages(mapedit::selectFeatures(glottodata, mode = mode, title = "Select languages"))
 }

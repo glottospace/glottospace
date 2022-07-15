@@ -2,7 +2,7 @@
 #' Create static and dynamic maps from glottodata, or select languages from a map
 #'
 #' With this function you can easily create static and dynamic maps from glottodata (by setting type to 'static' or 'dynamic').
-#' Alternatively, by specifying type = "filter", you can select languages by drawing/clicking on a map.
+#' Alternatively, by specifying type = "filter", you can interactively select languages by drawing a shape around them (mode = "draw"; default) or by clicking on them (mode = "click"). See ?glottofiltermap for more details.
 #'
 #' @param glottodata Optional, user-provided glottodata. In case no glottodata is provided, you can pass arguments directly to glottofilter.
 #' @param color glottovar, column name, or column index to be used to color features (optional). See 'Details' below.
@@ -16,7 +16,7 @@
 #' @param rivers Do you want to plot rivers (only for static maps)?
 #' @param nclass Preferred number of classes (default is 5)
 #' @param numcat Do numbers represent categories? For example, if your dataset consists of 0 and 1, you might want to set this to TRUE.
-#' @param mode In case type = "filter", you can set mode to either "draw" or "click".
+#' @param mode In case type = "filter", you can choose here whether you want to interactively select languages by clicking on them (mode = 'click', default) or by drawing a shape around them (mode = 'draw').
 #' @param projection For static maps, you can choose one of the following: 'eqarea' (equal-area Eckert IV, default), 'pacific' (Pacific-centered), or any other Coordinate Reference System, specified using an EPSG code (https://epsg.io/).
 #' @param filename Optional filename if you want to save resulting map
 #' @param ... Additional parameters to glottofilter
@@ -45,6 +45,14 @@
 #' glottodata <- glottospotlight(glottodata = glottodata, spotcol =
 #' "family", spotlight = families$family[-c(1:10)], spotcontrast = "family", bgcontrast = "family")
 #' glottomap(glottodata, color = "colpal")
+#'
+#' # Interactive selection by clicking on languages:
+#' selected <- glottomap(continent = "South America", type = "filter")
+#' glottomap(selected)
+#'
+#' # Interactive selection by drawing a shape:
+#' selected <- glottomap(continent = "South America", type = "filter", mode = "draw")
+#' glottomap(selected)
 #' }
 glottomap <- function(glottodata = NULL, color = NULL, label = NULL, type = NULL, ptsize = NULL, alpha = NULL, lbsize = NULL, palette = NULL, rivers = FALSE, nclass = NULL, numcat = FALSE, filename = NULL, projection = NULL, mode = NULL, ...){
   palette <- glottocolpal(palette = palette)

@@ -50,7 +50,7 @@ Alternatively, you could also run tmaptools::palette_explorer(), RColorBrewer::d
 
 \item{projection}{For static maps, you can choose one of the following: 'eqarea' (equal-area Eckert IV, default), 'pacific' (Pacific-centered), or any other Coordinate Reference System, specified using an EPSG code (https://epsg.io/).}
 
-\item{mode}{In case type = "filter", you can set mode to either "draw" or "click".}
+\item{mode}{In case type = "filter", you can choose here whether you want to interactively select languages by clicking on them (mode = 'click', default) or by drawing a shape around them (mode = 'draw').}
 
 \item{...}{Additional parameters to glottofilter}
 }
@@ -59,7 +59,7 @@ a map created from a glotto(sub)data object and can be saved with glottosave()
 }
 \description{
 With this function you can easily create static and dynamic maps from glottodata (by setting type to 'static' or 'dynamic').
-Alternatively, by specifying type = "filter", you can select languages by drawing/clicking on a map.
+Alternatively, by specifying type = "filter", you can interactively select languages by drawing a shape around them (mode = "draw"; default) or by clicking on them (mode = "click"). See ?glottofiltermap for more details.
 }
 \examples{
 \donttest{
@@ -82,6 +82,14 @@ glottodata <- glottospotlight(glottodata = glottodata, spotcol =
 glottodata <- glottospotlight(glottodata = glottodata, spotcol =
 "family", spotlight = families$family[-c(1:10)], spotcontrast = "family", bgcontrast = "family")
 glottomap(glottodata, color = "colpal")
+
+# Interactive selection by clicking on languages:
+selected <- glottomap(continent = "South America", type = "filter")
+glottomap(selected)
+
+# Interactive selection by drawing a shape:
+selected <- glottomap(continent = "South America", type = "filter", mode = "draw")
+glottomap(selected)
 }
 }
 \details{If no glottodata object is provided, then you have the following options for the 'color' and 'label' arguments: ', 'glottocode', 'name', 'macroarea', 'isocode', 'countries', 'family_id', 'classification', 'parent_id', 'family', 'isolate', 'family_size', 'family_size_rank', 'country', 'sovereignty', 'type', 'geounit', 'continent', 'adm0_a3', '}

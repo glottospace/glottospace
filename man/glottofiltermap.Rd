@@ -2,14 +2,14 @@
 % Please edit documentation in R/glottofilter.R
 \name{glottofiltermap}
 \alias{glottofiltermap}
-\title{Filter languages from a map}
+\title{Filter languages interactively from a map}
 \usage{
 glottofiltermap(glottodata = NULL, mode = NULL, ...)
 }
 \arguments{
 \item{glottodata}{Spatial glottodata object}
 
-\item{mode}{Either "draw" or "click"}
+\item{mode}{You can choose here whether you want to interactively select languages by clicking on them (mode = 'click', default) or by drawing a shape around them (mode = 'draw').}
 
 \item{...}{Additional arguments to pass to glottofilter}
 }
@@ -17,14 +17,16 @@ glottofiltermap(glottodata = NULL, mode = NULL, ...)
 A set of languages selected from the original glottodata object
 }
 \description{
-Select languages by drawing or clicking on a map
+Select languages by drawing or clicking on a map. The output should be assigned to a new object. In case you want to select languages based on a (non-spatial) condition, you might want to use glottofilter() instead.
 }
 \examples{
 \dontrun{
-selected <- glottofiltermap()
+# Interactive selection by clicking on languages:
+selected <- glottofiltermap(continent = "South America")
 glottomap(selected)
 
-glottofiltermap(continent = "South America")
-glottofiltermap(country = "Netherlands")
+# Interactive selection by drawing a shape:
+selected <- glottofiltermap(continent = "South America", mode = "draw")
+glottomap(selected)
 }
 }
