@@ -1,5 +1,14 @@
 #' Permanova across all groups (overall or pairwise)
 #'
+#' This function takes a glottodata or glottosubdata object and performs a
+#' Permutational Multivariate Analysis of Variance (PERMANOVA). It can be used
+#' to test whether two or more groups are significantly different from each
+#' other (by specifying the 'comparison' argument with either 'overall' or
+#' 'pairwise'). The function uses the 'group' column in the sample table to do
+#' the comparisons. Before running the analysis, a distance matrix is
+#' constructed from the glotto(sub)data object using glottodist(). The function
+#' calls vegan::adonis2(), type ?adonis2 for more details.
+#'
 #' @param glottodata glottodata or glottosubdata
 #' @param sample sample table (optional). By default, searches for sample table in glottodata/glottosubdata.
 #' @param comparison Either "overall" or "pairwise"
