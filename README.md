@@ -40,6 +40,8 @@ confusing. You can help us to improve the package by:
     description of the issue or error message.  
 -   Opening a new issue in the [glottospace issues page on
     GitHub](https://github.com/SietzeN/glottospace/issues)
+-   Fixing a bug or adding functionality and submit a [pull request on
+    GitHub](https://github.com/SietzeN/glottospace/pulls).
 
 # Citation
 
@@ -197,7 +199,8 @@ colnames(glottobase)
 #>  [1] "glottocode"       "name"             "macroarea"        "isocode"         
 #>  [5] "countries"        "family_id"        "classification"   "parent_id"       
 #>  [9] "family"           "isolate"          "family_size"      "family_size_rank"
-#> [13] "country"          "continent"        "sovereignty"      "geometry"
+#> [13] "country"          "sovereignty"      "type"             "geounit"         
+#> [17] "continent"        "adm0_a3"          "geometry"
 ```
 
 ## glottocreate
@@ -227,7 +230,7 @@ summary(glottodata_meta)
 #> references    9     data.frame list
 #> remarks       5     data.frame list
 #> contributors  5     data.frame list
-#> sample        1     data.frame list
+#> sample        3     data.frame list
 #> readme        2     data.frame list
 #> lookup        2     data.frame list
 ```
@@ -239,10 +242,10 @@ added later:
 
 ``` r
 glottocreate_structuretable(varnames = c("var001", "var002", "var003"))
-#>   varname type levels weight groups subgroups
-#> 1  var001   NA     NA      1     NA        NA
-#> 2  var002   NA     NA      1     NA        NA
-#> 3  var003   NA     NA      1     NA        NA
+#>   varname type levels weight group subgroup
+#> 1  var001   NA     NA      1    NA       NA
+#> 2  var002   NA     NA      1    NA       NA
+#> 3  var003   NA     NA      1    NA       NA
 ```
 
 More complex glottodata structures can also be generated. For example,
@@ -268,7 +271,7 @@ glottocreate(glottocodes = c("yucu1253", "tani1257"),
 #> 4 tani1257_b_0002     NA     NA     NA
 #> 
 #> attr(,"class")
-#> [1] "list"          "glottosubdata"
+#> [1] "glottosubdata" "list"
 ```
 
 ## glottocheck
@@ -286,6 +289,7 @@ glottocheck(glottodata, diagnostic = FALSE)
 #> All IDs are valid glottocodes
 #> Some columns have missing data.
 #> Some rows have missing data.
+#> glottodata does not contain metadata
 ```
 
 We’ve now specified diagnostic = FALSE, but the default is to show some
@@ -310,6 +314,8 @@ glottocheck(glottodata, checkmeta = TRUE)
 #> This glottodataset contains the folowing tables: glottodata, structure, description, references, remarks, contributors, sample, readme, lookup
 #> All types recognized
 #> All weights are specified
+#> The following variables are in the data, but there are no such columns variables defined in the structure table: glottocode
+#>  Please check whether the spelling is identical, remove the rows from the structure table, or add the columns to the data.
 ```
 
 <img src="man/figures/README-glottocheckmeta-1.png" width="100%" />
@@ -323,10 +329,10 @@ coding missing values.
 ``` r
 glottodata <- glottoget(glottodata = "demodata", meta = TRUE)
 glottodata$structure
-#>   varname   type levels weight groups subgroups
-#> 1  var001   symm     NA      1     NA        NA
-#> 2  var002 factor     NA      1     NA        NA
-#> 3  var003   symm     NA      1     NA        NA
+#>   varname   type levels weight group subgroup
+#> 1  var001   symm     NA      1    NA       NA
+#> 2  var002 factor     NA      1    NA       NA
+#> 3  var003   symm     NA      1    NA       NA
 # glottodata <- glottoclean(glottodata)
 ```
 
@@ -356,40 +362,45 @@ You can search for a match in all columns:
 
 ``` r
 glottosearch(search = "yurakar")
-#> Simple feature collection with 1 feature and 15 fields
+#> Simple feature collection with 1 feature and 18 fields
 #> Geometry type: POINT
 #> Dimension:     XY
 #> Bounding box:  xmin: -65.1224 ymin: -16.7479 xmax: -65.1224 ymax: -16.7479
 #> Geodetic CRS:  WGS 84
 #>      glottocode     name     macroarea isocode countries family_id
-#> 7546   yura1255 Yuracaré South America     yuz        BO  yura1255
+#> 7555   yura1255 Yuracaré South America     yuz        BO  yura1255
 #>      classification parent_id   family isolate family_size family_size_rank
-#> 7546           <NA>      <NA> Yuracaré    TRUE           1                1
-#>      country     continent sovereignty                  geometry
-#> 7546 Bolivia South America     Bolivia POINT (-65.1224 -16.7479)
+#> 7555           <NA>      <NA> Yuracaré    TRUE           1                1
+#>      country sovereignty              type geounit     continent adm0_a3
+#> 7555 Bolivia     Bolivia Sovereign country Bolivia South America     BOL
+#>                       geometry
+#> 7555 POINT (-65.1224 -16.7479)
 ```
 
 Or limit the search to specific columns:
 
 ``` r
 glottosearch(search = "Yucuni", columns = c("name", "family"))
-#> Simple feature collection with 2 features and 15 fields
+#> Simple feature collection with 2 features and 18 fields
 #> Geometry type: POINT
 #> Dimension:     XY
 #> Bounding box:  xmin: -97.91818 ymin: -0.76075 xmax: -71.0033 ymax: 17.23743
 #> Geodetic CRS:  WGS 84
 #>      glottocode              name     macroarea isocode countries family_id
-#> 7532   yucu1253            Yucuna South America     ycn  BR;CO;PE  araw1281
-#> 7533   yucu1254 Yucunicoco Mixtec North America                MX  otom1299
+#> 7541   yucu1253            Yucuna South America     ycn  BR;CO;PE  araw1281
+#> 7542   yucu1254 Yucunicoco Mixtec North America                MX  otom1299
 #>                                                      classification parent_id
-#> 7532                            araw1281/japu1236/nucl1764/yucu1252  yucu1252
-#> 7533 otom1299/east2557/amuz1253/mixt1422/mixt1423/mixt1427/sout3179  sout3179
-#>           family isolate family_size family_size_rank  country     continent
-#> 7532    Arawakan   FALSE          77               40 Colombia South America
-#> 7533 Otomanguean   FALSE         182               44   Mexico North America
-#>      sovereignty                   geometry
-#> 7532    Colombia  POINT (-71.0033 -0.76075)
-#> 7533      Mexico POINT (-97.91818 17.23743)
+#> 7541                            araw1281/japu1236/nucl1764/yucu1252  yucu1252
+#> 7542 otom1299/east2557/amuz1253/mixt1422/mixt1423/mixt1427/sout3179  sout3179
+#>           family isolate family_size family_size_rank  country sovereignty
+#> 7541    Arawakan   FALSE          77               42 Colombia    Colombia
+#> 7542 Otomanguean   FALSE         181               46   Mexico      Mexico
+#>                   type  geounit     continent adm0_a3
+#> 7541 Sovereign country Colombia South America     COL
+#> 7542 Sovereign country   Mexico North America     MEX
+#>                        geometry
+#> 7541  POINT (-71.0033 -0.76075)
+#> 7542 POINT (-97.91818 17.23743)
 ```
 
 Sometimes you don’t find a match:
@@ -414,7 +425,7 @@ glottosearch(search = "matsigenka", tolerance = 0.2)[,"name"]
 #> Bounding box:  xmin: -74.4371 ymin: -11.5349 xmax: -74.4371 ymax: -11.5349
 #> Geodetic CRS:  WGS 84
 #>               name                  geometry
-#> 4779 Nomatsiguenga POINT (-74.4371 -11.5349)
+#> 4787 Nomatsiguenga POINT (-74.4371 -11.5349)
 ```
 
 Aha! There it is: ‘Machiguenga’
@@ -428,16 +439,16 @@ glottosearch(search = "matsigenka", tolerance = 0.4)[,"name"]
 #> Geodetic CRS:  WGS 84
 #> First 10 features:
 #>                    name                   geometry
-#> 1708 Eastern Maninkakan   POINT (-10.5394 9.33048)
-#> 3061    Kita Maninkakan   POINT (-9.49151 13.1798)
-#> 3145   Konyanka Maninka   POINT (-8.89972 8.04788)
-#> 3724   Maasina Fulfulde   POINT (-3.64763 11.1324)
-#> 3740        Machiguenga  POINT (-72.5017 -12.1291)
-#> 3894           Mandinka POINT (-15.65395 12.81652)
-#> 3930          Mansoanka   POINT (-15.9202 12.8218)
-#> 4033  Matigsalug Manobo     POINT (125.16 7.72124)
-#> 4779      Nomatsiguenga  POINT (-74.4371 -11.5349)
-#> 5371         Piamatsina   POINT (166.738 -14.9959)
+#> 1710 Eastern Maninkakan   POINT (-10.5394 9.33048)
+#> 3063    Kita Maninkakan   POINT (-9.49151 13.1798)
+#> 3147   Konyanka Maninka   POINT (-8.89972 8.04788)
+#> 3731   Maasina Fulfulde   POINT (-3.64763 11.1324)
+#> 3747        Machiguenga  POINT (-72.5017 -12.1291)
+#> 3901           Mandinka POINT (-15.65395 12.81652)
+#> 3937          Mansoanka   POINT (-15.9202 12.8218)
+#> 4040  Matigsalug Manobo     POINT (125.16 7.72124)
+#> 4787      Nomatsiguenga  POINT (-74.4371 -11.5349)
+#> 5383         Piamatsina   POINT (166.738 -14.9959)
 ```
 
 ## glottofilter
@@ -466,6 +477,7 @@ glottodist <- glottodist(glottodata = glottodata)
 #> Values in binary columns (symm/asymm) recoded to TRUE/FALSE
 #> Missing values recoded to NA
 #> All variables have two or more levels (excluding NA)
+#> All variables have two or more levels (excluding NA)
 
 # As we've seen above, in case you have glottodata without a structure table, you can add it:
 glottodata <- glottoget("demodata", meta = FALSE)
@@ -483,6 +495,7 @@ glottodata <- glottoget("demodata", meta = TRUE)
 glottodist <- glottodist(glottodata = glottodata)
 #> Values in binary columns (symm/asymm) recoded to TRUE/FALSE
 #> Missing values recoded to NA
+#> All variables have two or more levels (excluding NA)
 #> All variables have two or more levels (excluding NA)
 glottoplot(glottodist = glottodist)
 ```
@@ -525,17 +538,15 @@ might want to create a world map highlighting the largest language
 families
 
 ``` r
-glottodata <- glottoget()
-families <- dplyr::count(glottodata, family, sort = TRUE)
-
-# highlight 10 largest families:
-glottodata <- glottospotlight(glottodata = glottodata, spotcol = "family", spotlight = families$family[1:10], spotcontrast = "family", bgcontrast = "family")
-
-# Create map
-glottomap(glottodata, color = "color")
+# glottodata <- glottoget()
+# families <- dplyr::count(glottodata, family, sort = TRUE)
+# 
+# # highlight 10 largest families:
+# glottodata <- glottospotlight(glottodata = glottodata, spotcol = "family", spotlight = families$family[1:10], spotcontrast = "family", bgcontrast = "family")
+# 
+# # Create map
+# glottomap(glottodata, color = "color")
 ```
-
-<img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
 
 ## glottosave
 

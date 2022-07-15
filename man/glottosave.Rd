@@ -31,7 +31,7 @@ glottosave(glottodata, filename = file.path(tempdir(), "glottodata") )
 
 glottospacedata <- glottospace(glottodata)
 # Saves as .GPKG
-glottosave(glottodata, filename = file.path(tempdir(), "glottodata") )
+glottosave(glottospacedata, filename = file.path(tempdir(), "glottodata") )
 
 glottomap <- glottomap(glottodata)
 # Saves as .png

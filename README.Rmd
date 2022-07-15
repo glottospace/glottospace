@@ -36,6 +36,7 @@ We're still actively developing the **glottospace** package by adding new functi
 
 - Sending an email to [Sietze Norder](mailto:s.j.norder@hum.leidenuniv.nl) with a clear description of the issue or error message.  
 - Opening a new issue in the [glottospace issues page on GitHub](https://github.com/SietzeN/glottospace/issues)
+- Fixing a bug or adding functionality and submit a [pull request on GitHub](https://github.com/SietzeN/glottospace/pulls).
 
 # Citation
 We're currently writing a paper about the package presenting its full functionality. If you find the **glottospace** package useful, please cite it in your work:
@@ -283,14 +284,14 @@ glottomap(country = "Colombia")
 However, you can also create maps with other glottodata. For example, we might want to create a world map highlighting the largest language families
 
 ```{r}
-glottodata <- glottoget()
-families <- dplyr::count(glottodata, family, sort = TRUE)
-
-# highlight 10 largest families:
-glottodata <- glottospotlight(glottodata = glottodata, spotcol = "family", spotlight = families$family[1:10], spotcontrast = "family", bgcontrast = "family")
-
-# Create map
-glottomap(glottodata, color = "color")
+# glottodata <- glottoget()
+# families <- dplyr::count(glottodata, family, sort = TRUE)
+# 
+# # highlight 10 largest families:
+# glottodata <- glottospotlight(glottodata = glottodata, spotcol = "family", spotlight = families$family[1:10], spotcontrast = "family", bgcontrast = "family")
+# 
+# # Create map
+# glottomap(glottodata, color = "color")
 ```
 
 

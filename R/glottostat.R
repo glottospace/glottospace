@@ -149,3 +149,14 @@ pvalstars <- function(pval){
 
 pstar
 }
+
+pvalvecstars <- function(pvalvec){
+  pvalvec <- ifelse(is.na(pvalvec), NA, pvalvec)
+  pvalvec <- ifelse(pvalvec <= 0.001, "***", pvalvec)
+  pvalvec <- ifelse(pvalvec > 0.001 & pvalvec <= 0.01, "**", pvalvec)
+  pvalvec <- ifelse(pvalvec > 0.01 & pvalvec <= 0.05, "*", pvalvec)
+  pvalvec <- ifelse(pvalvec > 0.05 & pvalvec <= 0.1, ".", pvalvec)
+  pvalvec <- ifelse(pvalvec > 0.1, "", pvalvec)
+
+  pvalvec
+}
