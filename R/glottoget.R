@@ -50,6 +50,8 @@ glottoget <- function(glottodata = NULL, meta = FALSE, download = FALSE, dirpath
     glottodata <- glottoget_dplace(download = download)
   } else if(tools::file_ext(glottodata) != ""){
     glottodata <- glottoget_path(filepath = glottodata)
+  } else if(tools::file_ext(glottodata) != ".Rds"){
+    glottodata <- readRDS(file = glottodata)
   } else {message("Unable to load requested glottodata")}
 return(glottodata)
 }
