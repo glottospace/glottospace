@@ -48,7 +48,7 @@ Alternatively, you could also run tmaptools::palette_explorer(), RColorBrewer::d
 
 \item{filename}{Optional filename if you want to save resulting map}
 
-\item{projection}{For static maps, you can choose one of the following: 'eqarea' (equal-area Eckert IV, default), 'pacific' (Pacific-centered), or any other Coordinate Reference System, specified using an EPSG code (https://epsg.io/).}
+\item{projection}{For static maps, you can choose one of the following: 'eqarea' (equal-area Eckert IV, default), 'pacific' (Pacific-centered), or any other Coordinate Reference System, specified using an EPSG code (https://epsg.io/), for example: "ESRI:54009".}
 
 \item{mode}{In case type = "filter", you can choose here whether you want to interactively select languages by clicking on them (mode = 'click', default) or by drawing a shape around them (mode = 'draw').}
 

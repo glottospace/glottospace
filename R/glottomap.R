@@ -17,7 +17,7 @@
 #' @param nclass Preferred number of classes (default is 5)
 #' @param numcat Do numbers represent categories? For example, if your dataset consists of 0 and 1, you might want to set this to TRUE.
 #' @param mode In case type = "filter", you can choose here whether you want to interactively select languages by clicking on them (mode = 'click', default) or by drawing a shape around them (mode = 'draw').
-#' @param projection For static maps, you can choose one of the following: 'eqarea' (equal-area Eckert IV, default), 'pacific' (Pacific-centered), or any other Coordinate Reference System, specified using an EPSG code (https://epsg.io/).
+#' @param projection For static maps, you can choose one of the following: 'eqarea' (equal-area Eckert IV, default), 'pacific' (Pacific-centered), or any other Coordinate Reference System, specified using an EPSG code (https://epsg.io/), for example: "ESRI:54009".
 #' @param filename Optional filename if you want to save resulting map
 #' @param ... Additional parameters to glottofilter
 #' @evalRd glottovars()
@@ -171,12 +171,10 @@ glottomap_static <- function(glottodata, projection = NULL, label = NULL, color 
     if(nrcat > 30){
       tmap::tmap_options(max.categories = nrcat)
     }
-  } else{
-    color <- "black"
   }
 
   if(projection == "pacific" | projection == "Pacific" | projection == "pacific-centered" | projection == "Pacific-centered"){
-    glottomap_static_pacific(glottodata = glottodata, color = color)
+    glottomap_static_pacific(glottodata = glottodata, color = color, palette = palette, ptsize = ptsize, alpha = alpha, rivers = rivers)
   } else if(projection == "eqarea" | projection == "equal-area" | projection == "equalarea"){
     glottomap_static_crs(glottodata, crs = NULL, label = label, color = color, ptsize = ptsize, lbsize = lbsize, alpha = alpha, palette = palette, rivers = rivers, nclass = nclass, numcat = numcat)
   } else {
@@ -270,11 +268,9 @@ glottomap_static_crs <- function(glottodata, label = NULL, color = NULL, ptsize 
 #' @examples
 #' glottodata <- glottofilter(location = "Australia")
 #' glottomap_static_pacific(glottodata, color = "family")
-glottomap_static_pacific <- function(glottodata, color = NULL, rivers = FALSE, ptsize = NULL){
+glottomap_static_pacific <- function(glottodata, color = NULL, rivers = FALSE, ptsize = NULL, palette = NULL, alpha = NULL){
   if(is.null(ptsize)){ptsize <- 1}
-  if(is.null(color)){
-    glottodata[,"color"] <- "black"
-  color <- "color"}
+  if(is.null(alpha)){alpha <- 0.55}
   world <- rnaturalearth::ne_countries(scale = 50, returnclass = "sf")
   world <- world %>% sf::st_make_valid()
 
@@ -297,14 +293,19 @@ glottomap_static_pacific <- function(glottodata, color = NULL, rivers = FALSE, p
     rivers10 <- suppressWarnings(rivers10 %>% sf::st_difference(polygon) )
   }
 
+  if(!is.null(color)){ncolr <- length(unique(glottodata[[color]]))}
 
   # plot
   ggplot2::ggplot() +
     ggplot2::geom_sf(data = world_robinson, fill = "white") +
     {if(rivers == TRUE){ggplot2::geom_sf(data = rivers10, color = "lightblue" ) }} +
-    ggplot2::geom_sf(data = glottodata, ggplot2::aes(color = .data[[color]]), size = ptsize ) +
-    ggplot2::theme(legend.position = "none",
-                   plot.background = ggplot2::element_rect(fill = "white"))
+    {if(is.null(color)){ggplot2::geom_sf(data = glottodata, ggplot2::aes(), size = ptsize, alpha = alpha )
+      } else{ggplot2::geom_sf(data = glottodata, ggplot2::aes(color = .data[[color]]), size = ptsize, alpha = alpha )}
+      } + {if(!is.null(palette)){ggplot2::scale_color_manual(values = glottocolpal(palette, ncolr = ncolr ))}} +
+      ggplot2::theme(legend.position = "none",
+                   plot.background = ggplot2::element_rect(fill = "white"),
+                   panel.background = ggplot2::element_rect(fill = "grey85"),
+                   panel.grid = ggplot2::element_line(colour = "white"))
 
 
 }
