@@ -6,7 +6,7 @@
 \usage{
 glottoconvert(
   data,
-  var,
+  var = NULL,
   glottocodes = NULL,
   table = NULL,
   glottocolumn = NULL,

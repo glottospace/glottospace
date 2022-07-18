@@ -39,10 +39,11 @@
 #' glottoconverted <- glottoconvert(glottodata, var = "var_")
 #' @export
 #' @return A glottodata or glottosubdata object (either a list or data.frame)
-glottoconvert <- function(data, var, glottocodes = NULL, table = NULL, glottocolumn = NULL, glottosubcolumn = NULL, ref = NULL, page = NULL, remark = NULL, contributor = NULL, varnamecol = NULL){
+glottoconvert <- function(data, var = NULL, glottocodes = NULL, table = NULL, glottocolumn = NULL, glottosubcolumn = NULL, ref = NULL, page = NULL, remark = NULL, contributor = NULL, varnamecol = NULL){
 
-  if(purrr::is_empty(var)){
-    stop("Please indicate how variable columns are distinguished from other columns.")
+  if(is.null(var)){
+    var <- ""
+    message("The 'var' argument is empty. Assuming that all columns except glottocolumn are variables. If this is not the case, please indicate how variable columns are distinguished from other columns.")
   }
 
   if(!is_list(data) & is.null(glottosubcolumn)){
@@ -240,9 +241,13 @@ glottoconvert_table <- function(table, glottocolumn = NULL, var, ref = NULL, pag
     glottocodes <- table[[glottocol]]
 
     oldvarnames <- grep(pattern = var, x = colnames(table), ignore.case = TRUE, value = TRUE)
+    oldvarnames <- oldvarnames[oldvarnames %nin% glottocol] # added to accomodate var = ""
     if(length(oldvarnames) == 0){stop(paste0("No columns found with ", var, " in the name."))}
     newvarnames <- gsub(pattern = var, x = oldvarnames, replacement = "")
     glottodata <- glottocreate(glottocodes = glottocodes, variables = newvarnames)
+
+    # Drop glottocol from old table
+    table <- table[,colnames(table) %nin% glottocol]  # added to accomodate var = ""
 
 # Add data for variables:
   sdata <- glottoconvert_colname(data = table, oldfix = var,
@@ -303,6 +308,7 @@ glottoconvert_table <- function(table, glottocolumn = NULL, var, ref = NULL, pag
     "page numbers", npage,
     "remarks", nremark,
     "contributors", ncontr,
+    "glottocol", 1,
     "omitted", totcol-nvar-nref-npage-nremark-ncontr-1 # minus 1 for glottocode
   )
 
@@ -335,10 +341,14 @@ glottoconvert_subtable <- function(table, glottosubcolumn = NULL, var){
   glottosubcodes <- table[[glottosubcol]]
 
   oldvarnames <- grep(pattern = var, x = colnames(table), ignore.case = TRUE, value = TRUE)
+  oldvarnames <- oldvarnames[oldvarnames %nin% glottosubcol] # added to accomodate var = ""
   if(length(oldvarnames) == 0){stop(paste0("No columns found with ", var, " in the name."))}
   newvarnames <- gsub(pattern = var, x = oldvarnames, replacement = "")
   glottotable <- glottocreate(glottocodes = glottosubcodes, variables = newvarnames, meta = FALSE)
   colnames(glottotable)[1] <- "glottosubcode"
+
+  # Drop glottocol from old table
+  table <- table[,colnames(table) %nin% glottosubcol]  # added to accomodate var = ""
 
   # Add data for variables:
   sdata <- glottoconvert_colname(data = table, oldfix = var,
