@@ -5,7 +5,7 @@
 #'
 #' @param glottodata A glottodata table, or list of a glottodata table and metadata table(s)
 #' @param method Interpolation method, either "buffer" or "voronoi" (synonymous with "thiessen")
-#' @param radius In case interpolation method "buffer", the radius in km.
+#' @param radius In case interpolation method "buffer", the radius in km around the points. If method "thiessen", a buffer will be created into the ocean, particularly relevant for island languages.
 #'
 #' @return A spatial version of glottodata. In case glottodata has metadata, only glottodata
 #'  will be converted to spatial (but all metadata tables are kept).
@@ -15,8 +15,21 @@
 #' @examples
 #' glottodata <- glottoget("demodata", meta = TRUE)
 #' \donttest{
-#' glottospacedata <- glottospace(glottodata, method = "voronoi")
+#' glottopols <- glottospace(glottodata, method = "voronoi")
 #' }
+#'
+#' glottodata <- glottofilter(country = "Netherlands")
+#' glottopols <- glottospace(glottodata, method = "buffer", radius = 20)
+#' glottomap(glottopols)
+#'
+#' glottodata <- glottofilter(continent = "South America")
+#' glottopols <- glottospace(glottodata, method = "thiessen")
+#' glottomap(glottopols)
+#'
+#' glottodata <- glottofilter(country = "Philippines")
+#' glottopols <- glottospace(glottodata, radius = 100, method = "thiessen")
+#' glottomap(glottopols)
+#'
 glottospace <- function(glottodata, method = NULL, radius = NULL){
 
   if(glottocheck_isglottosubdata(glottodata)){stop("A spatial object can only be created from glottodata, not from glottosubdata.")}
@@ -31,8 +44,10 @@ glottospace <- function(glottodata, method = NULL, radius = NULL){
   }
 
   if(!is.null(method)){
+    method <- tolower(method)
+    if(method %nin% c("thiessen", "voronoi", "buffer")){stop("Method should be either 'buffer' or 'voronoi' (synonymous with 'thiessen') ")}
   if(method == "thiessen" | method == "voronoi"){
-    glottodata <- glottospace_thiessen(glottodata = glottodata)
+    glottodata <- glottospace_thiessen(glottodata = glottodata, radius = radius)
   }
 
   if(method == "buffer"){
@@ -71,6 +86,8 @@ glottospace_buffer <- function(glottodata, radius){
 #' Create Thiessen polygons
 #'
 #' @param glottodata spatial glottodata without metadata
+#' @param radius radius in km
+#'
 #' @noRd
 #'
 #' @examples
@@ -81,7 +98,12 @@ glottospace_buffer <- function(glottodata, radius){
 #' glottodata <- glottofilter(continent = "South America")
 #' glottopols <- glottospace_thiessen(glottodata)
 #' glottomap(glottopols)
-glottospace_thiessen <- function(glottodata){
+#'
+#' glottodata <- glottofilter(country = "Philippines")
+#' glottopols <- glottospace_thiessen(glottodata, radius = 100)
+#' glottomap(glottopols)
+#'
+glottospace_thiessen <- function(glottodata, radius = NULL){
   crs_original <- sf::st_crs(glottodata)
   pts <- sf::st_transform(glottodata, sf::st_crs("ESRI:54032")) # convert to World Azimuthal Equidistant projection: https://epsg.io/54032
 
@@ -108,6 +130,11 @@ glottospace_thiessen <- function(glottodata){
   }
 
   boundarypols <- sf::st_transform(boundarypols, crs = sf::st_crs("ESRI:54032") ) %>% sf::st_geometry()
+
+  if(!is.null(radius)){
+  r <- radius*1000 # convert km to meters because unit of st_buffer should be meters (crs is transformed to equidistant with units = meters, in case lon/lat it would have been degrees.).
+  boundarypols <- sf::st_buffer(x = boundarypols, dist = r)
+  }
 
   # merge polygons
   boundary <- sf::st_union(boundarypols) %>% sf::st_make_valid()

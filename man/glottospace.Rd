@@ -11,7 +11,7 @@ glottospace(glottodata, method = NULL, radius = NULL)
 
 \item{method}{Interpolation method, either "buffer" or "voronoi" (synonymous with "thiessen")}
 
-\item{radius}{In case interpolation method "buffer", the radius in km.}
+\item{radius}{In case interpolation method "buffer", the radius in km around the points. If method "thiessen", a buffer will be created into the ocean, particularly relevant for island languages.}
 }
 \value{
 A spatial version of glottodata. In case glottodata has metadata, only glottodata
@@ -24,6 +24,19 @@ This function takes glottodata (either with or without metadata) and turns it in
 \examples{
 glottodata <- glottoget("demodata", meta = TRUE)
 \donttest{
-glottospacedata <- glottospace(glottodata, method = "voronoi")
+glottopols <- glottospace(glottodata, method = "voronoi")
 }
+
+glottodata <- glottofilter(country = "Netherlands")
+glottopols <- glottospace(glottodata, method = "buffer", radius = 20)
+glottomap(glottopols)
+
+glottodata <- glottofilter(continent = "South America")
+glottopols <- glottospace(glottodata, method = "thiessen")
+glottomap(glottopols)
+
+glottodata <- glottofilter(country = "Philippines")
+glottopols <- glottospace(glottodata, radius = 100, method = "thiessen")
+glottomap(glottopols)
+
 }
