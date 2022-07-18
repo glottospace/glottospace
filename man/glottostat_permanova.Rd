@@ -34,8 +34,9 @@ calls vegan::adonis2(), type ?adonis2 for more details.
 glottodata <- glottoget("demodata", meta = TRUE)
 glottostat_permanova(glottodata, comparison = "pairwise")
 
-# Use subgroup as group
-glottodata[["sample"]][,"group"] <- glottodata[["sample"]][,"group"]
+# Use subgroup (or another column in the structure table) as group
+glottodata[["sample"]][,"group"] <- NULL # delete 'group' column (alternatively, it could be renamed)
+glottodata[["sample"]][,"group"] <- glottodata[["sample"]][,"subgroup"]
 glottostat_permanova(glottodata, comparison = "pairwise")
 
 glottosubdata <- glottoget("demosubdata", meta = TRUE)
