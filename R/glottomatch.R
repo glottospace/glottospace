@@ -6,7 +6,7 @@
 #' @param glottodata Optional, where to search for matches. If kept empty, the entire glottolog database will be searched, you could also search within a specific area
 #' @param tolerance Optional, search tolerance.
 #'
-#' @return
+#' @return a data.frame with exact or closest matches, and their glottocodes.
 #' @export
 #'
 #' @examples

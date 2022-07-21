@@ -135,10 +135,15 @@ glottodata_meta <- glottocreate(glottocodes = c("yucu1253", "tani1257"), variabl
 summary(glottodata_meta)
 ```
 
-The majority of these meta tables are added for the convenience of the user. The 'structure' table is the only one that is required for some of the functions in the glottospace package. A structure table can also be added later:
+The majority of these meta tables are added for the convenience of the user. The 'structure' and 'sample' tables are the only ones that are required for some of the functions in the glottospace package. A structure table can also be added later:
 
 ``` {r glottocreate_structuretable}
-glottocreate_structuretable(varnames = c("var001", "var002", "var003"))
+
+glottodata <- glottoget("demodata", meta = FALSE)
+structure <- glottocreate_structuretable(varnames = c("var001", "var002", "var003"))
+glottodata <- glottocreate_addtable(glottodata, structure, name = "structure")
+
+
 ```
 
 More complex glottodata structures can also be generated. For example, in cases where you want to distinguish between groups within each language. 
@@ -169,22 +174,25 @@ Once you've loaded glottodata, you might encounter some inconsistencies. For exa
 
 ``` {r glottoclean}
 glottodata <- glottoget(glottodata = "demodata", meta = TRUE)
-glottodata$structure
-# glottodata <- glottoclean(glottodata)
+glottodata_clean <- glottoclean(glottodata)
+
+glottodata$glottodata
+glottodata_clean$glottodata
 ```
 
-## glottojoin
+## glottojoin and glottosimplify
 Join user-provided glottodata with other datasets, or with online databases.
 ``` {r glottojoin}
 # Join with glottospace
 glottodata <- glottoget("demodata")
-glottodatabase <- glottojoin(glottodata, with = "glottobase")
-glottodataspace <- glottojoin(glottodata, with = "glottospace")
 
-# Join a list of glottodata tables into a single table
-glottodatalist <- glottocreate(glottocodes = c("yucu1253", "tani1257"), 
+# Add data from glottolog:
+glottojoin(glottodata, with = "glottobase")
+
+# Simplify glottosubdata (join a list of glottodata tables into a single table)
+glottosubdata <- glottocreate(glottocodes = c("yucu1253", "tani1257"), 
                                        variables = 3, groups = c("a", "b"), n = 2, meta = FALSE)
-glottodatatable <- glottojoin(glottodata = glottodatalist)
+glottosimplify(glottodata = glottosubdata)
 
 ```
 
@@ -227,27 +235,32 @@ filter, select, query
 
 ```{r glottofilter}
 eurasia <- glottofilter(continent = c("Europe", "Asia"))
+eurasia
+
+# Other examples of glottofilter:
 wari <- glottofilter(glottocode = "wari1268")
 indo_european <- glottofilter(family = 'Indo-European')
 south_america <- glottofilter(continent = "South America")
 colovenz <- glottofilter(country = c("Colombia", "Venezuela"))
-# arawtuca <- glottofilter(expression = family %in% c("Arawakan", "Tucanoan"))
+arawtuca <- glottofilter(expression = family %in% c("Arawakan", "Tucanoan"))
 
 ```
 
+You can also interactively filter languages by drawing or clicking on a map:
+```{r glottofiltermap}
+# selected <- glottofiltermap(continent = "South America")
+# glottomap(selected)
+
+```
 
 ## glottodist
 Quantify differences and similarities between languages
 glottodistances: calculating similarities between languages based on linguistic/cultural features
 ```{r glottodist}
-# In order to be able to calculate linguistic distances a structure table is required, that's why we specify meta = TRUE.
+# In order to be able to calculate linguistic distances a structure table is required, that's why we specify meta = TRUE. In case you have glottodata without a structure table, you can add it (see examples in the  glottocreate() section).
 glottodata <- glottoget("demodata", meta = TRUE)
 glottodist <- glottodist(glottodata = glottodata)
 
-# As we've seen above, in case you have glottodata without a structure table, you can add it:
-glottodata <- glottoget("demodata", meta = FALSE)
-structure <- glottocreate_structuretable()
-glottodata <- glottocreate_addtable(glottodata, structure, name = "structure")
 ```
 
 ## glottoplot
@@ -283,15 +296,15 @@ glottomap(country = "Colombia")
 
 However, you can also create maps with other glottodata. For example, we might want to create a world map highlighting the largest language families
 
-```{r}
-# glottodata <- glottoget()
-# families <- dplyr::count(glottodata, family, sort = TRUE)
-# 
-# # highlight 10 largest families:
-# glottodata <- glottospotlight(glottodata = glottodata, spotcol = "family", spotlight = families$family[1:10], spotcontrast = "family", bgcontrast = "family")
-# 
-# # Create map
-# glottomap(glottodata, color = "color")
+```{r glottomap_family_size}
+glottodata <- glottoget()
+families <- dplyr::count(glottodata, family, sort = TRUE)
+
+# highlight 10 largest families:
+glottodata <- glottospotlight(glottodata = glottodata, spotcol = "family", spotlight = families$family[1:10], spotcontrast = "family", bgcontrast = "family")
+
+# Create map
+glottomap(glottodata, color = "spotcol")
 ```
 
 
@@ -305,7 +318,7 @@ glottodata <- glottoget("demodata", meta = FALSE)
 
 # Saves as .GPKG
 glottospacedata <- glottospace(glottodata)
-# glottosave(glottodata, filename = "glottodata") 
+# glottosave(glottospacedata, filename = "glottospacedata") 
 
 # By default, static maps are saved as .png, dynamic maps are saved as .html
 glottomap <- glottomap(glottodata)

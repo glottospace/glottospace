@@ -158,7 +158,7 @@ glottocolpal_options <- function(){
 #' glottodata <- glottofilter(country = c("Netherlands", "Germany", "Belgium") )
 #' glottodata <- glottospotlight(glottodata = glottodata, spotcol = "country",
 #' spotlight = "Netherlands", spotcontrast = "name")
-#' glottomap(glottodata, color = "legend")
+#' glottomap(glottodata, color = "spotcol")
 #' }
 glottospotlight <- function(glottodata, spotcol, spotlight, spotcontrast = NULL, spotpal = NULL, bgcontrast = NULL, bgpal = NULL){
   if(is.null(spotpal)){spotpal <- "rainbow"}
@@ -199,14 +199,14 @@ glottospotlight <- function(glottodata, spotcol, spotlight, spotcontrast = NULL,
   ncolrbg <- length(unique(bgnames))
   colpalbg <- glottocolpal(palette = bgpal, ncolr = ncolrbg)
 
-  data$color[data$spotlight == TRUE] <- colpalspot[spotlightnames]
-  data$color[data$spotlight == FALSE] <- colpalbg[bgnames]
+  data$spotcol[data$spotlight == TRUE] <- colpalspot[spotlightnames]
+  data$spotcol[data$spotlight == FALSE] <- colpalbg[bgnames]
 
   if(was_sf == TRUE){
     if(glottocheck_isglottodata(data)){
-    glottodata <- suppressMessages(dplyr::left_join(glottodata, data[, c("glottocode", "spotlight", "legend", "color")]))
+    glottodata <- suppressMessages(dplyr::left_join(glottodata, data[, c("glottocode", "spotlight", "legend", "spotcol")]))
     } else if(glottocheck_isglottosubdata(data)){
-      glottodata <- suppressMessages(dplyr::left_join(glottodata, data[, c("glottosubcode", "spotlight", "legend", "color")]))
+      glottodata <- suppressMessages(dplyr::left_join(glottodata, data[, c("glottosubcode", "spotlight", "legend", "spotcol")]))
     }
     return(glottodata)
   } else {
@@ -215,11 +215,11 @@ glottospotlight <- function(glottodata, spotcol, spotlight, spotcontrast = NULL,
 }
 
 glottospotlight_legend <- function(glottodata){
-  if(all(c("spotlight", "legend", "color") %in% colnames(glottodata))){
+  if(all(c("spotlight", "legend", "spotcol") %in% colnames(glottodata))){
     legend <- list(
       spotlight = TRUE,
       labels = unique(glottodata[sf::st_drop_geometry(glottodata[,"spotlight"]) == TRUE,]$legend),
-      col = unique(glottodata[sf::st_drop_geometry(glottodata[,"spotlight"]) == TRUE,]$color))
+      col = unique(glottodata[sf::st_drop_geometry(glottodata[,"spotlight"]) == TRUE,]$spotcol))
   } else {
     legend <- list(spotlight = FALSE)
   }

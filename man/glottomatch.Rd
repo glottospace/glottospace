@@ -14,7 +14,7 @@ glottomatch(namevec, glottodata = NULL, tolerance = NULL)
 \item{tolerance}{Optional, search tolerance.}
 }
 \value{
-
+a data.frame with exact or closest matches, and their glottocodes.
 }
 \description{
 Match a vector of language names to glottocodes and names

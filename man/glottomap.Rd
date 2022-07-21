@@ -81,7 +81,7 @@ glottodata <- glottospotlight(glottodata = glottodata, spotcol =
 # Or, place 10 largest families in background
 glottodata <- glottospotlight(glottodata = glottodata, spotcol =
 "family", spotlight = families$family[-c(1:10)], spotcontrast = "family", bgcontrast = "family")
-glottomap(glottodata, color = "colpal")
+glottomap(glottodata, color = "color")
 
 # Interactive selection by clicking on languages:
 selected <- glottomap(continent = "South America", type = "filter")

@@ -236,16 +236,14 @@ summary(glottodata_meta)
 ```
 
 The majority of these meta tables are added for the convenience of the
-user. The ‘structure’ table is the only one that is required for some of
-the functions in the glottospace package. A structure table can also be
-added later:
+user. The ‘structure’ and ‘sample’ tables are the only ones that are
+required for some of the functions in the glottospace package. A
+structure table can also be added later:
 
 ``` r
-glottocreate_structuretable(varnames = c("var001", "var002", "var003"))
-#>   varname type levels weight group subgroup
-#> 1  var001   NA     NA      1    NA       NA
-#> 2  var002   NA     NA      1    NA       NA
-#> 3  var003   NA     NA      1    NA       NA
+glottodata <- glottoget("demodata", meta = FALSE)
+structure <- glottocreate_structuretable(varnames = c("var001", "var002", "var003"))
+glottodata <- glottocreate_addtable(glottodata, structure, name = "structure")
 ```
 
 More complex glottodata structures can also be generated. For example,
@@ -328,15 +326,32 @@ coding missing values.
 
 ``` r
 glottodata <- glottoget(glottodata = "demodata", meta = TRUE)
-glottodata$structure
-#>   varname   type levels weight group subgroup
-#> 1  var001   symm     NA      1    NA       NA
-#> 2  var002 factor     NA      1    NA       NA
-#> 3  var003   symm     NA      1    NA       NA
-# glottodata <- glottoclean(glottodata)
+glottodata_clean <- glottoclean(glottodata)
+#> Values in binary columns (symm/asymm) recoded to TRUE/FALSE
+#> Missing values recoded to NA
+#> All variables have two or more levels (excluding NA)
+#> 
+#>  glottodata has been cleaned.
+
+glottodata$glottodata
+#>   glottocode var001 var002 var003
+#> 1   yucu1253      Y      a      N
+#> 2   tani1257   <NA>      b      Y
+#> 3   ticu1245      Y      a      Y
+#> 4   orej1242      N      b      N
+#> 5   nade1244      N      c      Y
+#> 6   mara1409      N      a      N
+glottodata_clean$glottodata
+#>   glottocode var001 var002 var003
+#> 1   yucu1253   TRUE      a  FALSE
+#> 2   tani1257     NA      b   TRUE
+#> 3   ticu1245   TRUE      a   TRUE
+#> 4   orej1242  FALSE      b  FALSE
+#> 5   nade1244  FALSE      c   TRUE
+#> 6   mara1409  FALSE      a  FALSE
 ```
 
-## glottojoin
+## glottojoin and glottosimplify
 
 Join user-provided glottodata with other datasets, or with online
 databases.
@@ -344,13 +359,56 @@ databases.
 ``` r
 # Join with glottospace
 glottodata <- glottoget("demodata")
-glottodatabase <- glottojoin(glottodata, with = "glottobase")
-glottodataspace <- glottojoin(glottodata, with = "glottospace")
 
-# Join a list of glottodata tables into a single table
-glottodatalist <- glottocreate(glottocodes = c("yucu1253", "tani1257"), 
+# Add data from glottolog:
+glottojoin(glottodata, with = "glottobase")
+#> Simple feature collection with 6 features and 21 fields
+#> Geometry type: POINT
+#> Dimension:     XY
+#> Bounding box:  xmin: -72.4926 ymin: -3.66289 xmax: -66.3068 ymax: -0.59023
+#> Geodetic CRS:  WGS 84
+#>   glottocode var001 var002 var003             name     macroarea isocode
+#> 1   yucu1253      Y      a      N           Yucuna South America     ycn
+#> 2   tani1257   <NA>      b      Y Tanimuca-Retuarã South America     tnc
+#> 3   ticu1245      Y      a      Y           Ticuna South America     tca
+#> 4   orej1242      N      b      N          Maijiki South America     ore
+#> 5   nade1244      N      c      Y            Nadëb South America     mbj
+#> 6   mara1409      N      a      N          Maragua South America        
+#>   countries family_id                      classification parent_id      family
+#> 1  BR;CO;PE  araw1281 araw1281/japu1236/nucl1764/yucu1252  yucu1252    Arawakan
+#> 2        CO  tuca1253          tuca1253/east2698/sout3144  sout3144    Tucanoan
+#> 3  BR;CO;PE  ticu1244                            ticu1244  ticu1244 Ticuna-Yuri
+#> 4        PE  tuca1253          tuca1253/west2784/napo1243  napo1243    Tucanoan
+#> 5        BR  nada1235                            nada1235  nada1235     Naduhup
+#> 6        BR  araw1281          araw1281/cari1281/anti1247  anti1247    Arawakan
+#>   isolate family_size family_size_rank  country sovereignty              type
+#> 1   FALSE          77               42 Colombia    Colombia Sovereign country
+#> 2   FALSE          26               22 Colombia    Colombia Sovereign country
+#> 3   FALSE           2                2 Colombia    Colombia Sovereign country
+#> 4   FALSE          26               22     Peru        Peru Sovereign country
+#> 5   FALSE           4                4   Brazil      Brazil Sovereign country
+#> 6   FALSE          77               42   Brazil      Brazil Sovereign country
+#>    geounit     continent adm0_a3                  geometry
+#> 1 Colombia South America     COL POINT (-71.0033 -0.76075)
+#> 2 Colombia South America     COL POINT (-70.3853 -0.59023)
+#> 3 Colombia South America     COL POINT (-69.8723 -3.66289)
+#> 4     Peru South America     PER POINT (-72.4926 -2.86315)
+#> 5   Brazil South America     BRA POINT (-66.3068 -1.24449)
+#> 6   Brazil South America     BRA      POINT (-67.51282 -3)
+
+# Simplify glottosubdata (join a list of glottodata tables into a single table)
+glottosubdata <- glottocreate(glottocodes = c("yucu1253", "tani1257"), 
                                        variables = 3, groups = c("a", "b"), n = 2, meta = FALSE)
-glottodatatable <- glottojoin(glottodata = glottodatalist)
+glottosimplify(glottodata = glottosubdata)
+#>     glottosubcode var001 var002 var003
+#> 1 yucu1253_a_0001     NA     NA     NA
+#> 2 yucu1253_a_0002     NA     NA     NA
+#> 3 yucu1253_b_0001     NA     NA     NA
+#> 4 yucu1253_b_0002     NA     NA     NA
+#> 5 tani1257_a_0001     NA     NA     NA
+#> 6 tani1257_a_0002     NA     NA     NA
+#> 7 tani1257_b_0001     NA     NA     NA
+#> 8 tani1257_b_0002     NA     NA     NA
 ```
 
 ## glottosearch
@@ -457,11 +515,83 @@ filter, select, query
 
 ``` r
 eurasia <- glottofilter(continent = c("Europe", "Asia"))
+eurasia
+#> Simple feature collection with 2583 features and 18 fields
+#> Geometry type: POINT
+#> Dimension:     XY
+#> Bounding box:  xmin: -173.925 ymin: -10.8469 xmax: 175.07 ymax: 73.1354
+#> Geodetic CRS:  WGS 84
+#> First 10 features:
+#>    glottocode                   name macroarea isocode countries family_id
+#> 1    abai1240            Abai Sungai Papunesia     abf        MY  aust1307
+#> 2    abai1241 Abai Tubu-Abai Sembuak Papunesia                ID  aust1307
+#> 3    abaz1241                  Abaza   Eurasia     abq     RU;TR  abkh1242
+#> 4    aben1249           Abenlen Ayta Papunesia     abp        PH  aust1307
+#> 5    abin1243                Abinomn Papunesia     bsa        ID  abin1243
+#> 6    abkh1244                 Abkhaz   Eurasia     abk  GE;RU;TR  abkh1242
+#> 7    abui1241                   Abui Papunesia     abz        ID  timo1261
+#> 8    abun1252                   Abun Papunesia     kgr        ID  abun1252
+#> 9    acha1249       Longchuan Achang   Eurasia     acn     CN;MM  sino1245
+#> 10   ache1244                   Ache   Eurasia     yif        CN  sino1245
+#>                                                             classification
+#> 1                    aust1307/mala1545/nort3253/sout3154/grea1293/pait1248
+#> 2                    aust1307/mala1545/nort3253/sout3154/grea1294/muru1275
+#> 3                                                        abkh1242/abkh1243
+#> 4                             aust1307/mala1545/cent2080/samb1319/abel1234
+#> 5                                                                     <NA>
+#> 6                                                        abkh1242/abkh1243
+#> 7                                               timo1261/alor1249/alor1250
+#> 8                                                                     <NA>
+#> 9                    sino1245/burm1265/lolo1265/burm1266/sout3159/acha1252
+#> 10 sino1245/burm1265/lolo1265/lolo1267/nili1235/sout3212/niso1234/uncl1517
+#>    parent_id            family isolate family_size family_size_rank     country
+#> 1   pait1248      Austronesian   FALSE        1271               52    Malaysia
+#> 2   muru1275      Austronesian   FALSE        1271               52   Indonesia
+#> 3   abkh1243      Abkhaz-Adyge   FALSE           5                5      Russia
+#> 4   abel1234      Austronesian   FALSE        1271               52 Philippines
+#> 5       <NA>           Abinomn    TRUE           1                1   Indonesia
+#> 6   abkh1243      Abkhaz-Adyge   FALSE           5                5     Georgia
+#> 7   alor1250 Timor-Alor-Pantar   FALSE          23               20   Indonesia
+#> 8       <NA>              Abun    TRUE           1                1   Indonesia
+#> 9   acha1252      Sino-Tibetan   FALSE         501               50       China
+#> 10  uncl1517      Sino-Tibetan   FALSE         501               50       China
+#>    sovereignty              type     geounit continent adm0_a3
+#> 1     Malaysia Sovereign country    Malaysia      Asia     MYS
+#> 2    Indonesia Sovereign country   Indonesia      Asia     IDN
+#> 3       Russia Sovereign country      Russia    Europe     RUS
+#> 4  Philippines Sovereign country Philippines      Asia     PHL
+#> 5    Indonesia Sovereign country   Indonesia      Asia     IDN
+#> 6      Georgia          Geo unit     Georgia      Asia     GEO
+#> 7    Indonesia Sovereign country   Indonesia      Asia     IDN
+#> 8    Indonesia Sovereign country   Indonesia      Asia     IDN
+#> 9        China           Country       China      Asia     CHN
+#> 10       China           Country       China      Asia     CHN
+#>                     geometry
+#> 1    POINT (118.306 5.55394)
+#> 2  POINT (116.1625 3.524226)
+#> 3           POINT (42 44.25)
+#> 4      POINT (120.2 15.4131)
+#> 5   POINT (138.891 -2.92281)
+#> 6  POINT (41.15911 43.05622)
+#> 7   POINT (124.588 -8.31058)
+#> 8   POINT (132.416 -0.57073)
+#> 9    POINT (97.7438 24.3479)
+#> 10    POINT (102.446 24.152)
+
+# Other examples of glottofilter:
 wari <- glottofilter(glottocode = "wari1268")
 indo_european <- glottofilter(family = 'Indo-European')
 south_america <- glottofilter(continent = "South America")
 colovenz <- glottofilter(country = c("Colombia", "Venezuela"))
-# arawtuca <- glottofilter(expression = family %in% c("Arawakan", "Tucanoan"))
+arawtuca <- glottofilter(expression = family %in% c("Arawakan", "Tucanoan"))
+```
+
+You can also interactively filter languages by drawing or clicking on a
+map:
+
+``` r
+# selected <- glottofiltermap(continent = "South America")
+# glottomap(selected)
 ```
 
 ## glottodist
@@ -471,18 +601,15 @@ calculating similarities between languages based on linguistic/cultural
 features
 
 ``` r
-# In order to be able to calculate linguistic distances a structure table is required, that's why we specify meta = TRUE.
+# In order to be able to calculate linguistic distances a structure table is required, that's why we specify meta = TRUE. In case you have glottodata without a structure table, you can add it (see examples in the  glottocreate() section).
 glottodata <- glottoget("demodata", meta = TRUE)
 glottodist <- glottodist(glottodata = glottodata)
 #> Values in binary columns (symm/asymm) recoded to TRUE/FALSE
 #> Missing values recoded to NA
 #> All variables have two or more levels (excluding NA)
+#> 
+#>  glottodata has been cleaned.
 #> All variables have two or more levels (excluding NA)
-
-# As we've seen above, in case you have glottodata without a structure table, you can add it:
-glottodata <- glottoget("demodata", meta = FALSE)
-structure <- glottocreate_structuretable()
-glottodata <- glottocreate_addtable(glottodata, structure, name = "structure")
 ```
 
 ## glottoplot
@@ -496,6 +623,8 @@ glottodist <- glottodist(glottodata = glottodata)
 #> Values in binary columns (symm/asymm) recoded to TRUE/FALSE
 #> Missing values recoded to NA
 #> All variables have two or more levels (excluding NA)
+#> 
+#>  glottodata has been cleaned.
 #> All variables have two or more levels (excluding NA)
 glottoplot(glottodist = glottodist)
 ```
@@ -538,15 +667,17 @@ might want to create a world map highlighting the largest language
 families
 
 ``` r
-# glottodata <- glottoget()
-# families <- dplyr::count(glottodata, family, sort = TRUE)
-# 
-# # highlight 10 largest families:
-# glottodata <- glottospotlight(glottodata = glottodata, spotcol = "family", spotlight = families$family[1:10], spotcontrast = "family", bgcontrast = "family")
-# 
-# # Create map
-# glottomap(glottodata, color = "color")
+glottodata <- glottoget()
+families <- dplyr::count(glottodata, family, sort = TRUE)
+
+# highlight 10 largest families:
+glottodata <- glottospotlight(glottodata = glottodata, spotcol = "family", spotlight = families$family[1:10], spotcontrast = "family", bgcontrast = "family")
+
+# Create map
+glottomap(glottodata, color = "spotcol")
 ```
+
+<img src="man/figures/README-glottomap_family_size-1.png" width="100%" />
 
 ## glottosave
 
@@ -560,7 +691,7 @@ glottodata <- glottoget("demodata", meta = FALSE)
 
 # Saves as .GPKG
 glottospacedata <- glottospace(glottodata)
-# glottosave(glottodata, filename = "glottodata") 
+# glottosave(glottospacedata, filename = "glottospacedata") 
 
 # By default, static maps are saved as .png, dynamic maps are saved as .html
 glottomap <- glottomap(glottodata)

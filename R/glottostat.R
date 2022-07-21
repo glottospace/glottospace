@@ -22,7 +22,7 @@
 #' glottostat_permanova(glottodata, comparison = "pairwise")
 #'
 #' # Use subgroup (or another column in the structure table) as group
-#' glottodata[["sample"]][,"group"] <- NULL # delete 'group' column (alternatively, it could be renamed)
+#' glottodata[["sample"]][,"group"] <- NULL # delete old 'group' column
 #' glottodata[["sample"]][,"group"] <- glottodata[["sample"]][,"subgroup"]
 #' glottostat_permanova(glottodata, comparison = "pairwise")
 #'
