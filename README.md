@@ -674,7 +674,7 @@ families <- dplyr::count(glottodata, family, sort = TRUE)
 glottodata <- glottospotlight(glottodata = glottodata, spotcol = "family", spotlight = families$family[1:10], spotcontrast = "family", bgcontrast = "family")
 
 # Create map
-glottomap(glottodata, color = "spotcol")
+glottomap(glottodata, color = "color")
 ```
 
 <img src="man/figures/README-glottomap_family_size-1.png" width="100%" />
