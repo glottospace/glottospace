@@ -48,7 +48,8 @@ glottocheck <- function(glottodata, diagnostic = TRUE, checkmeta = TRUE){
 #' @param glottodata glottodata to check
 #' @param id optional, if id is specified, the function will return original id
 #' @noRd
-#' @return
+#' @return A character string with either 'glottocode' or 'glottosubcode'. If
+#'   none of these are present in the data, an error will be thrown.
 #'
 glottocheck_id <- function(glottodata, id = NULL){
   glottodata <- glottosimplify(glottodata)

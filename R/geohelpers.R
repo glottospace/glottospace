@@ -9,7 +9,7 @@
 #' From https://geocompr.robinlovelace.net/reproj-geo-data.html
 #' @param lonlat
 #'
-#' @return
+#' @return An EPSG code
 #' @noRd
 #'
 lonlat2utm = function(lonlat) {
@@ -144,7 +144,7 @@ bbox_expand <- function(bbox, f = 0.2){
 #'
 #' Added because some countries are missing when using rnaturalearth::ne_countries()
 #'
-#' @return
+#' @return An sf object
 #' @noRd
 #'
 #' @examples
