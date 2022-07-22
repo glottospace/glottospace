@@ -50,7 +50,7 @@ The glottospace R package facilitates the geospatial analysis of linguistic and 
 
 # Statement of need
 
-Several databases exist that capture aspects of linguistic and cultural diversity globally. However, there is a lack of easy-to-use interfaces to access and manipulate these databases, specially within the R environment [@R Core Team:2022], or to link these databases with data collected by researchers at smaller scales or particular set of languages. While other R packages exist for working with linguistic data [@Becker:2022 @Cysouw:2018 @Moroz:2017 @Round:2021]. **glottospace** aims to fill this gap by offering a set of functions that automate common tasks in analysing, visualising, and mapping (geo)linguistic data. In essence, the **glottospace** package provides four things: 
+Several databases exist that capture aspects of linguistic and cultural diversity globally. However, there is a lack of easy-to-use interfaces to access and manipulate these databases, specially within the R environment [@R Core Team:2022], or to link these databases with data collected by researchers at smaller scales or particular set of languages. Several dedicated R packages exist for working with linguistic data, such as lingtypR [@Becker:2022], qlcData [@Cysouw:2018], lingtypology [@Moroz:2017], and glottoTrees [@Round:2021]. **glottospace** aims to fill this gap by offering a set of functions that automate common tasks in analysing, visualising, and mapping (geo)linguistic data. In essence, the **glottospace** package provides four things: 
 
 1.	Simplified access to global linguistic and cultural databases
 1.	Standardized data structures for data collection, import, cleaning, and checking
