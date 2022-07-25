@@ -121,7 +121,7 @@ The glottodata and glottosubdata structures are optimized to be linked with the 
 To enable this functionality, **glottospace** builds on a combination of spatial and non-spatial packages, including sf [@Pebesma:2018], tmap [@Tennekes:2018], rnaturalearth [@South:2017], ggplot2 [@Wickham:2016], vegan [@Oksanen:2020], and dplyr [@Wickham:2021]. The package is currently used by researchers and students in the field of comparative and areal linguistics as well as language typology and cultural anthropology. Furthermore, we are planning to use the package for classroom teaching. 
 
 # Acknowledgements
-Sietze Norder, Leonardo Arias, and Rik van Gijn were supported by the European Research Council under the EU H2020 and Research and Innovation program (SAPPHIRE grant 818854). The authors would like to thank Simon Greenhill, Robert Forkel and Harald Hammarström for brainstorming about linguistic data formats and the functionality of the package. 
+Sietze Norder, Leonardo Arias, and Rik van Gijn were supported by the European Research Council under the EU H2020 and Research and Innovation program (SAPPHIRE grant 818854). The authors would like to thank Simon Greenhill, Robert Forkel and Harald Hammarström for brainstorming about linguistic data formats and the functionality of the package. Finally, the authors are very grateful to Nay San, Siva Kalyan, and Andrew Stewart for reviewing and editing. 
 
 # References
 
