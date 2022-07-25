@@ -19,7 +19,8 @@ glottoplot(
   row2id = NULL,
   preventoverlap = FALSE,
   alpha = NULL,
-  colorvec = NULL
+  colorvec = NULL,
+  expand = NULL
 )
 }
 \arguments{
@@ -55,7 +56,11 @@ glottoplot(
 order (non-matching values are omitted), for example:
 c("Arawakan" = "rosybrown1", "Yucuna"  = "red",
 "Tucanoan" = "lightskyblue1", "Tanimuca-Retuarã" = "blue", "Naduhup" =
-"gray70", "Kakua-Nukak" = "gray30")
+"gray70", "Kakua-Nukak" = "gray30")}
+
+\item{expand}{Optionally expand one or all of the axes. Default is
+c(0,0,0,0), referring to respectively xmin, xmax, ymin, ymax. If you want
+to change the maximum of the x-axis, you would do: c(0,1,0,0).
 See the 'values' argument in ggplot2::scale_color_manual() for details.}
 }
 \value{
@@ -70,7 +75,7 @@ This function offers different types of visualizations for linguistic data and l
 glottodata <- glottoget("demodata", meta = TRUE)
 glottodist <- glottodist(glottodata = glottodata)
 # glottoplot(glottodist = glottodist, type = "nmds",
-#  k = 3, color = "family", label = "name", row2id = "glottocode")
+#  k = 2, color = "family", label = "name", row2id = "glottocode")
 
 # To create a stress/scree plot, you can run:
 # goeveg::dimcheckMDS(matrix = as.matrix(glottodist), k = k)
