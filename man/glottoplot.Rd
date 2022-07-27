@@ -20,7 +20,8 @@ glottoplot(
   preventoverlap = FALSE,
   alpha = NULL,
   colorvec = NULL,
-  expand = NULL
+  expand = NULL,
+  lbsize = NULL
 )
 }
 \arguments{
@@ -60,7 +61,9 @@ c("Arawakan" = "rosybrown1", "Yucuna"  = "red",
 
 \item{expand}{Optionally expand one or all of the axes. Default is
 c(0,0,0,0), referring to respectively xmin, xmax, ymin, ymax. If you want
-to change the maximum of the x-axis, you would do: c(0,1,0,0).
+to change the maximum of the x-axis, you would do: c(0,1,0,0).}
+
+\item{lbsize}{Label size (optional)
 See the 'values' argument in ggplot2::scale_color_manual() for details.}
 }
 \value{
