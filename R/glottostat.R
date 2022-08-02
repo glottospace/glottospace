@@ -125,7 +125,7 @@ glottostat_permanovapairs <- function(metadist, id, permutations, adj = NULL){
 
   # Select distance matrix
   condist12 <- metadist12 %>%
-    dplyr::select(dplyr::all_of(.[[id]])) # don't use .data
+    dplyr::select(dplyr::all_of(.[[id]])) # don't replace dot (.) with .data!!!!!
 
   # permutations <- permute::how(nperm = permutations)
   # permute::setBlocks(permutations) <- with(metadist12, glottocode)
