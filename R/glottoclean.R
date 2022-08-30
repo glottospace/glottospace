@@ -320,6 +320,7 @@ glottoclean_twolevels <- function(data){
 
   if(totbelow2 != 0){
     message(paste0(totbelow2, " variables with less than two levels have been removed: \n\n",  namesbelow2))
+    message(paste0("\n", ncol(data) - totbelow2 - 1, " variables remaining. \n")) # minus 1 for id
     data[, colnames(data) %nin% vecbelow2]
   } else {
     message("All variables have two or more levels (excluding NA)")

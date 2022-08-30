@@ -46,19 +46,22 @@ glottodist <- function(glottodata){
   glottodata <- tibble::column_to_rownames(glottodata, id)
 
    if(length(colnames(glottodata)) != length(structure$varname) ){
-    message(paste("The number of variables in ", ifelse(id == "glottocode", "glottodata", "glottosubdata"), "differs from the number of variables in the structure table") )
+    message(paste("\n The number of variables in ", ifelse(id == "glottocode", "glottodata", "glottosubdata"), "differs from the number of variables in the structure table. \n") )
     nostruc <- colnames(glottodata)[colnames(glottodata) %nin% structure$varname]
     namesnostruc <- paste0(nostruc, collapse = ",")
     novar <- structure$varname[structure$varname %nin% colnames(glottodata)]
     namesnovar <- paste0(novar, collapse = ",")
     if(!purrr::is_empty(nostruc)){
-      message(paste0("The following variables exist in the data, but are not defined in the structure table (and will be ignored): ", namesnostruc))
+      message(paste0("\n The following variables exist in the data, but are not defined in the structure table (and will be ignored): \n ", namesnostruc))
     }
     if(!purrr::is_empty(novar)){
-      message(paste0("The following variables are defined in the structure table but do not exist in the data (and will be ignored): ", namesnovar))
+      message(paste0("\n The following variables are defined in the structure table but do not exist in the data (and will be ignored): \n", namesnovar))
     }
   }
   structure <- suppressMessages(dplyr::left_join(data.frame("varname" = colnames(glottodata)), structure))
+
+  message(paste0("\n ", length(structure$varname), " variables remaining \n"))
+
 
   # type
   if(!("type" %in% colnames(structure) ) ){
@@ -71,6 +74,7 @@ glottodist <- function(glottodata){
     message(paste0("The following variables are ignored in distance calculation (their type is not one of the pre-specified types): \n", dropvarnames))
     glottodata <- glottodata[,-dropvars]
     structure <- structure[-dropvars, ]
+    message(paste0("\n ", length(structure$varname), " variables remaining \n"))
   }
 
   symm <- which(structure$type == "symm")
