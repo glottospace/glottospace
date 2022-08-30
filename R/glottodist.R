@@ -72,6 +72,7 @@ glottodist <- function(glottodata){
   if(!purrr::is_empty(dropvars)){
     dropvarnames <- paste0(colnames(glottodata)[dropvars], collapse = ",")
     message(paste0("The following variables are ignored in distance calculation (their type is not one of the pre-specified types): \n", dropvarnames))
+    message("Please make sure that all types are one of: ", paste(glottocreate_lookuptable()$type_lookup, collapse = ", "))
     glottodata <- glottodata[,-dropvars]
     structure <- structure[-dropvars, ]
     message(paste0("\n ", length(structure$varname), " variables remaining \n"))
