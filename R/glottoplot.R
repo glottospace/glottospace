@@ -70,7 +70,7 @@ glottoplot <- function(glottodata = NULL, glottodist = NULL, type = NULL, glotto
     }
     if(!is.null(glottonmds)){
     glottoplot_nmds(glottonmds = glottonmds,
-                      color = color, ptsize = ptsize, label = label, palette = palette, filename = filename, preventoverlap = preventoverlap, alpha = alpha, colorvec = colorvec, expand = expand, lbsize = lbsize, ptshift = NULL, lbshift = NULL)
+                      color = color, ptsize = ptsize, label = label, palette = palette, filename = filename, preventoverlap = preventoverlap, alpha = alpha, colorvec = colorvec, expand = expand, lbsize = lbsize, ptshift = ptshift, lbshift = lbshift)
     }
   }
 
@@ -81,7 +81,7 @@ glottoplot <- function(glottodata = NULL, glottodist = NULL, type = NULL, glotto
     if(type == "nmds" & !is.null(glottodist)){
       glottonmds <- glottonmds(glottodist = glottodist, k = k, na.rm = na.rm, row2id = row2id)
       glottoplot_nmds(glottonmds = glottonmds,
-                      color = color, ptsize = ptsize, label = label, palette = palette, filename = filename, preventoverlap = preventoverlap, alpha = alpha, colorvec = colorvec, expand = expand, lbsize = lbsize, ptshift = NULL, lbshift = NULL)
+                      color = color, ptsize = ptsize, label = label, palette = palette, filename = filename, preventoverlap = preventoverlap, alpha = alpha, colorvec = colorvec, expand = expand, lbsize = lbsize, ptshift = ptshift, lbshift = lbshift)
     }
     if(type == "missing"){
       glottoplot_naviewer(data = glottodata, id = "glottocode")
@@ -134,7 +134,7 @@ glottoplot_nmds <- function(glottonmds, color = NULL, ptsize = NULL, label = NUL
   scoresdata <- glottonmds$scoresdata
 
   if(nmds$ndim == 2){
-    glottoplot_nmds_2d(nmds = nmds, scoresdata = scoresdata, color = color, ptsize = ptsize, label = label, filename = filename, preventoverlap = preventoverlap, alpha = alpha, colorvec = colorvec, expand = expand, lbsize = lbsize, ptshift = NULL, lbshift = NULL)
+    glottoplot_nmds_2d(nmds = nmds, scoresdata = scoresdata, color = color, ptsize = ptsize, label = label, filename = filename, preventoverlap = preventoverlap, alpha = alpha, colorvec = colorvec, expand = expand, lbsize = lbsize, ptshift = ptshift, lbshift = lbshift)
   }
 
   if(nmds$ndim == 3){
