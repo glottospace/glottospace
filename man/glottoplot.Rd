@@ -21,7 +21,9 @@ glottoplot(
   alpha = NULL,
   colorvec = NULL,
   expand = NULL,
-  lbsize = NULL
+  lbsize = NULL,
+  ptshift = NULL,
+  lbshift = NULL
 )
 }
 \arguments{
@@ -63,7 +65,11 @@ c("Arawakan" = "rosybrown1", "Yucuna"  = "red",
 c(0,0,0,0), referring to respectively xmin, xmax, ymin, ymax. If you want
 to change the maximum of the x-axis, you would do: c(0,1,0,0).}
 
-\item{lbsize}{Label size (optional)
+\item{lbsize}{Label size (optional)}
+
+\item{ptshift}{(optional) If preventoverlap is TRUE, how much should points be shifted?}
+
+\item{lbshift}{(optional) If preventoverlap is TRUE, how much should labels be shifted?
 See the 'values' argument in ggplot2::scale_color_manual() for details.}
 }
 \value{

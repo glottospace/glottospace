@@ -26,6 +26,8 @@
 #'   c(0,0,0,0), referring to respectively xmin, xmax, ymin, ymax. If you want
 #'   to change the maximum of the x-axis, you would do: c(0,1,0,0).
 #' @param lbsize Label size (optional)
+#' @param ptshift (optional) If preventoverlap is TRUE, how much should points be shifted?
+#' @param lbshift (optional) If preventoverlap is TRUE, how much should labels be shifted?
 #'   See the 'values' argument in ggplot2::scale_color_manual() for details.
 #' @evalRd glottovars()
 #' @return a visualization of a glotto(sub)data, glottodist or glottonmds object, which can be saved with glottosave()
@@ -51,7 +53,7 @@
 glottoplot <- function(glottodata = NULL, glottodist = NULL, type = NULL, glottonmds = NULL,
                        color = NULL, ptsize = NULL, label = NULL, filename = NULL, palette = NULL,
                        k = NULL, na.rm = FALSE, row2id = NULL,
-                       preventoverlap = FALSE, alpha = NULL, colorvec = NULL, expand = NULL, lbsize = NULL){
+                       preventoverlap = FALSE, alpha = NULL, colorvec = NULL, expand = NULL, lbsize = NULL, ptshift = NULL, lbshift = NULL){
 
   if(is_dist(glottodata)){
     glottodist <- glottodata
@@ -68,7 +70,7 @@ glottoplot <- function(glottodata = NULL, glottodist = NULL, type = NULL, glotto
     }
     if(!is.null(glottonmds)){
     glottoplot_nmds(glottonmds = glottonmds,
-                      color = color, ptsize = ptsize, label = label, palette = palette, filename = filename, preventoverlap = preventoverlap, alpha = alpha, colorvec = colorvec, expand = expand, lbsize = lbsize)
+                      color = color, ptsize = ptsize, label = label, palette = palette, filename = filename, preventoverlap = preventoverlap, alpha = alpha, colorvec = colorvec, expand = expand, lbsize = lbsize, ptshift = NULL, lbshift = NULL)
     }
   }
 
@@ -79,7 +81,7 @@ glottoplot <- function(glottodata = NULL, glottodist = NULL, type = NULL, glotto
     if(type == "nmds" & !is.null(glottodist)){
       glottonmds <- glottonmds(glottodist = glottodist, k = k, na.rm = na.rm, row2id = row2id)
       glottoplot_nmds(glottonmds = glottonmds,
-                      color = color, ptsize = ptsize, label = label, palette = palette, filename = filename, preventoverlap = preventoverlap, alpha = alpha, colorvec = colorvec, expand = expand, lbsize = lbsize)
+                      color = color, ptsize = ptsize, label = label, palette = palette, filename = filename, preventoverlap = preventoverlap, alpha = alpha, colorvec = colorvec, expand = expand, lbsize = lbsize, ptshift = NULL, lbshift = NULL)
     }
     if(type == "missing"){
       glottoplot_naviewer(data = glottodata, id = "glottocode")
@@ -114,6 +116,8 @@ glottoplot <- function(glottodata = NULL, glottodist = NULL, type = NULL, glotto
 #'   c(0,0,0,0), referring to respectively xmin, xmax, ymin, ymax. If you want
 #'   to change the maximum of the x-axis, you would do: c(0,1,0,0).
 #' @param lbsize Label size (optional)
+#' @param ptshift (optional) If preventoverlap is TRUE, how much should points be shifted?
+#' @param lbshift (optional) If preventoverlap is TRUE, how much should labels be shifted?
 #'
 #' @noRd
 #'
@@ -124,13 +128,13 @@ glottoplot <- function(glottodata = NULL, glottodist = NULL, type = NULL, glotto
 #'
 #' glottoplot_nmds(glottonmds = glottonmds, color = "family", label = "name")
 #' glottoplot_nmds(glottonmds = glottonmds, color = "isolate")
-glottoplot_nmds <- function(glottonmds, color = NULL, ptsize = NULL, label = NULL, palette = NULL, filename = NULL, preventoverlap = FALSE, alpha = NULL, colorvec = NULL, expand = NULL, lbsize = NULL){
+glottoplot_nmds <- function(glottonmds, color = NULL, ptsize = NULL, label = NULL, palette = NULL, filename = NULL, preventoverlap = FALSE, alpha = NULL, colorvec = NULL, expand = NULL, lbsize = NULL, ptshift = NULL, lbshift = NULL){
 
   nmds <- glottonmds$nmds
   scoresdata <- glottonmds$scoresdata
 
   if(nmds$ndim == 2){
-    glottoplot_nmds_2d(nmds = nmds, scoresdata = scoresdata, color = color, ptsize = ptsize, label = label, filename = filename, preventoverlap = preventoverlap, alpha = alpha, colorvec = colorvec, expand = expand, lbsize = lbsize)
+    glottoplot_nmds_2d(nmds = nmds, scoresdata = scoresdata, color = color, ptsize = ptsize, label = label, filename = filename, preventoverlap = preventoverlap, alpha = alpha, colorvec = colorvec, expand = expand, lbsize = lbsize, ptshift = NULL, lbshift = NULL)
   }
 
   if(nmds$ndim == 3){
@@ -160,6 +164,8 @@ glottoplot_nmds <- function(glottonmds, color = NULL, ptsize = NULL, label = NUL
 #'   c(0,0,0,0), referring to respectively xmin, xmax, ymin, ymax. If you want
 #'   to change the maximum of the x-axis, you would do: c(0,1,0,0).
 #' @param lbsize Label size (optional)
+#' @param ptshift (optional) If preventoverlap is TRUE, how much should points be shifted?
+#' @param lbshift (optional) If preventoverlap is TRUE, how much should labels be shifted?
 #'
 #' @noRd
 #'
@@ -172,7 +178,7 @@ glottoplot_nmds <- function(glottonmds, color = NULL, ptsize = NULL, label = NUL
 #' scoresdata <- glottojoin_base(scores)
 #'
 #' glottoplot_nmds_2d(nmds = nmds, scoresdata = scoresdata, color = "family")
-glottoplot_nmds_2d <- function(nmds, scoresdata, color = NULL, ptsize = NULL, label = NULL, filename = NULL, alpha = NULL, preventoverlap = FALSE, colorvec = NULL, expand = NULL, lbsize = NULL){
+glottoplot_nmds_2d <- function(nmds, scoresdata, color = NULL, ptsize = NULL, label = NULL, filename = NULL, alpha = NULL, preventoverlap = FALSE, colorvec = NULL, expand = NULL, lbsize = NULL, ptshift = NULL, lbshift = NULL){
 
   if(is.null(expand)){expand <- c(0,0,0,0)}
 
@@ -197,9 +203,11 @@ if(preventoverlap == FALSE){
       {if(!is.null(expand)){ggplot2::expand_limits(x = c(expand[1],expand[2]), y = c(expand[3],expand[4]))}}
 } else{
   if(is.null(alpha)){alpha <- .3}
+  if(is.null(ptshift)){ptshift <- 0.01}
+  if(is.null(ptshift)){ptshift <- 0.01}
   nmdsplot <- ggplot2::ggplot(data = scoresdata, ggplot2::aes_string(x="NMDS1",y="NMDS2", col = color) ) +
-    ggplot2::geom_point(size = ptsize, alpha = alpha, position = ggplot2::position_jitter(width = 0.01, height = 0.01, seed = 22)) +
-    {if(!is.null(label))ggplot2::geom_text(position = ggplot2::position_jitter(width = 0.01, height = 0.01, seed = 22), ggplot2::aes_string(label = label), size = lbsize, show.legend = FALSE)} +
+    ggplot2::geom_point(size = ptsize, alpha = alpha, position = ggplot2::position_jitter(width = ptshift, height = ptshift, seed = 22)) +
+    {if(!is.null(label))ggplot2::geom_text(position = ggplot2::position_jitter(width = lbshift, height = lbshift, seed = 22), ggplot2::aes_string(label = label), size = lbsize, show.legend = FALSE)} +
     ggplot2::coord_equal()+
     ggplot2::labs(title = paste0("NMDS (k = ", nmds$ndim, ", stress = ", round(nmds$stress, 2), ")"), x = "NMDS1", y = "NMDS2") +
     {if(!is.null(colorvec)){ggplot2::scale_color_manual(values = colorvec)}} +
