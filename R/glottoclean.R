@@ -254,7 +254,7 @@ glottoclean_dist_rmna <- function(glottodist, view = FALSE){
 glottoclean_selectsample <- function(glottodata){
   if(glottocheck_hassample(glottodata)){
     sampletable <- glottodata[["sample"]]
-    glottosample <- sampletable[,"glottocode"]
+    glottosample <- sampletable[,"glottocode", drop = TRUE]
   } else{
     message("Data does not contain a sample table")
     return()
@@ -262,9 +262,9 @@ glottoclean_selectsample <- function(glottodata){
 
   if(glottocheck_isglottodata(glottodata)){
     glottodata <- glottosimplify(glottodata)
-    glottocodes_dropped <- glottodata[glottodata[,"glottocode", drop = TRUE] %nin% glottosample, "glottocode"]
+    glottocodes_dropped <- glottodata[(glottodata[,"glottocode", drop = TRUE] %nin% glottosample), "glottocode"]
     if(!purrr::is_empty(glottocodes_dropped)){
-      message(paste("Using the glottocodes in the sample table to subset the data. \n Data for the following glottocodes are removed from the data because they are not in the sample table: \n", glottocodes_dropped))
+      message(paste("Using the glottocodes in the sample table to subset the data. \n Data for the following glottocodes are removed from the data because they are not in the sample table: \n", paste(glottocodes_dropped, collapse = ", ") ))
     }
     glottodata <- glottodata[glottodata[,"glottocode", drop = TRUE] %in% glottosample, ]
     return(glottodata)
