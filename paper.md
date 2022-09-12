@@ -50,7 +50,7 @@ The glottospace R package facilitates the geospatial analysis of linguistic and 
 
 # Statement of need
 
-Several databases exist that capture aspects of linguistic and cultural diversity globally. However, there is a lack of interfaces to access and manipulate these databases, specifically within the R environment [@RCoreTeam:2022]. For example, it is not straightfoward to link these databases with data collected by researchers at smaller scales or particular sets of languages. While  linguistic R packages have been developed for specific purposes (e.g. lingtypR [@Becker:2022], qlcData [@Cysouw:2018], lingtypology [@Moroz:2017], and glottoTrees [@Round:2021]), there is currently no easy-to-use package that automates the most common tasks related to analysing, visualising, and mapping (geo)linguistic data. **glottospace** aims to fill this gap by offering a set of functions that, in essence, provide four things: 
+Several databases exist that capture aspects of linguistic and cultural diversity globally. However, there is a lack of interfaces to access and manipulate these databases, specifically within the R environment [@RCoreTeam:2022]. For example, it is not straightfoward to link these databases with data collected by researchers at smaller scales or particular sets of languages. While  linguistic R packages have been developed for specific purposes (e.g., lingtypR [@Becker:2022], qlcData [@Cysouw:2018], lingtypology [@Moroz:2017], and glottoTrees [@Round:2021]), there is currently no easy-to-use package that automates the most common tasks related to analysing, visualising, and mapping (geo)linguistic data. **glottospace** aims to fill this gap by offering a set of functions that, in essence, provide four things: 
 
 1.	Simplified access to global linguistic and cultural databases
 1.	Standardized data structures for data collection, import, cleaning, and checking
@@ -59,7 +59,7 @@ Several databases exist that capture aspects of linguistic and cultural diversit
 
 We will now describe each of these elements in more detail.
 
-Existing global databases of linguistic and cultural diversity, such as Glottolog [@Hammarström:2021], WALS [@Dryer:2013], and D-PLACE [@Kirby:2016], are structured according to the cross-linguistic data format [@Forkel:2018], allowing for the integration of different databases. One way in which languages can be matched across databases is by using glottocodes, i.e. unique identifiers of languages, dialects and language families [@Forkel:2021]. These glottocodes often have geospatial coordinates associated with them, allowing for geospatial analysis and visualisation. With **glottospace**, users can easily access the most recent version of these databases. Researchers can query those databases, use them as a benchmark, or supplement their own data with additional information (like geospatial coordinates, language family).  
+Existing global databases of linguistic and cultural diversity, such as Glottolog [@Hammarström:2021], WALS [@Dryer:2013], and D-PLACE [@Kirby:2016], are structured according to the cross-linguistic data format [@Forkel:2018], allowing for the integration of different databases. One way in which languages can be matched across databases is by using glottocodes, i.e., unique identifiers of languages, dialects and language families [@Forkel:2021]. These glottocodes often have geospatial coordinates associated with them, allowing for geospatial analysis and visualisation. With **glottospace**, users can easily access the most recent version of these databases. Researchers can query those databases, use them as a benchmark, or supplement their own data with additional information (like geospatial coordinates, language family).  
 
 The **glottospace** package can generate empty data structures to facilitate data entry, or convert existing databases (for example stored in an Excel or CSV file) into two standardized data structures (\autoref{fig:data}): 
 
@@ -80,7 +80,7 @@ The **glottospace** package can generate empty data structures to facilitate dat
 
 ![Examples of glottodata (left) and glottosubdata (right) without metadata tables.\label{fig:data}](joss_data.png)
 
-The glottodata structure is appropriate when one wants to assign one or more features to each language in the dataset (as e.g. in WALS). The glottosubdata structure allows for assigning more complex structures (inventories) to each language in the dataset, which may vary in size from one language to another, such as phoneme inventories (Phoible;  [@Moran:2019] construction/morphological inventories (AUTOTYP; [@Bickel:2022], and subordination strategies in SAILS [@vanGijn:2016]. 
+The glottodata structure is appropriate when one wants to assign one or more features to each language in the dataset (as, e.g., in WALS). The glottosubdata structure allows for assigning more complex structures (inventories) to each language in the dataset, which may vary in size from one language to another, such as phoneme inventories (Phoible;  [@Moran:2019] construction/morphological inventories (AUTOTYP; [@Bickel:2022], and subordination strategies in SAILS [@vanGijn:2016]. 
 
 Although all metadata tables that can be generated for glotto(sub)data are optional, some of these tables can greatly facilitate the automation and reproducibility of further analysis. Examples of metadata tables that can be generated by **glottospace** are:
 
@@ -105,9 +105,9 @@ The glottodata and glottosubdata structures are optimized to be linked with the 
   
   -	convert data into glottodata or glottosubdata structures
   
-  -	perform quality checks and data cleaning (e.g. missing values, inconsistencies, undefined glottocodes, etc.)
+  -	perform quality checks and data cleaning (e.g., missing values, inconsistencies, and undefined glottocodes)
   
-  -	analyse languages and cultures based on relevant features (e.g. lexicon, phonemes, gender roles, subsistence strategies, etc.)
+  -	analyse languages and cultures based on relevant features (e.g., lexicon, phonemes, gender roles, and subsistence strategies)
   
   -	create different kinds of maps and visualisations for a set of languages
   
