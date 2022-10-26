@@ -37,9 +37,8 @@ new functions and improving existing ones. Although the package is
 stable, you might find bugs or encounter things you might find
 confusing. You can help us to improve the package by:
 
--   Sending an email to [Sietze
-    Norder](mailto:s.j.norder@uu.nl) with a clear
-    description of the issue or error message.  
+-   Sending an email to [Sietze Norder](mailto:s.j.norder@uu.nl) with a
+    clear description of the issue or error message.  
 -   Opening a new issue in the [glottospace issues page on
     GitHub](https://github.com/SietzeN/glottospace/issues)
 -   Fixing a bug or adding functionality and submit a [pull request on
@@ -201,7 +200,8 @@ colnames(glottobase)
 #>  [1] "glottocode"       "name"             "macroarea"        "isocode"         
 #>  [5] "countries"        "family_id"        "classification"   "parent_id"       
 #>  [9] "family"           "isolate"          "family_size"      "family_size_rank"
-#> [13] "country"          "continent"        "sovereignty"      "geometry"
+#> [13] "country"          "sovereignty"      "type"             "geounit"         
+#> [17] "continent"        "adm0_a3"          "geometry"
 ```
 
 ## glottocreate
@@ -231,7 +231,7 @@ summary(glottodata_meta)
 #> references    9     data.frame list
 #> remarks       5     data.frame list
 #> contributors  5     data.frame list
-#> sample        1     data.frame list
+#> sample        3     data.frame list
 #> readme        2     data.frame list
 #> lookup        2     data.frame list
 ```
@@ -242,6 +242,7 @@ required for some of the functions in the glottospace package. A
 structure table can also be added later:
 
 ``` r
+
 glottodata <- glottoget("demodata", meta = FALSE)
 structure <- glottocreate_structuretable(varnames = c("var001", "var002", "var003"))
 glottodata <- glottocreate_addtable(glottodata, structure, name = "structure")
@@ -270,7 +271,7 @@ glottocreate(glottocodes = c("yucu1253", "tani1257"),
 #> 4 tani1257_b_0002     NA     NA     NA
 #> 
 #> attr(,"class")
-#> [1] "list"          "glottosubdata"
+#> [1] "glottosubdata" "list"
 ```
 
 ## glottocheck
@@ -288,6 +289,7 @@ glottocheck(glottodata, diagnostic = FALSE)
 #> All IDs are valid glottocodes
 #> Some columns have missing data.
 #> Some rows have missing data.
+#> glottodata does not contain metadata
 ```
 
 We’ve now specified diagnostic = FALSE, but the default is to show some
@@ -312,6 +314,8 @@ glottocheck(glottodata, checkmeta = TRUE)
 #> This glottodataset contains the folowing tables: glottodata, structure, description, references, remarks, contributors, sample, readme, lookup
 #> All types recognized
 #> All weights are specified
+#> The following variables are in the data, but there are no such columns variables defined in the structure table: glottocode
+#>  Please check whether the spelling is identical, remove the rows from the structure table, or add the columns to the data.
 ```
 
 <img src="man/figures/README-glottocheckmeta-1.png" width="100%" />
@@ -327,6 +331,9 @@ glottodata <- glottoget(glottodata = "demodata", meta = TRUE)
 glottodata_clean <- glottoclean(glottodata)
 #> Values in binary columns (symm/asymm) recoded to TRUE/FALSE
 #> Missing values recoded to NA
+#> All variables have two or more levels (excluding NA)
+#> 
+#>  glottodata has been cleaned.
 
 glottodata$glottodata
 #>   glottocode var001 var002 var003
@@ -357,7 +364,7 @@ glottodata <- glottoget("demodata")
 
 # Add data from glottolog:
 glottojoin(glottodata, with = "glottobase")
-#> Simple feature collection with 6 features and 18 fields
+#> Simple feature collection with 6 features and 21 fields
 #> Geometry type: POINT
 #> Dimension:     XY
 #> Bounding box:  xmin: -72.4926 ymin: -3.66289 xmax: -66.3068 ymax: -0.59023
@@ -376,20 +383,20 @@ glottojoin(glottodata, with = "glottobase")
 #> 4        PE  tuca1253          tuca1253/west2784/napo1243  napo1243    Tucanoan
 #> 5        BR  nada1235                            nada1235  nada1235     Naduhup
 #> 6        BR  araw1281          araw1281/cari1281/anti1247  anti1247    Arawakan
-#>   isolate family_size family_size_rank  country     continent sovereignty
-#> 1   FALSE          77               40 Colombia South America    Colombia
-#> 2   FALSE          26               22 Colombia South America    Colombia
-#> 3   FALSE           2                2 Colombia South America    Colombia
-#> 4   FALSE          26               22     Peru South America        Peru
-#> 5   FALSE           4                4   Brazil South America      Brazil
-#> 6   FALSE          77               40   Brazil South America      Brazil
-#>                    geometry
-#> 1 POINT (-71.0033 -0.76075)
-#> 2 POINT (-70.3853 -0.59023)
-#> 3 POINT (-69.8723 -3.66289)
-#> 4 POINT (-72.4926 -2.86315)
-#> 5 POINT (-66.3068 -1.24449)
-#> 6      POINT (-67.51282 -3)
+#>   isolate family_size family_size_rank  country sovereignty              type
+#> 1   FALSE          77               42 Colombia    Colombia Sovereign country
+#> 2   FALSE          26               22 Colombia    Colombia Sovereign country
+#> 3   FALSE           2                2 Colombia    Colombia Sovereign country
+#> 4   FALSE          26               22     Peru        Peru Sovereign country
+#> 5   FALSE           4                4   Brazil      Brazil Sovereign country
+#> 6   FALSE          77               42   Brazil      Brazil Sovereign country
+#>    geounit     continent adm0_a3                  geometry
+#> 1 Colombia South America     COL POINT (-71.0033 -0.76075)
+#> 2 Colombia South America     COL POINT (-70.3853 -0.59023)
+#> 3 Colombia South America     COL POINT (-69.8723 -3.66289)
+#> 4     Peru South America     PER POINT (-72.4926 -2.86315)
+#> 5   Brazil South America     BRA POINT (-66.3068 -1.24449)
+#> 6   Brazil South America     BRA      POINT (-67.51282 -3)
 
 # Simplify glottosubdata (join a list of glottodata tables into a single table)
 glottosubdata <- glottocreate(glottocodes = c("yucu1253", "tani1257"), 
@@ -415,40 +422,45 @@ You can search for a match in all columns:
 
 ``` r
 glottosearch(search = "yurakar")
-#> Simple feature collection with 1 feature and 15 fields
+#> Simple feature collection with 1 feature and 18 fields
 #> Geometry type: POINT
 #> Dimension:     XY
 #> Bounding box:  xmin: -65.1224 ymin: -16.7479 xmax: -65.1224 ymax: -16.7479
 #> Geodetic CRS:  WGS 84
 #>      glottocode     name     macroarea isocode countries family_id
-#> 7546   yura1255 Yuracaré South America     yuz        BO  yura1255
+#> 7555   yura1255 Yuracaré South America     yuz        BO  yura1255
 #>      classification parent_id   family isolate family_size family_size_rank
-#> 7546           <NA>      <NA> Yuracaré    TRUE           1                1
-#>      country     continent sovereignty                  geometry
-#> 7546 Bolivia South America     Bolivia POINT (-65.1224 -16.7479)
+#> 7555           <NA>      <NA> Yuracaré    TRUE           1                1
+#>      country sovereignty              type geounit     continent adm0_a3
+#> 7555 Bolivia     Bolivia Sovereign country Bolivia South America     BOL
+#>                       geometry
+#> 7555 POINT (-65.1224 -16.7479)
 ```
 
 Or limit the search to specific columns:
 
 ``` r
 glottosearch(search = "Yucuni", columns = c("name", "family"))
-#> Simple feature collection with 2 features and 15 fields
+#> Simple feature collection with 2 features and 18 fields
 #> Geometry type: POINT
 #> Dimension:     XY
 #> Bounding box:  xmin: -97.91818 ymin: -0.76075 xmax: -71.0033 ymax: 17.23743
 #> Geodetic CRS:  WGS 84
 #>      glottocode              name     macroarea isocode countries family_id
-#> 7532   yucu1253            Yucuna South America     ycn  BR;CO;PE  araw1281
-#> 7533   yucu1254 Yucunicoco Mixtec North America                MX  otom1299
+#> 7541   yucu1253            Yucuna South America     ycn  BR;CO;PE  araw1281
+#> 7542   yucu1254 Yucunicoco Mixtec North America                MX  otom1299
 #>                                                      classification parent_id
-#> 7532                            araw1281/japu1236/nucl1764/yucu1252  yucu1252
-#> 7533 otom1299/east2557/amuz1253/mixt1422/mixt1423/mixt1427/sout3179  sout3179
-#>           family isolate family_size family_size_rank  country     continent
-#> 7532    Arawakan   FALSE          77               40 Colombia South America
-#> 7533 Otomanguean   FALSE         182               44   Mexico North America
-#>      sovereignty                   geometry
-#> 7532    Colombia  POINT (-71.0033 -0.76075)
-#> 7533      Mexico POINT (-97.91818 17.23743)
+#> 7541                            araw1281/japu1236/nucl1764/yucu1252  yucu1252
+#> 7542 otom1299/east2557/amuz1253/mixt1422/mixt1423/mixt1427/sout3179  sout3179
+#>           family isolate family_size family_size_rank  country sovereignty
+#> 7541    Arawakan   FALSE          77               42 Colombia    Colombia
+#> 7542 Otomanguean   FALSE         181               46   Mexico      Mexico
+#>                   type  geounit     continent adm0_a3
+#> 7541 Sovereign country Colombia South America     COL
+#> 7542 Sovereign country   Mexico North America     MEX
+#>                        geometry
+#> 7541  POINT (-71.0033 -0.76075)
+#> 7542 POINT (-97.91818 17.23743)
 ```
 
 Sometimes you don’t find a match:
@@ -473,7 +485,7 @@ glottosearch(search = "matsigenka", tolerance = 0.2)[,"name"]
 #> Bounding box:  xmin: -74.4371 ymin: -11.5349 xmax: -74.4371 ymax: -11.5349
 #> Geodetic CRS:  WGS 84
 #>               name                  geometry
-#> 4779 Nomatsiguenga POINT (-74.4371 -11.5349)
+#> 4787 Nomatsiguenga POINT (-74.4371 -11.5349)
 ```
 
 Aha! There it is: ‘Machiguenga’
@@ -487,16 +499,16 @@ glottosearch(search = "matsigenka", tolerance = 0.4)[,"name"]
 #> Geodetic CRS:  WGS 84
 #> First 10 features:
 #>                    name                   geometry
-#> 1708 Eastern Maninkakan   POINT (-10.5394 9.33048)
-#> 3061    Kita Maninkakan   POINT (-9.49151 13.1798)
-#> 3145   Konyanka Maninka   POINT (-8.89972 8.04788)
-#> 3724   Maasina Fulfulde   POINT (-3.64763 11.1324)
-#> 3740        Machiguenga  POINT (-72.5017 -12.1291)
-#> 3894           Mandinka POINT (-15.65395 12.81652)
-#> 3930          Mansoanka   POINT (-15.9202 12.8218)
-#> 4033  Matigsalug Manobo     POINT (125.16 7.72124)
-#> 4779      Nomatsiguenga  POINT (-74.4371 -11.5349)
-#> 5371         Piamatsina   POINT (166.738 -14.9959)
+#> 1710 Eastern Maninkakan   POINT (-10.5394 9.33048)
+#> 3063    Kita Maninkakan   POINT (-9.49151 13.1798)
+#> 3147   Konyanka Maninka   POINT (-8.89972 8.04788)
+#> 3731   Maasina Fulfulde   POINT (-3.64763 11.1324)
+#> 3747        Machiguenga  POINT (-72.5017 -12.1291)
+#> 3901           Mandinka POINT (-15.65395 12.81652)
+#> 3937          Mansoanka   POINT (-15.9202 12.8218)
+#> 4040  Matigsalug Manobo     POINT (125.16 7.72124)
+#> 4787      Nomatsiguenga  POINT (-74.4371 -11.5349)
+#> 5383         Piamatsina   POINT (166.738 -14.9959)
 ```
 
 ## glottofilter
@@ -506,10 +518,10 @@ filter, select, query
 ``` r
 eurasia <- glottofilter(continent = c("Europe", "Asia"))
 eurasia
-#> Simple feature collection with 2585 features and 15 fields
+#> Simple feature collection with 2583 features and 18 fields
 #> Geometry type: POINT
 #> Dimension:     XY
-#> Bounding box:  xmin: -173.925 ymin: -21.1131 xmax: 175.07 ymax: 73.1354
+#> Bounding box:  xmin: -173.925 ymin: -10.8469 xmax: 175.07 ymax: 73.1354
 #> Geodetic CRS:  WGS 84
 #> First 10 features:
 #>    glottocode                   name macroarea isocode countries family_id
@@ -535,27 +547,38 @@ eurasia
 #> 9                    sino1245/burm1265/lolo1265/burm1266/sout3159/acha1252
 #> 10 sino1245/burm1265/lolo1265/lolo1267/nili1235/sout3212/niso1234/uncl1517
 #>    parent_id            family isolate family_size family_size_rank     country
-#> 1   pait1248      Austronesian   FALSE        1270               50    Malaysia
-#> 2   muru1275      Austronesian   FALSE        1270               50   Indonesia
+#> 1   pait1248      Austronesian   FALSE        1271               52    Malaysia
+#> 2   muru1275      Austronesian   FALSE        1271               52   Indonesia
 #> 3   abkh1243      Abkhaz-Adyge   FALSE           5                5      Russia
-#> 4   abel1234      Austronesian   FALSE        1270               50 Philippines
+#> 4   abel1234      Austronesian   FALSE        1271               52 Philippines
 #> 5       <NA>           Abinomn    TRUE           1                1   Indonesia
 #> 6   abkh1243      Abkhaz-Adyge   FALSE           5                5     Georgia
 #> 7   alor1250 Timor-Alor-Pantar   FALSE          23               20   Indonesia
 #> 8       <NA>              Abun    TRUE           1                1   Indonesia
-#> 9   acha1252      Sino-Tibetan   FALSE         498               48       China
-#> 10  uncl1517      Sino-Tibetan   FALSE         498               48       China
-#>    continent sovereignty                  geometry
-#> 1       Asia    Malaysia   POINT (118.306 5.55394)
-#> 2       Asia   Indonesia POINT (116.1625 3.524226)
-#> 3     Europe      Russia          POINT (42 44.25)
-#> 4       Asia Philippines     POINT (120.2 15.4131)
-#> 5       Asia   Indonesia  POINT (138.891 -2.92281)
-#> 6       Asia     Georgia POINT (41.15911 43.05622)
-#> 7       Asia   Indonesia  POINT (124.588 -8.31058)
-#> 8       Asia   Indonesia  POINT (132.416 -0.57073)
-#> 9       Asia       China   POINT (97.7438 24.3479)
-#> 10      Asia       China    POINT (102.446 24.152)
+#> 9   acha1252      Sino-Tibetan   FALSE         501               50       China
+#> 10  uncl1517      Sino-Tibetan   FALSE         501               50       China
+#>    sovereignty              type     geounit continent adm0_a3
+#> 1     Malaysia Sovereign country    Malaysia      Asia     MYS
+#> 2    Indonesia Sovereign country   Indonesia      Asia     IDN
+#> 3       Russia Sovereign country      Russia    Europe     RUS
+#> 4  Philippines Sovereign country Philippines      Asia     PHL
+#> 5    Indonesia Sovereign country   Indonesia      Asia     IDN
+#> 6      Georgia          Geo unit     Georgia      Asia     GEO
+#> 7    Indonesia Sovereign country   Indonesia      Asia     IDN
+#> 8    Indonesia Sovereign country   Indonesia      Asia     IDN
+#> 9        China           Country       China      Asia     CHN
+#> 10       China           Country       China      Asia     CHN
+#>                     geometry
+#> 1    POINT (118.306 5.55394)
+#> 2  POINT (116.1625 3.524226)
+#> 3           POINT (42 44.25)
+#> 4      POINT (120.2 15.4131)
+#> 5   POINT (138.891 -2.92281)
+#> 6  POINT (41.15911 43.05622)
+#> 7   POINT (124.588 -8.31058)
+#> 8   POINT (132.416 -0.57073)
+#> 9    POINT (97.7438 24.3479)
+#> 10    POINT (102.446 24.152)
 
 # Other examples of glottofilter:
 wari <- glottofilter(glottocode = "wari1268")
@@ -586,6 +609,11 @@ glottodist <- glottodist(glottodata = glottodata)
 #> Values in binary columns (symm/asymm) recoded to TRUE/FALSE
 #> Missing values recoded to NA
 #> All variables have two or more levels (excluding NA)
+#> 
+#>  glottodata has been cleaned.
+#> 
+#>  3 variables remaining
+#> All variables have two or more levels (excluding NA)
 ```
 
 ## glottoplot
@@ -598,6 +626,11 @@ glottodata <- glottoget("demodata", meta = TRUE)
 glottodist <- glottodist(glottodata = glottodata)
 #> Values in binary columns (symm/asymm) recoded to TRUE/FALSE
 #> Missing values recoded to NA
+#> All variables have two or more levels (excluding NA)
+#> 
+#>  glottodata has been cleaned.
+#> 
+#>  3 variables remaining
 #> All variables have two or more levels (excluding NA)
 glottoplot(glottodist = glottodist)
 ```
