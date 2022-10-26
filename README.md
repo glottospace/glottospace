@@ -38,7 +38,7 @@ stable, you might find bugs or encounter things you might find
 confusing. You can help us to improve the package by:
 
 -   Sending an email to [Sietze
-    Norder](mailto:s.j.norder@hum.leidenuniv.nl) with a clear
+    Norder](mailto:s.j.norder@uu.nl) with a clear
     description of the issue or error message.  
 -   Opening a new issue in the [glottospace issues page on
     GitHub](https://github.com/SietzeN/glottospace/issues)
