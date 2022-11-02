@@ -40,7 +40,7 @@ We're still actively developing the **glottospace** package by adding new functi
 - Fixing a bug or adding functionality and submit a [pull request on GitHub](https://github.com/SietzeN/glottospace/pulls).
 
 # Citation
-If you find the **glottospace** package useful, please cite it in your work:
+If you find **glottospace** useful, please cite it in your work:
 
 ```{r, echo = FALSE}
 citation("glottospace")

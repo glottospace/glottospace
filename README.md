@@ -46,8 +46,7 @@ confusing. You can help us to improve the package by:
 
 # Citation
 
-If you find the **glottospace** package useful, please cite it in your
-work:
+If you find **glottospace** useful, please cite it in your work:
 
     #> 
     #> To cite glottospace in publications use:
