@@ -209,7 +209,29 @@ anderberg_dissimilarity <- function(glottodata, i, j) {
 
 }
 
-#' Calculate the Anderberg dissimilarity distance matrix of languages
+#' Anderberg dissimilarity
+#'
+#' `glottodist_anderberg()` calaulate the Anderberg dissimilarity
+#'
+#' @section Details:
+#'
+#' Consider a categorical dataset \eqn{L} containing \eqn{N} objects defined over a set of \eqn{d} categorical features where \eqn{A_k} denotes the \eqn{k-}th feature.
+#' The feature \eqn{A_k} take \eqn{n_k} values in the given dataset which are denoted by \eqn{\mathcal{A}_k}.
+#' We also use the following notation:
+#'
+#' \itemize{
+#' \item \eqn{f_k(x)}: The number of times feature \eqn{A_k} takes the value \eqn{x} in the dataset \eqn{L}.
+#' If \eqn{x\notin\mathcal{A}_k}, \eqn{f_k(x)=0}.
+#' \item \eqn{\hat{p}_k(x)}: The sample frequency of feature $A_k$ to take the value $x$ in the dataset \eqn{L}. \eqn{\hat{p}_k(x)=\frac{f_k(x)}{N}}.
+#' }
+#'
+#'The Anderberg dissimilarity of \eqn{X} and \eqn{Y} is defined as:
+#'\deqn{D(X, Y)=
+#'\frac{\sum\limits_{k\in \{1\leq k \leq d: X_k \neq Y_k\}}\left(\frac{1}{2\hat{p}_k(X_k)\hat{p}_k(Y_k)}\right)\frac{2}{n_k(n_k+1)}}
+#'{\sum\limits_{k\in \{1\leq k \leq d: X_k=Y_k\}}\left(\frac{1}{\hat{p}_k(X_k)}\right)^2\frac{2}{n_k(n_k+1)} +
+#'\sum\limits_{k\in \{1\leq k \leq d: X_k \neq Y_k\}}\left(\frac{1}{2\hat{p}_k(X_k)\hat{p}_k(Y_k)}\right)\frac{2}{n_k(n_k+1)}}.}
+#'
+#'
 #'
 #' @param glottodata glottodata or glottosubdata, either with or without structure table.
 #'
@@ -238,6 +260,7 @@ glottodist_anderberg <- function(glottodata){
   }
   return(as.dist(dist_matrix))
 }
+
 
 
 

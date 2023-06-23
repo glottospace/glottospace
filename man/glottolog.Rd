@@ -27,4 +27,4 @@ Cite the source of the dataset as:
 Hammarström, Harald & Forkel, Robert & Haspelmath, Martin & Bank, Sebastian. 2022. Glottolog 4.7. Leipzig: Max Planck Institute for Evolutionary Anthropology. (Available online at https://glottolog.org)
 
 
-##------ Fri Jun 23 15:36:31 2023 ------##}
+##------ Fri Jun 23 17:27:29 2023 ------##}
