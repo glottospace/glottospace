@@ -18,7 +18,7 @@ wals
 This is an internally stored version of WALS data. Use glottoget("wals", download = TRUE) to download the latest version
 }
 \keyword{internal}
-\note{version: v2020.2
+\note{version: v2020.3
 
 
 Cite the source of the dataset as:
@@ -27,4 +27,4 @@ Cite the source of the dataset as:
 Dryer, Matthew S. & Haspelmath, Martin (eds.) 2013. The World Atlas of Language Structures Online. Leipzig: Max Planck Institute for Evolutionary Anthropology. (Available online at https://wals.info)
 
 
-##------ Wed Nov  2 14:20:35 2022 ------##}
+##------ Fri Jun 23 15:36:31 2023 ------##}
