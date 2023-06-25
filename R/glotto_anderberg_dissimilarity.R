@@ -258,6 +258,8 @@ glottodist_anderberg <- function(glottodata){
   for (i in 1:n){
     dist_matrix[i, i] <- 0
   }
+  colnames(dist_matrix) <- rownames(glottodata)
+  rownames(dist_matrix) <- rownames(glottodata)
   return(as.dist(dist_matrix))
 }
 
