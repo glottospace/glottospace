@@ -4,7 +4,7 @@
 \alias{anderberg_dissimilarity}
 \title{Calculate Anderberg dissimilarity between two objects}
 \usage{
-anderberg_dissimilarity(glottodata, i, j)
+anderberg_dissimilarity(glottodata, i, j, type, weights)
 }
 \arguments{
 \item{glottodata}{A dataframe}

@@ -4,10 +4,14 @@
 \alias{glottodist_anderberg}
 \title{Anderberg dissimilarity}
 \usage{
-glottodist_anderberg(glottodata)
+glottodist_anderberg(glottodata, type, weights)
 }
 \arguments{
-\item{glottodata}{glottodata or glottosubdata, either with or without structure table.}
+\item{glottodata}{A dataframe}
+
+\item{type}{A list}
+
+\item{weights}{A vector}
 }
 \value{
 object of class \code{dist}

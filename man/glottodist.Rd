@@ -4,7 +4,7 @@
 \alias{glottodist}
 \title{Calculate distances between languages}
 \usage{
-glottodist(glottodata)
+glottodist(glottodata, metric = "gower")
 }
 \arguments{
 \item{glottodata}{glottodata or glottosubdata, either with or without structure table.}

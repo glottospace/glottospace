@@ -11,7 +11,7 @@
 #' glottosubdata <- glottoget("demosubdata", meta = TRUE)
 #' glottodist <- glottodist(glottodata = glottosubdata)
 #' # glottoplot(glottodist)
-glottodist <- function(glottodata){
+glottodist <- function(glottodata, metric="gower"){
   rlang::check_installed("cluster", reason = "to use `glottodist()`")
 
   if(glottocheck_isglottosubdata(glottodata)){
@@ -122,10 +122,22 @@ glottodist <- function(glottodata){
   }
   }
 
-  glottodist <- cluster::daisy(x = glottodata, metric = "gower",
-                         type = list(symm = symm, asymm = asymm, ordratio = ordratio, logratio = logratio),
-                         weights = weights)
-  glottodist <- add_class(object = glottodist, class = "glottodist")
+  # Calaulate the dist
+  if(metric == "gower"){
+    glottodist <- cluster::daisy(x = glottodata, metric = "gower",
+                                 type = list(symm = symm, asymm = asymm, ordratio = ordratio, logratio = logratio),
+                                 weights = weights)
+    }
+  else if(metric == "anderberg"){
+    if (any(structure$type == "numeric")){
+      stop("The Anderberg dissimilarity is only meaningful when the type of glottodata is not numeric.")
+    }
+    else{
+      glottodist <- glottodist_anderberg(glottodata, type = list(symm = symm, asymm = asymm, ordratio = ordratio, logratio = logratio),
+                                         weights = weights)
+      }
+    }
+  # glottodist <- add_class(object = glottodist, class = "glottodist")
   glottodist
 
 }
