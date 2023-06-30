@@ -1,6 +1,8 @@
 #' Calculate distances between languages
 #'
+#' @param metric either "gower" or "anderberg"
 #' @param glottodata glottodata or glottosubdata, either with or without structure table.
+#'
 #' @return object of class \code{dist}
 #' @export
 #'
@@ -11,6 +13,39 @@
 #' glottosubdata <- glottoget("demosubdata", meta = TRUE)
 #' glottodist <- glottodist(glottodata = glottosubdata)
 #' # glottoplot(glottodist)
+#'
+#'
+#' @section Details:
+#' The `glottodist` function returns a `dist` object with respect to either Gower distance or Anderberg dissimilarity.
+#' The Anderberg dissimilarity is defined as follows.
+#' Consider a categorical dataset \eqn{L} containing \eqn{N} objects \eqn{X_1, \cdots, X_N} defined over a set of \eqn{d} categorical features where \eqn{A_k} denotes the \eqn{k-}th feature.
+#' The feature \eqn{A_k} take \eqn{n_k} values in the given dataset which are denoted by \eqn{\mathcal{A}_k}. We regard `NA` as a new value.
+#' We also use the following notations:
+#'
+#' \itemize{
+#' \item \eqn{f_k(x)}: The number of times feature \eqn{A_k} takes the value \eqn{x} in the dataset \eqn{L}.
+#' If \eqn{x\notin\mathcal{A}_k}, \eqn{f_k(x)=0}.
+#' \item \eqn{\hat{p}_k(x)}: The sample frequency of feature $A_k$ to take the value $x$ in the dataset \eqn{L}. \eqn{\hat{p}_k(x)=\frac{f_k(x)}{N}}.
+#' }
+#'
+#' The Anderberg dissimilarity of \eqn{X} and \eqn{Y} is defined in the form of:
+#' \eqn{d(X_i, X_j)=
+#' \frac{D}{D+S},
+#' }
+#' where \deqn{D = \sum\limits_{k\in \{1\leq k \leq d: X_k \neq Y_k\}} w_k * \delta^{(k)}_{ij}\left(\frac{1}{2\hat{p}_k(X_k)\hat{p}_k(Y_k)}\right)\frac{2}{n_k(n_k+1)},}
+#' and
+#' \deqn{S = \sum\limits_{k\in \{1\leq k \leq d: X_k = Y_k\}} w_k * \delta^{(k)}_{ij}\left(\frac{1}{\hat{p}_k(X_k)}\right)^2\frac{2}{n_k(n_k+1)}}
+#'
+#' The numeber \eqn{w_k} gives the weight of the \eqn{k}-th feature,
+#' and the numebr \eqn{\delta^{(k)}_{ij}} is equal to either \eqn{0} or \eqn{1}.
+#' It is equal to \eqn{0} when the type of the \eqn{k}-th feature is asymmetric binary and both values of \eqn{X_i} and \eqn{X_j} are \eqn{0},
+#' or when both vaslues of the \eqn{k}-th feature are missing,
+#' otherwise, it is equal to \eqn{1}.
+#'
+#'
+#'
+#'
+#'
 glottodist <- function(glottodata, metric="gower"){
   rlang::check_installed("cluster", reason = "to use `glottodist()`")
 
@@ -137,7 +172,7 @@ glottodist <- function(glottodata, metric="gower"){
                                          weights = weights)
       }
     }
-  # glottodist <- add_class(object = glottodist, class = "glottodist")
+  glottodist <- add_class(object = glottodist, class = "glottodist")
   glottodist
 
 }

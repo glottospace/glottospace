@@ -7,14 +7,7 @@
 #' @return A numeric value
 #' @export
 #'
-#' @examples
-#' glottodata <- glottoget("demodata", meta = TRUE)
-#' glottodata <- glottodata_cleaned(glottodata)
-#' anderberg_dissimilarity(glottodata, 1, 3)
 #'
-#' glottosubdata <- glottoget("demosubdata", meta = TRUE)
-#' glottosubdata <- glottodata_cleaned(glottosubdata)
-#' anderberg_dissimilarity(glottosubdata, 1, 3)
 anderberg_dissimilarity <- function(glottodata, i, j, type, weights) {
   glottodata_freq_list <- glottodata |>
     plyr::alply(
@@ -29,17 +22,22 @@ anderberg_dissimilarity <- function(glottodata, i, j, type, weights) {
   glottodata_val_counts <- glottodata_freq_list |>
     sapply(length) # glottodata_val_counts is a vector containing the amount of different values for each features.
 
-  delta <- rep(1, length(weights))
+
+  delta <- rep(1, length(weights)) # Define the delta vector
   if (length(type$asymm) != 0){
     delta_0_idx <- intersect(which(glottodata[i, type$asymm] == FALSE), which(glottodata[j, type$asymm] == FALSE))
     delta[delta_0_idx] <- 0
-  }
+  } # If both values of an asymm type feature are FALSE, delta is set to be 0
 
-  weights <- weights * delta
+  feature_same_idx_na <- intersect(which(is.na(glottodata[i, ])), which(is.na(glottodata[j, ]))) # The indices of features with both values being NAs
+  if (length(feature_same_idx_na) != 0){
+    delta[feature_same_idx_na] <- 0
+  } # If both values of a feature are NAs, delta is set to be 0
 
-  feature_same_idx_all <- which(glottodata[i, ] == glottodata[j, ])
-  feature_same_idx_na <- intersect(which(is.na(glottodata[i, ])), which(is.na(glottodata[j, ])))
-  feature_same_idx <- setdiff(feature_same_idx_all, feature_same_idx_na)
+
+  weights <- weights * delta # Upgrade the weight
+
+  feature_same_idx <- which(glottodata[i, ] == glottodata[j, ])
 
   feature_diff_idx <- which(glottodata[i, ] != glottodata[j, ])
 
@@ -71,7 +69,8 @@ anderberg_dissimilarity <- function(glottodata, i, j, type, weights) {
     part_diff <- feature_diff_idx |>
       sapply(
         FUN = function(idx){
-          weights[idx] * 1 / (2 * glottodata_freq_list[[idx]][as.character(glottodata[i, idx])] * glottodata_freq_list[[idx]][as.character(glottodata[j, idx])]) *
+          weights[idx] * 1 / (2 * glottodata_freq_list[[idx]][as.character(glottodata[i, idx])] *
+                                glottodata_freq_list[[idx]][as.character(glottodata[j, idx])]) *
             2 / (glottodata_val_counts[idx] * (glottodata_val_counts[idx] + 1))
         }
       ) |>
@@ -89,30 +88,7 @@ anderberg_dissimilarity <- function(glottodata, i, j, type, weights) {
 
 }
 
-#' Anderberg dissimilarity
-#'
-#' `glottodist_anderberg()` calaulate the Anderberg dissimilarity
-#'
-#' @section Details:
-#'
-#' Consider a categorical dataset \eqn{L} containing \eqn{N} objects defined over a set of \eqn{d} categorical features where \eqn{A_k} denotes the \eqn{k-}th feature.
-#' The feature \eqn{A_k} take \eqn{n_k} values in the given dataset which are denoted by \eqn{\mathcal{A}_k}.
-#' We also use the following notation:
-#'
-#' \itemize{
-#' \item \eqn{f_k(x)}: The number of times feature \eqn{A_k} takes the value \eqn{x} in the dataset \eqn{L}.
-#' If \eqn{x\notin\mathcal{A}_k}, \eqn{f_k(x)=0}.
-#' \item \eqn{\hat{p}_k(x)}: The sample frequency of feature $A_k$ to take the value $x$ in the dataset \eqn{L}. \eqn{\hat{p}_k(x)=\frac{f_k(x)}{N}}.
-#' }
-#'
-#'The Anderberg dissimilarity of \eqn{X} and \eqn{Y} is defined as:
-#'\deqn{D(X, Y)=
-#'\frac{\sum\limits_{k\in \{1\leq k \leq d: X_k \neq Y_k\}}\left(\frac{1}{2\hat{p}_k(X_k)\hat{p}_k(Y_k)}\right)\frac{2}{n_k(n_k+1)}}
-#'{\sum\limits_{k\in \{1\leq k \leq d: X_k=Y_k\}}\left(\frac{1}{\hat{p}_k(X_k)}\right)^2\frac{2}{n_k(n_k+1)} +
-#'\sum\limits_{k\in \{1\leq k \leq d: X_k \neq Y_k\}}\left(\frac{1}{2\hat{p}_k(X_k)\hat{p}_k(Y_k)}\right)\frac{2}{n_k(n_k+1)}}.}
-#'
-#'
-#'
+
 #' @param glottodata A dataframe
 #' @param type A list
 #' @param weights A vector

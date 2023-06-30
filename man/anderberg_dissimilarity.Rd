@@ -19,12 +19,3 @@ A numeric value
 \description{
 Calculate Anderberg dissimilarity between two objects
 }
-\examples{
-glottodata <- glottoget("demodata", meta = TRUE)
-glottodata <- glottodata_cleaned(glottodata)
-anderberg_dissimilarity(glottodata, 1, 3)
-
-glottosubdata <- glottoget("demosubdata", meta = TRUE)
-glottosubdata <- glottodata_cleaned(glottosubdata)
-anderberg_dissimilarity(glottosubdata, 1, 3)
-}
