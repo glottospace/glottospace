@@ -52,7 +52,8 @@ glottodist <- function(glottodata, metric="gower"){
 
   glottodata <- params$glottodata
   weights <- params$weights
-  type = params$type
+  type <-  params$type
+  type_code <- params$type_code
 
   if(metric == "gower"){
     glottodist <- cluster::daisy(x = glottodata,
@@ -68,8 +69,12 @@ glottodist <- function(glottodata, metric="gower"){
       glottodist <- glottodist_anderberg(glottodata = glottodata,
                                          type = type,
                                          weights = weights)
+      glottodist <- add_class(object = glottodist, class = "dissimilarity")
+      attr(glottodist, which="Metric") <- "anderberg"
+
+      attr(glottodist, which="Types") <- type_code
     }
-  }
+    }
   glottodist <- add_class(object = glottodist, class = "glottodist")
   glottodist
 }
@@ -80,7 +85,7 @@ glottodist <- function(glottodata, metric="gower"){
 #'
 #' @param glottodata
 #'
-#' @noRd
+#'
 glottodist_cleaned <- function(glottodata){
   rlang::check_installed("cluster", reason = "to use `glottodist()`")
 
@@ -156,6 +161,13 @@ glottodist_cleaned <- function(glottodata){
   ordratio <- which(structure$type == "ordratio")
   logratio <- which(structure$type == "logratio")
 
+  type <- list(symm = symm, asymm = asymm, ordratio = ordratio, logratio = logratio, numeric=numer)
+
+  type_names <- c("asymm", "symm", "factor", "ordered", "logratio", "ordratio", "numeric")
+  type_names_simp <- c("A", "S", "N", "O", "I", "T", "I")
+
+  type_code <- type_names_simp[match(structure$type, type_names)]
+
   # levels
   if(any(colnames(structure) == "levels")){
   levels <- structure$levels
@@ -192,8 +204,12 @@ glottodist_cleaned <- function(glottodata){
   }
   }
 
-  return(list(glottodata=glottodata, weights=weights,
-              type = list(symm = symm, asymm = asymm, ordratio = ordratio, logratio = logratio, numeric=numer)))
+
+
+  return(list(glottodata=glottodata,
+              weights=weights,
+              type = type,
+              type_code = type_code))
 
 }
 
