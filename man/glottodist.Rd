@@ -35,7 +35,7 @@ The Anderberg dissimilarity of \eqn{X} and \eqn{Y} is defined in the form of:
 \eqn{d(X_i, X_j)=
 \frac{D}{D+S},
 }
-where \deqn{D = \sum\limits_{k\in \{1\leq k \leq d: X_k \neq Y_k\}} w_k * \delta^{(k)}_{ij}
+where \deqn{D = \sum\limits_{k\in \{1\leq k \leq d: X_k \neq Y_k\}} w_k * \delta^{(k)}_{ij} *
  \tau_{ij}^{(k)}\left(\frac{1}{2\hat{p}_k(X_k)\hat{p}_k(Y_k)}\right)\frac{2}{n_k(n_k+1)},}
 and
 \deqn{S = \sum\limits_{k\in \{1\leq k \leq d: X_k = Y_k\}} w_k * \delta^{(k)}_{ij}\left(\frac{1}{\hat{p}_k(X_k)}\right)^2\frac{2}{n_k(n_k+1)}}
@@ -52,7 +52,7 @@ otherwise \eqn{\tau_{ij}^{(k)}} is equal to \eqn{1}.
 
 \examples{
 glottodata <- glottoget("demodata", meta = TRUE)
-glottodist <- glottodist(glottodata = glottodata)
+glottodist <- glottodist(glottodata = glottodata, metric="anderberg")
 
 glottosubdata <- glottoget("demosubdata", meta = TRUE)
 glottodist <- glottodist(glottodata = glottosubdata)

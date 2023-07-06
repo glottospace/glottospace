@@ -8,7 +8,7 @@
 #' @export
 #'
 #'
-#'
+#' @noRd
 #'
 anderberg_dissimilarity <- function(glottodata, i, j, type, weights) {
   glottodata_freq_list <- glottodata |>
