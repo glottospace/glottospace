@@ -35,15 +35,19 @@ The Anderberg dissimilarity of \eqn{X} and \eqn{Y} is defined in the form of:
 \eqn{d(X_i, X_j)=
 \frac{D}{D+S},
 }
-where \deqn{D = \sum\limits_{k\in \{1\leq k \leq d: X_k \neq Y_k\}} w_k * \delta^{(k)}_{ij}\left(\frac{1}{2\hat{p}_k(X_k)\hat{p}_k(Y_k)}\right)\frac{2}{n_k(n_k+1)},}
+where \deqn{D = \sum\limits_{k\in \{1\leq k \leq d: X_k \neq Y_k\}} w_k * \delta^{(k)}_{ij}
+ \tau_{ij}^{(k)}\left(\frac{1}{2\hat{p}_k(X_k)\hat{p}_k(Y_k)}\right)\frac{2}{n_k(n_k+1)},}
 and
 \deqn{S = \sum\limits_{k\in \{1\leq k \leq d: X_k = Y_k\}} w_k * \delta^{(k)}_{ij}\left(\frac{1}{\hat{p}_k(X_k)}\right)^2\frac{2}{n_k(n_k+1)}}
 
 The numeber \eqn{w_k} gives the weight of the \eqn{k}-th feature,
 and the numebr \eqn{\delta^{(k)}_{ij}} is equal to either \eqn{0} or \eqn{1}.
 It is equal to \eqn{0} when the type of the \eqn{k}-th feature is asymmetric binary and both values of \eqn{X_i} and \eqn{X_j} are \eqn{0},
-or when both values of the \eqn{k}-th feature are missing,
+or when either value of the \eqn{k}-th feature is missing,
 otherwise, it is equal to \eqn{1}.
+When \eqn{X_k \neq Y_k} and the type of \eqn{A_k} is "ordered",
+\eqn{\tau_{ij}^{(k)}} is equal to the normalized difference of \eqn{X_k} and \eqn{Y_k},
+otherwise \eqn{\tau_{ij}^{(k)}} is equal to \eqn{1}.
 }
 
 \examples{

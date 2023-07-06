@@ -7,7 +7,7 @@
 #' @return A numeric value
 #' @export
 #'
-#' @noRd
+#'
 #'
 #'
 anderberg_dissimilarity <- function(glottodata, i, j, type, weights) {
@@ -31,13 +31,32 @@ anderberg_dissimilarity <- function(glottodata, i, j, type, weights) {
     delta[delta_0_idx] <- 0
   } # If both values of an asymm type feature are FALSE, delta is set to be 0
 
-  feature_same_idx_na <- intersect(which(is.na(glottodata[i, ])), which(is.na(glottodata[j, ]))) # The indices of features with both values being NAs
+  feature_same_idx_na <- union(which(is.na(glottodata[i, ])), which(is.na(glottodata[j, ]))) # The indices of features with both values being NAs
   if (length(feature_same_idx_na) != 0){
     delta[feature_same_idx_na] <- 0
   } # If both values of a feature are NAs, delta is set to be 0
 
 
-  weights <- weights * delta # Upgrade the weight
+  tau <- rep(1, length(weights))
+
+  if (length(type$ordered) != 0) {
+    order_idx <- type$ordered
+
+    tau[order_idx] <- order_idx |>
+      sapply (
+        FUN = function(x){
+          if (!is.na(glottodata[i, x]) && !is.na(glottodata[j, x]) && (glottodata[i, x] != glottodata[j, x])) {
+            lvl <- levels(glottodata[, x])
+            result <- abs(which(lvl == glottodata[i, x]) - which(lvl == glottodata[j, x])) / (length(lvl) - 1)
+          } else {
+            result <- 1
+          }
+          return(result)
+        }
+      )
+  }
+
+  weights <- weights * delta * tau # Upgrade the weight
 
   feature_same_idx <- which(glottodata[i, ] == glottodata[j, ])
 
@@ -50,7 +69,6 @@ anderberg_dissimilarity <- function(glottodata, i, j, type, weights) {
     },
     glottodata_freq_list[feature_same_idx], val_same
   )
-
 
 
   if (length(feature_same_idx) == 0){
@@ -87,7 +105,6 @@ anderberg_dissimilarity <- function(glottodata, i, j, type, weights) {
   }
 
   return(anderberg.dissimilar)
-
 }
 
 
