@@ -7,6 +7,8 @@
 #' @return A numeric value
 #' @export
 #'
+#' @noRd
+#'
 #'
 anderberg_dissimilarity <- function(glottodata, i, j, type, weights) {
   glottodata_freq_list <- glottodata |>
@@ -96,12 +98,8 @@ anderberg_dissimilarity <- function(glottodata, i, j, type, weights) {
 #' @return object of class \code{dist}
 #' @export
 #'
-#' @examples
-#' glottodata <- glottoget("demodata", meta = TRUE)
-#' glottodist_anderberg(glottodata)
+#' @noRd
 #'
-#' glottosubdata <- glottoget("demosubdata", meta = TRUE)
-#' glottodist_anderberg(glottosubdata)
 glottodist_anderberg <- function(glottodata, type, weights){
   n <- nrow(glottodata)
   dist_matrix <- matrix(nrow=n, ncol=n)

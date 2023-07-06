@@ -25,7 +25,7 @@
 #' \itemize{
 #' \item \eqn{f_k(x)}: The number of times feature \eqn{A_k} takes the value \eqn{x} in the dataset \eqn{L}.
 #' If \eqn{x\notin\mathcal{A}_k}, \eqn{f_k(x)=0}.
-#' \item \eqn{\hat{p}_k(x)}: The sample frequency of feature $A_k$ to take the value $x$ in the dataset \eqn{L}. \eqn{\hat{p}_k(x)=\frac{f_k(x)}{N}}.
+#' \item \eqn{\hat{p}_k(x)}: The sample frequency of feature \eqn{A_k} to take the value \eqn{x} in the dataset \eqn{L}. \eqn{\hat{p}_k(x)=\frac{f_k(x)}{N}}.
 #' }
 #'
 #' The Anderberg dissimilarity of \eqn{X} and \eqn{Y} is defined in the form of:
@@ -39,7 +39,7 @@
 #' The numeber \eqn{w_k} gives the weight of the \eqn{k}-th feature,
 #' and the numebr \eqn{\delta^{(k)}_{ij}} is equal to either \eqn{0} or \eqn{1}.
 #' It is equal to \eqn{0} when the type of the \eqn{k}-th feature is asymmetric binary and both values of \eqn{X_i} and \eqn{X_j} are \eqn{0},
-#' or when both vaslues of the \eqn{k}-th feature are missing,
+#' or when both values of the \eqn{k}-th feature are missing,
 #' otherwise, it is equal to \eqn{1}.
 #'
 #'
@@ -47,6 +47,41 @@
 #'
 #'
 glottodist <- function(glottodata, metric="gower"){
+  # Calaulate the dist
+  params <- glottodist_cleaned(glottodata = glottodata)
+
+  glottodata <- params$glottodata
+  weights <- params$weights
+  type = params$type
+
+  if(metric == "gower"){
+    glottodist <- cluster::daisy(x = glottodata,
+                                 metric = "gower",
+                                 type = type,
+                                 weights = weights)
+  }
+  else if(metric == "anderberg"){
+    if (length(type$numeric) != 0){
+      stop("The Anderberg dissimilarity is only meaningful when the type of glottodata is not numeric.")
+    }
+    else{
+      glottodist <- glottodist_anderberg(glottodata = glottodata,
+                                         type = type,
+                                         weights = weights)
+    }
+  }
+  glottodist <- add_class(object = glottodist, class = "glottodist")
+  glottodist
+}
+
+
+
+#' Title
+#'
+#' @param glottodata
+#'
+#' @noRd
+glottodist_cleaned <- function(glottodata){
   rlang::check_installed("cluster", reason = "to use `glottodist()`")
 
   if(glottocheck_isglottosubdata(glottodata)){
@@ -157,23 +192,8 @@ glottodist <- function(glottodata, metric="gower"){
   }
   }
 
-  # Calaulate the dist
-  if(metric == "gower"){
-    glottodist <- cluster::daisy(x = glottodata, metric = "gower",
-                                 type = list(symm = symm, asymm = asymm, ordratio = ordratio, logratio = logratio),
-                                 weights = weights)
-    }
-  else if(metric == "anderberg"){
-    if (any(structure$type == "numeric")){
-      stop("The Anderberg dissimilarity is only meaningful when the type of glottodata is not numeric.")
-    }
-    else{
-      glottodist <- glottodist_anderberg(glottodata, type = list(symm = symm, asymm = asymm, ordratio = ordratio, logratio = logratio),
-                                         weights = weights)
-      }
-    }
-  glottodist <- add_class(object = glottodist, class = "glottodist")
-  glottodist
+  return(list(glottodata=glottodata, weights=weights,
+              type = list(symm = symm, asymm = asymm, ordratio = ordratio, logratio = logratio, numeric=numer)))
 
 }
 
