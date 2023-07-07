@@ -46,6 +46,13 @@
 #' \eqn{\tau_{ij}^{(k)}} is equal to the normalized difference of \eqn{X_k} and \eqn{Y_k},
 #' otherwise \eqn{\tau_{ij}^{(k)}} is equal to \eqn{1}.
 #'
+#' @references
+#' Andergerg M.R. (1973). Cluster analysis for applications. Academic Press, New York.
+#'  \cr
+#'  \cr
+#' Boriah S., Chandola V., Kumar V. (2008). Similarity measures for categorical data: A comparative evaluation.
+#' In: Proceedings of the 8th SIAM International Conference on Data Mining, SIAM, p. 243-254.
+#'
 #'
 glottodist <- function(glottodata, metric="gower"){
   # Calaulate the dist

@@ -60,3 +60,10 @@ glottodist <- glottodist(glottodata = glottosubdata)
 
 
 }
+\references{
+Andergerg M.R. (1973). Cluster analysis for applications. Academic Press, New York.
+ \cr
+ \cr
+Boriah S., Chandola V., Kumar V. (2008). Similarity measures for categorical data: A comparative evaluation.
+In: Proceedings of the 8th SIAM International Conference on Data Mining, SIAM, p. 243-254.
+}
