@@ -10,19 +10,8 @@
 #'
 #' @noRd
 #'
-anderberg_dissimilarity <- function(glottodata, i, j, type, weights) {
-  glottodata_freq_list <- glottodata |>
-    plyr::alply(
-      2, .fun = function(x){table(x, useNA = "ifany")}
-    ) |>
-    lapply (
-      FUN = function(x){
-        x / sum(x)
-      }
-    ) # glottodata_freq_list is a list containing the frequencies of each value in each feature.
-
-  glottodata_val_counts <- glottodata_freq_list |>
-    sapply(length) # glottodata_val_counts is a vector containing the amount of different values for each features.
+anderberg_dissimilarity <- function(glottodata, glottodata_freq_list, glottodata_val_counts,
+                                    i, j, type, weights) {
 
 
   delta <- rep(1, length(weights)) # Define the delta vector
@@ -120,9 +109,24 @@ anderberg_dissimilarity <- function(glottodata, i, j, type, weights) {
 glottodist_anderberg <- function(glottodata, type, weights){
   n <- nrow(glottodata)
   dist_matrix <- matrix(nrow=n, ncol=n)
+
+  glottodata_freq_list <- glottodata |>
+    plyr::alply(
+      2, .fun = function(x){table(x, useNA = "ifany")}
+    ) |>
+    lapply (
+      FUN = function(x){
+        x / sum(x)
+      }
+    ) # glottodata_freq_list is a list containing the frequencies of each value in each feature.
+
+  glottodata_val_counts <- glottodata_freq_list |>
+    sapply(length) # glottodata_val_counts is a vector containing the amount of different values for each features.
+
   for (i in 1:(n-1)){
     for(j in (i + 1):n){
-      dist_matrix[i, j] <- anderberg_dissimilarity(glottodata, i, j, type=type, weights=weights)
+      dist_matrix[i, j] <- anderberg_dissimilarity(glottodata, glottodata_freq_list, glottodata_val_counts,
+                                                   i, j, type=type, weights=weights)
       dist_matrix[j, i] <- dist_matrix[i, j]
     }
   }
