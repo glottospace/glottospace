@@ -1,17 +1,106 @@
 #' Calculate distances between languages
 #'
+#' @param metric either "gower" or "anderberg"
 #' @param glottodata glottodata or glottosubdata, either with or without structure table.
+#'
 #' @return object of class \code{dist}
 #' @export
 #'
 #' @examples
 #' glottodata <- glottoget("demodata", meta = TRUE)
-#' glottodist <- glottodist(glottodata = glottodata)
+#' glottodist <- glottodist(glottodata = glottodata, metric="anderberg")
 #'
 #' glottosubdata <- glottoget("demosubdata", meta = TRUE)
 #' glottodist <- glottodist(glottodata = glottosubdata)
 #' # glottoplot(glottodist)
-glottodist <- function(glottodata){
+#'
+#'
+#' @section Details:
+#' The `glottodist` function returns a `dist` object with respect to either Gower distance or Anderberg dissimilarity.
+#' The Anderberg dissimilarity is defined as follows.
+#' Consider a categorical dataset \eqn{L} containing \eqn{N} objects \eqn{X_1, \cdots, X_N} defined over a set of \eqn{d} categorical features where \eqn{A_k} denotes the \eqn{k-}th feature.
+#' The feature \eqn{A_k} take \eqn{n_k} values in the given dataset which are denoted by \eqn{\mathcal{A}_k}. We regard `NA` as a new value.
+#' We also use the following notations:
+#'
+#' \itemize{
+#' \item \eqn{f_k(x)}: The number of times feature \eqn{A_k} takes the value \eqn{x} in the dataset \eqn{L}.
+#' If \eqn{x\notin\mathcal{A}_k}, \eqn{f_k(x)=0}.
+#' \item \eqn{\hat{p}_k(x)}: The sample frequency of feature \eqn{A_k} to take the value \eqn{x} in the dataset \eqn{L}. \eqn{\hat{p}_k(x)=\frac{f_k(x)}{N}}.
+#' }
+#'
+#' The Anderberg dissimilarity of \eqn{X} and \eqn{Y} is defined in the form of:
+#' \eqn{d(X_i, X_j)=
+#' \frac{D}{D+S},
+#' }
+#' where \deqn{D = \sum\limits_{k\in \{1\leq k \leq d: X_k \neq Y_k\}} w_k * \delta^{(k)}_{ij} *
+#'  \tau_{ij}^{(k)}\left(\frac{1}{2\hat{p}_k(X_k)\hat{p}_k(Y_k)}\right)\frac{2}{n_k(n_k+1)},}
+#' and
+#' \deqn{S = \sum\limits_{k\in \{1\leq k \leq d: X_k = Y_k\}} w_k * \delta^{(k)}_{ij}\left(\frac{1}{\hat{p}_k(X_k)}\right)^2\frac{2}{n_k(n_k+1)}}
+#'
+#' The numeber \eqn{w_k} gives the weight of the \eqn{k}-th feature,
+#' and the numebr \eqn{\delta^{(k)}_{ij}} is equal to either \eqn{0} or \eqn{1}.
+#' It is equal to \eqn{0} when the type of the \eqn{k}-th feature is asymmetric binary and both values of \eqn{X_i} and \eqn{X_j} are \eqn{0},
+#' or when either value of the \eqn{k}-th feature is missing,
+#' otherwise, it is equal to \eqn{1}.
+#' When \eqn{X_k \neq Y_k} and the type of \eqn{A_k} is "ordered",
+#' \eqn{\tau_{ij}^{(k)}} is equal to the normalized difference of \eqn{X_k} and \eqn{Y_k},
+#' otherwise \eqn{\tau_{ij}^{(k)}} is equal to \eqn{1}.
+#'
+#' @references
+#' Andergerg M.R. (1973). Cluster analysis for applications. Academic Press, New York.
+#'  \cr
+#'  \cr
+#' Boriah S., Chandola V., Kumar V. (2008). Similarity measures for categorical data: A comparative evaluation.
+#' In: Proceedings of the 8th SIAM International Conference on Data Mining, SIAM, p. 243-254.
+#'
+#'
+glottodist <- function(glottodata, metric="gower"){
+  # Calaulate the dist
+  params <- glottodist_cleaned(glottodata = glottodata)
+
+  glottodata <- params$glottodata
+  weights <- params$weights
+  type <-  params$type
+  type_code <- params$type_code
+
+  if(metric == "gower"){
+    glottodist <- cluster::daisy(x = glottodata,
+                                 metric = "gower",
+                                 type = type,
+                                 weights = weights)
+  }
+  else if(metric == "anderberg"){
+    glotto_types <- names(type)[
+      type |>
+        sapply(length) != 0]
+
+    if (!purrr::is_empty(intersect(glotto_types, c("numeric", "ordratio", "logratio")))){
+      stop("The Anderberg dissimilarity is only applicable when the type of glottodata is not
+           \"numeric\", \"ordratio\" and \"logratio\".")
+    }
+    else{
+      glottodist <- glottodist_anderberg(glottodata = glottodata,
+                                         type = type,
+                                         weights = weights)
+      glottodist <- add_class(object = glottodist, class = "dissimilarity")
+      attr(glottodist, which="Metric") <- "anderberg"
+
+      attr(glottodist, which="Types") <- type_code
+    }
+    }
+  glottodist <- add_class(object = glottodist, class = "glottodist")
+  glottodist
+}
+
+
+
+#' Title
+#'
+#' @param glottodata
+#'
+#' @noRd
+#'
+glottodist_cleaned <- function(glottodata){
   rlang::check_installed("cluster", reason = "to use `glottodist()`")
 
   if(glottocheck_isglottosubdata(glottodata)){
@@ -86,6 +175,15 @@ glottodist <- function(glottodata){
   ordratio <- which(structure$type == "ordratio")
   logratio <- which(structure$type == "logratio")
 
+  type <- list(symm = symm, asymm = asymm, ordratio = ordratio,
+               logratio = logratio, numeric=numer, factor=fact,
+               ordered=ordfact)
+
+  type_names <- c("asymm", "symm", "factor", "ordered", "logratio", "ordratio", "numeric")
+  type_names_simp <- c("A", "S", "N", "O", "I", "T", "I")
+
+  type_code <- type_names_simp[match(structure$type, type_names)]
+
   # levels
   if(any(colnames(structure) == "levels")){
   levels <- structure$levels
@@ -122,11 +220,12 @@ glottodist <- function(glottodata){
   }
   }
 
-  glottodist <- cluster::daisy(x = glottodata, metric = "gower",
-                         type = list(symm = symm, asymm = asymm, ordratio = ordratio, logratio = logratio),
-                         weights = weights)
-  glottodist <- add_class(object = glottodist, class = "glottodist")
-  glottodist
+
+
+  return(list(glottodata=glottodata,
+              weights=weights,
+              type = type,
+              type_code = type_code))
 
 }
 

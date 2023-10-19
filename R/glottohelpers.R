@@ -20,7 +20,7 @@ glottovars <- function(){
 }
 
 recode_df <- function(data, old, new){
-  apply(data, MARGIN = 2, FUN = recode_vector, old = old, new = new)
+  apply(as.matrix(data), MARGIN = 2, FUN = recode_vector, old = old, new = new)
 }
 
 recode_tona <- function(x, tona){
