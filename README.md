@@ -37,31 +37,35 @@ new functions and improving existing ones. Although the package is
 stable, you might find bugs or encounter things you might find
 confusing. You can help us to improve the package by:
 
--   Sending an email to [Sietze Norder](mailto:s.j.norder@uu.nl) with a
-    clear description of the issue or error message.  
--   Opening a new issue in the [glottospace issues page on
-    GitHub](https://github.com/SietzeN/glottospace/issues)
--   Fixing a bug or adding functionality and submit a [pull request on
-    GitHub](https://github.com/SietzeN/glottospace/pulls).
+- Sending an email to [Rui Dong](mailto:r.dong@hum.leidenuniv.nl) with a
+  clear description of the issue or error message.  
+- Opening a new issue in the [glottospace issues page on
+  GitHub](https://github.com/glottospace/glottospace/issues)
+- Fixing a bug or adding functionality and submit a [pull request on
+  GitHub](https://github.com/glottospace/glottospace/pulls).
 
 # Citation
 
 If you find **glottospace** useful, please cite it in your work:
 
-    #> 
     #> To cite glottospace in publications use:
     #> 
-    #>   Norder, S.J. et al. (2022). glottospace: R package for the geospatial
-    #>   analysis of linguistic and cultural data. URL
-    #>   https://github.com/SietzeN/glottospace.
+    #>   Norder, S.J. et al. (2022). glottospace: R package for language
+    #>   mapping and geospatial analysis of linguistic and cultural data.
+    #>   Journal of Open Source Software, 7(77), 4303,
+    #>   https://doi.org/10.21105/joss.04303
     #> 
     #> A BibTeX entry for LaTeX users is
     #> 
-    #>   @Unpublished{,
+    #>   @Article{,
     #>     title = {glottospace: R package for the geospatial analysis of linguistic and cultural data},
-    #>     author = {Sietze Norder},
-    #>     note = {Manuscript under preparation},
-    #>     url = {https://github.com/SietzeN/glottospace},
+    #>     author = {Sietze Norder and Laura Becker and Hedvig Skirgård and Leonardo Arias and Alena Witzlack-Makarevich and Rik {van Gijn}},
+    #>     journal = {Journal of Open Source Software},
+    #>     year = {2022},
+    #>     volume = {7},
+    #>     number = {77},
+    #>     pages = {4303},
+    #>     url = {glottospace: R package for language mapping and geospatial analysis of linguistic and cultural data},
     #>   }
 
 The package uses two global databases:
@@ -88,7 +92,7 @@ You can install the development version of glottospace from
 
 ``` r
 # install.packages("devtools")
-# devtools::install_github("SietzeN/glottospace", INSTALL_opts=c("--no-multiarch"))
+# devtools::install_github("glottospace/glottospace", INSTALL_opts=c("--no-multiarch"))
 ```
 
 # Example
