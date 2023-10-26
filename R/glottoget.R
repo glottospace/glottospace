@@ -240,6 +240,8 @@ glottoget_zenodo <- function(name = NULL, url = NULL, dirpath = NULL){
     base_url <- "https://zenodo.org/doi/10.5281/zenodo.3606197"
   } else if(name == "dplace" | name == "d-place"){
     base_url <- "https://zenodo.org/doi/10.5281/zenodo.3935419"
+  } else if(tolower(name) == "grambank"){
+    base_url <- "https://zenodo.org/doi/10.5281/zenodo.7740139"
   } else if(!is.null(name) ){
     stop("Unable to download data from Zenodo. Unrecognized name argument. ")
   }
@@ -283,8 +285,10 @@ glottoget_zenodo <- function(name = NULL, url = NULL, dirpath = NULL){
       message(paste0("Glottolog data downloaded (glottolog ", version,"). This is the most recent version available from ", base_url) )
     } else if(tolower(name) == "wals"){
       message(paste0("WALS data downloaded (wals-", version,"). This is the most recent version available from ", base_url) )
-    } else if(tolower(name) == "dplace"){
+    } else if(tolower(name) == "dplace" | name == "d-place"){
       message(paste0("D-PLACE data downloaded (", version,"). This is the most recent version available from ", base_url) )
+    } else if(tolower(name) == "grambank"){
+      message(paste0("Grambank data downloaded (grambank-", version,"). This is the most recent version available from ", base_url) )
     }
   }
   invisible(dirpath)
