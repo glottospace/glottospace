@@ -27,4 +27,4 @@ Cite the source of the dataset as:
 Dryer, Matthew S. & Haspelmath, Martin (eds.) 2013. The World Atlas of Language Structures Online. Leipzig: Max Planck Institute for Evolutionary Anthropology. (Available online at https://wals.info)
 
 
-##------ Fri Jul  7 10:19:06 2023 ------##}
+##------ Thu Oct 26 17:56:09 2023 ------##}

@@ -34,3 +34,12 @@
 #' @source \url{https://www.naturalearthdata.com/
 #' }
 "worldpol"
+
+#'
+#' This is an internally stored version of grambank data (obtained from ...).
+"grambank"
+
+
+
+
+

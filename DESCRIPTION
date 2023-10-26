@@ -10,8 +10,8 @@ Description: Streamlined workflows for geolinguistic analysis, including:
     entry, data cleaning, data exploration, mapping, visualization and
     export.
 License: GPL (>= 3)
-URL: https://github.com/SietzeN/glottospace
-BugReports: https://github.com/SietzeN/glottospace/issues
+URL: https://github.com/glottospace/glottospace
+BugReports: https://github.com/glottospace/glottospace/issues
 Depends: 
     R (>= 4.1.0)
 Imports: 
