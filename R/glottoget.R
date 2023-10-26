@@ -32,9 +32,14 @@
 glottoget <- function(glottodata = NULL, meta = FALSE, download = FALSE, dirpath = NULL, url = NULL){
   if(!is.null(url)){
     if(is.null(dirpath)){
-      dirpath = getwd()
+      url_href <- url |>
+        xml2::read_html() |>
+        rvest::html_elements("a[class = 'ui compact mini button']") |>
+        rvest::html_attr("href")
+      dirpath = paste(getwd(), strsplit(url_href, "/")[[1]][5], sep="/")
     }
     glottoget_zenodo(url = url, dirpath = dirpath)
+    message(paste0("The data is downloaded to ", dirpath))
   } else if(is.null(glottodata)){
     glottodata <- glottoget_glottobase(download = download, dirpath = dirpath)
   } else if(glottodata == "glottobase"){
