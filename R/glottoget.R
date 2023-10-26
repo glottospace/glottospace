@@ -31,6 +31,9 @@
 #' }
 glottoget <- function(glottodata = NULL, meta = FALSE, download = FALSE, dirpath = NULL, url = NULL){
   if(!is.null(url)){
+    if(is.null(dirpath)){
+      dirpath = getwd()
+    }
     glottoget_zenodo(url = url, dirpath = dirpath)
   } else if(is.null(glottodata)){
     glottodata <- glottoget_glottobase(download = download, dirpath = dirpath)

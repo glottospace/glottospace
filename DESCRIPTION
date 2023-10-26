@@ -29,7 +29,8 @@ Imports:
     tidyr,
     tmap,
     units,
-    writexl
+    writexl,
+    rvest
 Suggests: 
     cluster,
     grDevices,
