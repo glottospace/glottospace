@@ -133,41 +133,83 @@ glottoget_glottospace <- function(download = NULL, dirpath = NULL){
 #' @param url Optional url
 #'
 #' @noRd
-#'
 glottoget_remotemeta <- function(name = NULL, url = NULL){
-  rlang::check_installed("jsonlite", reason = "to use `glottoget_remotemeta()`")
-  rlang::check_installed("xml2", reason = "to use `glottoget_remotemeta()`")
+  rlang::check_installed(c("jsonlite", "xml2", "rvest"), reason = "to use `glottoget_remotemeta()`")
+  # rlang::check_installed("xml2", reason = "to use `glottoget_remotemeta()`")
   if(is.null(name) & !is.null(url)){
     base_url <- url
   } else if(tolower(name) == "glottolog"){
     # Newest version is always uploaded here!
-    base_url <- "https://zenodo.org/api/records/3260727"
+    base_url <- "https://zenodo.org/doi/10.5281/zenodo.3260727"
   } else if(tolower(name) == "wals"){
     # Newest version is always uploaded here!
-    base_url <- "https://zenodo.org/api/records/3606197"
+    base_url <- "https://zenodo.org/doi/10.5281/zenodo.3606197"
   } else if(name == "dplace" | name == "d-place"){
-    base_url <- "https://zenodo.org/api/records/3935419"
+    base_url <- "https://zenodo.org/doi/10.5281/zenodo.3935419"
   } else if(!is.null(name) ){
     stop("Unable to download data from Zenodo. Unrecognized name argument. ")
   }
 
-  remote <- suppressWarnings(jsonlite::stream_in(url(base_url)))
+  raw_html <- xml2::read_html(base_url)
 
-    version <- remote$metadata$version
-    btime <- utils::timestamp()
-    citation <- xml2::xml_text(xml2::read_html(charToRaw(remote$metadata$description), encoding = "UTF-8"))
+  record <- raw_html |>
+    rvest::html_elements("a[class = 'ui compact mini button']") |>
+    rvest::html_attr("href")
+  doi <- strsplit(record, "/")[[1]][3]
+  base_url_2 <- paste0("https://zenodo.org/api/records/", doi)
 
-    # v <- paste0(c("Version: ", version), collapse = "" )
-    # c <- paste0(c("Citation: ", gsub(pattern = "\n", replacement = " ", x = citation)), collapse = "" )
-    # b <- paste0(c("Built time: ", btime), collapse = "" )
-    #
-    # paste(c(v,c,b),  sep = "\n")
+  remote <- suppressWarnings(jsonlite::stream_in(url(base_url_2)))
 
-    metainfo <- paste0(c("version: ", version, "\n\n\n", citation, "\n\n", btime),  collapse = "")
+  version <- remote$metadata$version
+  btime <- utils::timestamp()
+  citation <- xml2::xml_text(xml2::read_html(charToRaw(remote$metadata$description), encoding = "UTF-8"))
 
-    paste0("\\note{", metainfo, "}")
+  # v <- paste0(c("Version: ", version), collapse = "" )
+  # c <- paste0(c("Citation: ", gsub(pattern = "\n", replacement = " ", x = citation)), collapse = "" )
+  # b <- paste0(c("Built time: ", btime), collapse = "" )
+  #
+  # paste(c(v,c,b),  sep = "\n")
+
+  metainfo <- paste0(c("version: ", version, "\n\n\n", citation, "\n\n", btime),  collapse = "")
+
+  paste0("\\note{", metainfo, "}")
 
 }
+
+# glottoget_remotemeta <- function(name = NULL, url = NULL){
+#   rlang::check_installed("jsonlite", reason = "to use `glottoget_remotemeta()`")
+#   rlang::check_installed("xml2", reason = "to use `glottoget_remotemeta()`")
+#   if(is.null(name) & !is.null(url)){
+#     base_url <- url
+#   } else if(tolower(name) == "glottolog"){
+#     # Newest version is always uploaded here!
+#     base_url <- "https://zenodo.org/api/records/3260727"
+#   } else if(tolower(name) == "wals"){
+#     # Newest version is always uploaded here!
+#     base_url <- "https://zenodo.org/api/records/3606197"
+#   } else if(name == "dplace" | name == "d-place"){
+#     base_url <- "https://zenodo.org/api/records/3935419"
+#   } else if(!is.null(name) ){
+#     stop("Unable to download data from Zenodo. Unrecognized name argument. ")
+#   }
+#
+#   remote <- suppressWarnings(jsonlite::stream_in(url(base_url)))
+#
+#     version <- remote$metadata$version
+#     btime <- utils::timestamp()
+#     citation <- xml2::xml_text(xml2::read_html(charToRaw(remote$metadata$description), encoding = "UTF-8"))
+#
+#     # v <- paste0(c("Version: ", version), collapse = "" )
+#     # c <- paste0(c("Citation: ", gsub(pattern = "\n", replacement = " ", x = citation)), collapse = "" )
+#     # b <- paste0(c("Built time: ", btime), collapse = "" )
+#     #
+#     # paste(c(v,c,b),  sep = "\n")
+#
+#     metainfo <- paste0(c("version: ", version, "\n\n\n", citation, "\n\n", btime),  collapse = "")
+#
+#     paste0("\\note{", metainfo, "}")
+#
+# }
 
 
 
@@ -179,49 +221,112 @@ glottoget_remotemeta <- function(name = NULL, url = NULL){
 #'
 #' @noRd
 glottoget_zenodo <- function(name = NULL, url = NULL, dirpath = NULL){
-  rlang::check_installed("jsonlite", reason = "to use `glottoget_zenodo()`")
+  rlang::check_installed(c("jsonlite", "xml2", "rvest"), reason = "to use `glottoget_zenodo()`")
   if(is.null(name) & !is.null(url)){
     base_url <- url
   } else if(tolower(name) == "glottolog"){
     # Newest version is always uploaded here!
-    base_url <- "https://zenodo.org/api/records/3260727"
+    base_url <- "https://zenodo.org/doi/10.5281/zenodo.3260727"
   } else if(tolower(name) == "wals"){
     # Newest version is always uploaded here!
-    base_url <- "https://zenodo.org/api/records/3606197"
+    base_url <- "https://zenodo.org/doi/10.5281/zenodo.3606197"
   } else if(name == "dplace" | name == "d-place"){
-    base_url <- "https://zenodo.org/api/records/3935419"
+    base_url <- "https://zenodo.org/doi/10.5281/zenodo.3935419"
   } else if(!is.null(name) ){
     stop("Unable to download data from Zenodo. Unrecognized name argument. ")
   }
+
+  raw_html <- xml2::read_html(base_url)
+
+  record <- raw_html |>
+    rvest::html_elements("a[class = 'ui compact mini button']") |>
+    rvest::html_attr("href")
+
+  # filename <- gsub("\\?.*$", "", strsplit(record, "/")[[1]][6])
+
+  zenodo_url <- "https://zenodo.org"
+
+  # paste0(zenodo_url, record) |>
+  #   download.file(destfile = filename,
+  #               mode = "wb")
+
+  doi <- strsplit(record, "/")[[1]][3]
+  base_url_2 <- paste0("https://zenodo.org/api/records/", doi)
+  remote <- suppressWarnings(jsonlite::stream_in(url(base_url_2)))
+
 
   if(is.null(dirpath)){
     dirpath <- tempdir(check = TRUE)
     # if(dir.exists(dirpath)){unlink(x = dirpath, recursive = TRUE)}
   } else {
     if(dir.exists(dirpath)){stop("Directory already exists, please choose a different location.")}
-    }
+  }
 
-  remote <- suppressWarnings(jsonlite::stream_in(url(base_url)))
-  url <- remote$files[[1]]$links[[1]]
-
+  download_url <- paste0(zenodo_url, record)
   filepath <- file.path(tempfile())
-  utils::download.file(file.path(url), destfile = filepath)
+
+  utils::download.file(download_url, destfile = filepath, mode = "wb")
   utils::unzip(zipfile = filepath, exdir = dirpath)
 
   version <- remote$metadata$version
 
   if(!is.null(name)){
-  if(tolower(name) == "glottolog"){
-    message(paste0("Glottolog data downloaded (glottolog ", version,"). This is the most recent version available from ", base_url) )
-  } else if(tolower(name) == "wals"){
-    message(paste0("WALS data downloaded (wals-", version,"). This is the most recent version available from ", base_url) )
-  } else if(tolower(name) == "dplace"){
-    message(paste0("D-PLACE data downloaded (", version,"). This is the most recent version available from ", base_url) )
+    if(tolower(name) == "glottolog"){
+      message(paste0("Glottolog data downloaded (glottolog ", version,"). This is the most recent version available from ", base_url) )
+    } else if(tolower(name) == "wals"){
+      message(paste0("WALS data downloaded (wals-", version,"). This is the most recent version available from ", base_url) )
+    } else if(tolower(name) == "dplace"){
+      message(paste0("D-PLACE data downloaded (", version,"). This is the most recent version available from ", base_url) )
+    }
   }
-  }
-invisible(dirpath)
+  invisible(dirpath)
 
 }
+
+# glottoget_zenodo <- function(name = NULL, url = NULL, dirpath = NULL){
+#   rlang::check_installed("jsonlite", reason = "to use `glottoget_zenodo()`")
+#   if(is.null(name) & !is.null(url)){
+#     base_url <- url
+#   } else if(tolower(name) == "glottolog"){
+#     # Newest version is always uploaded here!
+#     base_url <- "https://zenodo.org/api/records/3260727"
+#   } else if(tolower(name) == "wals"){
+#     # Newest version is always uploaded here!
+#     base_url <- "https://zenodo.org/api/records/3606197"
+#   } else if(name == "dplace" | name == "d-place"){
+#     base_url <- "https://zenodo.org/api/records/3935419"
+#   } else if(!is.null(name) ){
+#     stop("Unable to download data from Zenodo. Unrecognized name argument. ")
+#   }
+#
+#   if(is.null(dirpath)){
+#     dirpath <- tempdir(check = TRUE)
+#     # if(dir.exists(dirpath)){unlink(x = dirpath, recursive = TRUE)}
+#   } else {
+#     if(dir.exists(dirpath)){stop("Directory already exists, please choose a different location.")}
+#     }
+#
+#   remote <- suppressWarnings(jsonlite::stream_in(url(base_url)))
+#   url <- remote$files[[1]]$links[[1]]
+#
+#   filepath <- file.path(tempfile())
+#   utils::download.file(file.path(url), destfile = filepath)
+#   utils::unzip(zipfile = filepath, exdir = dirpath)
+#
+#   version <- remote$metadata$version
+#
+#   if(!is.null(name)){
+#   if(tolower(name) == "glottolog"){
+#     message(paste0("Glottolog data downloaded (glottolog ", version,"). This is the most recent version available from ", base_url) )
+#   } else if(tolower(name) == "wals"){
+#     message(paste0("WALS data downloaded (wals-", version,"). This is the most recent version available from ", base_url) )
+#   } else if(tolower(name) == "dplace"){
+#     message(paste0("D-PLACE data downloaded (", version,"). This is the most recent version available from ", base_url) )
+#   }
+#   }
+# invisible(dirpath)
+#
+# }
 
 #' Load locally stored cldf data
 #'
