@@ -29,7 +29,7 @@ glottoget_grambank <- function(download = NULL, dirpath = NULL){
 glottoget_grambankdownload <- function(dirpath = NULL){
   invisible(readline(prompt="Are you sure you want to download Grambank data? \n Press [enter] to continue"))
   dirpath <- glottoget_zenodo(name = "grambank", dirpath = dirpath)
-  glottoget_glottologloadlocal(dirpath = dirpath)
+  glottoget_grambankloadlocal(dirpath = dirpath)
 }
 
 
