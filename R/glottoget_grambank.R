@@ -41,7 +41,7 @@ glottoget_grambankdownload <- function(dirpath = NULL){
 #' @noRd
 glottoget_grambankloadlocal <- function(dirpath){
   if(!dir.exists(dirpath)){stop("Directory not found.")}
-  cldf_metadata <- base::list.files(dirpath, pattern = "StructureDataset-metadata.json", recursive = TRUE)
+  cldf_metadata <- base::list.files(dirpath, pattern = "-metadata.json", recursive = TRUE)
   mdpath <- normalizePath(file.path(dirpath, cldf_metadata))
   mddir <- normalizePath(base::dirname(mdpath))
 
