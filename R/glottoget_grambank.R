@@ -1,12 +1,12 @@
 #' Get grambank data
 #'
-#' This function loads the Glottolog data that is distributed with glottospace or optionally downloads it.
-#' type ?glottolog for more information about the version, and how to cite the data. #'
+#' This function loads the Grambank data that is distributed with grambank or optionally downloads it.
+#' type ?grambank for more information about the version, and how to cite the data. #'
 #'
 #' @noRd
 #'
 #' @examples
-#' glottoget_glottolog()
+#' glottoget_grambank()
 glottoget_grambank <- function(download = NULL, dirpath = NULL){
   if(is.null(download)){
     download <- FALSE
@@ -14,9 +14,9 @@ glottoget_grambank <- function(download = NULL, dirpath = NULL){
   if(download == FALSE & is.null(dirpath) ){
     out <- glottospace::grambank
     } else if(download == FALSE & !is.null(dirpath)){
-    out <- glottoget_glottologloadlocal(dirpath = dirpath)
+    out <- glottoget_grambankloadlocal(dirpath = dirpath)
   } else if(download == TRUE){
-    out <- glottoget_glottologdownload(dirpath = dirpath)
+    out <- glottoget_grambankdownload(dirpath = dirpath)
   }
   return(out)
 }
@@ -33,9 +33,9 @@ glottoget_grambankdownload <- function(dirpath = NULL){
 }
 
 
-#' Load locally stored glottolog data
+#' Load locally stored grambank data
 #'
-#' @param dirpath Path to directory where glottolog cldf data is stored
+#' @param dirpath Path to directory where grambank cldf data is stored
 #'
 #' @importFrom rlang .data
 #' @noRd
@@ -59,16 +59,7 @@ glottoget_grambankloadlocal <- function(dirpath){
   colnames(values)[colnames(values) == "language_id"] <- "lang_id"
 
   values <- subset(values, select=c(lang_id, parameter_id, value))
-
   values <- tidyr::pivot_wider(data = values, names_from = "parameter_id", values_from = "value")
-
-
-
-  # levels <- values[!is.na(values$level), c("lang_id", "level")]
-  # category <- values[!is.na(values$category), c("lang_id", "category")]
-  # category$bookkeeping <- base::apply(category[,"category"], 1, function(x){ifelse(tolower(x) == "bookkeeping", TRUE, FALSE)})
-  # classification <- values[!is.na(values$classification), c("lang_id", "classification")]
-  # classification$parent_id <- base::apply(classification[,"classification"], 1, function(x){sub(".*/", "", x)})
 
   grambankdata <- languoids %>% dplyr::left_join(values, by = "lang_id") %>%
     # dplyr::left_join(category, by = "lang_id") %>%
