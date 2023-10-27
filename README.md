@@ -9,7 +9,7 @@
 stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 [![License: GPL
 v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
-[![R-CMD-check](https://github.com/SietzeN/glottospace/workflows/R-CMD-check/badge.svg)](https://github.com/SietzeN/glottospace/actions)
+[![R-CMD-check](https://github.com/glottospace/glottospace/workflows/R-CMD-check/badge.svg)](https://github.com/glottospace/glottospace/actions)
 [![status](https://joss.theoj.org/papers/c93a1ccb6835a15c6026ea1ddc28b50c/status.svg)](https://joss.theoj.org/papers/c93a1ccb6835a15c6026ea1ddc28b50c)
 [![CRAN RStudio mirror
 downloads](https://cranlogs.r-pkg.org/badges/grand-total/glottospace?color=orange)](https://r-pkg.org/pkg/glottospace)
@@ -26,7 +26,8 @@ data to a location and plot it on a map. You can also calculate
 distances between languages based on their location or linguistic
 features and visualize those distances. In addition, with
 **glottospace** you can easily access global databases such as
-[glottolog](https://glottolog.org/), [WALS](https://wals.info/) and
+[glottolog](https://glottolog.org/), [WALS](https://wals.info/),
+[Grambank](https://grambank.clld.org/) and
 [D-PLACE](https://d-place.org/) from R and integrate them with your own
 data.
 
@@ -68,13 +69,14 @@ If you find **glottospace** useful, please cite it in your work:
     #>     url = {glottospace: R package for language mapping and geospatial analysis of linguistic and cultural data},
     #>   }
 
-The package uses two global databases:
-[glottolog](https://glottolog.org/) and [WALS](https://wals.info/). In
-addition, **glottospace** builds on a combination of
-[spatial](https://www.r-pkg.org/ctv/Spatial) and non-spatial packages,
-including **sf**, **terra**, **tmap**, **mapview**, **rnaturalearth**,
-and **dplyr**. If you use **glottospace** in one of your publications,
-please cite these data sources and packages as well.
+The package uses three global databases:
+[glottolog](https://glottolog.org/), [WALS](https://wals.info/) and
+[Grambank](https://grambank.clld.org/). In addition, **glottospace**
+builds on a combination of [spatial](https://www.r-pkg.org/ctv/Spatial)
+and non-spatial packages, including **sf**, **terra**, **tmap**,
+**mapview**, **rnaturalearth**, and **dplyr**. If you use
+**glottospace** in one of your publications, please cite these data
+sources and packages as well.
 
 # Installation
 
