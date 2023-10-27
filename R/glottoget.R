@@ -53,9 +53,11 @@ glottoget <- function(glottodata = NULL, meta = FALSE, download = FALSE, dirpath
   } else if(glottodata == "demosubdata"){
     glottodata <- glottocreate_demosubdata(meta = meta)
   } else if(glottodata == "wals"){
-    glottodata <- glottoget_wals(download = download)
+    glottodata <- glottoget_wals(download = download, dirpath = dirpath)
   } else if(glottodata == "dplace"){
-    glottodata <- glottoget_dplace(download = download)
+    glottodata <- glottoget_dplace(download = download, dirpath = dirpath)
+  } else if(glottodata == "grambank"){
+    glottodata <- glottoget_grambank(download = download, dirpath = dirpath)
   } else if(tools::file_ext(glottodata) != ""){
     glottodata <- glottoget_path(filepath = glottodata)
   } else if(tools::file_ext(glottodata) != ".Rds"){
