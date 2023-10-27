@@ -58,6 +58,9 @@ glottoget <- function(glottodata = NULL, meta = FALSE, download = FALSE, dirpath
     glottodata <- glottoget_dplace(download = download, dirpath = dirpath)
   } else if(glottodata == "grambank"){
     glottodata <- glottoget_grambank(download = download, dirpath = dirpath)
+  } else if(glottodata == "grambankspace"){
+    glottodata <- glottoget_grambank(download = download, dirpath = dirpath) %>%
+      glottospace_coords2sf()
   } else if(tools::file_ext(glottodata) != ""){
     glottodata <- glottoget_path(filepath = glottodata)
   } else if(tools::file_ext(glottodata) != ".Rds"){
