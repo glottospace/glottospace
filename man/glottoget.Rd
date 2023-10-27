@@ -25,8 +25,8 @@ glottoget(
 \item "glottospace" - A simple dataset with glottocodes and a geometry column. This
 is a subset of all languages in \href{https://glottolog.org/}{glottolog} with
 spatial coordinates.
-\item "grambank" - This is a restructured (non-spatial) version of \href{https://grambank.clld.org/}.
-\item "grambankspace" - This is a spatially enhanced version of \href{https://grambank.clld.org/}.
+\item "grambank" - This is a restructured (non-spatial) version of \href{https://grambank.clld.org/}{Grambank}.
+\item "grambankspace" - This is a spatially enhanced version of \href{https://grambank.clld.org/}{Grambank}.
 \item "demodata" - Built-in artificial glottodata (included for demonstration and testing).
 \item "demosubdata" - Built-in artificial glottosubdata (included for demonstration and testing)
 }}
