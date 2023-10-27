@@ -21,7 +21,7 @@
 #'
 #' This is an internally stored version of D-PLACE data. Use glottoget("dplace", download = TRUE) to download the latest version
 #' @keywords internal
-#' @format A data.frame based on D-PLACE, the Database of Places, Language, Culture and Environment
+#' @format A data frame based on D-PLACE, the Database of Places, Language, Culture and Environment
 #' @source \url{https://d-place.org/
 #' }
 #' @evalRd glottoget_remotemeta(name = "dplace")
@@ -36,7 +36,12 @@
 "worldpol"
 
 #'
-#' This is an internally stored version of grambank data (obtained from ...).
+#' This is an internally stored version of Grambank data. Use glottoget("grambank", download = TRUE) to download the latest version
+#' @keywords internal
+#' @format A data frame based on Grambank
+#' @source \url{https://grambank.clld.org/
+#' }
+#' @evalRd glottoget_remotemeta(name = "grambank")
 "grambank"
 
 

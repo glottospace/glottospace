@@ -41,7 +41,7 @@ glottoget_grambankdownload <- function(dirpath = NULL){
 #' @noRd
 glottoget_grambankloadlocal <- function(dirpath){
   if(!dir.exists(dirpath)){stop("Directory not found.")}
-  cldf_metadata <- base::list.files(dirpath, pattern = "cldf-metadata.json", recursive = TRUE)
+  cldf_metadata <- base::list.files(dirpath, pattern = "StructureDataset-metadata.json", recursive = TRUE)
   mdpath <- normalizePath(file.path(dirpath, cldf_metadata))
   mddir <- normalizePath(base::dirname(mdpath))
 
@@ -57,20 +57,25 @@ glottoget_grambankloadlocal <- function(dirpath){
   values <- utils::read.csv(values, header = TRUE, encoding = "UTF-8")
   colnames(values) <- base::tolower(colnames(values))
   colnames(values)[colnames(values) == "language_id"] <- "lang_id"
+
+  values <- subset(values, select=c(lang_id, parameter_id, value))
+
   values <- tidyr::pivot_wider(data = values, names_from = "parameter_id", values_from = "value")
 
-  levels <- values[!is.na(values$level), c("lang_id", "level")]
-  category <- values[!is.na(values$category), c("lang_id", "category")]
-  category$bookkeeping <- base::apply(category[,"category"], 1, function(x){ifelse(tolower(x) == "bookkeeping", TRUE, FALSE)})
-  classification <- values[!is.na(values$classification), c("lang_id", "classification")]
-  classification$parent_id <- base::apply(classification[,"classification"], 1, function(x){sub(".*/", "", x)})
 
-  glottologdata <- languoids %>% dplyr::left_join(levels, by = "lang_id") %>%
-    dplyr::left_join(category, by = "lang_id") %>%
-    dplyr::left_join(classification, by = "lang_id") %>%
+
+  # levels <- values[!is.na(values$level), c("lang_id", "level")]
+  # category <- values[!is.na(values$category), c("lang_id", "category")]
+  # category$bookkeeping <- base::apply(category[,"category"], 1, function(x){ifelse(tolower(x) == "bookkeeping", TRUE, FALSE)})
+  # classification <- values[!is.na(values$classification), c("lang_id", "classification")]
+  # classification$parent_id <- base::apply(classification[,"classification"], 1, function(x){sub(".*/", "", x)})
+
+  grambankdata <- languoids %>% dplyr::left_join(values, by = "lang_id") %>%
+    # dplyr::left_join(category, by = "lang_id") %>%
+    # dplyr::left_join(classification, by = "lang_id") %>%
     dplyr::arrange(.data$lang_id)
 
-  colnames(glottologdata)[which(colnames(glottologdata) == "lang_id")] <- "id"
-  glottologdata <- glottologdata %>% dplyr::select(-.data$glottocode, -.data$language_id)
-  invisible(glottologdata)
+  colnames(grambankdata)[which(colnames(grambankdata) == "lang_id")] <- "id"
+  grambankdata <- grambankdata %>% dplyr::select(-.data$glottocode)
+  invisible(grambankdata)
 }

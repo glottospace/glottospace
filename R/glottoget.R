@@ -154,9 +154,11 @@ glottoget_remotemeta <- function(name = NULL, url = NULL){
     base_url <- "https://zenodo.org/doi/10.5281/zenodo.3606197"
   } else if(name == "dplace" | name == "d-place"){
     base_url <- "https://zenodo.org/doi/10.5281/zenodo.3935419"
+  } else if(tolower(name) == "grambank"){
+    base_url <- "https://zenodo.org/doi/10.5281/zenodo.7740139"
   } else if(!is.null(name) ){
     stop("Unable to download data from Zenodo. Unrecognized name argument. ")
-  }
+    }
 
   raw_html <- xml2::read_html(base_url)
 
