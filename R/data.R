@@ -4,7 +4,7 @@
 #' @format A data frame based on glottolog
 #' @source \url{https://glottolog.org/
 #' }
-#' @evalRd glottoget_remotemeta(name = "glottolog")
+#' @evalRd glottoget_remotemeta(url = "https://zenodo.org/records/5772642")
 "glottolog"
 
 #' WALS data
@@ -14,7 +14,7 @@
 #' @format A data frame based on The World Atlas of Language Structures
 #' @source \url{https://wals.info/
 #' }
-#' @evalRd glottoget_remotemeta(name = "wals")
+#' @evalRd glottoget_remotemeta(url = "https://zenodo.org/records/4683137")
 "wals"
 
 
@@ -24,7 +24,7 @@
 #' @format A data frame based on D-PLACE, the Database of Places, Language, Culture and Environment
 #' @source \url{https://d-place.org/
 #' }
-#' @evalRd glottoget_remotemeta(name = "dplace")
+#' @evalRd glottoget_remotemeta(url = "https://zenodo.org/records/5554412")
 "dplace"
 
 #'
@@ -41,7 +41,7 @@
 #' @format A data frame based on Grambank
 #' @source \url{https://grambank.clld.org/
 #' }
-#' @evalRd glottoget_remotemeta(name = "grambank")
+#' @evalRd glottoget_remotemeta(url = "https://zenodo.org/records/7844558")
 "grambank"
 
 
