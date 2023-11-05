@@ -42,8 +42,8 @@ glottocolpal <- function(palette, ncolr = NULL, rev = FALSE, alpha = NULL, show 
   grdevpals <- grdevpals[order(grdevpals)]
   grdevpals2 <- c("rainbow", "heat", "terrain", "topo", "cm")
 
-  if(is.null(palette)){
-    return(NULL)
+  if(is.na(palette)){
+    return(NA)
   }
 
   if(palette == "all"){

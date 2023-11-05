@@ -54,8 +54,9 @@
 #' selected <- glottomap(continent = "South America", type = "filter", mode = "draw")
 #' glottomap(selected)
 #' }
-glottomap <- function(glottodata = NULL, color = NULL, label = NULL, type = NULL, ptsize = NULL, alpha = NULL, lbsize = NULL, palette = NULL, rivers = FALSE, nclass = NULL, numcat = FALSE, filename = NULL, projection = NULL, mode = NULL, ...){
-  palette <- glottocolpal(palette = palette)
+glottomap <- function(glottodata = NULL, color = NULL, label = NULL, type = NULL, ptsize = NULL, alpha = NULL, lbsize = NULL,
+                      palette = NA, rivers = FALSE, nclass = NULL, numcat = FALSE, filename = NULL, projection = NULL, mode = NULL, ...){
+ # palette <- glottocolpal(palette = palette)
   if(is.null(type)){type <- "static"}
 
   if(!is.null(glottodata)){
@@ -73,11 +74,13 @@ glottomap <- function(glottodata = NULL, color = NULL, label = NULL, type = NULL
   }
 
   if(type == "dynamic"){
-    map <- glottomap_dynamic(glottodata = glottodata, label = label, color = color, ptsize = ptsize, alpha = alpha, palette = palette, nclass = nclass, numcat = numcat)
+    map <- glottomap_dynamic(glottodata = glottodata, label = label, color = color, ptsize = ptsize, alpha = alpha,
+                             palette = palette, nclass = nclass, numcat = numcat)
   }
 
   if(type == "static"){
-    map <- glottomap_static(glottodata = glottodata, label = label, color = color, ptsize = ptsize, lbsize = lbsize, alpha = alpha, palette = palette, rivers = rivers, nclass = nclass, numcat = numcat, projection = projection)
+    map <- glottomap_static(glottodata = glottodata, label = label, color = color, ptsize = ptsize, lbsize = lbsize,
+                            alpha = alpha, palette = palette, rivers = rivers, projection = projection)
   }
 
   if(type == "filter"){
@@ -163,7 +166,7 @@ glottomap_dynamic <- function(glottodata, label = NULL, color = NULL, ptsize = N
 #' glottodata <- glottofilter(country = c("Netherlands", "Germany", "Belgium") )
 #' glottomap_static(glottodata)
 #' }
-glottomap_static <- function(glottodata, projection = NULL, label = NULL, color = NULL, ptsize = 1, lbsize = NULL, alpha = 1, palette = NULL, rivers = FALSE, nclass = NULL, numcat = FALSE){
+glottomap_static <- function(glottodata, projection = NULL, label = NULL, color = NULL, ptsize = 1, lbsize = NULL, alpha = 1, palette = NA, rivers = FALSE){
   if(is.null(projection)){projection <- "eqarea"}
   if(is.null(lbsize)){lbsize <- 0.75}
   if(!is.null(color) ){
@@ -176,9 +179,9 @@ glottomap_static <- function(glottodata, projection = NULL, label = NULL, color 
   if(projection == "pacific" | projection == "Pacific" | projection == "pacific-centered" | projection == "Pacific-centered"){
     glottomap_static_pacific(glottodata = glottodata, color = color, palette = palette, ptsize = ptsize, alpha = alpha, rivers = rivers)
   } else if(projection == "eqarea" | projection == "equal-area" | projection == "equalarea"){
-    glottomap_static_crs(glottodata, crs = NULL, label = label, color = color, ptsize = ptsize, lbsize = lbsize, alpha = alpha, palette = palette, rivers = rivers, nclass = nclass, numcat = numcat)
+    glottomap_static_crs(glottodata, crs = NULL, label = label, color = color, ptsize = ptsize, lbsize = lbsize, alpha = alpha, palette = palette, rivers = rivers)
   } else {
-    glottomap_static_crs(glottodata, crs = projection, label = label, color = color, ptsize = ptsize, lbsize = lbsize, alpha = alpha, palette = palette, rivers = rivers, nclass = nclass, numcat = numcat)
+    glottomap_static_crs(glottodata, crs = projection, label = label, color = color, ptsize = ptsize, lbsize = lbsize, alpha = alpha, palette = palette, rivers = rivers)
   }
 }
 
@@ -210,7 +213,7 @@ glottomap_static <- function(glottodata, projection = NULL, label = NULL, color 
 #' glottodata <- glottofilter(country = c("Netherlands", "Germany", "Belgium") )
 #' glottomap_static_crs(glottodata)
 #' }
-glottomap_static_crs <- function(glottodata, label = NULL, color = NULL, ptsize = NULL, lbsize = NULL, alpha = NULL, palette = NULL, rivers = FALSE, nclass = NULL, numcat = FALSE, crs = NULL){
+glottomap_static_crs <- function(glottodata, label = NULL, color = NULL, ptsize = NULL, lbsize = NULL, alpha = NULL, palette = NA, rivers = FALSE, crs = NULL, glotto_title = NULL, glotto_size_title = NULL){
   suppressMessages(tmap::tmap_mode("plot"))
   if(is.null(ptsize)){ptsize <- 0.5}
   if(is.null(crs)){crs <- "ESRI:54012"} # https://epsg.io/54012
@@ -219,10 +222,12 @@ glottomap_static_crs <- function(glottodata, label = NULL, color = NULL, ptsize 
 
   # wrld_proj <- geoget_basemap(crs = "+proj=eck4", attributes = FALSE) # function migrated to geospace package
   wrld_basemap <- glottospace::worldpol
+  #wrld_basemap <- sf::st_collection_extract(global_basins_robinson) %>%
+  #  sf::st_simplify(dTolerance = 1e3)
   wrld_wrap <- sf::st_wrap_dateline(wrld_basemap, options = c("WRAPDATELINE=YES","DATELINEOFFSET=180"), quiet = TRUE)
   wrld_proj <- sf::st_transform(wrld_wrap, crs = crs)
   wrld_proj <- wrld_proj %>% sf::st_make_valid()
-  wrld_proj <- wrld_proj %>% sf::st_geometry()
+  # wrld_proj <- wrld_proj %>% sf::st_geometry()
 
 
   # glottodata <- sf::st_make_valid(glottodata) # This converts some points to GEOMETRYCOLLECTION and therefore results in errors later on.
@@ -230,31 +235,64 @@ glottomap_static_crs <- function(glottodata, label = NULL, color = NULL, ptsize 
   glottodata_proj <- sf::st_transform(glottodata_wrap, crs = crs)
 
   if(rivers == TRUE){
-      invisible(readline(prompt="Are you sure you want to download rivers from naturalearth? \n Press [enter] to continue"))
-      rivers10 <- rnaturalearth::ne_download(scale = 10, type = 'rivers_lake_centerlines',
-                                                            category = 'physical', returnclass = "sf")
-     rivers_proj <- sf::st_transform(rivers10, crs = crs)
+    invisible(readline(prompt="Are you sure you want to download rivers from naturalearth? \n Press [enter] to continue"))
+    rivers10 <- rnaturalearth::ne_download(scale = 10, type = 'rivers_lake_centerlines',
+                                           category = 'physical', returnclass = "sf")
+    rivers_proj <- sf::st_transform(rivers10, crs = crs)
   }
 
   bbox <- sf::st_bbox(glottodata_proj)
   bboxe <- bbox_expand(bbox, f = 0.1)
   wrld_projbb <- sf::st_crop(wrld_proj, bboxe)
 
-  tmap::tm_shape(wrld_projbb) + tmap::tm_fill(col = "white", alpha = 1) + tmap::tm_borders(lwd=1.2) +
-    {if(rivers == TRUE){tmap::tm_shape(rivers_proj) +
-        tmap::tm_lines(col = "lightblue")} } +
-    {if(is_polygon(glottodata_proj))
-      tmap::tm_shape(glottodata_proj) +
-        tmap::tm_polygons(col = color, alpha = alpha, palette = palette,
-                          n = {ifelse(is.null(nclass), 5, nclass)}, style = {ifelse(numcat == TRUE, "cat", "pretty")})} +
+  #
+  tmap::tm_shape(wrld_projbb) +
+    tmap::tm_polygons(fill = "white",
+                      fill_alpha = 1,
+                      fill.scale = tmap::tm_scale_categorical(),
+                      lwd=1.5) +
+    {if(rivers == TRUE){tmap::tm_shape(rivers_proj)} +
+        tmap::tm_lines(col = "lightblue",
+                       col.scale = 1)} +
+    {if(is_polygon(glottodata_proj)){tmap::tm_shape(glottodata_proj) +
+        tmap::tm_polygons(fill=color,
+                          fill.scale = tmap::tm_scale(values = palette),
+                          fill_alpha = .5,
+                          fill.legend = tmap::tm_legend(title = glotto_title)
+        )}} +
     {if(is_point(glottodata_proj))
-      tmap::tm_shape(glottodata_proj) +
-        tmap::tm_dots(col = color, size = ptsize, alpha = alpha, palette = palette,
-                         n = {ifelse(is.null(nclass), 5, nclass)}, style = {ifelse(numcat == TRUE, "cat", "pretty")}) } +
-    {if(!purrr::is_empty(label)) tmap::tm_text(text = label, size = lbsize, auto.placement = TRUE)} +
-    tmap::tm_legend(legend.outside = TRUE) + tmap::tm_layout(bg.color = "grey85", inner.margins = c(0,0,0,0)) +
-    {if(glottospotlight_legend(glottodata)[[1]]){tmap::tm_add_legend(col = glottospotlight_legend(glottodata)$col, labels = glottospotlight_legend(glottodata)$labels)} }
+      if(glottospotlight_legend(glottodata)[[1]] && color == "legend"){
+        tmap::tm_shape(glottodata_proj) +
+          tmap::tm_dots(fill = color,
+                        fill.scale = tmap::tm_scale_categorical(values = palette, labels = glottospotlight_legend(glottodata = glottodata)$labels),
+                        fill_alpha = alpha,
+                        fill.legend = tmap::tm_legend(title = glotto_title),
+                        size = ptsize,
+                        size.scale = tmap::tm_scale_continuous(values=c(0, 1)),
+                        size.legend = tmap::tm_legend(title = glotto_size_title)
+          )}
+      else{
+        tmap::tm_shape(glottodata_proj) +
+          tmap::tm_dots(fill = color,
+                        fill.scale = tmap::tm_scale_categorical(values = palette),
+                        fill_alpha = alpha,
+                        fill.legend = tmap::tm_legend(title = glotto_title),
+                        size = ptsize,
+                        size.scale = tmap::tm_scale_continuous(values=c(0, 1)),
+                        size.legend = tmap::tm_legend(title = glotto_size_title)
+          )}} +
+    {if(!purrr::is_empty(label)){
+      if(is.null(lbsize)){lbsize <- 1}
+      tmap::tm_text(text = label,
+                    size = lbsize,
+                    size.scale = tmap::tm_scale_continuous(values=c(0, 1)))
+
+    }} +
+    # tmap::tm_legend(legend.outside = TRUE) +
+    tmap::tm_layout(bg.color = "grey85", inner.margins = c(0,0,0,0))
 }
+
+
 
 #' Create a static (Pacific-centered) world map with glottodata
 #'
