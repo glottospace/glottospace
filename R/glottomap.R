@@ -76,12 +76,14 @@ glottomap <- function(glottodata = NULL, color = NULL, label = NULL, type = NULL
 
   if(type == "dynamic"){
     map <- glottomap_dynamic(glottodata = glottodata, label = label, color = color, ptsize = ptsize, alpha = alpha,
-                             palette = palette, legend_size = legend_size, legend_text = legend_text, lbsize=lbsize)
+                             palette = palette, legend_size = legend_size, legend_text = legend_text, lbsize=lbsize,
+                             glotto_title = glotto_title)
   }
 
   if(type == "static"){
     map <- glottomap_static(glottodata = glottodata, label = label, color = color, ptsize = ptsize, lbsize = lbsize,
-                            alpha = alpha, palette = palette, rivers = rivers, projection = projection)
+                            alpha = alpha, palette = palette, rivers = rivers, projection = projection,
+                            glotto_title = glotto_title)
   }
 
   if(type == "filter"){
@@ -155,7 +157,7 @@ glottomap_dynamic <- function(glottodata, label = NULL, color = NULL, ptsize = N
           tmap::tm_dots(
             fill = color,
             fill.scale = tmap::tm_scale(),
-            fill.legend = tmap::tm_legend(),
+            fill.legend = tmap::tm_legend(title = glotto_title),
             fill_alpha = alpha,
             size = ptsize,
             # size.legend = tm_legend(title = legend_size)
@@ -207,9 +209,11 @@ glottomap_static <- function(glottodata, projection = NULL, label = NULL, color 
   if(projection == "pacific" | projection == "Pacific" | projection == "pacific-centered" | projection == "Pacific-centered"){
     glottomap_static_pacific(glottodata = glottodata, color = color, palette = palette, ptsize = ptsize, alpha = alpha, rivers = rivers)
   } else if(projection == "eqarea" | projection == "equal-area" | projection == "equalarea"){
-    glottomap_static_crs(glottodata, crs = NULL, label = label, color = color, ptsize = ptsize, lbsize = lbsize, alpha = alpha, palette = palette, rivers = rivers)
+    glottomap_static_crs(glottodata, crs = NULL, label = label, color = color, ptsize = ptsize, lbsize = lbsize,
+                         alpha = alpha, palette = palette, rivers = rivers, glotto_title = glotto_title)
   } else {
-    glottomap_static_crs(glottodata, crs = projection, label = label, color = color, ptsize = ptsize, lbsize = lbsize, alpha = alpha, palette = palette, rivers = rivers)
+    glottomap_static_crs(glottodata, crs = projection, label = label, color = color, ptsize = ptsize, lbsize = lbsize,
+                         glotto_title = glotto_title, alpha = alpha, palette = palette, rivers = rivers)
   }
 }
 
@@ -335,7 +339,9 @@ glottomap_static_crs <- function(glottodata, label = NULL, color = NULL, ptsize 
 #' @examples
 #' glottodata <- glottofilter(location = "Australia")
 #' glottomap_static_pacific(glottodata, color = "family")
-glottomap_static_pacific <- function(glottodata, color = NULL, rivers = FALSE, ptsize = NULL, palette = NULL, alpha = NULL){
+glottomap_static_pacific <- function(glottodata, color = NULL, rivers = FALSE, ptsize = NULL, palette = NA, alpha = NULL){
+  suppressMessages(tmap::tmap_mode("plot"))
+  if(is.null(color)){color <- "black"}
   if(is.null(ptsize)){ptsize <- 1}
   if(is.null(alpha)){alpha <- 0.55}
   world <- rnaturalearth::ne_countries(scale = 50, returnclass = "sf")
@@ -363,17 +369,38 @@ glottomap_static_pacific <- function(glottodata, color = NULL, rivers = FALSE, p
   if(!is.null(color)){ncolr <- length(unique(glottodata[[color]]))}
 
   # plot
-  ggplot2::ggplot() +
-    ggplot2::geom_sf(data = world_robinson, fill = "white") +
-    {if(rivers == TRUE){ggplot2::geom_sf(data = rivers10, color = "lightblue" ) }} +
-    {if(is.null(color)){ggplot2::geom_sf(data = glottodata, ggplot2::aes(), size = ptsize, alpha = alpha )
-      } else{ggplot2::geom_sf(data = glottodata, ggplot2::aes(color = .data[[color]]), size = ptsize, alpha = alpha )}
-      } + {if(!is.null(palette)){ggplot2::scale_color_manual(values = glottocolpal(palette, ncolr = ncolr ))}} +
-      ggplot2::theme(legend.position = "none",
-                   plot.background = ggplot2::element_rect(fill = "white"),
-                   panel.background = ggplot2::element_rect(fill = "grey85"),
-                   panel.grid = ggplot2::element_line(colour = "white"))
+  # ggplot2::ggplot() +
+  #   ggplot2::geom_sf(data = world_robinson, fill = "white") +
+  #   {if(rivers == TRUE){ggplot2::geom_sf(data = rivers10, color = "lightblue" ) }} +
+  #   {if(is.null(color)){ggplot2::geom_sf(data = glottodata, ggplot2::aes(), size = ptsize, alpha = alpha )
+  #     } else{ggplot2::geom_sf(data = glottodata, ggplot2::aes(color = .data[[color]]), size = ptsize, alpha = alpha )}
+  #     } + {if(!is.null(palette)){ggplot2::scale_color_manual(values = glottocolpal(palette, ncolr = ncolr ))}} +
+  #     ggplot2::theme(legend.position = "none",
+  #                  plot.background = ggplot2::element_rect(fill = "white"),
+  #                  panel.background = ggplot2::element_rect(fill = "grey85"),
+  #                  panel.grid = ggplot2::element_line(colour = "white"))
 
+  tmap::tm_shape(world_robinson) +
+    tmap::tm_polygons(fill = "white",
+                      fill_alpha = 1,
+                      fill.scale = tmap::tm_scale(),
+                      lwd=1) +
+    tmap::tm_graticules(col = "white",
+                        n.x = 10,
+                        n.y = 10) +
+    tm_scalebar(breaks = c(0, 100, 200)) +
+    tm_layout(bg.color = "lightgrey",
+              basemap.alpha = .4,
+              outer.bg.color = "white") +
+    tmap::tm_shape(glottodata) +
+    tmap::tm_dots(fill = color,
+                  fill.scale = tm_scale_categorical(values = palette),
+                  fill_alpha = alpha,
+                  fill.legend = tm_legend(title = "glotto_title"),
+                  size = ptsize
+                  # size.scale = tm_scale_continuous(values=c(0, 1)),
+                  # size.legend = tm_legend(title = glotto_size_title)
+    )
 
 }
 
