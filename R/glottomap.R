@@ -56,7 +56,7 @@
 #' }
 glottomap <- function(glottodata = NULL, color = NULL, label = NULL, type = NULL, ptsize = NULL, alpha = NULL, lbsize = NULL,
                       palette = NA, rivers = FALSE, filename = NULL, projection = NULL,
-                      glotto_title = NULL, mode = NULL, legend_size = NULL, legend_text = NULL, ...){
+                      glotto_title = NULL, mode = NULL, legend_size = NULL, legend_text = NULL, basemap = "country",...){
  # palette <- glottocolpal(palette = palette)
   if(is.null(type)){type <- "static"}
 
@@ -83,7 +83,7 @@ glottomap <- function(glottodata = NULL, color = NULL, label = NULL, type = NULL
   if(type == "static"){
     map <- glottomap_static(glottodata = glottodata, label = label, color = color, ptsize = ptsize, lbsize = lbsize,
                             alpha = alpha, palette = palette, rivers = rivers, projection = projection,
-                            glotto_title = glotto_title)
+                            glotto_title = glotto_title, basemap = basemap)
   }
 
   if(type == "filter"){
@@ -196,7 +196,7 @@ glottomap_dynamic <- function(glottodata, label = NULL, color = NULL, ptsize = N
 #' glottomap_static(glottodata)
 #' }
 glottomap_static <- function(glottodata, projection = NULL, label = NULL, color = NULL, ptsize = 1, lbsize = NULL, alpha = 1,
-                             palette = NA, rivers = FALSE, glotto_title = NULL){
+                             palette = NA, rivers = FALSE, glotto_title = NULL, basemap = "country"){
   if(is.null(projection)){projection <- "eqarea"}
   if(is.null(lbsize)){lbsize <- 0.75}
   if(!is.null(color) ){
@@ -210,10 +210,10 @@ glottomap_static <- function(glottodata, projection = NULL, label = NULL, color 
     glottomap_static_pacific(glottodata = glottodata, color = color, palette = palette, ptsize = ptsize, alpha = alpha, rivers = rivers)
   } else if(projection == "eqarea" | projection == "equal-area" | projection == "equalarea"){
     glottomap_static_crs(glottodata, crs = NULL, label = label, color = color, ptsize = ptsize, lbsize = lbsize,
-                         alpha = alpha, palette = palette, rivers = rivers, glotto_title = glotto_title)
+                         alpha = alpha, palette = palette, rivers = rivers, glotto_title = glotto_title, basemap = basemap)
   } else {
     glottomap_static_crs(glottodata, crs = projection, label = label, color = color, ptsize = ptsize, lbsize = lbsize,
-                         glotto_title = glotto_title, alpha = alpha, palette = palette, rivers = rivers)
+                         glotto_title = glotto_title, alpha = alpha, palette = palette, rivers = rivers, basemap = basemap)
   }
 }
 
