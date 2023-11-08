@@ -246,7 +246,7 @@ glottomap_static <- function(glottodata, projection = NULL, label = NULL, color 
 #' glottomap_static_crs(glottodata)
 #' }
 glottomap_static_crs <- function(glottodata, label = NULL, color = NULL, ptsize = NULL, lbsize = NULL, alpha = NULL, palette = NA,
-                                 rivers = FALSE, crs = NULL, glotto_title = NULL){
+                                 rivers = FALSE, crs = NULL, glotto_title = NULL, basemap = "country"){
   suppressMessages(tmap::tmap_mode("plot"))
   if(is.null(ptsize)){ptsize <- 0.5}
   if(is.null(crs)){crs <- "ESRI:54012"} # https://epsg.io/54012
@@ -254,13 +254,27 @@ glottomap_static_crs <- function(glottodata, label = NULL, color = NULL, ptsize 
   if(is.null(alpha)){alpha <- 0.55}
 
   # wrld_proj <- geoget_basemap(crs = "+proj=eck4", attributes = FALSE) # function migrated to geospace package
-  wrld_basemap <- glottospace::worldpol
-  #wrld_basemap <- sf::st_collection_extract(global_basins_robinson) %>%
-  #  sf::st_simplify(dTolerance = 1e3)
-  wrld_wrap <- sf::st_wrap_dateline(wrld_basemap, options = c("WRAPDATELINE=YES","DATELINEOFFSET=180"), quiet = TRUE)
-  wrld_proj <- sf::st_transform(wrld_wrap, crs = crs)
-  wrld_proj <- wrld_proj %>% sf::st_make_valid()
-  # wrld_proj <- wrld_proj %>% sf::st_geometry()
+  if (basemap == "country"){
+    wrld_basemap <- glottospace::worldpol
+    #wrld_basemap <- sf::st_collection_extract(global_basins_robinson) %>%
+    #  sf::st_simplify(dTolerance = 1e3)
+    wrld_wrap <- sf::st_wrap_dateline(wrld_basemap, options = c("WRAPDATELINE=YES","DATELINEOFFSET=180"), quiet = TRUE)
+    wrld_proj <- sf::st_transform(wrld_wrap, crs = crs)
+    wrld_proj <- wrld_proj %>% sf::st_make_valid()
+    # wrld_proj <- wrld_proj %>% sf::st_geometry()
+  } else if (basemap == "hydro-basin"){
+    # wrld_basemap <- sf::st_collection_extract(global_basins)
+    # wrld_wrap <- sf::st_wrap_dateline(wrld_basemap, options = c("WRAPDATELINE=YES","DATELINEOFFSET=180"), quiet = TRUE)
+    # wrld_proj <- sf::st_transform(wrld_wrap, crs = crs)
+    # wrld_proj <- wrld_proj %>% sf::st_make_valid()
+    # wrld_proj <- wrld_proj %>% sf::st_geometry()
+    wrld_proj <- global_basins |>
+      sf::st_wrap_dateline(options = c("WRAPDATELINE=YES","DATELINEOFFSET=180"), quiet = TRUE) |>
+      sf::st_transform(crs = crs) |>
+      sf::st_make_valid()
+  }
+
+
 
 
   # glottodata <- sf::st_make_valid(glottodata) # This converts some points to GEOMETRYCOLLECTION and therefore results in errors later on.
@@ -296,8 +310,9 @@ glottomap_static_crs <- function(glottodata, label = NULL, color = NULL, ptsize 
     {if(is_point(glottodata_proj))
       if(glottospotlight_legend(glottodata)[[1]] && color == "legend"){
         tmap::tm_shape(glottodata_proj) +
-          tmap::tm_dots(fill = color,
-                        fill.scale = tmap::tm_scale(values = palette, labels = glottospotlight_legend(glottodata = glottodata)$labels),
+          tmap::tm_dots(fill = "legend",
+                        fill.scale = tmap::tm_scale(values = glottospotlight_legend(glottodata_proj)$col,
+                                                    labels = glottospotlight_legend(glottodata_proj)$labels),
                         fill_alpha = alpha,
                         fill.legend = tmap::tm_legend(title = glotto_title),
                         size = ptsize
@@ -321,8 +336,8 @@ glottomap_static_crs <- function(glottodata, label = NULL, color = NULL, ptsize 
                     size.scale = tmap::tm_scale())
 
     }} +
-    # tmap::tm_legend(legend.outside = TRUE) +
-    tmap::tm_layout(bg.color = "grey85", inner.margins = c(0,0,0,0))
+    tmap::tm_legend(legend.outside = TRUE) +
+    tmap::tm_layout(bg.color = "lightgrey", inner.margins = c(0,0,0,0))
 }
 
 
