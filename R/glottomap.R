@@ -77,7 +77,7 @@ glottomap <- function(glottodata = NULL, color = NULL, label = NULL, type = NULL
   if(type == "dynamic"){
     map <- glottomap_dynamic(glottodata = glottodata, label = label, color = color, ptsize = ptsize, alpha = alpha,
                              palette = palette, legend_size = legend_size, legend_text = legend_text, lbsize=lbsize,
-                             glotto_title = glotto_title)
+                             glotto_title = glotto_title, basemap = basemap)
   }
 
   if(type == "static"){
@@ -115,9 +115,9 @@ return(map)
 #' glottodata <- glottofilter(country = "Netherlands")
 #' glottomap_dynamic(glottodata)
 #' }
-glottomap_dynamic <- function(glottodata, label = NULL, color = NULL, ptsize = NULL, alpha = NULL,
-                              palette = NA, legend_size = NULL, legend_text = NULL, lbsize=NULL,
-                              glotto_title = NULL){
+glottomap_dynamic <- function(glottodata, color = NULL, ptsize = NULL, alpha = NULL, palette = NA,
+                              legend_size = NULL, legend_text = NULL, label = NULL, lbsize=NULL,
+                              glotto_title = NULL, basemap = "country"){
   suppressMessages(tmap::tmap_mode("view"))
   if(is.null(ptsize)){ptsize <- 0.8}
   if(is.null(label)){label <- NA}
@@ -133,7 +133,26 @@ glottomap_dynamic <- function(glottodata, label = NULL, color = NULL, ptsize = N
     color <- "black"
   }
 
-  tmap::tm_basemap("Esri.WorldTopoMap") +
+
+  {if(basemap == "country"){
+    tmap::tm_basemap("Esri.WorldTopoMap")
+    } else if (basemap == "hydro-basin"){
+      sf::sf_use_s2(FALSE)
+      glottodata_wrap <- sf::st_wrap_dateline(glottodata, options = c("WRAPDATELINE=YES","DATELINEOFFSET=180"), quiet = TRUE)
+      glottodata_proj <- sf::st_transform(glottodata_wrap, crs = sf::st_crs(global_basins))
+      bbox <- sf::st_bbox(glottodata_proj)
+      bboxe <- bbox_expand(bbox, f = 0.1)
+      hbsn_projbb <- sf::st_crop(global_basins, bboxe)
+      hbsn_projbb |>
+        # sf::st_wrap_dateline(options = c("WRAPDATELINE=YES","DATELINEOFFSET=180"), quiet = TRUE) |>
+        # sf::st_make_valid() |>
+        tmap::tm_shape() +
+        tmap::tm_polygons(fill = "white",
+                          fill_alpha = 1,
+                          fill.scale = tmap::tm_scale_categorical(),
+                          lwd=1.5)
+      }
+    } +
     # tmap::tm_shape(global_basins) +
     {if(is_polygon(glottodata))
     {tmap::tm_shape(glottodata) +
