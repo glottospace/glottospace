@@ -143,12 +143,13 @@ glottomap_dynamic <- function(glottodata, color = NULL, ptsize = NULL, alpha = N
       bbox <- sf::st_bbox(glottodata_proj)
       bboxe <- bbox_expand(bbox, f = 0.1)
       hbsn_projbb <- sf::st_crop(global_basins, bboxe)
+      tmap::tm_basemap("Esri.WorldTopoMap") +
       hbsn_projbb |>
         # sf::st_wrap_dateline(options = c("WRAPDATELINE=YES","DATELINEOFFSET=180"), quiet = TRUE) |>
         # sf::st_make_valid() |>
         tmap::tm_shape() +
         tmap::tm_polygons(fill = "white",
-                          fill_alpha = 1,
+                          fill_alpha = .5,
                           fill.scale = tmap::tm_scale_categorical(),
                           lwd=1.5)
       }
