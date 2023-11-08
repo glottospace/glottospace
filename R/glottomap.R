@@ -122,6 +122,7 @@ glottomap_dynamic <- function(glottodata, label = NULL, color = NULL, ptsize = N
   if(is.null(ptsize)){ptsize <- 0.8}
   if(is.null(label)){label <- NA}
   if(is.null(alpha)){alpha <- 0.55}
+  if(is.null(lbsize)){lbsize <- .5}
 
   if(!is.null(color)){
     nrcat <- nrow(unique(glottosimplify(glottodata[,color])))
@@ -133,7 +134,7 @@ glottomap_dynamic <- function(glottodata, label = NULL, color = NULL, ptsize = N
   }
 
   tmap::tm_basemap("Esri.WorldTopoMap") +
-    # tmap::tm_shape(sf::st_collection_extract(global_basins_robinson)) +
+    # tmap::tm_shape(global_basins) +
     {if(is_polygon(glottodata))
     {tmap::tm_shape(glottodata) +
         tmap::tm_polygons(
@@ -164,9 +165,10 @@ glottomap_dynamic <- function(glottodata, label = NULL, color = NULL, ptsize = N
           )}}
     } +
     tmap::tm_text(text = label,
-                  text.legend = tmap::tm_legend(title = legend_text),
-                  size = lbsize,
-                  size.scale = tmap::tm_scale())
+                  # text.legend = tmap::tm_legend(title = legend_text),
+                  size = lbsize
+                  # size.scale = tmap::tm_scale()
+                  )
 }
 
 #' Create a static map with glottodata
