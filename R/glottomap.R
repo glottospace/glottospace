@@ -55,7 +55,7 @@
 #' glottomap(selected)
 #' }
 glottomap <- function(glottodata = NULL, color = NULL, label = NULL, type = NULL, ptsize = NULL, alpha = NULL, lbsize = NULL,
-                      palette = NA, rivers = FALSE, filename = NULL, projection = NULL,
+                      palette = NA, rivers = FALSE, nclass = NULL, filename = NULL, projection = NULL,
                       glotto_title = NULL, mode = NULL, legend_size = NULL, legend_text = NULL, basemap = "country",...){
  # palette <- glottocolpal(palette = palette)
   if(is.null(type)){type <- "static"}
@@ -82,7 +82,7 @@ glottomap <- function(glottodata = NULL, color = NULL, label = NULL, type = NULL
 
   if(type == "static"){
     map <- glottomap_static(glottodata = glottodata, label = label, color = color, ptsize = ptsize, lbsize = lbsize,
-                            alpha = alpha, palette = palette, rivers = rivers, projection = projection,
+                            alpha = alpha, palette = palette, rivers = rivers, nclass = nclass, projection = projection,
                             glotto_title = glotto_title, basemap = basemap)
   }
 
@@ -115,7 +115,7 @@ return(map)
 #' glottodata <- glottofilter(country = "Netherlands")
 #' glottomap_dynamic(glottodata)
 #' }
-glottomap_dynamic <- function(glottodata, color = NULL, ptsize = NULL, alpha = NULL, palette = NA,
+glottomap_dynamic <- function(glottodata, color = NULL, ptsize = NULL, alpha = NULL, nclass=NULL, palette = NA,
                               legend_size = NULL, legend_text = NULL, label = NULL, lbsize=NULL,
                               glotto_title = NULL, basemap = "country"){
   suppressMessages(tmap::tmap_mode("view"))
@@ -159,7 +159,10 @@ glottomap_dynamic <- function(glottodata, color = NULL, ptsize = NULL, alpha = N
     {tmap::tm_shape(glottodata) +
         tmap::tm_polygons(
           fill = color,
-          fill.scale = tmap::tm_scale(values=palette),
+          fill.scale = tmap::tm_scale_categorical(
+            values=palette,
+            n.max = {ifelse(is.null(nclass), 5, nclass)},
+            label.na = "BG"),
           fill_alpha = alpha,
           fill.legend = tmap::tm_legend(title=glotto_title)
         )}} +
@@ -168,7 +171,10 @@ glottomap_dynamic <- function(glottodata, color = NULL, ptsize = NULL, alpha = N
       if(glottospotlight_legend(glottodata)[[1]] && color == "legend"){tmap::tm_shape(glottodata) +
           tmap::tm_dots(
             fill = color,
-            fill.scale = tmap::tm_scale(values = palette, labels = glottospotlight_legend(glottodata = glottodata)$labels),
+            fill.scale = tmap::tm_scale_categorical(
+              values = glottospotlight_legend(glottodata_proj)$col,
+              n.max = {ifelse(is.null(nclass), 5, nclass)},
+              label.na = "BG"),
             fill.legend = tmap::tm_legend(title = glotto_title),
             fill_alpha = alpha,
             size = ptsize,
@@ -177,7 +183,10 @@ glottomap_dynamic <- function(glottodata, color = NULL, ptsize = NULL, alpha = N
       else{tmap::tm_shape(glottodata) +
           tmap::tm_dots(
             fill = color,
-            fill.scale = tmap::tm_scale(),
+            fill.scale = tmap::tm_scale_categorical(
+              values = palette,
+              n.max = {ifelse(is.null(nclass), 5, nclass)},
+              label.na = "BG"),
             fill.legend = tmap::tm_legend(title = glotto_title),
             fill_alpha = alpha,
             size = ptsize,
@@ -218,7 +227,7 @@ glottomap_dynamic <- function(glottodata, color = NULL, ptsize = NULL, alpha = N
 #' glottomap_static(glottodata)
 #' }
 glottomap_static <- function(glottodata, projection = NULL, label = NULL, color = NULL, ptsize = 1, lbsize = NULL, alpha = 1,
-                             palette = NA, rivers = FALSE, glotto_title = NULL, basemap = "country"){
+                             palette = NA, rivers = FALSE, nclass = NULL, glotto_title = NULL, basemap = "country"){
   if(is.null(projection)){projection <- "eqarea"}
   if(is.null(lbsize)){lbsize <- 0.75}
   if(!is.null(color) ){
@@ -232,10 +241,10 @@ glottomap_static <- function(glottodata, projection = NULL, label = NULL, color 
     glottomap_static_pacific(glottodata = glottodata, color = color, palette = palette, ptsize = ptsize, alpha = alpha, rivers = rivers)
   } else if(projection == "eqarea" | projection == "equal-area" | projection == "equalarea"){
     glottomap_static_crs(glottodata, crs = NULL, label = label, color = color, ptsize = ptsize, lbsize = lbsize,
-                         alpha = alpha, palette = palette, rivers = rivers, glotto_title = glotto_title, basemap = basemap)
+                         alpha = alpha, palette = palette, rivers = rivers, nclass = nclass, glotto_title = glotto_title, basemap = basemap)
   } else {
     glottomap_static_crs(glottodata, crs = projection, label = label, color = color, ptsize = ptsize, lbsize = lbsize,
-                         glotto_title = glotto_title, alpha = alpha, palette = palette, rivers = rivers, basemap = basemap)
+                         alpha = alpha,  palette = palette, rivers = rivers, nclass = nclass, glotto_title = glotto_title, basemap = basemap)
   }
 }
 
@@ -268,7 +277,7 @@ glottomap_static <- function(glottodata, projection = NULL, label = NULL, color 
 #' glottomap_static_crs(glottodata)
 #' }
 glottomap_static_crs <- function(glottodata, label = NULL, color = NULL, ptsize = NULL, lbsize = NULL, alpha = NULL, palette = NA,
-                                 rivers = FALSE, crs = NULL, glotto_title = NULL, basemap = "country"){
+                                 rivers = FALSE, nclass = NULL, crs = NULL, glotto_title = NULL, basemap = "country"){
   suppressMessages(tmap::tmap_mode("plot"))
   if(is.null(ptsize)){ptsize <- 0.5}
   if(is.null(crs)){crs <- "ESRI:54012"} # https://epsg.io/54012
@@ -325,7 +334,8 @@ glottomap_static_crs <- function(glottodata, label = NULL, color = NULL, ptsize 
                        col.scale = 1)} +
     {if(is_polygon(glottodata_proj)){tmap::tm_shape(glottodata_proj) +
         tmap::tm_polygons(fill=color,
-                          fill.scale = tmap::tm_scale(values = palette),
+                          fill.scale = tmap::tm_scale_categorical(values = palette,
+                                                      n.max = {ifelse(is.null(nclass), 5, nclass)}),
                           fill_alpha = alpha,
                           fill.legend = tmap::tm_legend(title = glotto_title)
         )}} +
@@ -333,8 +343,16 @@ glottomap_static_crs <- function(glottodata, label = NULL, color = NULL, ptsize 
       if(glottospotlight_legend(glottodata)[[1]] && color == "legend"){
         tmap::tm_shape(glottodata_proj) +
           tmap::tm_dots(fill = "legend",
-                        fill.scale = tmap::tm_scale(values = glottospotlight_legend(glottodata_proj)$col,
-                                                    labels = glottospotlight_legend(glottodata_proj)$labels),
+                        fill.scale = tmap::tm_scale_categorical(
+                          values = glottospotlight_legend(glottodata_proj)$col,
+                          n.max = {ifelse(is.null(nclass), 5, nclass)},
+                          label.na = "BG"),
+                        # fill.scale = tmap::tm_scale_categorical(values = glottospotlight_legend(glottodata_proj)$col,
+                        #                             labels = glottospotlight_legend(glottodata_proj)$labels,
+                        #                             value.na = "lightgrey",
+                        #                             label.na = "BG",
+                        #                             n.max = {ifelse(is.null(nclass), 5, nclass)}
+                        #                             ),
                         fill_alpha = alpha,
                         fill.legend = tmap::tm_legend(title = glotto_title),
                         size = ptsize
@@ -344,9 +362,14 @@ glottomap_static_crs <- function(glottodata, label = NULL, color = NULL, ptsize 
       else{
         tmap::tm_shape(glottodata_proj) +
           tmap::tm_dots(fill = color,
-                        fill.scale = tmap::tm_scale(values = palette),
+                        fill.scale = tmap::tm_scale_categorical(
+                          values = palette,
+                          n.max = {ifelse(is.null(nclass), 5, nclass)},
+                          label.na = "BG"),
                         fill_alpha = alpha,
-                        fill.legend = tmap::tm_legend(title = glotto_title),
+                        fill.legend = tmap::tm_legend(title = glotto_title,
+                                                      # n = {ifelse(is.null(nclass), 5, nclass)}
+                                                      ),
                         size = ptsize
                         # size.scale = tmap::tm_scale(values=glotto_size_values),
                         # size.legend = tmap::tm_legend(title = glotto_size_title)
