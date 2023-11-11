@@ -75,7 +75,7 @@ glottomap <- function(glottodata = NULL, color = NULL, label = NULL, type = NULL
   }
 
   if(type == "dynamic"){
-    map <- glottomap_dynamic(glottodata = glottodata, label = label, color = color, ptsize = ptsize, alpha = alpha,
+    map <- glottomap_dynamic(glottodata = glottodata, label = label, color = color, ptsize = ptsize, alpha = alpha, nclass = nclass,
                              palette = palette, legend_size = legend_size, legend_text = legend_text, lbsize=lbsize,
                              glotto_title = glotto_title, basemap = basemap)
   }
@@ -162,7 +162,8 @@ glottomap_dynamic <- function(glottodata, color = NULL, ptsize = NULL, alpha = N
           fill.scale = tmap::tm_scale_categorical(
             values=palette,
             n.max = {ifelse(is.null(nclass), 5, nclass)},
-            label.na = "BG"),
+            # label.na = "BG"
+            ),
           fill_alpha = alpha,
           fill.legend = tmap::tm_legend(title=glotto_title)
         )}} +
@@ -174,7 +175,8 @@ glottomap_dynamic <- function(glottodata, color = NULL, ptsize = NULL, alpha = N
             fill.scale = tmap::tm_scale_categorical(
               values = glottospotlight_legend(glottodata_proj)$col,
               n.max = {ifelse(is.null(nclass), 5, nclass)},
-              label.na = "BG"),
+              # label.na = "BG"
+              ),
             fill.legend = tmap::tm_legend(title = glotto_title),
             fill_alpha = alpha,
             size = ptsize,
@@ -186,7 +188,8 @@ glottomap_dynamic <- function(glottodata, color = NULL, ptsize = NULL, alpha = N
             fill.scale = tmap::tm_scale_categorical(
               values = palette,
               n.max = {ifelse(is.null(nclass), 5, nclass)},
-              label.na = "BG"),
+              # label.na = "BG"
+              ),
             fill.legend = tmap::tm_legend(title = glotto_title),
             fill_alpha = alpha,
             size = ptsize,
@@ -346,7 +349,8 @@ glottomap_static_crs <- function(glottodata, label = NULL, color = NULL, ptsize 
                         fill.scale = tmap::tm_scale_categorical(
                           values = glottospotlight_legend(glottodata_proj)$col,
                           n.max = {ifelse(is.null(nclass), 5, nclass)},
-                          label.na = "BG"),
+                          # label.na = "BG"
+                          ),
                         # fill.scale = tmap::tm_scale_categorical(values = glottospotlight_legend(glottodata_proj)$col,
                         #                             labels = glottospotlight_legend(glottodata_proj)$labels,
                         #                             value.na = "lightgrey",
@@ -365,7 +369,8 @@ glottomap_static_crs <- function(glottodata, label = NULL, color = NULL, ptsize 
                         fill.scale = tmap::tm_scale_categorical(
                           values = palette,
                           n.max = {ifelse(is.null(nclass), 5, nclass)},
-                          label.na = "BG"),
+                          # label.na = "BG"
+                          ),
                         fill_alpha = alpha,
                         fill.legend = tmap::tm_legend(title = glotto_title,
                                                       # n = {ifelse(is.null(nclass), 5, nclass)}
