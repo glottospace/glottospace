@@ -229,8 +229,8 @@ glottomap_dynamic <- function(glottodata, color = NULL, ptsize = NULL, alpha = N
 #' glottodata <- glottofilter(country = c("Netherlands", "Germany", "Belgium") )
 #' glottomap_static(glottodata)
 #' }
-glottomap_static <- function(glottodata, projection = NULL, label = NULL, color = NULL, ptsize = 1, lbsize = NULL, alpha = 1,
-                             palette = NA, rivers = FALSE, nclass = NULL, glotto_title = NULL, basemap = "country"){
+glottomap_static <- function(glottodata, projection = NULL, label = NULL, color = NULL, ptsize = 1, lbsize = NULL,
+                             nclass = NULL, alpha = 1, palette = NA, rivers = FALSE, glotto_title = NULL, basemap = "country"){
   if(is.null(projection)){projection <- "eqarea"}
   if(is.null(lbsize)){lbsize <- 0.75}
   if(!is.null(color) ){
@@ -241,7 +241,8 @@ glottomap_static <- function(glottodata, projection = NULL, label = NULL, color 
   }
 
   if(projection == "pacific" | projection == "Pacific" | projection == "pacific-centered" | projection == "Pacific-centered"){
-    glottomap_static_pacific(glottodata = glottodata, color = color, palette = palette, ptsize = ptsize, alpha = alpha, rivers = rivers)
+    glottomap_static_pacific(glottodata = glottodata, color = color, palette = palette, ptsize = ptsize,
+                             nclass = nclass, alpha = alpha, rivers = rivers)
   } else if(projection == "eqarea" | projection == "equal-area" | projection == "equalarea"){
     glottomap_static_crs(glottodata, crs = NULL, label = label, color = color, ptsize = ptsize, lbsize = lbsize,
                          alpha = alpha, palette = palette, rivers = rivers, nclass = nclass, glotto_title = glotto_title, basemap = basemap)
@@ -404,7 +405,8 @@ glottomap_static_crs <- function(glottodata, label = NULL, color = NULL, ptsize 
 #' @examples
 #' glottodata <- glottofilter(location = "Australia")
 #' glottomap_static_pacific(glottodata, color = "family")
-glottomap_static_pacific <- function(glottodata, color = NULL, rivers = FALSE, ptsize = NULL, palette = NA, alpha = NULL){
+glottomap_static_pacific <- function(glottodata, color = NULL, rivers = FALSE, ptsize = NULL,
+                                     nclass = NULL, palette = NA, alpha = NULL){
   suppressMessages(tmap::tmap_mode("plot"))
   if(is.null(color)){color <- "black"}
   if(is.null(ptsize)){ptsize <- 1}
@@ -459,7 +461,10 @@ glottomap_static_pacific <- function(glottodata, color = NULL, rivers = FALSE, p
               outer.bg.color = "white") +
     tmap::tm_shape(glottodata) +
     tmap::tm_dots(fill = color,
-                  fill.scale = tm_scale_categorical(values = palette),
+                  fill.scale = tm_scale_categorical(
+                    values = palette,
+                    n.max = {ifelse(is.null(nclass), 5, nclass)},
+                    ),
                   fill_alpha = alpha,
                   fill.legend = tm_legend(title = "glotto_title"),
                   size = ptsize
