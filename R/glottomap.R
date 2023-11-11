@@ -242,7 +242,7 @@ glottomap_static <- function(glottodata, projection = NULL, label = NULL, color 
 
   if(projection == "pacific" | projection == "Pacific" | projection == "pacific-centered" | projection == "Pacific-centered"){
     glottomap_static_pacific(glottodata = glottodata, color = color, palette = palette, ptsize = ptsize,
-                             nclass = nclass, alpha = alpha, rivers = rivers)
+                             nclass = nclass, alpha = alpha, rivers = rivers, basemap = basemap)
   } else if(projection == "eqarea" | projection == "equal-area" | projection == "equalarea"){
     glottomap_static_crs(glottodata, crs = NULL, label = label, color = color, ptsize = ptsize, lbsize = lbsize,
                          alpha = alpha, palette = palette, rivers = rivers, nclass = nclass, glotto_title = glotto_title, basemap = basemap)
@@ -406,12 +406,17 @@ glottomap_static_crs <- function(glottodata, label = NULL, color = NULL, ptsize 
 #' glottodata <- glottofilter(location = "Australia")
 #' glottomap_static_pacific(glottodata, color = "family")
 glottomap_static_pacific <- function(glottodata, color = NULL, rivers = FALSE, ptsize = NULL,
-                                     nclass = NULL, palette = NA, alpha = NULL){
+                                     nclass = NULL, palette = NA, alpha = NULL, basemap = "country"){
   suppressMessages(tmap::tmap_mode("plot"))
   if(is.null(color)){color <- "black"}
   if(is.null(ptsize)){ptsize <- 1}
   if(is.null(alpha)){alpha <- 0.55}
-  world <- rnaturalearth::ne_countries(scale = 50, returnclass = "sf")
+
+  if (basemap == "country"){
+    world <- rnaturalearth::ne_countries(scale = 50, returnclass = "sf")
+  } else if (basemap == "hydro-basin"){
+    world <- global_basins %>% sf::st_make_valid()
+  }
   world <- world %>% sf::st_make_valid()
 
   polygon <- sf::st_polygon(x = list(rbind(c(-0.0001, 90), c(0, 90), c(0, -90), c(-0.0001, -90), c(-0.0001, 90)))) %>%
