@@ -242,7 +242,8 @@ glottomap_static <- function(glottodata, projection = NULL, label = NULL, color 
 
   if(projection == "pacific" | projection == "Pacific" | projection == "pacific-centered" | projection == "Pacific-centered"){
     glottomap_static_pacific(glottodata = glottodata, color = color, palette = palette, ptsize = ptsize,
-                             nclass = nclass, alpha = alpha, rivers = rivers, basemap = basemap)
+                             nclass = nclass, alpha = alpha, rivers = rivers, basemap = basemap,
+                             glotto_title = glotto_title)
   } else if(projection == "eqarea" | projection == "equal-area" | projection == "equalarea"){
     glottomap_static_crs(glottodata, crs = NULL, label = label, color = color, ptsize = ptsize, lbsize = lbsize,
                          alpha = alpha, palette = palette, rivers = rivers, nclass = nclass, glotto_title = glotto_title, basemap = basemap)
@@ -406,7 +407,8 @@ glottomap_static_crs <- function(glottodata, label = NULL, color = NULL, ptsize 
 #' glottodata <- glottofilter(location = "Australia")
 #' glottomap_static_pacific(glottodata, color = "family")
 glottomap_static_pacific <- function(glottodata, color = NULL, rivers = FALSE, ptsize = NULL,
-                                     nclass = NULL, palette = NA, alpha = NULL, basemap = "country"){
+                                     nclass = NULL, palette = NA, alpha = NULL, basemap = "country",
+                                     glotto_title = NULL){
   suppressMessages(tmap::tmap_mode("plot"))
   if(is.null(color)){color <- "black"}
   if(is.null(ptsize)){ptsize <- 1}
@@ -471,7 +473,7 @@ glottomap_static_pacific <- function(glottodata, color = NULL, rivers = FALSE, p
                     n.max = {ifelse(is.null(nclass), 5, nclass)},
                     ),
                   fill_alpha = alpha,
-                  fill.legend = tm_legend(title = "glotto_title"),
+                  fill.legend = tm_legend(title = glotto_title),
                   size = ptsize
                   # size.scale = tm_scale_continuous(values=c(0, 1)),
                   # size.legend = tm_legend(title = glotto_size_title)
