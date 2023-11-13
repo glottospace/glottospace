@@ -49,11 +49,15 @@ Alternatively, you could also run tmaptools::palette_explorer(), RColorBrewer::d
 
 \item{projection}{For static maps, you can choose one of the following: 'eqarea' (equal-area Eckert IV, default), 'pacific' (Pacific-centered), or any other Coordinate Reference System, specified using an EPSG code (https://epsg.io/), for example: "ESRI:54009".}
 
+\item{glotto_title}{Optional, the title of legend, the default value is the column name of parameter color.}
+
 \item{mode}{In case type = "filter", you can choose here whether you want to interactively select languages by clicking on them (mode = 'click', default) or by drawing a shape around them (mode = 'draw').}
 
-\item{...}{Additional parameters to glottofilter}
+\item{basemap}{The default basemap is "country", which gives the borders of countries.
+Alternatively, the basemap can be set to be "hydro-basin",
+this gives global \href{https://www.hydrosheds.org/products/hydrobasins}{hydro-basins} (Level 03).}
 
-\item{numcat}{Do numbers represent categories? For example, if your dataset consists of 0 and 1, you might want to set this to TRUE.}
+\item{...}{Additional parameters to glottofilter}
 }
 \value{
 a map created from a glotto(sub)data object and can be saved with glottosave()

@@ -15,11 +15,16 @@
 #' Alternatively, you could also run tmaptools::palette_explorer(), RColorBrewer::display.brewer.all(), ?viridisLite::viridis, or scales::show_col(viridisLite::viridis(n=20))
 #' @param rivers Do you want to plot rivers (only for static maps)?
 #' @param nclass Preferred number of classes (default is 5)
-#' @param numcat Do numbers represent categories? For example, if your dataset consists of 0 and 1, you might want to set this to TRUE.
 #' @param mode In case type = "filter", you can choose here whether you want to interactively select languages by clicking on them (mode = 'click', default) or by drawing a shape around them (mode = 'draw').
 #' @param projection For static maps, you can choose one of the following: 'eqarea' (equal-area Eckert IV, default), 'pacific' (Pacific-centered), or any other Coordinate Reference System, specified using an EPSG code (https://epsg.io/), for example: "ESRI:54009".
 #' @param filename Optional filename if you want to save resulting map
+#' @param glotto_title Optional, the title of legend, the default value is the column name of parameter color.
+#' @param basemap The default basemap is "country", which gives the borders of countries.
+#' Alternatively, the basemap can be set to be "hydro-basin",
+#' this gives global \href{https://www.hydrosheds.org/products/hydrobasins}{hydro-basins} (Level 03).
+#'
 #' @param ... Additional parameters to glottofilter
+#'
 #' @evalRd glottovars()
 #' @return a map created from a glotto(sub)data object and can be saved with glottosave()
 #' @export
