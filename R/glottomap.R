@@ -384,11 +384,9 @@ glottomap_static_crs <- function(glottodata, label = NULL, color = NULL, ptsize 
 
     }} +
     tmap::tm_legend(legend.outside = TRUE) +
-    tmap::tm_layout(bg.color = "gray95",
+    tmap::tm_layout(bg.color = "gray99",
                     inner.margins = c(0,0,0,0),
-                    legend.text.size = 0.6,
-                    legend.digits = 5,
-                    legend.bg.alpha = 1
+                    legend.text.size = .8
                     )
 }
 
