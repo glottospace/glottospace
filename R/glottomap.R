@@ -56,7 +56,7 @@
 #' }
 glottomap <- function(glottodata = NULL, color = NULL, label = NULL, type = NULL, ptsize = NULL, alpha = NULL, lbsize = NULL,
                       palette = NA, rivers = FALSE, nclass = NULL, filename = NULL, projection = NULL,
-                      glotto_title = NULL, mode = NULL, legend_size = NULL, legend_text = NULL, basemap = "country",...){
+                      glotto_title = NULL, mode = NULL, basemap = "country",...){
  # palette <- glottocolpal(palette = palette)
   if(is.null(type)){type <- "static"}
 
@@ -76,7 +76,7 @@ glottomap <- function(glottodata = NULL, color = NULL, label = NULL, type = NULL
 
   if(type == "dynamic"){
     map <- glottomap_dynamic(glottodata = glottodata, label = label, color = color, ptsize = ptsize, alpha = alpha, nclass = nclass,
-                             palette = palette, legend_size = legend_size, legend_text = legend_text, lbsize=lbsize,
+                             palette = palette, lbsize=lbsize,
                              glotto_title = glotto_title, basemap = basemap)
   }
 
@@ -116,8 +116,7 @@ return(map)
 #' glottomap_dynamic(glottodata)
 #' }
 glottomap_dynamic <- function(glottodata, color = NULL, ptsize = NULL, alpha = NULL, nclass=NULL, palette = NA,
-                              legend_size = NULL, legend_text = NULL, label = NULL, lbsize=NULL,
-                              glotto_title = NULL, basemap = "country"){
+                              label = NULL, lbsize=NULL, glotto_title = NULL, basemap = "country"){
   suppressMessages(tmap::tmap_mode("view"))
   if(is.null(ptsize)){ptsize <- 0.8}
   if(is.null(label)){label <- NA}
@@ -149,7 +148,7 @@ glottomap_dynamic <- function(glottodata, color = NULL, ptsize = NULL, alpha = N
         # sf::st_make_valid() |>
         tmap::tm_shape() +
         tmap::tm_polygons(fill = "white",
-                          fill_alpha = .5,
+                          fill_alpha = 0,
                           fill.scale = tmap::tm_scale_categorical(),
                           lwd=1.5)
       }
