@@ -39,11 +39,11 @@
 #'
 #' # highlight 10 largest families:
 #' glottodata <- glottospotlight(glottodata = glottodata, spotcol =
-#' "family", spotlight = families$family[1:10], spotcontrast = "family", bgcontrast = "family")
+#' "family", spotlight = families$family[1:10], spotcontrast = "family")
 #'
 #' # Or, place 10 largest families in background
 #' glottodata <- glottospotlight(glottodata = glottodata, spotcol =
-#' "family", spotlight = families$family[-c(1:10)], spotcontrast = "family", bgcontrast = "family")
+#' "family", spotlight = families$family[-c(1:10)], spotcontrast = "family")
 #' glottomap(glottodata, color = "color")
 #'
 #' # Interactive selection by clicking on languages:
@@ -139,11 +139,12 @@ glottomap_dynamic <- function(glottodata, color = NULL, ptsize = NULL, alpha = N
       sf::sf_use_s2(FALSE)
       glottodata_wrap <- sf::st_wrap_dateline(glottodata, options = c("WRAPDATELINE=YES","DATELINEOFFSET=180"), quiet = TRUE)
       glottodata_proj <- sf::st_transform(glottodata_wrap, crs = sf::st_crs(global_basins))
-      bbox <- sf::st_bbox(glottodata_proj)
-      bboxe <- bbox_expand(bbox, f = 0.1)
-      hbsn_projbb <- sf::st_crop(global_basins, bboxe)
+      # bbox <- sf::st_bbox(glottodata_proj)
+      # bboxe <- bbox_expand(bbox, f = 0.1)
+      # hbsn_projbb <- sf::st_crop(global_basins, bboxe)
+
       tmap::tm_basemap("Esri.WorldTopoMap") +
-      hbsn_projbb |>
+        global_basins |>
         # sf::st_wrap_dateline(options = c("WRAPDATELINE=YES","DATELINEOFFSET=180"), quiet = TRUE) |>
         # sf::st_make_valid() |>
         tmap::tm_shape() +
@@ -172,7 +173,7 @@ glottomap_dynamic <- function(glottodata, color = NULL, ptsize = NULL, alpha = N
           tmap::tm_dots(
             fill = color,
             fill.scale = tmap::tm_scale_categorical(
-              values = glottospotlight_legend(glottodata_proj)$col,
+              values = palette,
               n.max = {ifelse(is.null(nclass), 5, nclass)},
               # label.na = "BG"
               ),
@@ -348,16 +349,11 @@ glottomap_static_crs <- function(glottodata, label = NULL, color = NULL, ptsize 
         tmap::tm_shape(glottodata_proj) +
           tmap::tm_dots(fill = "legend",
                         fill.scale = tmap::tm_scale_categorical(
-                          values = glottospotlight_legend(glottodata_proj)$col,
+                          values = palette,
+                          # values = glottospotlight_legend(glottodata_proj)$col,
                           n.max = {ifelse(is.null(nclass), 5, nclass)},
                           # label.na = "BG"
                           ),
-                        # fill.scale = tmap::tm_scale_categorical(values = glottospotlight_legend(glottodata_proj)$col,
-                        #                             labels = glottospotlight_legend(glottodata_proj)$labels,
-                        #                             value.na = "lightgrey",
-                        #                             label.na = "BG",
-                        #                             n.max = {ifelse(is.null(nclass), 5, nclass)}
-                        #                             ),
                         fill_alpha = alpha,
                         fill.legend = tmap::tm_legend(title = glotto_title),
                         size = ptsize
