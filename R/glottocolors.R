@@ -145,9 +145,6 @@ glottocolpal_options <- function(){
 #' @param spotcol Name of the column that contains the data to put in the spotlights (as well as remaining background data).
 #' @param spotlight Selection of data to put in the spotlights.
 #' @param spotcontrast Optional column to contrast between data points in the spotlight.
-#' @param bgpal color palette for background points (default is grays)
-#' @param spotpal color palette for spotligbht points
-#' @param bgcontrast Optional column to contrast between background data points
 #'
 #' @return A glottodata object with columns added to be used in visualization.
 #'
@@ -157,10 +154,10 @@ glottocolpal_options <- function(){
 #' \donttest{
 #' glottodata <- glottofilter(country = c("Netherlands", "Germany", "Belgium") )
 #' glottodata <- glottospotlight(glottodata = glottodata, spotcol = "country",
-#' spotlight = "Netherlands", spotcontrast = "name")
-#' glottomap(glottodata, color = "spotcol")
+#'                               spotlight = "Netherlands")
+#' glottomap(glottodata, color = "legend")
 #' }
-glottospotlight <- function(glottodata, spotcol, spotlight, spotcontrast = NULL, bgcolr = NULL){
+glottospotlight <- function(glottodata, spotcol, spotlight, spotcontrast = NULL){
   # if(is.null(spotpal)){spotpal <- "rainbow"}
   # if(is.null(bgpal)){bgpal <- "Grays"}
   # if(is.null(bgcolr)){bgcolr <- "lightgrey"}

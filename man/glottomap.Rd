@@ -12,13 +12,14 @@ glottomap(
   ptsize = NULL,
   alpha = NULL,
   lbsize = NULL,
-  palette = NULL,
+  palette = NA,
   rivers = FALSE,
   nclass = NULL,
-  numcat = FALSE,
   filename = NULL,
   projection = NULL,
+  glotto_title = NULL,
   mode = NULL,
+  basemap = "country",
   ...
 )
 }
@@ -44,8 +45,6 @@ Alternatively, you could also run tmaptools::palette_explorer(), RColorBrewer::d
 
 \item{nclass}{Preferred number of classes (default is 5)}
 
-\item{numcat}{Do numbers represent categories? For example, if your dataset consists of 0 and 1, you might want to set this to TRUE.}
-
 \item{filename}{Optional filename if you want to save resulting map}
 
 \item{projection}{For static maps, you can choose one of the following: 'eqarea' (equal-area Eckert IV, default), 'pacific' (Pacific-centered), or any other Coordinate Reference System, specified using an EPSG code (https://epsg.io/), for example: "ESRI:54009".}
@@ -53,6 +52,8 @@ Alternatively, you could also run tmaptools::palette_explorer(), RColorBrewer::d
 \item{mode}{In case type = "filter", you can choose here whether you want to interactively select languages by clicking on them (mode = 'click', default) or by drawing a shape around them (mode = 'draw').}
 
 \item{...}{Additional parameters to glottofilter}
+
+\item{numcat}{Do numbers represent categories? For example, if your dataset consists of 0 and 1, you might want to set this to TRUE.}
 }
 \value{
 a map created from a glotto(sub)data object and can be saved with glottosave()
@@ -76,11 +77,11 @@ families <- dplyr::count(glottodata, family, sort = TRUE)
 
 # highlight 10 largest families:
 glottodata <- glottospotlight(glottodata = glottodata, spotcol =
-"family", spotlight = families$family[1:10], spotcontrast = "family", bgcontrast = "family")
+"family", spotlight = families$family[1:10], spotcontrast = "family")
 
 # Or, place 10 largest families in background
 glottodata <- glottospotlight(glottodata = glottodata, spotcol =
-"family", spotlight = families$family[-c(1:10)], spotcontrast = "family", bgcontrast = "family")
+"family", spotlight = families$family[-c(1:10)], spotcontrast = "family")
 glottomap(glottodata, color = "color")
 
 # Interactive selection by clicking on languages:

@@ -4,15 +4,7 @@
 \alias{glottospotlight}
 \title{Highlight certain data points in visualizations}
 \usage{
-glottospotlight(
-  glottodata,
-  spotcol,
-  spotlight,
-  spotcontrast = NULL,
-  spotpal = NULL,
-  bgcontrast = NULL,
-  bgpal = NULL
-)
+glottospotlight(glottodata, spotcol, spotlight, spotcontrast = NULL)
 }
 \arguments{
 \item{glottodata}{User-provided glottodata}
@@ -22,12 +14,6 @@ glottospotlight(
 \item{spotlight}{Selection of data to put in the spotlights.}
 
 \item{spotcontrast}{Optional column to contrast between data points in the spotlight.}
-
-\item{spotpal}{color palette for spotligbht points}
-
-\item{bgcontrast}{Optional column to contrast between background data points}
-
-\item{bgpal}{color palette for background points (default is grays)}
 }
 \value{
 A glottodata object with columns added to be used in visualization.
@@ -42,7 +28,7 @@ other plots.
 \donttest{
 glottodata <- glottofilter(country = c("Netherlands", "Germany", "Belgium") )
 glottodata <- glottospotlight(glottodata = glottodata, spotcol = "country",
-spotlight = "Netherlands", spotcontrast = "name")
-glottomap(glottodata, color = "spotcol")
+                              spotlight = "Netherlands")
+glottomap(glottodata, color = "legend")
 }
 }
