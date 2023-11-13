@@ -44,7 +44,7 @@
 #' # Or, place 10 largest families in background
 #' glottodata <- glottospotlight(glottodata = glottodata, spotcol =
 #' "family", spotlight = families$family[-c(1:10)], spotcontrast = "family")
-#' glottomap(glottodata, color = "color")
+#' glottomap(glottodata, color = "legend")
 #'
 #' # Interactive selection by clicking on languages:
 #' selected <- glottomap(continent = "South America", type = "filter")
@@ -384,7 +384,12 @@ glottomap_static_crs <- function(glottodata, label = NULL, color = NULL, ptsize 
 
     }} +
     tmap::tm_legend(legend.outside = TRUE) +
-    tmap::tm_layout(bg.color = "lightgrey", inner.margins = c(0,0,0,0))
+    tmap::tm_layout(bg.color = "gray95",
+                    inner.margins = c(0,0,0,0),
+                    legend.text.size = 0.6,
+                    legend.digits = 5,
+                    legend.bg.alpha = 1
+                    )
 }
 
 
