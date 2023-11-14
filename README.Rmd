@@ -308,9 +308,9 @@ glottodata <- glottospotlight(glottodata = glottodata, spotcol = "family", spotl
 glottomap(glottodata, color = "legend", glotto_title = "Top 5 largest languages families", ptsize=.3, 
           palette = "Set 1", alpha = .8)
 ```
-You can also produce maps based on either countries or hydro-basins. The hydro-basin basemap is cited from \href{https://www.hydrosheds.org/}{HydroSHEDS} of Level 03.
+You can also produce maps based on either countries or hydro-basins. The hydro-basin basemap is cited from [HydroSHEDS](https://www.hydrosheds.org/) of Level 03.
 ```{r, figures-side, fig.show="hold", out.width="50%"}
-par(mar = c(4, 4, .1, .1))
+par(mar = c(2, 2, .1, .1))
 ## Filter by continent
 glottopoints <- glottofilter(continent = "South America")
 ## Sort the families
