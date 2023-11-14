@@ -180,7 +180,7 @@ glottomap_dynamic <- function(glottodata, color = NULL, ptsize = NULL, alpha = N
             fill.scale = tmap::tm_scale_categorical(
               values = palette,
               n.max = {ifelse(is.null(nclass), 5, nclass)},
-              # label.na = "BG"
+              label.na = "The rest"
               ),
             fill.legend = tmap::tm_legend(title = glotto_title),
             fill_alpha = alpha,
@@ -338,6 +338,7 @@ glottomap_static_crs <- function(glottodata, label = NULL, color = NULL, ptsize 
     tmap::tm_polygons(fill = "white",
                       fill_alpha = 1,
                       fill.scale = tmap::tm_scale_categorical(),
+                      # fill.legend = tmap::tm_legend_hide(),
                       lwd=1.5) +
     {if(rivers == TRUE){tmap::tm_shape(rivers_proj)} +
         tmap::tm_lines(col = "lightblue",
@@ -357,7 +358,7 @@ glottomap_static_crs <- function(glottodata, label = NULL, color = NULL, ptsize 
                           values = palette,
                           # values = glottospotlight_legend(glottodata_proj)$col,
                           n.max = {ifelse(is.null(nclass), 5, nclass)},
-                          # label.na = "BG"
+                          label.na = "The rest"
                           ),
                         fill_alpha = alpha,
                         fill.legend = tmap::tm_legend(title = glotto_title),
@@ -375,7 +376,7 @@ glottomap_static_crs <- function(glottodata, label = NULL, color = NULL, ptsize 
                           ),
                         fill_alpha = alpha,
                         fill.legend = tmap::tm_legend(title = glotto_title,
-                                                      # n = {ifelse(is.null(nclass), 5, nclass)}
+                                                      legend.outside = TRUE
                                                       ),
                         size = ptsize
                         # size.scale = tmap::tm_scale(values=glotto_size_values),
@@ -388,7 +389,7 @@ glottomap_static_crs <- function(glottodata, label = NULL, color = NULL, ptsize 
                     size.scale = tmap::tm_scale())
 
     }} +
-    tmap::tm_legend(legend.outside = TRUE) +
+   # tmap::tm_legend(legend.outside = TRUE) +
     tmap::tm_layout(bg.color = "gray99",
                     inner.margins = c(0,0,0,0),
                     legend.text.size = .8
@@ -465,23 +466,24 @@ glottomap_static_pacific <- function(glottodata, color = NULL, rivers = FALSE, p
     tmap::tm_graticules(col = "white",
                         n.x = 10,
                         n.y = 10) +
-    tm_scalebar(breaks = c(0, 100, 200)) +
-    tm_layout(bg.color = "lightgrey",
+    tmap::tm_scalebar(breaks = c(0, 100, 200)) +
+    tmap::tm_layout(bg.color = "lightgrey",
               basemap.alpha = .4,
               outer.bg.color = "white") +
     tmap::tm_shape(glottodata) +
     tmap::tm_dots(fill = color,
-                  fill.scale = tm_scale_categorical(
+                  fill.scale = tmap::tm_scale_categorical(
                     values = palette,
                     n.max = {ifelse(is.null(nclass), 5, nclass)},
                     ),
                   fill_alpha = alpha,
-                  fill.legend = tm_legend(title = glotto_title),
+                  fill.legend = tmap::tm_legend(title = glotto_title,
+                                          legend.outside = TRUE
+                                          ),
                   size = ptsize
                   # size.scale = tm_scale_continuous(values=c(0, 1)),
                   # size.legend = tm_legend(title = glotto_size_title)
     )
-
 }
 
 #' Show location of glottocode on globe
