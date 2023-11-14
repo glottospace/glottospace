@@ -702,6 +702,7 @@ glottomap(glottodata, color = "legend", glotto_title = "Top 5 largest languages 
 ```
 
 <img src="man/figures/README-glottomap_family_size-1.png" width="100%" />
+
 You can also produce maps based on either countries or hydro-basins. The
 hydro-basin basemap is cited from
 [HydroSHEDS](https://www.hydrosheds.org/) of Level 03.
