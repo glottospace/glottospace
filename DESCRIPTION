@@ -27,7 +27,7 @@ Imports:
     sf,
     tibble,
     tidyr,
-    tmap,
+    tmap (>= 4),
     units,
     writexl,
     rvest
