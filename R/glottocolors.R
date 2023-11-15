@@ -42,8 +42,8 @@ glottocolpal <- function(palette, ncolr = NULL, rev = FALSE, alpha = NULL, show 
   grdevpals <- grdevpals[order(grdevpals)]
   grdevpals2 <- c("rainbow", "heat", "terrain", "topo", "cm")
 
-  if(is.null(palette)){
-    return(NULL)
+  if(is.na(palette)){
+    return(NA)
   }
 
   if(palette == "all"){
@@ -145,9 +145,6 @@ glottocolpal_options <- function(){
 #' @param spotcol Name of the column that contains the data to put in the spotlights (as well as remaining background data).
 #' @param spotlight Selection of data to put in the spotlights.
 #' @param spotcontrast Optional column to contrast between data points in the spotlight.
-#' @param bgpal color palette for background points (default is grays)
-#' @param spotpal color palette for spotligbht points
-#' @param bgcontrast Optional column to contrast between background data points
 #'
 #' @return A glottodata object with columns added to be used in visualization.
 #'
@@ -157,12 +154,13 @@ glottocolpal_options <- function(){
 #' \donttest{
 #' glottodata <- glottofilter(country = c("Netherlands", "Germany", "Belgium") )
 #' glottodata <- glottospotlight(glottodata = glottodata, spotcol = "country",
-#' spotlight = "Netherlands", spotcontrast = "name")
-#' glottomap(glottodata, color = "spotcol")
+#'                               spotlight = "Netherlands")
+#' glottomap(glottodata, color = "legend")
 #' }
-glottospotlight <- function(glottodata, spotcol, spotlight, spotcontrast = NULL, spotpal = NULL, bgcontrast = NULL, bgpal = NULL){
-  if(is.null(spotpal)){spotpal <- "rainbow"}
-  if(is.null(bgpal)){bgpal <- "Grays"}
+glottospotlight <- function(glottodata, spotcol, spotlight, spotcontrast = NULL){
+  # if(is.null(spotpal)){spotpal <- "rainbow"}
+  # if(is.null(bgpal)){bgpal <- "Grays"}
+  # if(is.null(bgcolr)){bgcolr <- "lightgrey"}
   if(is_sf(glottodata)){
     data <- sf::st_drop_geometry(glottodata)
     was_sf <- TRUE
@@ -173,40 +171,30 @@ glottospotlight <- function(glottodata, spotcol, spotlight, spotcontrast = NULL,
 
   data$spotlight <- data[,spotcol] %in% spotlight
 
-  data$legend <- rep(NA, nrow(data) )
+  data$legend <- rep(NA, nrow(data))
 
-  data$legend <- ifelse(data$spotlight == TRUE, data[,spotcol], data$legend)
-
-
-
-  if(!is.null(bgcontrast)){
-  #   data$legend <- ifelse(data$spotlight == FALSE, data[,spotcol], data$legend)
-  # } else{
-    data$legend <- ifelse(data$spotlight == FALSE, data[,bgcontrast], data$legend)
-  }
-
-  if(!is.null(spotcontrast)){
-  #   data$legend <- ifelse(data$spotlight == TRUE, data[,spotcol], data$legend)
-  # } else{
+  if(is.null(spotcontrast)){
+    data$legend <- ifelse(data$spotlight == TRUE, data[,spotcol], data$legend)
+  } else{
     data$legend <- ifelse(data$spotlight == TRUE, data[,spotcontrast], data$legend)
   }
 
-  spotlightnames <- as.factor(data$legend[data$spotlight == TRUE])
-  ncolrspot <- length(unique(spotlightnames))
-  colpalspot <- glottocolpal(palette = spotpal, ncolrspot)
+  # spotlightnames <- as.factor(data$legend[data$spotlight == TRUE])
+  # ncolrspot <- length(unique(spotlightnames))
+  # colpalspot <- glottocolpal(palette = spotpal, ncolrspot)
 
-  bgnames <- as.factor(data$legend[data$spotlight == FALSE])
-  ncolrbg <- length(unique(bgnames))
-  colpalbg <- glottocolpal(palette = bgpal, ncolr = ncolrbg)
+  # bgnames <- as.factor(data$legend[data$spotlight == FALSE])
+  # ncolrbg <- length(unique(bgnames))
+  # colpalbg <- glottocolpal(palette = bgpal, ncolr = ncolrbg)
 
-  data$color[data$spotlight == TRUE] <- colpalspot[spotlightnames]
-  data$color[data$spotlight == FALSE] <- colpalbg[bgnames]
+  # data$color[data$spotlight == TRUE] <- colpalspot[spotlightnames]
+  # data$color[data$spotlight == FALSE] <- colpalbg[bgnames]
 
   if(was_sf == TRUE){
     if(glottocheck_isglottodata(data)){
-    glottodata <- suppressMessages(dplyr::left_join(glottodata, data[, c("glottocode", "spotlight", "legend", "color")]))
+    glottodata <- suppressMessages(dplyr::left_join(glottodata, data[, c("glottocode", "spotlight", "legend")]))
     } else if(glottocheck_isglottosubdata(data)){
-      glottodata <- suppressMessages(dplyr::left_join(glottodata, data[, c("glottosubcode", "spotlight", "legend", "color")]))
+      glottodata <- suppressMessages(dplyr::left_join(glottodata, data[, c("glottosubcode", "spotlight", "legend")]))
     }
     return(glottodata)
   } else {
@@ -215,11 +203,12 @@ glottospotlight <- function(glottodata, spotcol, spotlight, spotcontrast = NULL,
 }
 
 glottospotlight_legend <- function(glottodata){
-  if(all(c("spotlight", "legend", "color") %in% colnames(glottodata))){
+  if(all(c("spotlight", "legend") %in% colnames(glottodata))){
     legend <- list(
       spotlight = TRUE,
-      labels = unique(glottodata[sf::st_drop_geometry(glottodata[,"spotlight"]) == TRUE,]$legend),
-      col = unique(glottodata[sf::st_drop_geometry(glottodata[,"spotlight"]) == TRUE,]$color))
+      labels = unique(glottodata[sf::st_drop_geometry(glottodata[,"spotlight"]) == TRUE,]$legend)
+      # col = unique(glottodata[sf::st_drop_geometry(glottodata[,"spotlight"]) == TRUE,]$color)
+      )
   } else {
     legend <- list(spotlight = FALSE)
   }

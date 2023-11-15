@@ -85,7 +85,7 @@ glottopoints <- glottofilter(continent = "South America")
 # Interpolate points to polygons:
 glottopols <- glottospace(glottopoints, method = "voronoi")
 # Plot polygon data:
-glottomap(glottodata = glottopols, color = "family_size_rank")
+glottomap(glottodata = glottopols, color = "family_size_rank", palette = "tol.yl_or_br")
 
 ```
 
@@ -301,12 +301,32 @@ However, you can also create maps with other glottodata. For example, we might w
 glottodata <- glottoget()
 families <- dplyr::count(glottodata, family, sort = TRUE)
 
-# highlight 10 largest families:
-glottodata <- glottospotlight(glottodata = glottodata, spotcol = "family", spotlight = families$family[1:10], spotcontrast = "family", bgcontrast = "family")
+# highlight 5 largest families:
+glottodata <- glottospotlight(glottodata = glottodata, spotcol = "family", spotlight = families$family[1:5], spotcontrast = "family")
 
 # Create map
-glottomap(glottodata, color = "color")
+glottomap(glottodata, color = "legend", glotto_title = "Top 5 largest languages families", ptsize=.3, 
+          palette = "Set 1", alpha = .8)
 ```
+
+You can also produce maps based on either countries or hydro-basins. The hydro-basin basemap is cited from [HydroSHEDS](https://www.hydrosheds.org/) of Level 03.
+
+```{r, figures-side, fig.show="hold", out.width="50%"}
+par(mar = c(2, 2, .1, .1))
+## Filter by continent
+glottopoints <- glottofilter(continent = "South America")
+## Sort the families
+families <- dplyr::count(glottopoints, family, sort = TRUE)
+
+## Plot the top 5 languages based on countries
+glottomap(glottopoints[glottopoints$family %in% families$family[1:5], ], basemap = "country", 
+          color = "family", palette = "paired", alpha = .9)
+
+## Plot the top 5 languages based on hydro-basins
+glottomap(glottopoints[glottopoints$family %in% families$family[1:5], ], basemap = "hydro-basin", 
+          color = "family", palette = "paired", alpha = .9)
+```
+
 
 
 ## glottosave 
