@@ -1,87 +1,56 @@
-
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# glottospace: Language Mapping and Geospatial Analysis of Linguistic and Cultural Data <img src='man/figures/logo.png' align="right" height="139" />
+# glottospace: Language Mapping and Geospatial Analysis of Linguistic and Cultural Data <img src="man/figures/logo.png" align="right" height="139"/>
 
 <!-- badges: start -->
 
-[![Lifecycle:
-stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
-[![License: GPL
-v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
-[![R-CMD-check](https://github.com/glottospace/glottospace/workflows/R-CMD-check/badge.svg)](https://github.com/glottospace/glottospace/actions)
-[![status](https://joss.theoj.org/papers/c93a1ccb6835a15c6026ea1ddc28b50c/status.svg)](https://joss.theoj.org/papers/c93a1ccb6835a15c6026ea1ddc28b50c)
-[![CRAN RStudio mirror
-downloads](https://cranlogs.r-pkg.org/badges/grand-total/glottospace?color=orange)](https://r-pkg.org/pkg/glottospace)
+[![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable) [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) [![R-CMD-check](https://github.com/glottospace/glottospace/workflows/R-CMD-check/badge.svg)](https://github.com/glottospace/glottospace/actions) [![status](https://joss.theoj.org/papers/c93a1ccb6835a15c6026ea1ddc28b50c/status.svg)](https://joss.theoj.org/papers/c93a1ccb6835a15c6026ea1ddc28b50c) [![CRAN RStudio mirror downloads](https://cranlogs.r-pkg.org/badges/grand-total/glottospace?color=orange)](https://r-pkg.org/pkg/glottospace)
+
 <!-- badges: end -->
 
 # Introduction
 
-The **glottospace** package facilitates the geospatial analysis of
-linguistic and cultural data. The aim of this package is to provide a
-streamlined workflow for working with spatio-linguistic data, including
-data import, cleaning, exploration, visualization and export. For
-example, with **glottospace** you can quickly match your own linguistic
-data to a location and plot it on a map. You can also calculate
-distances between languages based on their location or linguistic
-features and visualize those distances. In addition, with
-**glottospace** you can easily access global databases such as
-[glottolog](https://glottolog.org/), [WALS](https://wals.info/),
-[Grambank](https://grambank.clld.org/) and
-[D-PLACE](https://d-place.org/) from R and integrate them with your own
-data.
+The **glottospace** package facilitates the geospatial analysis of linguistic and cultural data. The aim of this package is to provide a streamlined workflow for working with spatio-linguistic data, including data import, cleaning, exploration, visualization and export. For example, with **glottospace** you can quickly match your own linguistic data to a location and plot it on a map. You can also calculate distances between languages based on their location or linguistic features and visualize those distances. In addition, with **glottospace** you can easily access global databases such as [glottolog](https://glottolog.org/), [WALS](https://wals.info/), [Grambank](https://grambank.clld.org/) and [D-PLACE](https://d-place.org/) from R and integrate them with your own data.
 
 # Development
 
-We’re still actively developing the **glottospace** package by adding
-new functions and improving existing ones. Although the package is
-stable, you might find bugs or encounter things you might find
-confusing. You can help us to improve the package by:
+We're still actively developing the **glottospace** package by adding new functions and improving existing ones. Although the package is stable, you might find bugs or encounter things you might find confusing. You can help us to improve the package by:
 
-- Sending an email to [Rui Dong](mailto:r.dong@hum.leidenuniv.nl) with a
-  clear description of the issue or error message.  
-- Opening a new issue in the [glottospace issues page on
-  GitHub](https://github.com/glottospace/glottospace/issues)
-- Fixing a bug or adding functionality and submit a [pull request on
-  GitHub](https://github.com/glottospace/glottospace/pulls).
+-   Sending an email to [Rui Dong](mailto:r.dong@hum.leidenuniv.nl) with a clear description of the issue or error message.\
+-   Opening a new issue in the [glottospace issues page on GitHub](https://github.com/glottospace/glottospace/issues)
+-   Fixing a bug or adding functionality and submit a [pull request on GitHub](https://github.com/glottospace/glottospace/pulls).
 
 # Citation
 
 If you find **glottospace** useful, please cite it in your work:
 
-    #> To cite glottospace in publications use:
-    #> 
-    #>   Norder, S.J. et al. (2022). glottospace: R package for language
-    #>   mapping and geospatial analysis of linguistic and cultural data.
-    #>   Journal of Open Source Software, 7(77), 4303,
-    #>   https://doi.org/10.21105/joss.04303
-    #> 
-    #> A BibTeX entry for LaTeX users is
-    #> 
-    #>   @Article{,
-    #>     title = {glottospace: R package for the geospatial analysis of linguistic and cultural data},
-    #>     author = {Sietze Norder and Laura Becker and Hedvig Skirgård and Leonardo Arias and Alena Witzlack-Makarevich and Rik {van Gijn}},
-    #>     journal = {Journal of Open Source Software},
-    #>     year = {2022},
-    #>     volume = {7},
-    #>     number = {77},
-    #>     pages = {4303},
-    #>     url = {glottospace: R package for language mapping and geospatial analysis of linguistic and cultural data},
-    #>   }
+```         
+#> To cite glottospace in publications use:
+#> 
+#>   Norder, S.J. et al. (2022). glottospace: R package for language
+#>   mapping and geospatial analysis of linguistic and cultural data.
+#>   Journal of Open Source Software, 7(77), 4303,
+#>   https://doi.org/10.21105/joss.04303
+#> 
+#> A BibTeX entry for LaTeX users is
+#> 
+#>   @Article{,
+#>     title = {glottospace: R package for the geospatial analysis of linguistic and cultural data},
+#>     author = {Sietze Norder and Laura Becker and Hedvig Skirgård and Leonardo Arias and Alena Witzlack-Makarevich and Rik {van Gijn}},
+#>     journal = {Journal of Open Source Software},
+#>     year = {2022},
+#>     volume = {7},
+#>     number = {77},
+#>     pages = {4303},
+#>     url = {glottospace: R package for language mapping and geospatial analysis of linguistic and cultural data},
+#>   }
+```
 
-The package uses three global databases:
-[glottolog](https://glottolog.org/), [WALS](https://wals.info/) and
-[Grambank](https://grambank.clld.org/). In addition, **glottospace**
-builds on a combination of [spatial](https://www.r-pkg.org/ctv/Spatial)
-and non-spatial packages, including **sf**, **terra**, **tmap**,
-**mapview**, **rnaturalearth**, and **dplyr**. If you use
-**glottospace** in one of your publications, please cite these data
-sources and packages as well.
+The package uses three global databases: [glottolog](https://glottolog.org/), [WALS](https://wals.info/) and [Grambank](https://grambank.clld.org/). In addition, **glottospace** builds on a combination of [spatial](https://www.r-pkg.org/ctv/Spatial) and non-spatial packages, including **sf**, **terra**, **tmap**, **mapview**, **rnaturalearth**, and **dplyr**. If you use **glottospace** in one of your publications, please cite these data sources and packages as well.
 
 # Installation
 
-You can install the latest release of glottospace from
-[CRAN](https://CRAN.R-project.org/package=glottospace) with:
+You can install the latest release of glottospace from [CRAN](https://CRAN.R-project.org/package=glottospace) with:
 
 ``` r
 # install.packages("glottospace")
@@ -89,8 +58,7 @@ You can install the latest release of glottospace from
 # install.packages("glottospace", INSTALL_opts = "--no-multiarch")
 ```
 
-You can install the development version of glottospace from
-[GitHub](https://github.com/) with:
+You can install the development version of glottospace from [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
@@ -99,15 +67,11 @@ You can install the development version of glottospace from
 
 # Example
 
-Before describing the functionality of **glottospace**, we give a quick
-demonstration of a typical workflow.
+Before describing the functionality of **glottospace**, we give a quick demonstration of a typical workflow.
 
 ## Plotting language locations on a map
 
-Imagine you’re working with languages in a particular region, and want
-to visualize them on a map. With glottospace this is easy! You could for
-example filter all languages in South America, and show which ones of
-them are isolate languages:
+Imagine you're working with languages in a particular region, and want to visualize them on a map. With glottospace this is easy! You could for example filter all languages in South America, and show which ones of them are isolate languages:
 
 ``` r
 library(glottospace)
@@ -118,12 +82,9 @@ glottomap(continent = "South America", color = "isolate")
 #> all geometries
 ```
 
-<img src="man/figures/README-example_glottomap-1.png" width="100%" />
+<img src="man/figures/README-example_glottomap-1.png" width="100%"/>
 
-Languages are often represented with points, while in reality the
-speakers of a language can inhabit vast areas. glottospace works with
-point and polygon data. When polygon data is not available, you can
-interpolate the points and plot those.
+Languages are often represented with points, while in reality the speakers of a language can inhabit vast areas. glottospace works with point and polygon data. When polygon data is not available, you can interpolate the points and plot those.
 
 ``` r
 ## Filter by continent
@@ -139,54 +100,39 @@ glottomap(glottodata = glottopols, color = "family_size_rank", palette = "tol.yl
 #> are combined.
 ```
 
-<img src="man/figures/README-example_glottopols-1.png" width="100%" />
+<img src="man/figures/README-example_glottopols-1.png" width="100%"/>
 
 # Workflow of glottospace
 
-The glottospace package offers a wide range of functions to work with
-spatio-linguistic data. The functions are organized into the following
-function families, of which the core function generally has the same
-name as the family to which it belongs:
+The glottospace package offers a wide range of functions to work with spatio-linguistic data. The functions are organized into the following function families, of which the core function generally has the same name as the family to which it belongs:
 
-1.  glottoget: download glottodata from remote server, or load locally
-    stored glottodata.
+1.  glottoget: download glottodata from remote server, or load locally stored glottodata.
 
-2.  glottocreate: create empty glottodata structure, to add data
-    manually.
+2.  glottocreate: create empty glottodata structure, to add data manually.
 
-3.  glottocheck: run interactive quality checks of user-provided
-    glottodata.
+3.  glottocheck: run interactive quality checks of user-provided glottodata.
 
 4.  glottoclean: clean-up glottodata.
 
-5.  glottojoin: join user-provided glottodata with other (often online)
-    datasets.
+5.  glottojoin: join user-provided glottodata with other (often online) datasets.
 
-6.  glottosearch: search [glottolog](https://glottolog.org/) database
-    for languages, language families, glottocodes, etc.
+6.  glottosearch: search [glottolog](https://glottolog.org/) database for languages, language families, glottocodes, etc.
 
-7.  glottofilter: filter/subset glottodata based on linguistic and
-    geographic features/variables.
+7.  glottofilter: filter/subset glottodata based on linguistic and geographic features/variables.
 
-8.  glottodist: calculate differences/similarities between languages
-    based on their features (linguistic, cultural, environmental,
-    geographic, etc.).
+8.  glottodist: calculate differences/similarities between languages based on their features (linguistic, cultural, environmental, geographic, etc.).
 
 9.  glottoplot: visualizing differences/similarities between languages.
 
-10. glottospace: make glottodata spatial, add coordinates, add spatial
-    points or polygons to languages.
+10. glottospace: make glottodata spatial, add coordinates, add spatial points or polygons to languages.
 
 11. glottomap: visualize linguistic and cultural data on a map.
 
-12. glottosave: save output generated by glottospace (data, figures,
-    maps, etc.).
+12. glottosave: save output generated by glottospace (data, figures, maps, etc.).
 
 ## glottoget
 
-You can load locally stored glottodata (for example from an excel file
-or shapefile). The glottospace package has two built-in artificial demo
-datasets (“demodata” and “demosubdata”).
+You can load locally stored glottodata (for example from an excel file or shapefile). The glottospace package has two built-in artificial demo datasets ("demodata" and "demosubdata").
 
 ``` r
 glottodata <- glottoget("demodata")
@@ -200,9 +146,7 @@ head(glottodata)
 #> 6   mara1409      N      a      N
 ```
 
-You can also load glottodata from online databases such as
-[glottolog](https://glottolog.org/). You can download a raw version of
-the data (‘glottolog’), or an enriched/boosted version (‘glottobase’):
+You can also load glottodata from online databases such as [glottolog](https://glottolog.org/). You can download a raw version of the data ('glottolog'), or an enriched/boosted version ('glottobase'):
 
 ``` r
 # To load glottobase:
@@ -217,9 +161,7 @@ colnames(glottobase)
 
 ## glottocreate
 
-You can generate empty data structures that help you to add your own
-data in a structured way. These data structures can be saved to your
-local folder by specifying a filename (not demonstrated here).
+You can generate empty data structures that help you to add your own data in a structured way. These data structures can be saved to your local folder by specifying a filename (not demonstrated here).
 
 ``` r
 glottocreate(glottocodes = c("yucu1253", "tani1257"), variables = 3, meta = FALSE)
@@ -228,9 +170,7 @@ glottocreate(glottocodes = c("yucu1253", "tani1257"), variables = 3, meta = FALS
 #> 2   tani1257     NA     NA     NA
 ```
 
-We’ve specified meta = FALSE, to indicate that we want to generate a
-‘flat’ glottodata table. However, when creating glottodata, by default,
-several meta tables are included:
+We've specified meta = FALSE, to indicate that we want to generate a 'flat' glottodata table. However, when creating glottodata, by default, several meta tables are included:
 
 ``` r
 glottodata_meta <- glottocreate(glottocodes = c("yucu1253", "tani1257"), variables = 3)
@@ -247,10 +187,7 @@ summary(glottodata_meta)
 #> lookup        2     data.frame list
 ```
 
-The majority of these meta tables are added for the convenience of the
-user. The ‘structure’ and ‘sample’ tables are the only ones that are
-required for some of the functions in the glottospace package. A
-structure table can also be added later:
+The majority of these meta tables are added for the convenience of the user. The 'structure' and 'sample' tables are the only ones that are required for some of the functions in the glottospace package. A structure table can also be added later:
 
 ``` r
 
@@ -259,9 +196,7 @@ structure <- glottocreate_structuretable(varnames = c("var001", "var002", "var00
 glottodata <- glottocreate_addtable(glottodata, structure, name = "structure")
 ```
 
-More complex glottodata structures can also be generated. For example,
-in cases where you want to distinguish between groups within each
-language.
+More complex glottodata structures can also be generated. For example, in cases where you want to distinguish between groups within each language.
 
 ``` r
 # Instead of creating a single table for all languages, you might want to create a list of tables (one table for each language)
@@ -287,8 +222,7 @@ glottocreate(glottocodes = c("yucu1253", "tani1257"),
 
 ## glottocheck
 
-If you have your own data, you might want to do some interactive quality
-checks:
+If you have your own data, you might want to do some interactive quality checks:
 
 ``` r
 glottodata <- glottoget("demodata")
@@ -303,8 +237,7 @@ glottocheck(glottodata, diagnostic = FALSE)
 #> glottodata does not contain metadata
 ```
 
-We’ve now specified diagnostic = FALSE, but the default is to show some
-more extensive diagnostics (like a data coverage plot).
+We've now specified diagnostic = FALSE, but the default is to show some more extensive diagnostics (like a data coverage plot).
 
 You can also check the metadata:
 
@@ -329,13 +262,11 @@ glottocheck(glottodata, checkmeta = TRUE)
 #>  Please check whether the spelling is identical, remove the rows from the structure table, or add the columns to the data.
 ```
 
-<img src="man/figures/README-glottocheckmeta-1.png" width="100%" />
+<img src="man/figures/README-glottocheckmeta-1.png" width="100%"/>
 
 ## glottoclean
 
-Once you’ve loaded glottodata, you might encounter some inconsistencies.
-For example, data-contributors might not have used a standardized way of
-coding missing values.
+Once you've loaded glottodata, you might encounter some inconsistencies. For example, data-contributors might not have used a standardized way of coding missing values.
 
 ``` r
 glottodata <- glottoget(glottodata = "demodata", meta = TRUE)
@@ -366,8 +297,7 @@ glottodata_clean$glottodata
 
 ## glottojoin and glottosimplify
 
-Join user-provided glottodata with other datasets, or with online
-databases.
+Join user-provided glottodata with other datasets, or with online databases.
 
 ``` r
 # Join with glottospace
@@ -426,8 +356,7 @@ glottosimplify(glottodata = glottosubdata)
 
 ## glottosearch
 
-As demonstrated in the example above, you can search glottodata for a
-specific search term
+As demonstrated in the example above, you can search glottodata for a specific search term
 
 You can search for a match in all columns:
 
@@ -474,7 +403,7 @@ glottosearch(search = "Yucuni", columns = c("name", "family"))
 #> 7542 POINT (-97.91818 17.23743)
 ```
 
-Sometimes you don’t find a match:
+Sometimes you don't find a match:
 
 ``` r
 glottosearch(search = "matsigenka")[,"name"]
@@ -485,8 +414,7 @@ glottosearch(search = "matsigenka")[,"name"]
 #> <0 rows> (or 0-length row.names)
 ```
 
-If you can’t find what you’re looking for, you can increase the
-tolerance:
+If you can't find what you're looking for, you can increase the tolerance:
 
 ``` r
 glottosearch(search = "matsigenka", tolerance = 0.2)[,"name"]
@@ -499,7 +427,7 @@ glottosearch(search = "matsigenka", tolerance = 0.2)[,"name"]
 #> 4787 Nomatsiguenga POINT (-74.4371 -11.5349)
 ```
 
-Aha! There it is: ‘Machiguenga’
+Aha! There it is: 'Machiguenga'
 
 ``` r
 glottosearch(search = "matsigenka", tolerance = 0.4)[,"name"]
@@ -599,8 +527,7 @@ colovenz <- glottofilter(country = c("Colombia", "Venezuela"))
 arawtuca <- glottofilter(expression = family %in% c("Arawakan", "Tucanoan"))
 ```
 
-You can also interactively filter languages by drawing or clicking on a
-map:
+You can also interactively filter languages by drawing or clicking on a map:
 
 ``` r
 # selected <- glottofiltermap(continent = "South America")
@@ -609,9 +536,7 @@ map:
 
 ## glottodist
 
-Quantify differences and similarities between languages glottodistances:
-calculating similarities between languages based on linguistic/cultural
-features
+Quantify differences and similarities between languages glottodistances: calculating similarities between languages based on linguistic/cultural features
 
 ``` r
 # In order to be able to calculate linguistic distances a structure table is required, that's why we specify meta = TRUE. In case you have glottodata without a structure table, you can add it (see examples in the  glottocreate() section).
@@ -629,8 +554,7 @@ glottodist <- glottodist(glottodata = glottodata)
 
 ## glottoplot
 
-Visualizing differences (distances) between languages based on
-linguistic, cultural, and environmental features.
+Visualizing differences (distances) between languages based on linguistic, cultural, and environmental features.
 
 ``` r
 glottodata <- glottoget("demodata", meta = TRUE)
@@ -646,12 +570,11 @@ glottodist <- glottodist(glottodata = glottodata)
 glottoplot(glottodist = glottodist)
 ```
 
-<img src="man/figures/README-glottoplot-1.png" width="100%" />
+<img src="man/figures/README-glottoplot-1.png" width="100%"/>
 
 ## glottospace
 
-This family of functions turns glottodata into a spatial object. As
-we’ve illustrated above, these can be either glottopoints or glottopols
+This family of functions turns glottodata into a spatial object. As we've illustrated above, these can be either glottopoints or glottopols
 
 ``` r
 glottodata <- glottoget("demodata")
@@ -663,17 +586,13 @@ glottomap(glottospacedata)
 #> all geometries
 ```
 
-<img src="man/figures/README-glottospace-1.png" width="100%" />
+<img src="man/figures/README-glottospace-1.png" width="100%"/>
 
 ## glottomap
 
-With glottomap you can quickly visualize the location of languages.
-Below we show simple static maps, but you can also create dynamic maps
-by specifying type = “dynamic”.
+With glottomap you can quickly visualize the location of languages. Below we show simple static maps, but you can also create dynamic maps by specifying type = "dynamic".
 
-To select languages, you don’t need to call glottofilter() first, but
-you can use glottomap() directly. Behind the scenes glottomap() passes
-those arguments on to glottofilter().
+To select languages, you don't need to call glottofilter() first, but you can use glottomap() directly. Behind the scenes glottomap() passes those arguments on to glottofilter().
 
 ``` r
 glottomap(country = "Colombia")
@@ -681,11 +600,9 @@ glottomap(country = "Colombia")
 #> all geometries
 ```
 
-<img src="man/figures/README-glottomap-1.png" width="100%" />
+<img src="man/figures/README-glottomap-1.png" width="100%"/>
 
-However, you can also create maps with other glottodata. For example, we
-might want to create a world map highlighting the largest language
-families
+However, you can also create maps with other glottodata. For example, we might want to create a world map highlighting the largest language families
 
 ``` r
 glottodata <- glottoget()
@@ -701,11 +618,9 @@ glottomap(glottodata, color = "legend", glotto_title = "Top 5 largest languages 
 #> all geometries
 ```
 
-<img src="man/figures/README-glottomap_family_size-1.png" width="100%" />
+<img src="man/figures/README-glottomap_family_size-1.png" width="100%"/>
 
-You can also produce maps based on either countries or hydro-basins. The
-hydro-basin basemap is cited from
-[HydroSHEDS](https://www.hydrosheds.org/) of Level 03.
+You can also produce maps based on either countries or hydro-basins. The hydro-basin basemap is cited from [HydroSHEDS](https://www.hydrosheds.org/) of Level 03.
 
 ``` r
 par(mar = c(2, 2, .1, .1))
@@ -727,12 +642,11 @@ glottomap(glottopoints[glottopoints$family %in% families$family[1:5], ], basemap
 #> all geometries
 ```
 
-<img src="man/figures/README-figures-side-1.png" width="50%" /><img src="man/figures/README-figures-side-2.png" width="50%" />
+<img src="man/figures/README-figures-side-1.png" width="50%"/><img src="man/figures/README-figures-side-2.png" width="50%"/>
 
 ## glottosave
 
-All output generated with the glottospace package (data, figures, maps,
-etc.) can be saved with a single command.
+All output generated with the glottospace package (data, figures, maps, etc.) can be saved with a single command.
 
 ``` r
 glottodata <- glottoget("demodata", meta = FALSE)

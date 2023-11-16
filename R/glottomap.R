@@ -82,7 +82,8 @@ glottomap <- function(glottodata = NULL, color = NULL, label = NULL, type = NULL
   if(type == "dynamic"){
     map <- glottomap_dynamic(glottodata = glottodata, label = label, color = color, ptsize = ptsize, alpha = alpha, nclass = nclass,
                              palette = palette, lbsize=lbsize,
-                             glotto_title = glotto_title, basemap = basemap)
+                             glotto_title = glotto_title, basemap = basemap,
+                             rivers = rivers)
   }
 
   if(type == "static"){
@@ -121,7 +122,8 @@ return(map)
 #' glottomap_dynamic(glottodata)
 #' }
 glottomap_dynamic <- function(glottodata, color = NULL, ptsize = NULL, alpha = NULL, nclass=NULL, palette = NA,
-                              label = NULL, lbsize=NULL, glotto_title = NULL, basemap = "country"){
+                              label = NULL, lbsize=NULL, glotto_title = NULL, basemap = "country",
+                              rivers = FALSE){
   suppressMessages(tmap::tmap_mode("view"))
   if(is.null(ptsize)){ptsize <- 0.8}
   if(is.null(label)){label <- NA}
@@ -137,7 +139,12 @@ glottomap_dynamic <- function(glottodata, color = NULL, ptsize = NULL, alpha = N
     color <- "black"
   }
 
-
+  if(rivers == TRUE){
+    invisible(readline(prompt="Are you sure you want to download rivers from naturalearth? \n Press [enter] to continue"))
+    rivers10 <- rnaturalearth::ne_download(scale = 10, type = 'rivers_lake_centerlines',
+                                           category = 'physical', returnclass = "sf")
+    rivers_proj <- sf::st_transform(rivers10)
+  }
   {if(basemap == "country"){
     tmap::tm_basemap("Esri.WorldTopoMap")
     } else if (basemap == "hydro-basin"){
@@ -201,6 +208,9 @@ glottomap_dynamic <- function(glottodata, color = NULL, ptsize = NULL, alpha = N
             # size.legend = tm_legend(title = legend_size)
           )}}
     } +
+    {if(rivers == TRUE){tmap::tm_shape(rivers_proj)} +
+        tmap::tm_lines(col = "lightblue",
+                       col.scale = 1)} +
     tmap::tm_text(text = label,
                   # text.legend = tmap::tm_legend(title = legend_text),
                   size = lbsize
