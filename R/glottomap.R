@@ -13,7 +13,6 @@
 #' @param alpha Transparency of points between 0 (very transparent) and 1 (not transparent)
 #' @param palette Color palette, see glottocolpal("all") for possible options, and run glottocolpal("turbo") to see what it looks like (replace it with palette name).
 #' Alternatively, you could also run tmaptools::palette_explorer(), RColorBrewer::display.brewer.all(), ?viridisLite::viridis, or scales::show_col(viridisLite::viridis(n=20))
-#' @param rivers Do you want to plot rivers (only for static maps)?
 #' @param nclass Preferred number of classes (default is 5)
 #' @param mode In case type = "filter", you can choose here whether you want to interactively select languages by clicking on them (mode = 'click', default) or by drawing a shape around them (mode = 'draw').
 #' @param projection For static maps, you can choose one of the following: 'eqarea' (equal-area Eckert IV, default), 'pacific' (Pacific-centered), or any other Coordinate Reference System, specified using an EPSG code (https://epsg.io/), for example: "ESRI:54009".
@@ -129,13 +128,13 @@ glottomap_dynamic <- function(glottodata, color = NULL, ptsize = NULL, alpha = N
   if(is.null(label)){label <- NA}
   if(is.null(alpha)){alpha <- 0.55}
   if(is.null(lbsize)){lbsize <- .5}
-
   if(!is.null(color)){
-    nrcat <- nrow(unique(glottosimplify(glottodata[,color])))
-    if(nrcat > 30){
-      tmap::tmap_options(max.categories = nrcat)
-    }
-  } else{
+    if (color %in% colnames(glottodata)){
+      nrcat <- nrow(unique(glottosimplify(glottodata[,color])))
+      if(nrcat > 30){
+        tmap::tmap_options(max.categories = nrcat)
+      }}}
+   else{
     color <- "black"
   }
 
@@ -146,7 +145,9 @@ glottomap_dynamic <- function(glottodata, color = NULL, ptsize = NULL, alpha = N
     rivers_proj <- sf::st_transform(rivers10)
   }
   {if(basemap == "country"){
-    tmap::tm_basemap("Esri.WorldTopoMap")
+    # tmap::tm_basemap("Esri.WorldTopoMap") +
+    tmap::tm_shape(glottospace::worldpol) +
+      tmap::tm_polygons(fill_alpha = 0.1)
     } else if (basemap == "hydro-basin"){
       sf::sf_use_s2(FALSE)
       glottodata_wrap <- sf::st_wrap_dateline(glottodata, options = c("WRAPDATELINE=YES","DATELINEOFFSET=180"), quiet = TRUE)
@@ -213,8 +214,9 @@ glottomap_dynamic <- function(glottodata, color = NULL, ptsize = NULL, alpha = N
                        col.scale = 1)} +
     tmap::tm_text(text = label,
                   # text.legend = tmap::tm_legend(title = legend_text),
-                  size = lbsize
+                  size = lbsize,
                   # size.scale = tmap::tm_scale()
+                  remove.overlap = TRUE
                   )
 }
 
@@ -248,7 +250,7 @@ glottomap_static <- function(glottodata, projection = NULL, label = NULL, color 
                              nclass = NULL, alpha = 1, palette = NA, rivers = FALSE, glotto_title = NULL, basemap = "country"){
   if(is.null(projection)){projection <- "eqarea"}
   if(is.null(lbsize)){lbsize <- 0.75}
-  if(!is.null(color) ){
+  if(!is.null(color) && (color %in% colnames(glottodata))){
     nrcat <- nrow(unique(glottosimplify(glottodata[,color])))
     if(nrcat > 30){
       tmap::tmap_options(max.categories = nrcat)
@@ -396,7 +398,10 @@ glottomap_static_crs <- function(glottodata, label = NULL, color = NULL, ptsize 
       if(is.null(lbsize)){lbsize <- 1}
       tmap::tm_text(text = label,
                     size = lbsize,
-                    size.scale = tmap::tm_scale())
+                    size.scale = tmap::tm_scale(),
+                    # remove.overlap = TRUE
+                    # auto.placement = TRUE
+                    )
 
     }} +
    # tmap::tm_legend(legend.outside = TRUE) +
