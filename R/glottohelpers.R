@@ -162,3 +162,50 @@ release_questions <- function() {
 }
 
 
+glottocode_get <- function(glottosubdata){
+  # Return glottocodes of a glottosubcode object, glottosubcode should have a column "glottosubcode"
+  glottosubdata_splfy <- glottosimplify(glottosubdata, submerge = F)
+  glottosubdata_splfy |>
+    sapply(
+      FUN = function(lg){
+        if (any(tolower(colnames(lg)) %in% c("glottosubcode", "glottosubcodes"))){
+          glottosubcode_col <- which(tolower(colnames(lg)) %in% c("glottosubcode", "glottosubcodes"))
+          glottocode <- glottoconvert_subcodes(lg[, glottosubcode_col]) |>
+            unique()
+        } else{
+          stop("glottosubcode is missing in some table, please check it.")
+        }
+        if(length(glottocode) == 1){
+          return(glottocode)
+        } else{
+          stop("The glottocode in some glottosubdata is not unique.")
+        }
+      }
+    )
+}
+
+from_to_idx <- function(num_cnstns){
+  # num_cnstns <- data_lang |>
+  #   sapply(ncol)
+
+  from <- 1
+  vct_from <- c()
+
+  to <- 0
+  vct_to <- c()
+
+  from_to <- list()
+
+  for (i in 1:length(num_cnstns)){
+    vct_from[i] <- from
+    from <- from + num_cnstns[i]
+
+    to <- to + num_cnstns[i]
+    vct_to[i] <- to
+
+    from_to[[i]] <- c(vct_from[i]:vct_to[i])
+  }
+  return(from_to)
+}
+
+

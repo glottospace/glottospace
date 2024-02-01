@@ -10,9 +10,29 @@
 #'
 #' @noRd
 #'
-anderberg_dissimilarity <- function(glottodata, glottodata_freq_list, glottodata_val_counts,
+anderberg_dissimilarity <- function(glottodata, glottodata_freq_list = NULL, glottodata_val_counts = NULL,
                                     i, j, type, weights) {
 
+  # glotto_colnames <- colnames(glottodata)
+  # if (any(glotto_colnames %in% c("glottocode", "glottocodes", "glottosubcode", "glottosubcodes"))){
+  #   glotto_vals_idx <- which(tolower(glotto_colnames) %nin% c("glottocode", "glottocodes", "glottosubcode", "glottosubcodes"))
+  #   glottodata <- glottodata[, glotto_vals_idx]
+  # }
+  #
+  if (is.null(glottodata_freq_list)){
+    glottodata_freq_list <- 1:ncol(glottodata) |>
+      lapply(
+        FUN = function(idx){
+          tbl <- glottodata[, idx] |>
+            table(useNA = "ifany")
+          tbl / nrow(glottodata)
+        })
+  }
+
+  if (is.null(glottodata_val_counts)){
+    glottodata_val_counts <- glottodata_freq_list |>
+      sapply(length)
+  }
 
   delta <- rep(1, length(weights)) # Define the delta vector
   if (length(type$asymm) != 0){
@@ -106,27 +126,40 @@ anderberg_dissimilarity <- function(glottodata, glottodata_freq_list, glottodata
 #'
 #' @noRd
 #'
-glottodist_anderberg <- function(glottodata, type, weights){
+glottodist_anderberg <- function(glottodata, type, weights, glottodata_freq_list = NULL, glottodata_val_counts = NULL){
   n <- nrow(glottodata)
   dist_matrix <- matrix(nrow=n, ncol=n)
 
-  glottodata_freq_list <- glottodata |>
-    plyr::alply(
-      2, .fun = function(x){table(x, useNA = "ifany")}
-    ) |>
-    lapply (
-      FUN = function(x){
-        x / sum(x)
-      }
-    ) # glottodata_freq_list is a list containing the frequencies of each value in each feature.
+  if (is.null(glottodata_freq_list)){
+    glottodata_freq_list <- 1:ncol(glottodata) |>
+      lapply(
+        FUN = function(idx){
+          tbl <- glottodata[, idx] |>
+            table(useNA = "ifany")
+          tbl / nrow(glottodata)
+        })
+  } # glottodata_freq_list is a list containing the frequencies of each value in each feature.
 
+  # glottodata_freq_list <- glottodata |>
+  #   plyr::alply(
+  #     2, .fun = function(x){table(x, useNA = "ifany")}
+  #   ) |>
+  #   lapply (
+  #     FUN = function(x){
+  #       x / sum(x)
+  #     }
+  #   )
+
+  if (is.null(glottodata_val_counts)) {
   glottodata_val_counts <- glottodata_freq_list |>
     sapply(length) # glottodata_val_counts is a vector containing the amount of different values for each features.
+  }
 
   for (i in 1:(n-1)){
     for(j in (i + 1):n){
-      dist_matrix[i, j] <- anderberg_dissimilarity(glottodata, glottodata_freq_list, glottodata_val_counts,
-                                                   i, j, type=type, weights=weights)
+      dist_matrix[i, j] <- anderberg_dissimilarity(glottodata=glottodata, glottodata_freq_list=glottodata_freq_list,
+                                                   glottodata_val_counts=glottodata_val_counts,
+                                                   i = i, j = j, type=type, weights=weights)
       dist_matrix[j, i] <- dist_matrix[i, j]
     }
   }
@@ -138,6 +171,171 @@ glottodist_anderberg <- function(glottodata, type, weights){
   rownames(dist_matrix) <- rownames(glottodata)
   return(as.dist(dist_matrix))
 }
+
+
+# params <- glottodist_cleaned(glottodata = glottosubdata)
+# glottodata is a dataframe
+anderberg_dissimilarity.a.B <- function(glottodata, glottodata_freq_list = NULL, glottodata_val_counts = NULL,
+                                        idx_a, idx_B, type, weights){
+  if (is.null(glottodata_freq_list)){
+    glottodata_freq_list <- 1:ncol(glottodata) |>
+      lapply(
+        FUN = function(idx){
+          tbl <- glottodata[, idx] |>
+            table(useNA = "ifany")
+          tbl / nrow(glottodata)
+        })
+  }
+  if (is.null(glottodata_val_counts)){
+    glottodata_val_counts <- glottodata_freq_list |>
+      sapply(length)
+  }
+
+  idx_B |>
+    sapply(FUN = function(idx_b){
+      anderberg_dissimilarity(glottodata = glottodata, glottodata_freq_list = glottodata_freq_list, glottodata_val_counts = glottodata_val_counts, i = idx_a, j = idx_b, type = type, weights = weights)
+    }) |>
+    min()
+}
+
+anderberg_dissimilarity.A.B <- function(glottodata, glottodata_freq_list = NULL, glottodata_val_counts = NULL,
+                                        idx_A, idx_B, type, weights){
+  if (is.null(glottodata_freq_list)){
+    glottodata_freq_list <- 1:ncol(glottodata) |>
+      lapply(
+        FUN = function(idx){
+          tbl <- glottodata[, idx] |>
+            table(useNA = "ifany")
+          tbl / nrow(glottodata)
+        })
+  }
+  if (is.null(glottodata_val_counts)){
+    glottodata_val_counts <- glottodata_freq_list |>
+      sapply(length)
+  }
+
+  anderberg <- idx_A |>
+    sapply(FUN = function(idx_a){
+      anderberg_dissimilarity.a.B(glottodata=glottodata, glottodata_freq_list = glottodata_freq_list, glottodata_val_counts = glottodata_val_counts,
+                                  idx_a = idx_a, idx_B = idx_B, type = type, weights = weights)
+    }) |>
+    mean()
+  return(anderberg)
+}
+
+anderberg_dissimilarity.MC <- function(glottodata, glottodata_freq_list = NULL, glottodata_val_counts = NULL,
+                                       idx_A, idx_B, type, weights){
+  if (is.null(glottodata_freq_list)){
+    glottodata_freq_list <- 1:ncol(glottodata) |>
+      lapply(
+        FUN = function(idx){
+          tbl <- glottodata[, idx] |>
+            table(useNA = "ifany")
+          tbl / nrow(glottodata)
+        })
+  }
+  if (is.null(glottodata_val_counts)){
+    glottodata_val_counts <- glottodata_freq_list |>
+      sapply(length)
+  }
+
+  term_1 <- anderberg_dissimilarity.A.B(glottodata = glottodata, glottodata_freq_list = glottodata_freq_list, glottodata_val_counts = glottodata_val_counts,
+                                        idx_A = idx_A, idx_B = idx_B, type = type, weights = weights)
+  term_2 <- anderberg_dissimilarity.A.B(glottodata = glottodata, glottodata_freq_list = glottodata_freq_list, glottodata_val_counts = glottodata_val_counts,
+                                        idx_A = idx_B, idx_B = idx_A, type = type, weights = weights)
+
+  mc <- mean(c(term_1, term_2))
+  return(mc)
+}
+
+glottodist_anderberg_MC_pairing <- function(glottosubdata, lg1, lg2){
+  glottosubdata_splfy <- glottosimplify(glottosubdata, submerge = F)
+  glottocodes <- glottocode_get(glottosubdata_splfy)
+  cnstrn_count <- from_to_idx(glottosubdata_splfy |>
+                                sapply(nrow))
+
+  params <- glottodist_cleaned(glottodata = glottosubdata)
+  glottodata <- params$glottodata
+  weights <- params$weights
+  type <-  params$type
+  type_code <- params$type_code
+
+  dim <- length(glottosubdata_splfy)
+  dist_matrix <- matrix(nrow=dim, ncol=dim)
+
+  glottodata_freq_list <- 1:ncol(glottodata) |>
+    lapply(
+      FUN = function(idx){
+        tbl <- glottodata[, idx] |>
+          table(useNA = "ifany")
+        tbl / nrow(glottodata)
+      })
+
+  glottodata_val_counts <- glottodata_freq_list |>
+    sapply(length) # glottodata_val_counts is a vector containing the amount of different values for each features.
+
+  if ((lg1 %in% glottocodes) && (lg2 %in% glottocodes)) {
+    idx_1 <- which(glottocodes == lg1)
+    idx_2 <- which(glottocodes == lg2)
+  }
+
+  anderberg_dissimilarity.MC(glottodata=glottodata, glottodata_freq_list=glottodata_freq_list,
+                             glottodata_val_counts=glottodata_val_counts, idx_A = cnstrn_count[[idx_1]],
+                             idx_B = cnstrn_count[[idx_2]], type=type, weights=weights)
+
+}
+
+
+glottodist_anderberg_MC <- function(glottosubdata){
+  glottosubdata_splfy <- glottosimplify(glottosubdata, submerge = F)
+  glottocodes <- glottocode_get(glottosubdata_splfy)
+  cnstrn_count <- from_to_idx(glottosubdata_splfy |>
+                                sapply(nrow))
+
+  params <- glottodist_cleaned(glottodata = glottosubdata)
+  glottodata <- params$glottodata
+  weights <- params$weights
+  type <-  params$type
+  type_code <- params$type_code
+
+  dim <- length(glottosubdata_splfy)
+  dist_matrix <- matrix(nrow=dim, ncol=dim)
+
+  glottodata_freq_list <- 1:ncol(glottodata) |>
+    lapply(
+      FUN = function(idx){
+        tbl <- glottodata[, idx] |>
+          table(useNA = "ifany")
+        tbl / nrow(glottodata)
+      })
+
+  glottodata_val_counts <- glottodata_freq_list |>
+    sapply(length) # glottodata_val_counts is a vector containing the amount of different values for each features.
+
+
+  for (i in 1:(dim-1)){
+    for(j in (i + 1):dim){
+      dist_matrix[i, j] <- anderberg_dissimilarity.MC(glottodata=glottodata, glottodata_freq_list=glottodata_freq_list,
+                                                      glottodata_val_counts=glottodata_val_counts,
+                                                      idx_A = cnstrn_count[[i]], idx_B = cnstrn_count[[j]], type=type, weights=weights)
+      dist_matrix[j, i] <- dist_matrix[i, j]
+    }
+  }
+
+  for (i in 1:dim){
+    dist_matrix[i, i] <- 0
+  }
+  colnames(dist_matrix) <- glottocodes
+  rownames(dist_matrix) <- glottocodes
+  return(as.dist(dist_matrix))
+}
+
+
+
+
+
+
+
 
 
 

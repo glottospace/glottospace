@@ -1,0 +1,77 @@
+---
+title: "Untitled"
+output: html_document
+date: "2024-01-31"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+# data_imputed
+```
+
+```{r}
+wt <- data["structure"]$structure$weight |>
+  as.numeric()
+```
+
+```{r}
+# glottocodes <- glottoconvert_subcodes(data_imputed$glottosubcode)
+```
+
+```{r}
+# glottocodes <- glottoconvert_subcodes(data_imputed$glottosubcode)
+# tst <- glottocreate(glottocodes = glottocodes, variables = colnames(data_imputed)[2:70], 
+#                     groups = glottoconvert_subcodes(data_imputed$glottosubcode))
+```
+
+```{r}
+construction_count <- data |>
+  sapply(nrow)
+```
+
+```{r}
+cnstn_countings <- from_to_idx(construction_count)
+# names(cnstn_countings) <- names(construction_count)
+```
+
+```{r}
+glottosubdata_cnstn <- list() 
+for (i in 1:length(construction_count)){
+  glottosubdata_cnstn[[i]] <- data_imputed[cnstn_countings[[i]], ]
+}
+
+names(glottosubdata_cnstn) <- names(construction_count)
+
+glottosubdata_cnstn$structure <- data$structure
+glottosubdata_cnstn$structure$varname <- paste("X", glottosubdata_cnstn$structure$varname, sep="")
+glottosubdata_cnstn$structure$type <- "factor"
+```
+
+```{r}
+params <- glottodist_cleaned(glottodata = glottosubdata_cnstn)
+```
+
+```{r}
+anderberg_dissimilarity.a.B(glottodata=data_imputed[, 2:70], idx_a = 3, idx_B = 4:6, type = params$type, weights = params$weights)
+```
+
+```{r}
+glottodist_anderberg_MC_pairing(glottosubdata = glottosubdata_cnstn, lg1 = "baur1253", lg2 = "kwaz1243")
+```
+
+```{r}
+glotto_anderberg_mc <- glottodist_anderberg_MC(glottosubdata_cnstn[c(1:5, 44)])
+```
+
+```{r}
+glotto_anderberg_mc
+```
+
+
+
+
+
+
