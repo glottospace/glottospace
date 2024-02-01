@@ -223,6 +223,7 @@ anderberg_dissimilarity.A.B <- function(glottodata, glottodata_freq_list = NULL,
   return(anderberg)
 }
 
+# glottodata is a dataframe
 anderberg_dissimilarity.MC <- function(glottodata, glottodata_freq_list = NULL, glottodata_val_counts = NULL,
                                        idx_A, idx_B, type, weights){
   if (is.null(glottodata_freq_list)){
@@ -331,9 +332,204 @@ glottodist_anderberg_MC <- function(glottosubdata){
 }
 
 
+avg_anderberg <- function(glottodata, glottodata_freq_list = NULL, glottodata_val_counts = NULL,
+                          idx_A, idx_B, type, weights){
+  # glottodata is a dataframe
+  if (is.null(glottodata_freq_list)){
+    glottodata_freq_list <- 1:ncol(glottodata) |>
+      lapply(
+        FUN = function(idx){
+          tbl <- glottodata[, idx] |>
+            table(useNA = "ifany")
+          tbl / nrow(glottodata)
+        })
+  }
+  if (is.null(glottodata_val_counts)){
+    glottodata_val_counts <- glottodata_freq_list |>
+      sapply(length)
+  }
+
+  idx_A |>
+    sapply(
+      FUN = function(idx_1){
+        idx_B |>
+          sapply(
+            FUN = function(idx_2){
+              anderberg_dissimilarity(glottodata=glottodata, glottodata_freq_list = glottodata_freq_list,
+                                      glottodata_val_counts = glottodata_val_counts,
+                                      i = idx_1, j = idx_2, type = type, weights = weights)
+            }) |>
+          mean()
+      }) |>
+    mean()
+}
+
+anderberg_SI <- function(glottodata, glottodata_freq_list = NULL, glottodata_val_counts = NULL,
+                         idx_A, idx_B, meaning_idx, form_idx, type, weights){
+  # glottodata is a dataframe
+  if (is.null(glottodata_freq_list)){
+    glottodata_freq_list <- 1:ncol(glottodata) |>
+      lapply(
+        FUN = function(idx){
+          tbl <- glottodata[, idx] |>
+            table(useNA = "ifany")
+          tbl / nrow(glottodata)
+        })
+  }
+  if (is.null(glottodata_val_counts)){
+    glottodata_val_counts <- glottodata_freq_list |>
+      sapply(length)
+  }
+
+  sum_SI <- 0
+
+  for (s in meaning_idx){
+    cnstn_1 <- idx_A[which((glottodata[idx_A, s] == "Y") | (glottodata[idx_A, s] == TRUE))]
+    cnstn_2 <- idx_B[which((glottodata[idx_B, s] == "Y") | (glottodata[idx_B, s] == TRUE))]
+
+    if (!identical(cnstn_1, integer(0)) && !identical(cnstn_2, integer(0))) {
+      avg_form <- avg_anderberg(glottodata = glottodata[, form_idx],
+                                glottodata_freq_list = glottodata_freq_list[form_idx],
+                                glottodata_val_counts = glottodata_val_counts[form_idx],
+                                weights = weights[form_idx],
+                                type = type[form_idx],
+                                idx_A = cnstn_1, idx_B = cnstn_2)
+      sum_SI <- sum_SI + avg_form
+    }
+  }
+  return(sum_SI / length(meaning_idx))
+}
+
+glottodist_anderberg_SI <- function(glottosubdata, meaning_idx, form_idx){
+  glottosubdata_splfy <- glottosimplify(glottosubdata, submerge = F)
+  glottocodes <- glottocode_get(glottosubdata_splfy)
+  cnstrn_count <- from_to_idx(glottosubdata_splfy |>
+                                sapply(nrow))
+
+  params <- glottodist_cleaned(glottodata = glottosubdata)
+  glottodata <- params$glottodata
+  weights <- params$weights
+  type <-  params$type
+  type_code <- params$type_code
+
+  dim <- length(glottosubdata_splfy)
+  dist_matrix <- matrix(nrow=dim, ncol=dim)
+
+  glottodata_freq_list <- 1:ncol(glottodata) |>
+    lapply(
+      FUN = function(idx){
+        tbl <- glottodata[, idx] |>
+          table(useNA = "ifany")
+        tbl / nrow(glottodata)
+      })
+
+  glottodata_val_counts <- glottodata_freq_list |>
+    sapply(length) # glottodata_val_counts is a vector containing the amount of different values for each features.
+
+  for (i in 1:(dim-1)){
+    for(j in (i + 1):dim){
+      dist_matrix[i, j] <- anderberg_SI(glottodata=glottodata,
+                                        glottodata_freq_list=glottodata_freq_list,
+                                        glottodata_val_counts=glottodata_val_counts,
+                                        idx_A = cnstrn_count[[i]], idx_B = cnstrn_count[[j]],
+                                        meaning_idx = meaning_idx, form_idx = form_idx,
+                                        type=type, weights=weights)
+      dist_matrix[j, i] <- dist_matrix[i, j]
+    }
+  }
+
+  for (i in 1:dim){
+    dist_matrix[i, i] <- 0
+  }
+
+  colnames(dist_matrix) <- glottocodes
+  rownames(dist_matrix) <- glottocodes
+  return(as.dist(dist_matrix))
+}
 
 
+anderberg_FI <- function(glottodata, glottodata_freq_list = NULL, glottodata_val_counts = NULL,
+                         idx_A, idx_B, meaning_idx, form_idx, type, weights){
+  # glottodata is a dataframe
+  if (is.null(glottodata_freq_list)){
+    glottodata_freq_list <- 1:ncol(glottodata) |>
+      lapply(
+        FUN = function(idx){
+          tbl <- glottodata[, idx] |>
+            table(useNA = "ifany")
+          tbl / nrow(glottodata)
+        })
+  }
+  if (is.null(glottodata_val_counts)){
+    glottodata_val_counts <- glottodata_freq_list |>
+      sapply(length)
+  }
 
+  sum_FI <- 0
+
+  for (s in form_idx){
+    cnstn_1 <- idx_A[which((glottodata[idx_A, s] == "Y") | (glottodata[idx_A, s] == TRUE))]
+    cnstn_2 <- idx_B[which((glottodata[idx_B, s] == "Y") | (glottodata[idx_B, s] == TRUE))]
+
+    if (!identical(cnstn_1, integer(0)) && !identical(cnstn_2, integer(0))) {
+      avg_meaning <- avg_anderberg(glottodata = glottodata[, meaning_idx],
+                                   glottodata_freq_list = glottodata_freq_list[meaning_idx],
+                                   glottodata_val_counts = glottodata_val_counts[meaning_idx],
+                                   weights = weights[meaning_idx],
+                                   type = type[meaning_idx],
+                                   idx_A = cnstn_1, idx_B = cnstn_2)
+      sum_FI <- sum_FI + avg_meaning
+    }
+  }
+  return(sum_FI / length(form_idx))
+}
+
+glottodist_anderberg_FI <- function(glottosubdata, meaning_idx, form_idx){
+  glottosubdata_splfy <- glottosimplify(glottosubdata, submerge = F)
+  glottocodes <- glottocode_get(glottosubdata_splfy)
+  cnstrn_count <- from_to_idx(glottosubdata_splfy |>
+                                sapply(nrow))
+
+  params <- glottodist_cleaned(glottodata = glottosubdata)
+  glottodata <- params$glottodata
+  weights <- params$weights
+  type <-  params$type
+  type_code <- params$type_code
+
+  dim <- length(glottosubdata_splfy)
+  dist_matrix <- matrix(nrow=dim, ncol=dim)
+
+  glottodata_freq_list <- 1:ncol(glottodata) |>
+    lapply(
+      FUN = function(idx){
+        tbl <- glottodata[, idx] |>
+          table(useNA = "ifany")
+        tbl / nrow(glottodata)
+      })
+
+  glottodata_val_counts <- glottodata_freq_list |>
+    sapply(length) # glottodata_val_counts is a vector containing the amount of different values for each features.
+
+  for (i in 1:(dim-1)){
+    for(j in (i + 1):dim){
+      dist_matrix[i, j] <- anderberg_FI(glottodata=glottodata,
+                                        glottodata_freq_list=glottodata_freq_list,
+                                        glottodata_val_counts=glottodata_val_counts,
+                                        idx_A = cnstrn_count[[i]], idx_B = cnstrn_count[[j]],
+                                        meaning_idx = meaning_idx, form_idx = form_idx,
+                                        type=type, weights=weights)
+      dist_matrix[j, i] <- dist_matrix[i, j]
+    }
+  }
+
+  for (i in 1:dim){
+    dist_matrix[i, i] <- 0
+  }
+
+  colnames(dist_matrix) <- glottocodes
+  rownames(dist_matrix) <- glottocodes
+  return(as.dist(dist_matrix))
+}
 
 
 
