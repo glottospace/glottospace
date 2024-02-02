@@ -54,6 +54,8 @@ glottoget <- function(glottodata = NULL, meta = FALSE, download = FALSE, dirpath
     glottodata <- glottocreate_demodata(meta = meta)
   } else if(glottodata == "demosubdata"){
     glottodata <- glottocreate_demosubdata(meta = meta)
+  } else if(glottodata == "demosubdata_cnstn"){
+    glottodata <- glottocreate_cnstn_toy()
   } else if(glottodata == "wals"){
     glottodata <- glottoget_wals(download = download, dirpath = dirpath)
   } else if(glottodata == "dplace"){

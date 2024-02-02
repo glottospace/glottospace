@@ -220,8 +220,6 @@ glottodist_cleaned <- function(glottodata, ...){
   }
   }
 
-
-
   return(list(glottodata=glottodata,
               weights=weights,
               type = type,
@@ -229,6 +227,9 @@ glottodist_cleaned <- function(glottodata, ...){
 
 }
 
+glottodist_subdata <- function(glottosubdata, metric = "gower", index = "MC", meaning_idx, form_idx){
+
+}
 
 
 #' #' Calculate distances between languages based on constructions

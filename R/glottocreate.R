@@ -654,6 +654,30 @@ glottocreate_demosubdata <- function(meta = TRUE){
   demo
 }
 
+#' Create demosubdata
+#'
+#'
+#' @noRd
+glottocreate_cnstn_toy <- function(){
+  glottosubdata_cnstn_toy <- glottocreate(glottocodes = c("tani1257", "yucu1253"), variables = 7, meta = T, groups = "")
+
+  glottosubdata_cnstn_toy$tani1257[1:3, ] <- NA
+  glottosubdata_cnstn_toy$tani1257$glottosubcode <- c("tani1257_0001", "tani1257_0002", "tani1257_0003")
+
+  glottosubdata_cnstn_toy$tani1257[1, 2:8] <- c(0, 1, 0, 0, 1, 1, 1)
+  glottosubdata_cnstn_toy$tani1257[2, 2:8] <- c(0, 0, 1, 0, 0, 0, 1)
+  glottosubdata_cnstn_toy$tani1257[3, 2:8] <- c(0, 0, 1, 0, 1, 1, 0)
+
+  glottosubdata_cnstn_toy$yucu1253[1:2, ] <- NA
+  glottosubdata_cnstn_toy$yucu1253$glottosubcode <- c("yucu1253_0001", "yucu1253_0002")
+
+  glottosubdata_cnstn_toy$yucu1253[1, 2:8] <- c(0, 1, 0, 0, 1, 1, 1)
+  glottosubdata_cnstn_toy$yucu1253[2, 2:8] <- c(0, 0, 1, 0, 1, 0, 1)
+
+  glottosubdata_cnstn_toy$structure$type <- "symm"
+  return(glottosubdata_cnstn_toy)
+}
+
 #' Add a table to glottodata
 #'
 #' @param glottodata A glottodata table, or a list of glottodata tables
