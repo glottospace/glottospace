@@ -100,7 +100,7 @@ glottodist <- function(glottodata, metric="gower"){
 #'
 #' @noRd
 #'
-glottodist_cleaned <- function(glottodata){
+glottodist_cleaned <- function(glottodata, ...){
   rlang::check_installed("cluster", reason = "to use `glottodist()`")
 
   if(glottocheck_isglottosubdata(glottodata)){
@@ -116,7 +116,7 @@ glottodist_cleaned <- function(glottodata){
     stop("structure table not found. You can create one using glottocreate_structuretable() and add it with glottocreate_addtable().")
   }
 
-  glottodata <- glottoclean(glottodata)
+  glottodata <- glottoclean(glottodata, ...)
   structure <- glottodata[["structure"]]
   glottodata <- glottosimplify(glottodata)
 

@@ -44,7 +44,7 @@ glottodist_gower_MC <- function(glottosubdata){
   cnstrn_count <- from_to_idx(glottosubdata_splfy |>
                                 sapply(nrow))
 
-  params <- glottodist_cleaned(glottodata = glottosubdata)
+  params <- glottodist_cleaned(glottodata = glottosubdata, one_level_drop = F)
   glottodata <- params$glottodata
   weights <- params$weights
   type <-  params$type
@@ -93,7 +93,7 @@ glottodist_gower_SI <- function(glottosubdata, meaning_idx, form_idx){
   cnstrn_count <- from_to_idx(glottosubdata_splfy |>
                                 sapply(nrow))
 
-  params <- glottodist_cleaned(glottodata = glottosubdata)
+  params <- glottodist_cleaned(glottodata = glottosubdata, one_level_drop = F)
   glottodata <- params$glottodata
   weights <- params$weights
   type <-  params$type
@@ -145,7 +145,7 @@ glottodist_gower_FI <- function(glottosubdata, meaning_idx, form_idx){
   cnstrn_count <- from_to_idx(glottosubdata_splfy |>
                                 sapply(nrow))
 
-  params <- glottodist_cleaned(glottodata = glottosubdata)
+  params <- glottodist_cleaned(glottodata = glottosubdata, one_level_drop = F)
   glottodata <- params$glottodata
   weights <- params$weights
   type <-  params$type
@@ -201,7 +201,7 @@ FMI <- function(lg1, lg2, form_idx, meaning_idx) {
       meaning_idx |>
         sapply(
           FUN = function(m_idx){
-            SIM(lg1 = lg1, lg2 = lg2, m_idx = m_idx, f_idx = f_idx)
+            1 - SIM(lg1 = lg1, lg2 = lg2, m_idx = m_idx, f_idx = f_idx)
           }
         ) |>
         mean()
@@ -216,7 +216,7 @@ glottodist_FMI <- function(glottosubdata, meaning_idx, form_idx){
   cnstrn_count <- from_to_idx(glottosubdata_splfy |>
                                 sapply(nrow))
 
-  params <- glottodist_cleaned(glottodata = glottosubdata)
+  params <- glottodist_cleaned(glottodata = glottosubdata, one_level_drop = F)
   glottodata <- params$glottodata
   weights <- params$weights
   type <-  params$type

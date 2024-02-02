@@ -23,7 +23,8 @@
 #'
 #' glottosubdata <- glottoget("demosubdata", meta = TRUE)
 #' glottosubdata <- glottoclean(glottosubdata)
-glottoclean <- function(glottodata, tona = NULL, tofalse = NULL, totrue = NULL, id = NULL, glottosample = FALSE){
+glottoclean <- function(glottodata, tona = NULL, tofalse = NULL, totrue = NULL, id = NULL, glottosample = FALSE,
+                        one_level_drop=TRUE){
 
   if(sum(!glottocheck_isglottodata(glottodata) | !glottocheck_isglottosubdata(glottodata))==2){
     stop("glottodata object does not adhere to glottodata/glottosubdata format. Use glottocreate() or glottoconvert().")
@@ -56,7 +57,9 @@ glottoclean <- function(glottodata, tona = NULL, tofalse = NULL, totrue = NULL, 
 
   glottodata <- glottorecode_missing(glottodata, tona = all2na)
 
-  glottodata <- glottoclean_twolevels(glottodata) # drop variables with less than two levels (no changes to structure table)
+  if (one_level_drop){
+    glottodata <- glottoclean_twolevels(glottodata) # drop variables with less than two levels (no changes to structure table)
+  }
 
   glottodata <- glottojoin(glottodata, structure)
 
