@@ -1,0 +1,70 @@
+---
+title: "example glottodist_subdata"
+output: html_document
+date: "2024-02-02"
+---
+
+```{r}
+glottosubdata_cnstn_toy <- glottoget(glottodata = "demosubdata_cnstn")
+```
+
+```{r}
+glottodist_gower_MC(glottosubdata_cnstn_toy)
+```
+
+```{r}
+glottodist_subdata(glottosubdata = glottosubdata_cnstn_toy,
+                   metric = "gower", index = "mc")
+```
+
+```{r}
+glottodist_gower_Indexing(glottosubdata = glottosubdata_cnstn_toy, avg_idx = 1:4, fixed_idx = 5:7)
+```
+
+```{r}
+glottodist_subdata(glottosubdata = glottosubdata_cnstn_toy,
+                   metric = "gower", index = "relative", avg_idx = 1:4, fixed_idx = 5:7)
+```
+
+```{r}
+glottodist_subdata(glottosubdata = glottosubdata_cnstn_toy,
+                   metric = "gower", index = "relative", avg_idx = 5:7, fixed_idx = 1:4)
+```
+
+```{r}
+glottodist_subdata(glottosubdata = glottosubdata_cnstn_toy,
+                   metric = "anderberg", index = "relative", avg_idx = 1:4, fixed_idx = 5:7)
+```
+
+```{r}
+glottodist_subdata(glottosubdata = glottosubdata_cnstn_toy,
+                   metric = "anderberg", index = "relative", avg_idx = 5:7, fixed_idx = 1:4)
+```
+
+```{r}
+glottodist_FMI(glottosubdata = glottosubdata_cnstn_toy, avg_idx = 1:4, fixed_idx = 5:7)
+```
+
+```{r}
+glottodist_subdata(glottosubdata = glottosubdata_cnstn_toy,
+                   index = "fmi", avg_idx = 1:4, fixed_idx = 5:7)
+```
+
+```{r}
+glottodist_anderberg_Indexing(glottosubdata = glottosubdata_cnstn_toy, fixed_idx = 1:4, avg_idx = 5:7)
+```
+
+```{r}
+params <- glottodist_cleaned(glottosubdata_cnstn_toy, one_level_drop = F)
+
+glottodata <- params$glottodata
+weights <- params$weights
+type <- params$type
+```
+
+
+
+
+
+
+

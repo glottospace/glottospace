@@ -41,8 +41,6 @@ glottomap(
 \item{palette}{Color palette, see glottocolpal("all") for possible options, and run glottocolpal("turbo") to see what it looks like (replace it with palette name).
 Alternatively, you could also run tmaptools::palette_explorer(), RColorBrewer::display.brewer.all(), ?viridisLite::viridis, or scales::show_col(viridisLite::viridis(n=20))}
 
-\item{rivers}{Do you want to plot rivers (only for static maps)?}
-
 \item{nclass}{Preferred number of classes (default is 5)}
 
 \item{filename}{Optional filename if you want to save resulting map}

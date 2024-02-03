@@ -10,7 +10,8 @@ glottoclean(
   tofalse = NULL,
   totrue = NULL,
   id = NULL,
-  glottosample = FALSE
+  glottosample = FALSE,
+  one_level_drop = TRUE
 )
 }
 \arguments{

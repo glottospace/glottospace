@@ -174,18 +174,18 @@ glottodist_gower_MC <- function(glottosubdata){
 # }
 
 
-lg_form_meaning_count <- function(lg, m_idx, f_idx) {
-  # A function to count how many constructions having both meaning m_idx and form f_idx being "Y" or TRUE in language lg.
+lg_fixed_avg_count <- function(lg, a_idx, f_idx) {
+  # A function to count how many constructions having both m_idx and f_idx being "Y" or TRUE in language lg.
   # lg is a dataframe, m_idx is an index number, f_idx is an index number.
-  meaning_indices <- which(lg[, m_idx] == "Y" | lg[, m_idx] == TRUE)
-  form_indices <- which(lg[, f_idx] == "Y" | lg[, f_idx] == TRUE)
-  intersect(meaning_indices, form_indices) |>
+  avg_indices <- which(lg[, a_idx] == "Y" | lg[, a_idx] == TRUE)
+  fixed_indices <- which(lg[, f_idx] == "Y" | lg[, f_idx] == TRUE)
+  intersect(avg_indices, fixed_indices) |>
     length()
 }
 
-SIM <- function(lg1, lg2, m_idx, f_idx){
-  lg_cnt_1 <- lg_form_meaning_count(lg = lg1, m_idx = m_idx, f_idx = f_idx)
-  lg_cnt_2 <- lg_form_meaning_count(lg = lg2, m_idx = m_idx, f_idx = f_idx)
+SIM <- function(lg1, lg2, a_idx, f_idx){
+  lg_cnt_1 <- lg_fixed_avg_count(lg = lg1, a_idx = a_idx, f_idx = f_idx)
+  lg_cnt_2 <- lg_fixed_avg_count(lg = lg2, a_idx = a_idx, f_idx = f_idx)
 
   if (lg_cnt_1 == 0 && lg_cnt_2 == 0){
     result <- 1
@@ -195,13 +195,13 @@ SIM <- function(lg1, lg2, m_idx, f_idx){
   return(result)
 }
 
-FMI <- function(lg1, lg2, form_idx, meaning_idx) {
-  form_idx |>
+FMI <- function(lg1, lg2, fixed_idx, avg_idx) {
+  fixed_idx |>
     sapply(FUN = function(f_idx){
-      meaning_idx |>
+      avg_idx |>
         sapply(
-          FUN = function(m_idx){
-            1 - SIM(lg1 = lg1, lg2 = lg2, m_idx = m_idx, f_idx = f_idx)
+          FUN = function(a_idx){
+            1 - SIM(lg1 = lg1, lg2 = lg2, a_idx = a_idx, f_idx = f_idx)
           }
         ) |>
         mean()
@@ -210,7 +210,7 @@ FMI <- function(lg1, lg2, form_idx, meaning_idx) {
 }
 
 # A function to compute the distance matrix w.r.t. FMI
-glottodist_FMI <- function(glottosubdata, meaning_idx, form_idx){
+glottodist_FMI <- function(glottosubdata, avg_idx, fixed_idx){
   glottosubdata_splfy <- glottosimplify(glottosubdata, submerge = F)
   glottocodes <- glottocode_get(glottosubdata_splfy)
   cnstrn_count <- from_to_idx(glottosubdata_splfy |>
@@ -229,7 +229,7 @@ glottodist_FMI <- function(glottosubdata, meaning_idx, form_idx){
     for(j in (i + 1):dim){
       dist_matrix[i, j] <- FMI(lg1 = glottodata[cnstrn_count[[i]], ],
                                lg2 = glottodata[cnstrn_count[[j]], ],
-                               meaning_idx = meaning_idx, form_idx = form_idx)
+                               avg_idx = avg_idx, fixed_idx = fixed_idx)
       dist_matrix[j, i] <- dist_matrix[i, j]
     }
   }

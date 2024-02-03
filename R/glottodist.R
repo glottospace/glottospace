@@ -227,10 +227,49 @@ glottodist_cleaned <- function(glottodata, ...){
 
 }
 
-glottodist_subdata <- function(glottosubdata, metric = "gower", index = "MC", meaning_idx, form_idx){
 
+
+#' Title
+#'
+#' @param glottosubdata an glottosubdata object
+#' @param metric either "gower" or "anderberg"
+#' @param index_type either "mc" or "relative" or "fmi"
+#' @param avg_idx the feature indices over which the average of distances is computed, it must be given when index_type is either "relative" or "fmi".
+#' @param fixed_idx the feature indices over which the distance of two constructions is computed, it must be given when index_type is either "relative" or "fmi".
+#'
+#' @return object of class \code{dist}
+#' @export
+#'
+#' @examples
+#' glottosubdata_cnstn <- glottoget(glottodata = "demosubdata_cnstn")
+#' gower_mc_dist <- glottodist_subdata(glottosubdata = glottosubdata_cnstn, metric = "gower", index = "mc")
+#' gower_si_dist <- glottodist_subdata(glottosubdata = glottosubdata_cnstn, metric = "gower", index = "relative", avg_idx = 1:4, fixed_idx = 5:7)
+#' gower_fi_dist <- glottodist_subdata(glottosubdata = glottosubdata_cnstn, metric = "gower", index = "relative", avg_idx = 5:7, fixed_idx = 1:4)
+#' gower_fmi_dist <- glottodist_subdata(glottosubdata = glottosubdata_cnstn_toy, index = "fmi", avg_idx = 1:4, fixed_idx = 5:7)
+glottodist_subdata <- function(glottosubdata, metric = NULL, index_type = NULL, avg_idx=NULL, fixed_idx=NULL){
+  if (tolower(index_type) %in% c("relative", "fmi") &&
+      (is.null(avg_idx) || is.null(fixed_idx))){
+    stop("Both the arguments avg_idx and fixed_idx should be provided.")
+  }
+
+  metric <- tolower(metric)
+  index_type <- tolower(index_type)
+
+  if (index_type == "fmi"){
+    glottodata_dist <- glottodist_FMI(glottosubdata = glottosubdata, avg_idx = avg_idx, fixed_idx = fixed_idx)
+  } else if (metric == "gower" && index_type == "mc"){
+    glottodata_dist <- glottodist_gower_MC(glottosubdata = glottosubdata)
+  } else if (metric == "gower" && index_type == "relative"){
+    glottodata_dist <- glottodist_gower_Indexing(glottosubdata = glottosubdata,
+                                                 avg_idx = avg_idx, fixed_idx = fixed_idx)
+  } else if (metric == "anderberg" && index_type == "mc"){
+    glottodata_dist <- glottodist_anderberg_MC(glottosubdata = glottosubdata)
+  } else if (metric == "anderberg" && index_type == "relative"){
+    glottodata_dist <- glottodist_anderberg_Indexing(glottosubdata = glottosubdata,
+                                                     avg_idx = avg_idx, fixed_idx = fixed_idx)
+  }
+  return(glottodata_dist)
 }
-
 
 #' #' Calculate distances between languages based on constructions
 #' #'
