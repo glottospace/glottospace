@@ -29,3 +29,11 @@ object of class \code{dist}
 \description{
 Calculate indexing distances between languages
 }
+\examples{
+glottosubdata_cnstn <- glottoget(glottodata = "demosubdata_cnstn")
+glottodist_subdata(glottosubdata = glottosubdata_cnstn, metric = "gower", index = "mc")
+glottodist_subdata(glottosubdata = glottosubdata_cnstn, metric = "gower", index = "relative", avg_idx = 1:4, fixed_idx = 5:7)
+glottodist_subdata(glottosubdata = glottosubdata_cnstn, index = "fmi", avg_idx = 1:4, fixed_idx = 5:7)
+
+
+}

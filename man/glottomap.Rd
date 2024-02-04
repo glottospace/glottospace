@@ -65,7 +65,7 @@ With this function you can easily create static and dynamic maps from glottodata
 Alternatively, by specifying type = "filter", you can interactively select languages by drawing a shape around them (mode = "draw"; default) or by clicking on them (mode = "click"). See ?glottofiltermap for more details.
 }
 \examples{
-\donttest{
+\dontrun{
 glottomap(country = "Netherlands")
 
 glottopoints <- glottofilter(continent = "South America")

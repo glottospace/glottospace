@@ -239,6 +239,12 @@ glottodist_cleaned <- function(glottodata, ...){
 #'
 #' @export
 #'
+#' @examples
+#' glottosubdata_cnstn <- glottoget(glottodata = "demosubdata_cnstn")
+#' glottodist_subdata(glottosubdata = glottosubdata_cnstn, metric = "gower", index = "mc")
+#' glottodist_subdata(glottosubdata = glottosubdata_cnstn, metric = "gower", index = "relative", avg_idx = 1:4, fixed_idx = 5:7)
+#' glottodist_subdata(glottosubdata = glottosubdata_cnstn, index = "fmi", avg_idx = 1:4, fixed_idx = 5:7)
+#'
 #'
 glottodist_subdata <- function(glottosubdata, metric = NULL, index_type = NULL, avg_idx=NULL, fixed_idx=NULL){
   if (tolower(index_type) %in% c("relative", "fmi") &&

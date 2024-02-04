@@ -29,7 +29,7 @@
 #' @export
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' glottomap(country = "Netherlands")
 #'
 #' glottopoints <- glottofilter(continent = "South America")
@@ -115,7 +115,7 @@ return(map)
 #'
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' glottodata <- glottofilter(continent = "South America")
 #' glottodata <- glottofilter(country = "Netherlands")
 #' glottomap_dynamic(glottodata)
@@ -241,7 +241,7 @@ glottomap_dynamic <- function(glottodata, color = NULL, ptsize = NULL, alpha = N
 #'
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' glottodata <- glottofilter(continent = "South America")
 #' glottodata <- glottofilter(country = c("Netherlands", "Germany", "Belgium") )
 #' glottomap_static(glottodata)
@@ -293,7 +293,7 @@ glottomap_static <- function(glottodata, projection = NULL, label = NULL, color 
 #'
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' glottodata <- glottofilter(continent = "South America")
 #' glottodata <- glottofilter(country = c("Netherlands", "Germany", "Belgium") )
 #' glottomap_static_crs(glottodata)
@@ -423,7 +423,7 @@ glottomap_static_crs <- function(glottodata, label = NULL, color = NULL, ptsize 
 #' @noRd
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' glottodata <- glottofilter(location = "Australia")
 #' glottomap_static_pacific(glottodata, color = "family")
 #' }
@@ -509,7 +509,7 @@ glottomap_static_pacific <- function(glottodata, color = NULL, rivers = FALSE, p
 #'
 #' @noRd
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' glottomap_glottocode("yucu1253")
 #' }
 glottomap_glottocode <- function(glottocode){
