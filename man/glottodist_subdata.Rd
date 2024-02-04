@@ -2,7 +2,7 @@
 % Please edit documentation in R/glottodist.R
 \name{glottodist_subdata}
 \alias{glottodist_subdata}
-\title{Title}
+\title{Calculate indexing distances between languages}
 \usage{
 glottodist_subdata(
   glottosubdata,
@@ -27,12 +27,5 @@ glottodist_subdata(
 object of class \code{dist}
 }
 \description{
-Title
-}
-\examples{
-glottosubdata_cnstn <- glottoget(glottodata = "demosubdata_cnstn")
-gower_mc_dist <- glottodist_subdata(glottosubdata = glottosubdata_cnstn, metric = "gower", index = "mc")
-gower_si_dist <- glottodist_subdata(glottosubdata = glottosubdata_cnstn, metric = "gower", index = "relative", avg_idx = 1:4, fixed_idx = 5:7)
-gower_fi_dist <- glottodist_subdata(glottosubdata = glottosubdata_cnstn, metric = "gower", index = "relative", avg_idx = 5:7, fixed_idx = 1:4)
-gower_fmi_dist <- glottodist_subdata(glottosubdata = glottosubdata_cnstn_toy, index = "fmi", avg_idx = 1:4, fixed_idx = 5:7)
+Calculate indexing distances between languages
 }

@@ -14,6 +14,7 @@
 #' @param totrue Optional additional values to recode to TRUE (besides default)
 #' @param id By default, glottoclean looks for a column named 'glottocode', if the id is in a different column, this should be specified.
 #' @param glottosample Should the sample table be used to subset the data?
+#' @param one_level_drop A logical value to denote whether or not to drop variables with a single value, the default value is TRUE.
 #'
 #' @return A cleaned-up and simplified version of the original glottodata object
 #' @export

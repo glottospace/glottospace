@@ -12,7 +12,6 @@
 #'
 #' glottosubdata <- glottoget("demosubdata", meta = TRUE)
 #' glottodist <- glottodist(glottodata = glottosubdata)
-#' # glottoplot(glottodist)
 #'
 #'
 #' @section Details:
@@ -98,6 +97,7 @@ glottodist <- function(glottodata, metric="gower"){
 #'
 #' @param glottodata
 #'
+#' @export
 #' @noRd
 #'
 glottodist_cleaned <- function(glottodata, ...){
@@ -227,9 +227,7 @@ glottodist_cleaned <- function(glottodata, ...){
 
 }
 
-
-
-#' Title
+#' Calculate indexing distances between languages
 #'
 #' @param glottosubdata an glottosubdata object
 #' @param metric either "gower" or "anderberg"
@@ -238,20 +236,15 @@ glottodist_cleaned <- function(glottodata, ...){
 #' @param fixed_idx the feature indices over which the distance of two constructions is computed, it must be given when index_type is either "relative" or "fmi".
 #'
 #' @return object of class \code{dist}
+#'
 #' @export
 #'
-#' @examples
-#' glottosubdata_cnstn <- glottoget(glottodata = "demosubdata_cnstn")
-#' gower_mc_dist <- glottodist_subdata(glottosubdata = glottosubdata_cnstn, metric = "gower", index = "mc")
-#' gower_si_dist <- glottodist_subdata(glottosubdata = glottosubdata_cnstn, metric = "gower", index = "relative", avg_idx = 1:4, fixed_idx = 5:7)
-#' gower_fi_dist <- glottodist_subdata(glottosubdata = glottosubdata_cnstn, metric = "gower", index = "relative", avg_idx = 5:7, fixed_idx = 1:4)
-#' gower_fmi_dist <- glottodist_subdata(glottosubdata = glottosubdata_cnstn_toy, index = "fmi", avg_idx = 1:4, fixed_idx = 5:7)
+#'
 glottodist_subdata <- function(glottosubdata, metric = NULL, index_type = NULL, avg_idx=NULL, fixed_idx=NULL){
   if (tolower(index_type) %in% c("relative", "fmi") &&
       (is.null(avg_idx) || is.null(fixed_idx))){
     stop("Both the arguments avg_idx and fixed_idx should be provided.")
   }
-
   metric <- tolower(metric)
   index_type <- tolower(index_type)
 

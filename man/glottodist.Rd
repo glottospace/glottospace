@@ -56,7 +56,6 @@ glottodist <- glottodist(glottodata = glottodata, metric="anderberg")
 
 glottosubdata <- glottoget("demosubdata", meta = TRUE)
 glottodist <- glottodist(glottodata = glottosubdata)
-# glottoplot(glottodist)
 
 
 }

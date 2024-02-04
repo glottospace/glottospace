@@ -114,7 +114,9 @@ glottoget_path <- function(filepath = NULL){
 #' @noRd
 #'
 #' @examples
+#'  \donttest{
 #' glottobase <- glottoget_glottobase()
+#' }
 glottoget_glottobase <- function(download = NULL, dirpath = NULL, ...){
   glottolog <- glottoget_glottolog(download = download, dirpath = dirpath)
   glottobase <- glottobooster(glottologdata = glottolog, ...)

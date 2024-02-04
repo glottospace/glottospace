@@ -6,7 +6,9 @@
 #' @noRd
 #'
 #' @examples
+#' \donttest{
 #' glottoget_grambank()
+#' }
 glottoget_grambank <- function(download = NULL, dirpath = NULL){
   if(is.null(download)){
     download <- FALSE

@@ -1,7 +1,27 @@
+#' Title
+#'
+#' @param a
+#' @param b
+#' @param weights
+#'
+#' @return
+#' @export
+#'
+#' @noRd
 gower.a.b <- function(a, b, weights){
   sum(as.numeric(a != b) * weights) / length(a)
 }
 
+#' Title
+#'
+#' @param a
+#' @param B
+#' @param weights
+#'
+#' @return
+#' @export
+#'
+#' @noRd
 gower.a.B <- function(a, B, weights) {
   B |>
     apply(MARGIN = 1, FUN = function(b){
@@ -10,13 +30,33 @@ gower.a.B <- function(a, B, weights) {
     min()
 }
 
+#' Title
+#'
+#' @param A
+#' @param B
+#' @param weights
+#'
+#' @return
+#' @export
+#'
+#' @noRd
 gower.A.B <- function (A, B, weights) {
   A |>
     apply(MARGIN = 1, FUN = function(a){gower.a.B(a, B, weights)}) |>
     mean()
 }
 
-# A function to compute the average of pairwise gower distances with weight weights.
+#' A function to compute the average of pairwise gower distances with weight weights.
+#'
+#' @param glottodata
+#' @param idx_A
+#' @param idx_B
+#' @param weights
+#'
+#' @return
+#' @export
+#'
+#' @noRd
 avg_gower <- function(glottodata, idx_A, idx_B, weights){
   # glottodata is a dataframe
   idx_A |>
@@ -32,12 +72,30 @@ avg_gower <- function(glottodata, idx_A, idx_B, weights){
     mean()
 }
 
-# Compute the MC distance between two point cloud A and B
+#' Compute the MC distance between two point cloud A and B
+#'
+#' @param glottodata
+#' @param idx_A
+#' @param idx_B
+#' @param weights
+#'
+#' @return
+#' @export
+#'
+#' @noRd
 gower.MC <- function(glottodata, idx_A, idx_B, weights){
   (gower.A.B(A = glottodata[idx_A, ], B = glottodata[idx_B, ], weights = weights) +
      gower.A.B(A = glottodata[idx_B, ], B = glottodata[idx_A, ], weights = weights)) / 2
 }
 
+#' Title
+#'
+#' @param glottosubdata
+#'
+#' @return
+#' @export
+#'
+#' @noRd
 glottodist_gower_MC <- function(glottosubdata){
   glottosubdata_splfy <- glottosimplify(glottosubdata, submerge = F)
   glottocodes <- glottocode_get(glottosubdata_splfy)
@@ -69,111 +127,16 @@ glottodist_gower_MC <- function(glottosubdata){
   return(as.dist(dist_matrix))
 }
 
-# gower_SI <- function(glottodata, idx_A, idx_B, meaning_idx, form_idx, weights){
-#   # glottodata is a dataframe
-#   sum_SI <- 0
-#
-#   for (s in meaning_idx){
-#     cnstn_1 <- idx_A[which((glottodata[idx_A, s] == "Y") | (glottodata[idx_A, s] == TRUE))]
-#     cnstn_2 <- idx_B[which((glottodata[idx_B, s] == "Y") | (glottodata[idx_B, s] == TRUE))]
-#
-#     if (!identical(cnstn_1, integer(0)) && !identical(cnstn_2, integer(0))) {
-#       avg_form <- avg_gower(glottodata = glottodata[, form_idx],
-#                             idx_A = cnstn_1, idx_B = cnstn_2,
-#                             weights = weights[form_idx])
-#       sum_SI <- sum_SI + avg_form
-#     }
-#   }
-#   return(sum_SI / length(meaning_idx))
-# }
-
-# glottodist_gower_SI <- function(glottosubdata, meaning_idx, form_idx){
-#   glottosubdata_splfy <- glottosimplify(glottosubdata, submerge = F)
-#   glottocodes <- glottocode_get(glottosubdata_splfy)
-#   cnstrn_count <- from_to_idx(glottosubdata_splfy |>
-#                                 sapply(nrow))
-#
-#   params <- glottodist_cleaned(glottodata = glottosubdata, one_level_drop = F)
-#   glottodata <- params$glottodata
-#   weights <- params$weights
-#   type <-  params$type
-#   type_code <- params$type_code
-#
-#   dim <- length(glottosubdata_splfy)
-#   dist_matrix <- matrix(nrow=dim, ncol=dim)
-#
-#   for (i in 1:(dim-1)){
-#     for(j in (i + 1):dim){
-#       dist_matrix[i, j] <- gower_SI(glottodata=glottodata,
-#                                     idx_A = cnstrn_count[[i]], idx_B = cnstrn_count[[j]],
-#                                     meaning_idx = meaning_idx, form_idx = form_idx,
-#                                     weights = weights)
-#       dist_matrix[j, i] <- dist_matrix[i, j]
-#     }
-#   }
-#
-#   for (i in 1:dim){
-#     dist_matrix[i, i] <- 0
-#   }
-#
-#   colnames(dist_matrix) <- glottocodes
-#   rownames(dist_matrix) <- glottocodes
-#   return(as.dist(dist_matrix))
-# }
-
-# gower_FI <- function(glottodata, idx_A, idx_B, meaning_idx, form_idx, weights){
-#   # glottodata is a dataframe
-#   sum_FI <- 0
-#
-#   for (s in form_idx){
-#     cnstn_1 <- idx_A[which((glottodata[idx_A, s] == "Y") | (glottodata[idx_A, s] == TRUE))]
-#     cnstn_2 <- idx_B[which((glottodata[idx_B, s] == "Y") | (glottodata[idx_B, s] == TRUE))]
-#
-#     if (!identical(cnstn_1, integer(0)) && !identical(cnstn_2, integer(0))) {
-#       avg_meaning <- avg_gower(glottodata = glottodata[, meaning_idx],
-#                                idx_A = cnstn_1, idx_B = cnstn_2,
-#                                weights = weights[meaning_idx])
-#       sum_FI <- sum_FI + avg_meaning
-#     }
-#   }
-#   return(sum_FI / length(form_idx))
-# }
-
-# glottodist_gower_FI <- function(glottosubdata, meaning_idx, form_idx){
-#   glottosubdata_splfy <- glottosimplify(glottosubdata, submerge = F)
-#   glottocodes <- glottocode_get(glottosubdata_splfy)
-#   cnstrn_count <- from_to_idx(glottosubdata_splfy |>
-#                                 sapply(nrow))
-#
-#   params <- glottodist_cleaned(glottodata = glottosubdata, one_level_drop = F)
-#   glottodata <- params$glottodata
-#   weights <- params$weights
-#   type <-  params$type
-#   type_code <- params$type_code
-#
-#   dim <- length(glottosubdata_splfy)
-#   dist_matrix <- matrix(nrow=dim, ncol=dim)
-#
-#   for (i in 1:(dim-1)){
-#     for(j in (i + 1):dim){
-#       dist_matrix[i, j] <- gower_FI(glottodata=glottodata,
-#                                     idx_A = cnstrn_count[[i]], idx_B = cnstrn_count[[j]],
-#                                     meaning_idx = meaning_idx, form_idx = form_idx,
-#                                     weights = weights)
-#       dist_matrix[j, i] <- dist_matrix[i, j]
-#     }
-#   }
-#
-#   for (i in 1:dim){
-#     dist_matrix[i, i] <- 0
-#   }
-#
-#   colnames(dist_matrix) <- glottocodes
-#   rownames(dist_matrix) <- glottocodes
-#   return(as.dist(dist_matrix))
-# }
-
-
+#' Title
+#'
+#' @param lg
+#' @param a_idx
+#' @param f_idx
+#'
+#' @return
+#' @export
+#'
+#' @noRd
 lg_fixed_avg_count <- function(lg, a_idx, f_idx) {
   # A function to count how many constructions having both m_idx and f_idx being "Y" or TRUE in language lg.
   # lg is a dataframe, m_idx is an index number, f_idx is an index number.
@@ -183,6 +146,17 @@ lg_fixed_avg_count <- function(lg, a_idx, f_idx) {
     length()
 }
 
+#' Title
+#'
+#' @param lg1
+#' @param lg2
+#' @param a_idx
+#' @param f_idx
+#'
+#' @return
+#' @export
+#'
+#' @noRd
 SIM <- function(lg1, lg2, a_idx, f_idx){
   lg_cnt_1 <- lg_fixed_avg_count(lg = lg1, a_idx = a_idx, f_idx = f_idx)
   lg_cnt_2 <- lg_fixed_avg_count(lg = lg2, a_idx = a_idx, f_idx = f_idx)
@@ -195,6 +169,17 @@ SIM <- function(lg1, lg2, a_idx, f_idx){
   return(result)
 }
 
+#' Title
+#'
+#' @param lg1
+#' @param lg2
+#' @param fixed_idx
+#' @param avg_idx
+#'
+#' @return
+#' @export
+#'
+#' @noRd
 FMI <- function(lg1, lg2, fixed_idx, avg_idx) {
   fixed_idx |>
     sapply(FUN = function(f_idx){
@@ -209,7 +194,16 @@ FMI <- function(lg1, lg2, fixed_idx, avg_idx) {
     mean()
 }
 
-# A function to compute the distance matrix w.r.t. FMI
+#' A function to compute the distance matrix w.r.t. FMI
+#'
+#' @param glottosubdata
+#' @param avg_idx
+#' @param fixed_idx
+#'
+#' @return
+#' @export
+#'
+#' @noRd
 glottodist_FMI <- function(glottosubdata, avg_idx, fixed_idx){
   glottosubdata_splfy <- glottosimplify(glottosubdata, submerge = F)
   glottocodes <- glottocode_get(glottosubdata_splfy)
@@ -244,6 +238,19 @@ glottodist_FMI <- function(glottosubdata, avg_idx, fixed_idx){
 }
 
 
+#' Title
+#'
+#' @param glottodata
+#' @param idx_A
+#' @param idx_B
+#' @param avg_idx
+#' @param fixed_idx
+#' @param weights
+#'
+#' @return
+#' @export
+#'
+#' @noRd
 gower_Indexing <- function(glottodata, idx_A, idx_B, avg_idx, fixed_idx, weights){
   # glottodata is a dataframe
   sum <- 0
@@ -262,6 +269,16 @@ gower_Indexing <- function(glottodata, idx_A, idx_B, avg_idx, fixed_idx, weights
   return(sum / length(avg_idx))
 }
 
+#' Title
+#'
+#' @param glottosubdata
+#' @param avg_idx
+#' @param fixed_idx
+#'
+#' @return
+#' @export
+#'
+#' @noRd
 glottodist_gower_Indexing <- function(glottosubdata, avg_idx, fixed_idx){
   glottosubdata_splfy <- glottosimplify(glottosubdata, submerge = F)
   glottocodes <- glottocode_get(glottosubdata_splfy)

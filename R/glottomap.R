@@ -423,8 +423,10 @@ glottomap_static_crs <- function(glottodata, label = NULL, color = NULL, ptsize 
 #' @noRd
 #'
 #' @examples
+#' \donttest{
 #' glottodata <- glottofilter(location = "Australia")
 #' glottomap_static_pacific(glottodata, color = "family")
+#' }
 glottomap_static_pacific <- function(glottodata, color = NULL, rivers = FALSE, ptsize = NULL,
                                      nclass = NULL, palette = NA, alpha = NULL, basemap = "country",
                                      glotto_title = NULL){
@@ -507,7 +509,9 @@ glottomap_static_pacific <- function(glottodata, color = NULL, rivers = FALSE, p
 #'
 #' @noRd
 #' @examples
+#' \donttest{
 #' glottomap_glottocode("yucu1253")
+#' }
 glottomap_glottocode <- function(glottocode){
   rlang::check_installed("s2", reason = "to use `glottomap_glottocode()`")
   language <- glottofilter(glottocode = glottocode)

@@ -26,6 +26,8 @@ glottoclean(
 \item{id}{By default, glottoclean looks for a column named 'glottocode', if the id is in a different column, this should be specified.}
 
 \item{glottosample}{Should the sample table be used to subset the data?}
+
+\item{one_level_drop}{A logical value to denote whether or not to drop variables with a single value, the default value is TRUE.}
 }
 \value{
 A cleaned-up and simplified version of the original glottodata object
