@@ -29,6 +29,7 @@ spatial coordinates.
 \item "grambankspace" - This is a spatially enhanced version of \href{https://grambank.clld.org/}{Grambank}.
 \item "demodata" - Built-in artificial glottodata (included for demonstration and testing).
 \item "demosubdata" - Built-in artificial glottosubdata (included for demonstration and testing)
+\item "demosubdata_cnstn" - Built-in artificial glottosubdata (included for demonstration and testing)
 }}
 
 \item{meta}{In case 'glottodata' is demodata/demosubdata: by default, meta sheets are not loaded. Use meta=TRUE if you want to include them.}

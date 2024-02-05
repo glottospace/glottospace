@@ -95,7 +95,8 @@ glottodist_gower_MC <- function(glottosubdata){
   cnstrn_count <- from_to_idx(glottosubdata_splfy |>
                                 sapply(nrow))
 
-  params <- glottodist_cleaned(glottodata = glottosubdata, one_level_drop = F)
+  params <- glottodist_cleaned(glottodata = glottosubdata, one_level_drop = F) |>
+    suppressMessages()
   glottodata <- params$glottodata
   weights <- params$weights
   type <-  params$type
@@ -199,7 +200,8 @@ glottodist_FMI <- function(glottosubdata, avg_idx, fixed_idx){
   cnstrn_count <- from_to_idx(glottosubdata_splfy |>
                                 sapply(nrow))
 
-  params <- glottodist_cleaned(glottodata = glottosubdata, one_level_drop = F)
+  params <- glottodist_cleaned(glottodata = glottosubdata, one_level_drop = F) |>
+    suppressMessages()
   glottodata <- params$glottodata
   weights <- params$weights
   type <-  params$type
@@ -272,7 +274,8 @@ glottodist_gower_Indexing <- function(glottosubdata, avg_idx, fixed_idx){
   cnstrn_count <- from_to_idx(glottosubdata_splfy |>
                                 sapply(nrow))
 
-  params <- glottodist_cleaned(glottodata = glottosubdata, one_level_drop = F)
+  params <- glottodist_cleaned(glottodata = glottosubdata, one_level_drop = F) |>
+    suppressMessages()
   glottodata <- params$glottodata
   weights <- params$weights
   type <-  params$type

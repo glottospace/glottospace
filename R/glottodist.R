@@ -230,9 +230,9 @@ glottodist_cleaned <- function(glottodata, ...){
 #'
 #' @param glottosubdata an glottosubdata object
 #' @param metric either "gower" or "anderberg"
-#' @param index_type either "mc" or "relative" or "fmi"
-#' @param avg_idx the feature indices over which the average of distances is computed, it must be given when index_type is either "relative" or "fmi".
-#' @param fixed_idx the feature indices over which the distance of two constructions is computed, it must be given when index_type is either "relative" or "fmi".
+#' @param index_type either "mc" or "ri" or "fmi"
+#' @param avg_idx the feature indices over which the average of distances is computed, it must be given when index_type is either "ri" or "fmi".
+#' @param fixed_idx the feature indices over which the distance of two constructions is computed, it must be given when index_type is either "ri" or "fmi".
 #'
 #' @return object of class \code{dist}
 #'
@@ -240,32 +240,32 @@ glottodist_cleaned <- function(glottodata, ...){
 #'
 #' @examples
 #' glottosubdata_cnstn <- glottoget(glottodata = "demosubdata_cnstn")
-#' glottodist_subdata(glottosubdata = glottosubdata_cnstn, metric = "gower", index = "mc")
-#' glottodist_subdata(glottosubdata = glottosubdata_cnstn, metric = "gower", index = "relative",
+#' glottodist_subdata(glottosubdata = glottosubdata_cnstn, metric = "gower", index_type = "mc")
+#' glottodist_subdata(glottosubdata = glottosubdata_cnstn, metric = "gower", index_type = "ri",
 #'                    avg_idx = 1:4, fixed_idx = 5:7)
-#' glottodist_subdata(glottosubdata = glottosubdata_cnstn, index = "fmi",
+#' glottodist_subdata(glottosubdata = glottosubdata_cnstn, index_type = "fmi",
 #'                    avg_idx = 1:4, fixed_idx = 5:7)
 #'
 #' @section Details:
 #' The function ``glottodist_subdata'' returns a ``dist'' object,
 #' the input is a glottosubdata object,
 #' it computes the indexing between languages,
-#' We refer to the observations of each language as constructions.
-#' The distance \eqn{d(A_i, B_j)} between two construction \eqn{A_i} in a language \eqn{A} and \eqn{B_j} in a language \eqn{B}
+#' we refer to the observations of each language as constructions.
+#' The distance \eqn{d(A_i, B_j)} between two constructions \eqn{A_i} in a language \eqn{A} and \eqn{B_j} in a language \eqn{B}
 #' is determined by the argument ``metric'',
-#' whose value is either ``gower'' or ``anderberg''.
-#' When ``index'' is ``mc'',
+#' whose value is either "gower" or ``anderberg''.
+#' When ``index_type'' is ``mc'',
 #' it returns the ``matching constructions'':
 #'
 #' \eqn{MC(A, B) := \frac{1}{2|A|}\sum\limits_{A_i\in A}\min\limits_{B_j\in B}d(A_i, B_j) +
 #' \frac{1}{2|B|}\sum\limits_{B_i\in B}\min\limits_{A_j\in A}d(A_j, B_i)}.
-#' When ``metric'' is ``relative'',
+#' When ``index_type'' is ``ri'',
 #' it returns the ``relative indexing'':
 #'
 #' \eqn{RI(A, B) = \frac{1}{|M|}\sum\limits_{s\in M}\textrm{AVG}_{A_i(s) = 1 \textrm{ and } B_j(s) = 1}d(A_i^F, B_j^F)},
-#' here \eqn{M} is a subset of variables given by the argument ``avg_idx'' and \eqn{F} is a subset of variables given by the argument ``fixed_idx'',
-#' and \eqn{A_i^F}, \eqn{B_j^F} are given by the constructions \eqn{A_i}, \eqn{B_j} restricted to ``fixed_idx'' \eqn{F}.
-#' When ``metric'' is ``fmi'',
+#' here \eqn{M} is the indices of a subset of variables given by the argument ``avg_idx'' and \eqn{F} is the indices of a subset of variables given by the argument ``fixed_idx'',
+#' the restricted constructions \eqn{A_i^F} and \eqn{B_j^F} are defined as the constructions \eqn{A_i}, \eqn{B_j} restricted to ``fixed_idx'' \eqn{F}.
+#' When ``index_type'' is ``fmi'',
 #' it returns the ``form-meaning indexing'':
 #'
 #' \eqn{FMI(A, B) = \frac{1}{|M||F|} \sum\limits_{s\in M, p\in F} SIM(\{(A_i^M(s)=1 \textrm{ and }A_i^F(p)=1)\},
@@ -275,7 +275,7 @@ glottodist_cleaned <- function(glottodata, ...){
 #'
 #'
 glottodist_subdata <- function(glottosubdata, metric = NULL, index_type = NULL, avg_idx=NULL, fixed_idx=NULL){
-  if (tolower(index_type) %in% c("relative", "fmi") &&
+  if (tolower(index_type) %in% c("ri", "fmi") &&
       (is.null(avg_idx) || is.null(fixed_idx))){
     stop("Both the arguments avg_idx and fixed_idx should be provided.")
   }
@@ -286,12 +286,12 @@ glottodist_subdata <- function(glottosubdata, metric = NULL, index_type = NULL, 
     glottodata_dist <- glottodist_FMI(glottosubdata = glottosubdata, avg_idx = avg_idx, fixed_idx = fixed_idx)
   } else if (metric == "gower" && index_type == "mc"){
     glottodata_dist <- glottodist_gower_MC(glottosubdata = glottosubdata)
-  } else if (metric == "gower" && index_type == "relative"){
+  } else if (metric == "gower" && index_type == "ri"){
     glottodata_dist <- glottodist_gower_Indexing(glottosubdata = glottosubdata,
                                                  avg_idx = avg_idx, fixed_idx = fixed_idx)
   } else if (metric == "anderberg" && index_type == "mc"){
     glottodata_dist <- glottodist_anderberg_MC(glottosubdata = glottosubdata)
-  } else if (metric == "anderberg" && index_type == "relative"){
+  } else if (metric == "anderberg" && index_type == "ri"){
     glottodata_dist <- glottodist_anderberg_Indexing(glottosubdata = glottosubdata,
                                                      avg_idx = avg_idx, fixed_idx = fixed_idx)
   }
