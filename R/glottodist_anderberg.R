@@ -5,7 +5,6 @@
 #' @param j An integer
 #'
 #' @return A numeric value
-#' @export
 #'
 #'
 #' @noRd
@@ -121,7 +120,6 @@ anderberg_dissimilarity <- function(glottodata, glottodata_freq_list = NULL, glo
 #' @param weights A vector
 #'
 #' @return object of class \code{dist}
-#' @export
 #'
 #' @noRd
 #'
@@ -172,8 +170,6 @@ glottodist_anderberg <- function(glottodata, type, weights, glottodata_freq_list
 #' @param weights a vector of weights given by structure of glottodata
 #'
 #' @return a numeric number
-#' @export
-#'
 #'
 #' @noRd
 anderberg_dissimilarity.a.B <- function(glottodata, glottodata_freq_list = NULL, glottodata_val_counts = NULL,
@@ -210,7 +206,6 @@ anderberg_dissimilarity.a.B <- function(glottodata, glottodata_freq_list = NULL,
 #' @param weights a vector of weights given by structure of glottodata
 #'
 #' @return a numeric number
-#' @export
 #' @noRd
 anderberg_dissimilarity.A.B <- function(glottodata, glottodata_freq_list = NULL, glottodata_val_counts = NULL,
                                         idx_A, idx_B, type, weights){
@@ -248,7 +243,6 @@ anderberg_dissimilarity.A.B <- function(glottodata, glottodata_freq_list = NULL,
 #' @param weights a vector of weights given by structure of glottodata
 #'
 #' @return a numeric number
-#' @export
 #' @noRd
 anderberg_dissimilarity.MC <- function(glottodata, glottodata_freq_list = NULL, glottodata_val_counts = NULL,
                                        idx_A, idx_B, type, weights){
@@ -282,7 +276,6 @@ anderberg_dissimilarity.MC <- function(glottodata, glottodata_freq_list = NULL, 
 #' @param lg2 a language dataframe in glottosubdata
 #'
 #' @return a numeric number
-#' @export
 #' @noRd
 glottodist_anderberg_MC_pairing <- function(glottosubdata, lg1, lg2){
   glottosubdata_splfy <- glottosimplify(glottosubdata, submerge = F)
@@ -327,7 +320,6 @@ glottodist_anderberg_MC_pairing <- function(glottosubdata, lg1, lg2){
 #' @param glottosubdata a glottosubdata
 #'
 #' @return a numeric number
-#' @export
 #' @noRd
 glottodist_anderberg_MC <- function(glottosubdata){
   glottosubdata_splfy <- glottosimplify(glottosubdata, submerge = F)
@@ -385,7 +377,6 @@ glottodist_anderberg_MC <- function(glottosubdata){
 #' @param weights a vector
 #'
 #' @return a numeric number
-#' @export
 #' @noRd
 avg_anderberg <- function(glottodata, glottodata_freq_list = NULL, glottodata_val_counts = NULL,
                           idx_A, idx_B, type, weights){
@@ -432,7 +423,6 @@ avg_anderberg <- function(glottodata, glottodata_freq_list = NULL, glottodata_va
 #' @param weights a vector
 #'
 #' @return a numeric number
-#' @export
 #' @noRd
 anderberg_Indexing <- function(glottodata, glottodata_freq_list = NULL, glottodata_val_counts = NULL,
                                idx_A, idx_B, avg_idx, fixed_idx, type, weights){
@@ -477,7 +467,6 @@ anderberg_Indexing <- function(glottodata, glottodata_freq_list = NULL, glottoda
 #' @param fixed_idx a vector
 #'
 #' @return a numeric number
-#' @export
 #' @noRd
 #'
 glottodist_anderberg_Indexing <- function(glottosubdata, avg_idx, fixed_idx){

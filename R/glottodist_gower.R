@@ -5,7 +5,6 @@
 #' @param weights a vector
 #'
 #' @return a numeric number
-#' @export
 #'
 #' @noRd
 gower.a.b <- function(a, b, weights){
@@ -19,7 +18,6 @@ gower.a.b <- function(a, b, weights){
 #' @param weights a vector
 #'
 #' @return a numeric number
-#' @export
 #'
 #' @noRd
 gower.a.B <- function(a, B, weights) {
@@ -37,7 +35,6 @@ gower.a.B <- function(a, B, weights) {
 #' @param weights a vector
 #'
 #' @return a numeric number
-#' @export
 #'
 #' @noRd
 gower.A.B <- function (A, B, weights) {
@@ -54,7 +51,6 @@ gower.A.B <- function (A, B, weights) {
 #' @param weights a vector
 #'
 #' @return a numeric number
-#' @export
 #'
 #' @noRd
 avg_gower <- function(glottodata, idx_A, idx_B, weights){
@@ -79,7 +75,6 @@ avg_gower <- function(glottodata, idx_A, idx_B, weights){
 #' @param weights a vector
 #'
 #' @return a numeric number
-#' @export
 #'
 #' @noRd
 gower.MC <- function(glottodata, idx_A, idx_B, weights){
@@ -92,7 +87,6 @@ gower.MC <- function(glottodata, idx_A, idx_B, weights){
 #' @param glottosubdata a glottosubdata
 #'
 #' @return a numeric number
-#' @export
 #'
 #' @noRd
 glottodist_gower_MC <- function(glottosubdata){
@@ -133,7 +127,6 @@ glottodist_gower_MC <- function(glottosubdata){
 #' @param f_idx a vector
 #'
 #' @return a numeric number
-#' @export
 #'
 #' @noRd
 lg_fixed_avg_count <- function(lg, a_idx, f_idx) {
@@ -153,7 +146,6 @@ lg_fixed_avg_count <- function(lg, a_idx, f_idx) {
 #' @param f_idx a vector
 #'
 #' @return a numeric number
-#' @export
 #'
 #' @noRd
 SIM <- function(lg1, lg2, a_idx, f_idx){
@@ -176,7 +168,6 @@ SIM <- function(lg1, lg2, a_idx, f_idx){
 #' @param avg_idx a vector
 #'
 #' @return a numeric number
-#' @export
 #'
 #' @noRd
 FMI <- function(lg1, lg2, fixed_idx, avg_idx) {
@@ -200,7 +191,6 @@ FMI <- function(lg1, lg2, fixed_idx, avg_idx) {
 #' @param fixed_idx a vector
 #'
 #' @return a numeric number
-#' @export
 #'
 #' @noRd
 glottodist_FMI <- function(glottosubdata, avg_idx, fixed_idx){
@@ -247,7 +237,6 @@ glottodist_FMI <- function(glottosubdata, avg_idx, fixed_idx){
 #' @param weights a vector
 #'
 #' @return a numeric number
-#' @export
 #'
 #' @noRd
 gower_Indexing <- function(glottodata, idx_A, idx_B, avg_idx, fixed_idx, weights){
@@ -275,7 +264,6 @@ gower_Indexing <- function(glottodata, idx_A, idx_B, avg_idx, fixed_idx, weights
 #' @param fixed_idx a vector
 #'
 #' @return a numeric number
-#' @export
 #'
 #' @noRd
 glottodist_gower_Indexing <- function(glottosubdata, avg_idx, fixed_idx){

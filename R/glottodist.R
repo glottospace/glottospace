@@ -97,7 +97,6 @@ glottodist <- function(glottodata, metric="gower"){
 #'
 #' @param glottodata
 #'
-#' @export
 #' @noRd
 #'
 glottodist_cleaned <- function(glottodata, ...){
