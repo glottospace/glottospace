@@ -14,6 +14,7 @@
 #' @param totrue Optional additional values to recode to TRUE (besides default)
 #' @param id By default, glottoclean looks for a column named 'glottocode', if the id is in a different column, this should be specified.
 #' @param glottosample Should the sample table be used to subset the data?
+#' @param one_level_drop A logical value to denote whether or not to drop variables with a single value, the default value is TRUE.
 #'
 #' @return A cleaned-up and simplified version of the original glottodata object
 #' @export
@@ -23,7 +24,8 @@
 #'
 #' glottosubdata <- glottoget("demosubdata", meta = TRUE)
 #' glottosubdata <- glottoclean(glottosubdata)
-glottoclean <- function(glottodata, tona = NULL, tofalse = NULL, totrue = NULL, id = NULL, glottosample = FALSE){
+glottoclean <- function(glottodata, tona = NULL, tofalse = NULL, totrue = NULL, id = NULL, glottosample = FALSE,
+                        one_level_drop=TRUE){
 
   if(sum(!glottocheck_isglottodata(glottodata) | !glottocheck_isglottosubdata(glottodata))==2){
     stop("glottodata object does not adhere to glottodata/glottosubdata format. Use glottocreate() or glottoconvert().")
@@ -56,7 +58,9 @@ glottoclean <- function(glottodata, tona = NULL, tofalse = NULL, totrue = NULL, 
 
   glottodata <- glottorecode_missing(glottodata, tona = all2na)
 
-  glottodata <- glottoclean_twolevels(glottodata) # drop variables with less than two levels (no changes to structure table)
+  if (one_level_drop){
+    glottodata <- glottoclean_twolevels(glottodata) # drop variables with less than two levels (no changes to structure table)
+  }
 
   glottodata <- glottojoin(glottodata, structure)
 
@@ -115,13 +119,15 @@ glottorecode <- function(glottodata, structure, tofalse = NULL, totrue = NULL, t
 #' @param tofalse values to recode to FALSE
 #' @param glottodata glottodata list
 #'
-#' @noRd
+#' @export
 #' @examples
 #' glottodata <- glottoget("demodata", meta = TRUE)
-#' glottorecode_logical(glottodata, totrue = c("y", "Y", 1), tofalse = c("n", "N", 0), structure = glottodata[["structure"]])
+#' glottorecode_logical(glottodata, totrue = c("y", "Y", 1), tofalse = c("n", "N", 0),
+#' structure = glottodata[["structure"]])
 #'
 #' glottosubdata <- glottoget("demosubdata", meta = TRUE)
-#' glottorecode_logical(glottosubdata, totrue = c("y", "Y", 1), tofalse = c("n", "N", 0), structure = glottosubdata[["structure"]])
+#' glottorecode_logical(glottosubdata, totrue = c("y", "Y", 1), tofalse = c("n", "N", 0),
+#' structure = glottosubdata[["structure"]])
 glottorecode_logical <- function(glottodata, structure, totrue = NULL, tofalse = NULL){
 
   data <- glottosimplify(glottodata)
@@ -158,8 +164,9 @@ glottorecode_logical <- function(glottodata, structure, totrue = NULL, tofalse =
 #'
 #' @param glottodata glottodata
 #' @param tona Optional, additional values to recode to NA
+#'
 #' @family <glottorecode>
-#' @noRd
+#' @export
 #' @examples
 #' glottodata <- glottoget("demodata", meta = TRUE)
 #' glottorecode_missing(glottodata, tona = "?")

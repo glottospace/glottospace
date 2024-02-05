@@ -12,11 +12,10 @@
 #'
 #' glottosubdata <- glottoget("demosubdata", meta = TRUE)
 #' glottodist <- glottodist(glottodata = glottosubdata)
-#' # glottoplot(glottodist)
 #'
 #'
 #' @section Details:
-#' The `glottodist` function returns a `dist` object with respect to either Gower distance or Anderberg dissimilarity.
+#' The function ``glottodist'' returns a ``dist'' object with respect to either Gower distance or Anderberg dissimilarity.
 #' The Anderberg dissimilarity is defined as follows.
 #' Consider a categorical dataset \eqn{L} containing \eqn{N} objects \eqn{X_1, \cdots, X_N} defined over a set of \eqn{d} categorical features where \eqn{A_k} denotes the \eqn{k-}th feature.
 #' The feature \eqn{A_k} take \eqn{n_k} values in the given dataset which are denoted by \eqn{\mathcal{A}_k}. We regard `NA` as a new value.
@@ -100,7 +99,7 @@ glottodist <- function(glottodata, metric="gower"){
 #'
 #' @noRd
 #'
-glottodist_cleaned <- function(glottodata){
+glottodist_cleaned <- function(glottodata, ...){
   rlang::check_installed("cluster", reason = "to use `glottodist()`")
 
   if(glottocheck_isglottosubdata(glottodata)){
@@ -116,7 +115,7 @@ glottodist_cleaned <- function(glottodata){
     stop("structure table not found. You can create one using glottocreate_structuretable() and add it with glottocreate_addtable().")
   }
 
-  glottodata <- glottoclean(glottodata)
+  glottodata <- glottoclean(glottodata, ...)
   structure <- glottodata[["structure"]]
   glottodata <- glottosimplify(glottodata)
 
@@ -220,8 +219,6 @@ glottodist_cleaned <- function(glottodata){
   }
   }
 
-
-
   return(list(glottodata=glottodata,
               weights=weights,
               type = type,
@@ -229,7 +226,77 @@ glottodist_cleaned <- function(glottodata){
 
 }
 
+#' Calculate indexing distances between languages
+#'
+#' @param glottosubdata an glottosubdata object
+#' @param metric either "gower" or "anderberg"
+#' @param index_type either "mc" or "ri" or "fmi"
+#' @param avg_idx the feature indices over which the average of distances is computed, it must be given when index_type is either "ri" or "fmi".
+#' @param fixed_idx the feature indices over which the distance of two constructions is computed, it must be given when index_type is either "ri" or "fmi".
+#'
+#' @return object of class \code{dist}
+#'
+#' @export
+#'
+#' @examples
+#' glottosubdata_cnstn <- glottoget(glottodata = "demosubdata_cnstn")
+#' glottodist_subdata(glottosubdata = glottosubdata_cnstn, metric = "gower", index_type = "mc")
+#' glottodist_subdata(glottosubdata = glottosubdata_cnstn, metric = "gower", index_type = "ri",
+#'                    avg_idx = 1:4, fixed_idx = 5:7)
+#' glottodist_subdata(glottosubdata = glottosubdata_cnstn, index_type = "fmi",
+#'                    avg_idx = 1:4, fixed_idx = 5:7)
+#'
+#' @section Details:
+#' The function ``glottodist_subdata'' returns a ``dist'' object,
+#' the input is a glottosubdata object,
+#' it computes the indexing between languages,
+#' we refer to the observations of each language as constructions.
+#' The distance \eqn{d(A_i, B_j)} between two constructions \eqn{A_i} in a language \eqn{A} and \eqn{B_j} in a language \eqn{B}
+#' is determined by the argument ``metric'',
+#' whose value is either "gower" or ``anderberg''.
+#' When ``index_type'' is ``mc'',
+#' it returns the ``matching constructions'':
+#'
+#' \eqn{MC(A, B) := \frac{1}{2|A|}\sum\limits_{A_i\in A}\min\limits_{B_j\in B}d(A_i, B_j) +
+#' \frac{1}{2|B|}\sum\limits_{B_i\in B}\min\limits_{A_j\in A}d(A_j, B_i)}.
+#' When ``index_type'' is ``ri'',
+#' it returns the ``relative indexing'':
+#'
+#' \eqn{RI(A, B) = \frac{1}{|M|}\sum\limits_{s\in M}\textrm{AVG}_{A_i(s) = 1 \textrm{ and } B_j(s) = 1}d(A_i^F, B_j^F)},
+#' here \eqn{M} is the indices of a subset of variables given by the argument ``avg_idx'' and \eqn{F} is the indices of a subset of variables given by the argument ``fixed_idx'',
+#' the restricted constructions \eqn{A_i^F} and \eqn{B_j^F} are defined as the constructions \eqn{A_i}, \eqn{B_j} restricted to ``fixed_idx'' \eqn{F}.
+#' When ``index_type'' is ``fmi'',
+#' it returns the ``form-meaning indexing'':
+#'
+#' \eqn{FMI(A, B) = \frac{1}{|M||F|} \sum\limits_{s\in M, p\in F} SIM(\{(A_i^M(s)=1 \textrm{ and }A_i^F(p)=1)\},
+#' \{B_j^M(s) = 1 \textrm{ and }B_j^F(p) = 1\})},
+#' here \eqn{SIM(X, Y)=\min(|X|/|Y|, |Y|/|X|)}, if both \eqn{X} and \eqn{Y} are empty,
+#' \eqn{SIM(X, Y)=1}.
+#'
+#'
+glottodist_subdata <- function(glottosubdata, metric = NULL, index_type = NULL, avg_idx=NULL, fixed_idx=NULL){
+  if (tolower(index_type) %in% c("ri", "fmi") &&
+      (is.null(avg_idx) || is.null(fixed_idx))){
+    stop("Both the arguments avg_idx and fixed_idx should be provided.")
+  }
+  metric <- tolower(metric)
+  index_type <- tolower(index_type)
 
+  if (index_type == "fmi"){
+    glottodata_dist <- glottodist_FMI(glottosubdata = glottosubdata, avg_idx = avg_idx, fixed_idx = fixed_idx)
+  } else if (metric == "gower" && index_type == "mc"){
+    glottodata_dist <- glottodist_gower_MC(glottosubdata = glottosubdata)
+  } else if (metric == "gower" && index_type == "ri"){
+    glottodata_dist <- glottodist_gower_Indexing(glottosubdata = glottosubdata,
+                                                 avg_idx = avg_idx, fixed_idx = fixed_idx)
+  } else if (metric == "anderberg" && index_type == "mc"){
+    glottodata_dist <- glottodist_anderberg_MC(glottosubdata = glottosubdata)
+  } else if (metric == "anderberg" && index_type == "ri"){
+    glottodata_dist <- glottodist_anderberg_Indexing(glottosubdata = glottosubdata,
+                                                     avg_idx = avg_idx, fixed_idx = fixed_idx)
+  }
+  return(glottodata_dist)
+}
 
 #' #' Calculate distances between languages based on constructions
 #' #'

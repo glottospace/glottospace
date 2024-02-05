@@ -18,6 +18,7 @@
 #' \item "grambankspace" - This is a spatially enhanced version of \href{https://grambank.clld.org/}{Grambank}.
 #' \item "demodata" - Built-in artificial glottodata (included for demonstration and testing).
 #' \item "demosubdata" - Built-in artificial glottosubdata (included for demonstration and testing)
+#' \item "demosubdata_cnstn" - Built-in artificial glottosubdata (included for demonstration and testing)
 #' }
 #' @param meta In case 'glottodata' is demodata/demosubdata: by default, meta sheets are not loaded. Use meta=TRUE if you want to include them.
 #' @param download By default internally stored versions of global databases are used. Specify download = TRUE in case you want to download the latest version from a remote server.
@@ -54,6 +55,8 @@ glottoget <- function(glottodata = NULL, meta = FALSE, download = FALSE, dirpath
     glottodata <- glottocreate_demodata(meta = meta)
   } else if(glottodata == "demosubdata"){
     glottodata <- glottocreate_demosubdata(meta = meta)
+  } else if(glottodata == "demosubdata_cnstn"){
+    glottodata <- glottocreate_cnstn_toy()
   } else if(glottodata == "wals"){
     glottodata <- glottoget_wals(download = download, dirpath = dirpath)
   } else if(glottodata == "dplace"){
@@ -112,7 +115,9 @@ glottoget_path <- function(filepath = NULL){
 #' @noRd
 #'
 #' @examples
+#'  \donttest{
 #' glottobase <- glottoget_glottobase()
+#' }
 glottoget_glottobase <- function(download = NULL, dirpath = NULL, ...){
   glottolog <- glottoget_glottolog(download = download, dirpath = dirpath)
   glottobase <- glottobooster(glottologdata = glottolog, ...)

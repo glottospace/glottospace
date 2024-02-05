@@ -6,7 +6,9 @@
 #' @noRd
 #'
 #' @examples
+#' \donttest{
 #' glottoget_glottolog()
+#' }
 glottoget_glottolog <- function(download = NULL, dirpath = NULL){
   if(is.null(download)){
     download <- FALSE

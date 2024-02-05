@@ -23,13 +23,14 @@
 #' this gives global \href{https://www.hydrosheds.org/products/hydrobasins}{hydro-basins} (Level 03).
 #'
 #' @param ... Additional parameters to glottofilter
+#' @param rivers Do you want to plot rivers?
 #'
 #' @evalRd glottovars()
 #' @return a map created from a glotto(sub)data object and can be saved with glottosave()
 #' @export
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' glottomap(country = "Netherlands")
 #'
 #' glottopoints <- glottofilter(continent = "South America")
@@ -115,7 +116,7 @@ return(map)
 #'
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' glottodata <- glottofilter(continent = "South America")
 #' glottodata <- glottofilter(country = "Netherlands")
 #' glottomap_dynamic(glottodata)
@@ -241,7 +242,7 @@ glottomap_dynamic <- function(glottodata, color = NULL, ptsize = NULL, alpha = N
 #'
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' glottodata <- glottofilter(continent = "South America")
 #' glottodata <- glottofilter(country = c("Netherlands", "Germany", "Belgium") )
 #' glottomap_static(glottodata)
@@ -293,7 +294,7 @@ glottomap_static <- function(glottodata, projection = NULL, label = NULL, color 
 #'
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' glottodata <- glottofilter(continent = "South America")
 #' glottodata <- glottofilter(country = c("Netherlands", "Germany", "Belgium") )
 #' glottomap_static_crs(glottodata)
@@ -423,8 +424,10 @@ glottomap_static_crs <- function(glottodata, label = NULL, color = NULL, ptsize 
 #' @noRd
 #'
 #' @examples
+#' \dontrun{
 #' glottodata <- glottofilter(location = "Australia")
 #' glottomap_static_pacific(glottodata, color = "family")
+#' }
 glottomap_static_pacific <- function(glottodata, color = NULL, rivers = FALSE, ptsize = NULL,
                                      nclass = NULL, palette = NA, alpha = NULL, basemap = "country",
                                      glotto_title = NULL){
@@ -507,7 +510,9 @@ glottomap_static_pacific <- function(glottodata, color = NULL, rivers = FALSE, p
 #'
 #' @noRd
 #' @examples
+#' \dontrun{
 #' glottomap_glottocode("yucu1253")
+#' }
 glottomap_glottocode <- function(glottocode){
   rlang::check_installed("s2", reason = "to use `glottomap_glottocode()`")
   language <- glottofilter(glottocode = glottocode)

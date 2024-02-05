@@ -19,7 +19,7 @@ Calculate distances between languages
 }
 \section{Details}{
 
-The `glottodist` function returns a `dist` object with respect to either Gower distance or Anderberg dissimilarity.
+The function ``glottodist'' returns a ``dist'' object with respect to either Gower distance or Anderberg dissimilarity.
 The Anderberg dissimilarity is defined as follows.
 Consider a categorical dataset \eqn{L} containing \eqn{N} objects \eqn{X_1, \cdots, X_N} defined over a set of \eqn{d} categorical features where \eqn{A_k} denotes the \eqn{k-}th feature.
 The feature \eqn{A_k} take \eqn{n_k} values in the given dataset which are denoted by \eqn{\mathcal{A}_k}. We regard `NA` as a new value.
@@ -56,7 +56,6 @@ glottodist <- glottodist(glottodata = glottodata, metric="anderberg")
 
 glottosubdata <- glottoget("demosubdata", meta = TRUE)
 glottodist <- glottodist(glottodata = glottosubdata)
-# glottoplot(glottodist)
 
 
 }

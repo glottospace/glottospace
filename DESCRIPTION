@@ -23,7 +23,6 @@ Imports:
     readxl,
     rlang,
     rnaturalearth,
-    rnaturalearthdata,
     sf,
     tibble,
     tidyr,

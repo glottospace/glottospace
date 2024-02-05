@@ -41,7 +41,7 @@ glottomap(
 \item{palette}{Color palette, see glottocolpal("all") for possible options, and run glottocolpal("turbo") to see what it looks like (replace it with palette name).
 Alternatively, you could also run tmaptools::palette_explorer(), RColorBrewer::display.brewer.all(), ?viridisLite::viridis, or scales::show_col(viridisLite::viridis(n=20))}
 
-\item{rivers}{Do you want to plot rivers (only for static maps)?}
+\item{rivers}{Do you want to plot rivers?}
 
 \item{nclass}{Preferred number of classes (default is 5)}
 
@@ -67,7 +67,7 @@ With this function you can easily create static and dynamic maps from glottodata
 Alternatively, by specifying type = "filter", you can interactively select languages by drawing a shape around them (mode = "draw"; default) or by clicking on them (mode = "click"). See ?glottofiltermap for more details.
 }
 \examples{
-\donttest{
+\dontrun{
 glottomap(country = "Netherlands")
 
 glottopoints <- glottofilter(continent = "South America")
