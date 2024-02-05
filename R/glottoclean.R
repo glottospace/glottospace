@@ -119,13 +119,15 @@ glottorecode <- function(glottodata, structure, tofalse = NULL, totrue = NULL, t
 #' @param tofalse values to recode to FALSE
 #' @param glottodata glottodata list
 #'
-#' @noRd
+#' @export
 #' @examples
 #' glottodata <- glottoget("demodata", meta = TRUE)
-#' glottorecode_logical(glottodata, totrue = c("y", "Y", 1), tofalse = c("n", "N", 0), structure = glottodata[["structure"]])
+#' glottorecode_logical(glottodata, totrue = c("y", "Y", 1), tofalse = c("n", "N", 0),
+#' structure = glottodata[["structure"]])
 #'
 #' glottosubdata <- glottoget("demosubdata", meta = TRUE)
-#' glottorecode_logical(glottosubdata, totrue = c("y", "Y", 1), tofalse = c("n", "N", 0), structure = glottosubdata[["structure"]])
+#' glottorecode_logical(glottosubdata, totrue = c("y", "Y", 1), tofalse = c("n", "N", 0),
+#' structure = glottosubdata[["structure"]])
 glottorecode_logical <- function(glottodata, structure, totrue = NULL, tofalse = NULL){
 
   data <- glottosimplify(glottodata)
@@ -162,8 +164,9 @@ glottorecode_logical <- function(glottodata, structure, totrue = NULL, tofalse =
 #'
 #' @param glottodata glottodata
 #' @param tona Optional, additional values to recode to NA
+#'
 #' @family <glottorecode>
-#' @noRd
+#' @export
 #' @examples
 #' glottodata <- glottoget("demodata", meta = TRUE)
 #' glottorecode_missing(glottodata, tona = "?")
