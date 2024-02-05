@@ -1,10 +1,10 @@
 #' Title
 #'
-#' @param a
-#' @param b
-#' @param weights
+#' @param a a vector
+#' @param b a vector
+#' @param weights a vector
 #'
-#' @return
+#' @return a numeric number
 #' @export
 #'
 #' @noRd
@@ -14,11 +14,11 @@ gower.a.b <- function(a, b, weights){
 
 #' Title
 #'
-#' @param a
-#' @param B
-#' @param weights
+#' @param a a vector
+#' @param B a matrix
+#' @param weights a vector
 #'
-#' @return
+#' @return a numeric number
 #' @export
 #'
 #' @noRd
@@ -32,11 +32,11 @@ gower.a.B <- function(a, B, weights) {
 
 #' Title
 #'
-#' @param A
-#' @param B
-#' @param weights
+#' @param A a matrix
+#' @param B a matrix
+#' @param weights a vector
 #'
-#' @return
+#' @return a numeric number
 #' @export
 #'
 #' @noRd
@@ -48,17 +48,16 @@ gower.A.B <- function (A, B, weights) {
 
 #' A function to compute the average of pairwise gower distances with weight weights.
 #'
-#' @param glottodata
-#' @param idx_A
-#' @param idx_B
-#' @param weights
+#' @param glottodata a dataframe
+#' @param idx_A a vector
+#' @param idx_B a vector
+#' @param weights a vector
 #'
-#' @return
+#' @return a numeric number
 #' @export
 #'
 #' @noRd
 avg_gower <- function(glottodata, idx_A, idx_B, weights){
-  # glottodata is a dataframe
   idx_A |>
     sapply(
       FUN = function(idx_1){
@@ -74,12 +73,12 @@ avg_gower <- function(glottodata, idx_A, idx_B, weights){
 
 #' Compute the MC distance between two point cloud A and B
 #'
-#' @param glottodata
-#' @param idx_A
-#' @param idx_B
-#' @param weights
+#' @param glottodata a dataframe
+#' @param idx_A a vector
+#' @param idx_B a vector
+#' @param weights a vector
 #'
-#' @return
+#' @return a numeric number
 #' @export
 #'
 #' @noRd
@@ -90,9 +89,9 @@ gower.MC <- function(glottodata, idx_A, idx_B, weights){
 
 #' Title
 #'
-#' @param glottosubdata
+#' @param glottosubdata a glottosubdata
 #'
-#' @return
+#' @return a numeric number
 #' @export
 #'
 #' @noRd
@@ -124,16 +123,16 @@ glottodist_gower_MC <- function(glottosubdata){
   }
   colnames(dist_matrix) <- glottocodes
   rownames(dist_matrix) <- glottocodes
-  return(as.dist(dist_matrix))
+  return(stats::as.dist(dist_matrix))
 }
 
 #' Title
 #'
-#' @param lg
-#' @param a_idx
-#' @param f_idx
+#' @param lg a dataframe
+#' @param a_idx a vector
+#' @param f_idx a vector
 #'
-#' @return
+#' @return a numeric number
 #' @export
 #'
 #' @noRd
@@ -148,12 +147,12 @@ lg_fixed_avg_count <- function(lg, a_idx, f_idx) {
 
 #' Title
 #'
-#' @param lg1
-#' @param lg2
-#' @param a_idx
-#' @param f_idx
+#' @param lg1 a dataframe
+#' @param lg2 a dataframe
+#' @param a_idx a vector
+#' @param f_idx a vector
 #'
-#' @return
+#' @return a numeric number
 #' @export
 #'
 #' @noRd
@@ -171,12 +170,12 @@ SIM <- function(lg1, lg2, a_idx, f_idx){
 
 #' Title
 #'
-#' @param lg1
-#' @param lg2
-#' @param fixed_idx
-#' @param avg_idx
+#' @param lg1 a dataframe
+#' @param lg2 a dataframe
+#' @param fixed_idx a vector
+#' @param avg_idx a vector
 #'
-#' @return
+#' @return a numeric number
 #' @export
 #'
 #' @noRd
@@ -196,11 +195,11 @@ FMI <- function(lg1, lg2, fixed_idx, avg_idx) {
 
 #' A function to compute the distance matrix w.r.t. FMI
 #'
-#' @param glottosubdata
-#' @param avg_idx
-#' @param fixed_idx
+#' @param glottosubdata a glottosubdata
+#' @param avg_idx a vector
+#' @param fixed_idx a vector
 #'
-#' @return
+#' @return a numeric number
 #' @export
 #'
 #' @noRd
@@ -234,20 +233,20 @@ glottodist_FMI <- function(glottosubdata, avg_idx, fixed_idx){
 
   colnames(dist_matrix) <- glottocodes
   rownames(dist_matrix) <- glottocodes
-  return(as.dist(dist_matrix))
+  return(stats::as.dist(dist_matrix))
 }
 
 
 #' Title
 #'
-#' @param glottodata
-#' @param idx_A
-#' @param idx_B
-#' @param avg_idx
-#' @param fixed_idx
-#' @param weights
+#' @param glottodata a dataframe
+#' @param idx_A a vector
+#' @param idx_B a vector
+#' @param avg_idx a vector
+#' @param fixed_idx a vector
+#' @param weights a vector
 #'
-#' @return
+#' @return a numeric number
 #' @export
 #'
 #' @noRd
@@ -271,11 +270,11 @@ gower_Indexing <- function(glottodata, idx_A, idx_B, avg_idx, fixed_idx, weights
 
 #' Title
 #'
-#' @param glottosubdata
-#' @param avg_idx
-#' @param fixed_idx
+#' @param glottosubdata a glottosubdata
+#' @param avg_idx a vector
+#' @param fixed_idx a vector
 #'
-#' @return
+#' @return a numeric number
 #' @export
 #'
 #' @noRd
@@ -310,7 +309,7 @@ glottodist_gower_Indexing <- function(glottosubdata, avg_idx, fixed_idx){
 
   colnames(dist_matrix) <- glottocodes
   rownames(dist_matrix) <- glottocodes
-  return(as.dist(dist_matrix))
+  return(stats::as.dist(dist_matrix))
 }
 
 

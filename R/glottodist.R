@@ -15,7 +15,7 @@
 #'
 #'
 #' @section Details:
-#' The `glottodist` function returns a `dist` object with respect to either Gower distance or Anderberg dissimilarity.
+#' The function ``glottodist'' returns a ``dist'' object with respect to either Gower distance or Anderberg dissimilarity.
 #' The Anderberg dissimilarity is defined as follows.
 #' Consider a categorical dataset \eqn{L} containing \eqn{N} objects \eqn{X_1, \cdots, X_N} defined over a set of \eqn{d} categorical features where \eqn{A_k} denotes the \eqn{k-}th feature.
 #' The feature \eqn{A_k} take \eqn{n_k} values in the given dataset which are denoted by \eqn{\mathcal{A}_k}. We regard `NA` as a new value.
@@ -242,8 +242,37 @@ glottodist_cleaned <- function(glottodata, ...){
 #' @examples
 #' glottosubdata_cnstn <- glottoget(glottodata = "demosubdata_cnstn")
 #' glottodist_subdata(glottosubdata = glottosubdata_cnstn, metric = "gower", index = "mc")
-#' glottodist_subdata(glottosubdata = glottosubdata_cnstn, metric = "gower", index = "relative", avg_idx = 1:4, fixed_idx = 5:7)
-#' glottodist_subdata(glottosubdata = glottosubdata_cnstn, index = "fmi", avg_idx = 1:4, fixed_idx = 5:7)
+#' glottodist_subdata(glottosubdata = glottosubdata_cnstn, metric = "gower", index = "relative",
+#'                    avg_idx = 1:4, fixed_idx = 5:7)
+#' glottodist_subdata(glottosubdata = glottosubdata_cnstn, index = "fmi",
+#'                    avg_idx = 1:4, fixed_idx = 5:7)
+#'
+#' @section Details:
+#' The function ``glottodist_subdata'' returns a ``dist'' object,
+#' the input is a glottosubdata object,
+#' it computes the indexing between languages,
+#' We refer to the observations of each language as constructions.
+#' The distance \eqn{d(A_i, B_j)} between two construction \eqn{A_i} in a language \eqn{A} and \eqn{B_j} in a language \eqn{B}
+#' is determined by the argument ``metric'',
+#' whose value is either ``gower'' or ``anderberg''.
+#' When ``index'' is ``mc'',
+#' it returns the ``matching constructions'':
+#'
+#' \eqn{MC(A, B) := \frac{1}{2|A|}\sum\limits_{A_i\in A}\min\limits_{B_j\in B}d(A_i, B_j) +
+#' \frac{1}{2|B|}\sum\limits_{B_i\in B}\min\limits_{A_j\in A}d(A_j, B_i)}.
+#' When ``metric'' is ``relative'',
+#' it returns the ``relative indexing'':
+#'
+#' \eqn{RI(A, B) = \frac{1}{|M|}\sum\limits_{s\in M}\textrm{AVG}_{A_i(s) = 1 \textrm{ and } B_j(s) = 1}d(A_i^F, B_j^F)},
+#' here \eqn{M} is a subset of variables given by the argument ``avg_idx'' and \eqn{F} is a subset of variables given by the argument ``fixed_idx'',
+#' and \eqn{A_i^F}, \eqn{B_j^F} are given by the constructions \eqn{A_i}, \eqn{B_j} restricted to ``fixed_idx'' \eqn{F}.
+#' When ``metric'' is ``fmi'',
+#' it returns the ``form-meaning indexing'':
+#'
+#' \eqn{FMI(A, B) = \frac{1}{|M||F|} \sum\limits_{s\in M, p\in F} SIM(\{(A_i^M(s)=1 \textrm{ and }A_i^F(p)=1)\},
+#' \{B_j^M(s) = 1 \textrm{ and }B_j^F(p) = 1\})},
+#' here \eqn{SIM(X, Y)=\min(|X|/|Y|, |Y|/|X|)}, if both \eqn{X} and \eqn{Y} are empty,
+#' \eqn{SIM(X, Y)=1}.
 #'
 #'
 glottodist_subdata <- function(glottosubdata, metric = NULL, index_type = NULL, avg_idx=NULL, fixed_idx=NULL){

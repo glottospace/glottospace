@@ -158,20 +158,20 @@ glottodist_anderberg <- function(glottodata, type, weights, glottodata_freq_list
   }
   colnames(dist_matrix) <- rownames(glottodata)
   rownames(dist_matrix) <- rownames(glottodata)
-  return(as.dist(dist_matrix))
+  return(stats::as.dist(dist_matrix))
 }
 
 #' Title
 #'
-#' @param glottodata
-#' @param glottodata_freq_list
-#' @param glottodata_val_counts
-#' @param idx_a
-#' @param idx_B
-#' @param type
-#' @param weights
+#' @param glottodata a dataframe
+#' @param glottodata_freq_list a list
+#' @param glottodata_val_counts a vector of counting numbers
+#' @param idx_a a index number
+#' @param idx_B a vector of indices
+#' @param type a vector of types given by structure of glottodata
+#' @param weights a vector of weights given by structure of glottodata
 #'
-#' @return
+#' @return a numeric number
 #' @export
 #'
 #'
@@ -201,15 +201,15 @@ anderberg_dissimilarity.a.B <- function(glottodata, glottodata_freq_list = NULL,
 
 #' Title
 #'
-#' @param glottodata
-#' @param glottodata_freq_list
-#' @param glottodata_val_counts
-#' @param idx_A
-#' @param idx_B
-#' @param type
-#' @param weights
+#' @param glottodata a dataframe
+#' @param glottodata_freq_list a list
+#' @param glottodata_val_counts a vector of counting numbers
+#' @param idx_A a vector of indices
+#' @param idx_B a vector of indices
+#' @param type a vector of types given by structure of glottodata
+#' @param weights a vector of weights given by structure of glottodata
 #'
-#' @return
+#' @return a numeric number
 #' @export
 #' @noRd
 anderberg_dissimilarity.A.B <- function(glottodata, glottodata_freq_list = NULL, glottodata_val_counts = NULL,
@@ -239,15 +239,15 @@ anderberg_dissimilarity.A.B <- function(glottodata, glottodata_freq_list = NULL,
 
 #' Title
 #'
-#' @param glottodata
-#' @param glottodata_freq_list
-#' @param glottodata_val_counts
-#' @param idx_A
-#' @param idx_B
-#' @param type
-#' @param weights
+#' @param glottodata a dataframe
+#' @param glottodata_freq_list a list
+#' @param glottodata_val_counts a vector of counting numbers
+#' @param idx_A a vector of indices
+#' @param idx_B a vector of indices
+#' @param type a vector of types given by structure of glottodata
+#' @param weights a vector of weights given by structure of glottodata
 #'
-#' @return
+#' @return a numeric number
 #' @export
 #' @noRd
 anderberg_dissimilarity.MC <- function(glottodata, glottodata_freq_list = NULL, glottodata_val_counts = NULL,
@@ -277,11 +277,11 @@ anderberg_dissimilarity.MC <- function(glottodata, glottodata_freq_list = NULL, 
 
 #' Title
 #'
-#' @param glottosubdata
-#' @param lg1
-#' @param lg2
+#' @param glottosubdata a glottosubdata
+#' @param lg1 a language dataframe in glottosubdata
+#' @param lg2 a language dataframe in glottosubdata
 #'
-#' @return
+#' @return a numeric number
 #' @export
 #' @noRd
 glottodist_anderberg_MC_pairing <- function(glottosubdata, lg1, lg2){
@@ -324,9 +324,9 @@ glottodist_anderberg_MC_pairing <- function(glottosubdata, lg1, lg2){
 
 #' Title
 #'
-#' @param glottosubdata
+#' @param glottosubdata a glottosubdata
 #'
-#' @return
+#' @return a numeric number
 #' @export
 #' @noRd
 glottodist_anderberg_MC <- function(glottosubdata){
@@ -370,21 +370,21 @@ glottodist_anderberg_MC <- function(glottosubdata){
   }
   colnames(dist_matrix) <- glottocodes
   rownames(dist_matrix) <- glottocodes
-  return(as.dist(dist_matrix))
+  return(stats::as.dist(dist_matrix))
 }
 
 
 #' Title
 #'
-#' @param glottodata
-#' @param glottodata_freq_list
-#' @param glottodata_val_counts
-#' @param idx_A
-#' @param idx_B
-#' @param type
-#' @param weights
+#' @param glottodata a dataframe
+#' @param glottodata_freq_list a list
+#' @param glottodata_val_counts a vector
+#' @param idx_A a vector
+#' @param idx_B a vector
+#' @param type a vector
+#' @param weights a vector
 #'
-#' @return
+#' @return a numeric number
 #' @export
 #' @noRd
 avg_anderberg <- function(glottodata, glottodata_freq_list = NULL, glottodata_val_counts = NULL,
@@ -421,17 +421,17 @@ avg_anderberg <- function(glottodata, glottodata_freq_list = NULL, glottodata_va
 
 #' Title
 #'
-#' @param glottodata
-#' @param glottodata_freq_list
-#' @param glottodata_val_counts
-#' @param idx_A
-#' @param idx_B
-#' @param avg_idx
-#' @param fixed_idx
-#' @param type
-#' @param weights
+#' @param glottodata a dataframe
+#' @param glottodata_freq_list a list
+#' @param glottodata_val_counts a vector
+#' @param idx_A a vector
+#' @param idx_B a vector
+#' @param avg_idx a vector
+#' @param fixed_idx a vector
+#' @param type a vector
+#' @param weights a vector
 #'
-#' @return
+#' @return a numeric number
 #' @export
 #' @noRd
 anderberg_Indexing <- function(glottodata, glottodata_freq_list = NULL, glottodata_val_counts = NULL,
@@ -472,11 +472,11 @@ anderberg_Indexing <- function(glottodata, glottodata_freq_list = NULL, glottoda
 
 #' Title
 #'
-#' @param glottosubdata
-#' @param avg_idx
-#' @param fixed_idx
+#' @param glottosubdata a glottosubdata
+#' @param avg_idx a vector
+#' @param fixed_idx a vector
 #'
-#' @return
+#' @return a numeric number
 #' @export
 #' @noRd
 #'
@@ -524,7 +524,7 @@ glottodist_anderberg_Indexing <- function(glottosubdata, avg_idx, fixed_idx){
 
   colnames(dist_matrix) <- glottocodes
   rownames(dist_matrix) <- glottocodes
-  return(as.dist(dist_matrix))
+  return(stats::as.dist(dist_matrix))
 }
 
 

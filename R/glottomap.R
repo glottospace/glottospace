@@ -23,6 +23,7 @@
 #' this gives global \href{https://www.hydrosheds.org/products/hydrobasins}{hydro-basins} (Level 03).
 #'
 #' @param ... Additional parameters to glottofilter
+#' @param rivers Do you want to plot rivers?
 #'
 #' @evalRd glottovars()
 #' @return a map created from a glotto(sub)data object and can be saved with glottosave()

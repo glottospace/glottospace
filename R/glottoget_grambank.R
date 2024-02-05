@@ -60,6 +60,10 @@ glottoget_grambankloadlocal <- function(dirpath){
   colnames(values) <- base::tolower(colnames(values))
   colnames(values)[colnames(values) == "language_id"] <- "lang_id"
 
+  lang_id <- NULL
+  parameter_id <- NULL
+  value <- NULL
+
   values <- subset(values, select=c(lang_id, parameter_id, value))
   values <- tidyr::pivot_wider(data = values, names_from = "parameter_id", values_from = "value")
 
