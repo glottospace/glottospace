@@ -634,11 +634,10 @@ as a new value. We also use the following notations:
     value $x$ in the dataset $L$. $\hat{p}_k(x)=\frac{f_k(x)}{N}$.
 
 The Anderberg dissimilarity of $X$ and $Y$ is defined in the form of:
-$d(X_i, X_j)=\frac{D}{D+S}$, where $$
-D = \sum_{k\in \{1\leq k \leq d: X_k \neq Y_k\}} w_k * \delta^{(k)}_{ij} * \tau_{ij}^{(k)}\left(\frac{1}{2\hat{p}_k(X_k)\hat{p}_k(Y_k)}\right)\frac{2}{n_k(n_k+1)},
-$$ and $$
-S = \sum_{k\in \{1\leq k \leq d: X_k = Y_k\}} w_k * \delta^{(k)}_{ij}\left(\frac{1}{\hat{p}_k(X_k)}\right)^2\frac{2}{n_k(n_k+1)}.
-$$
+$d(X_i, X_j)=\frac{D}{D+S}$, where
+$$D = \sum_{k\in \{1\leq k \leq d: X_k \neq Y_k\}} w_k * \delta^{(k)}_{ij} * \tau_{ij}^{(k)}\left(\frac{1}{2\hat{p}_k(X_k)\hat{p}_k(Y_k)}\right)\frac{2}{n_k(n_k+1)},$$
+and
+$$S = \sum_{k\in \{1\leq k \leq d: X_k = Y_k\}} w_k * \delta^{(k)}_{ij}\left(\frac{1}{\hat{p}_k(X_k)}\right)^2\frac{2}{n_k(n_k+1)}.$$
 
 The numeber $w_k$ gives the weight of the $k$-th feature, and the numebr
 $\delta^{(k)}_{ij}$ is equal to either $0$ or $1$. It is equal to $0$
