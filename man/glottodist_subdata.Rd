@@ -17,7 +17,7 @@ glottodist_subdata(
 
 \item{metric}{either "gower" or "anderberg"}
 
-\item{index_type}{either "mc" or "ri" or "fmi"}
+\item{index_type}{either "mci" or "ri" or "fmi"}
 
 \item{avg_idx}{the feature indices over which the average of distances is computed, it must be given when index_type is either "ri" or "fmi".}
 
@@ -38,10 +38,10 @@ we refer to the observations of each language as constructions.
 The distance \eqn{d(A_i, B_j)} between two constructions \eqn{A_i} in a language \eqn{A} and \eqn{B_j} in a language \eqn{B}
 is determined by the argument ``metric'',
 whose value is either "gower" or ``anderberg''.
-When ``index_type'' is ``mc'',
+When ``index_type'' is ``mci'',
 it returns the ``matching constructions'':
 
-\eqn{MC(A, B) := \frac{1}{2|A|}\sum\limits_{A_i\in A}\min\limits_{B_j\in B}d(A_i, B_j) +
+\eqn{MCI(A, B) := \frac{1}{2|A|}\sum\limits_{A_i\in A}\min\limits_{B_j\in B}d(A_i, B_j) +
 \frac{1}{2|B|}\sum\limits_{B_i\in B}\min\limits_{A_j\in A}d(A_j, B_i)}.
 When ``index_type'' is ``ri'',
 it returns the ``relative indexing'':
@@ -52,15 +52,15 @@ the restricted constructions \eqn{A_i^F} and \eqn{B_j^F} are defined as the cons
 When ``index_type'' is ``fmi'',
 it returns the ``form-meaning indexing'':
 
-\eqn{FMI(A, B) = \frac{1}{|M||F|} \sum\limits_{s\in M, p\in F} SIM(\{(A_i^M(s)=1 \textrm{ and }A_i^F(p)=1)\},
-\{B_j^M(s) = 1 \textrm{ and }B_j^F(p) = 1\})},
+\eqn{FMI(A, B) = \frac{1}{|M||F|} \sum\limits_{s\in M, p\in F} \Big(1 - SIM(\{(A_i^M(s)=1 \textrm{ and }A_i^F(p)=1)\},
+\{B_j^M(s) = 1 \textrm{ and }B_j^F(p) = 1\})\Big)},
 here \eqn{SIM(X, Y)=\min(|X|/|Y|, |Y|/|X|)}, if both \eqn{X} and \eqn{Y} are empty,
 \eqn{SIM(X, Y)=1}.
 }
 
 \examples{
 glottosubdata_cnstn <- glottoget(glottodata = "demosubdata_cnstn")
-glottodist_subdata(glottosubdata = glottosubdata_cnstn, metric = "gower", index_type = "mc")
+glottodist_subdata(glottosubdata = glottosubdata_cnstn, metric = "gower", index_type = "mci")
 glottodist_subdata(glottosubdata = glottosubdata_cnstn, metric = "gower", index_type = "ri",
                    avg_idx = 1:4, fixed_idx = 5:7)
 glottodist_subdata(glottosubdata = glottosubdata_cnstn, index_type = "fmi",
