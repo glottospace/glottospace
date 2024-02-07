@@ -62,6 +62,7 @@
 glottomap <- function(glottodata = NULL, color = NULL, label = NULL, type = NULL, ptsize = NULL, alpha = NULL, lbsize = NULL,
                       palette = NA, rivers = FALSE, nclass = NULL, filename = NULL, projection = NULL,
                       glotto_title = NULL, mode = NULL, basemap = "country",...){
+  rlang::check_installed("tmap", reason = "to use `glottomap()`", version = "3.9")
  # palette <- glottocolpal(palette = palette)
   if(is.null(type)){type <- "static"}
 
