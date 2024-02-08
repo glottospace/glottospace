@@ -3,8 +3,8 @@ Package: glottospace
 Title: Language Mapping and Geospatial Analysis of Linguistic and Cultural
     Data
 Version: 0.0.113
-Author: Sietze Norder
-Maintainer: Sietze Norder <mail@sietzenorder.nl>
+Author: Sietze Norder, Rui Dong
+Maintainer: Rui Dong <ruidongshuai@gmail.com>
 Description: Streamlined workflows for geolinguistic analysis, including:
     accessing global linguistic and cultural databases, data import, data
     entry, data cleaning, data exploration, mapping, visualization and

@@ -3,7 +3,6 @@ output:
   github_document: 
     toc: no
     toc_depth: 2
-bibliography: bibliography.bib
 always_allow_html: true
 ---
 
@@ -262,7 +261,7 @@ glottodistances: calculating disimilarities between languages based on linguisti
 
 The `glottodist` can compute two types of distance/dissimilarity by setting the argument `metric`.
 When `metric="gower"`, it returns the Gower distance,
-when `metric="anderberg"`, it returns the Anderberg dissimarity [@similarity].
+when `metric="anderberg"`, it returns the Anderberg dissimarity.
 The default value is `metric="gower"`.
 
 ```{r glottodist}

@@ -2,7 +2,7 @@
 % Please edit documentation in R/glottodist.R
 \name{glottodist_subdata}
 \alias{glottodist_subdata}
-\title{Calculate indexing distances between languages}
+\title{Calculate construction-based distances between languages}
 \usage{
 glottodist_subdata(
   glottosubdata,
@@ -27,30 +27,30 @@ glottodist_subdata(
 object of class \code{dist}
 }
 \description{
-Calculate indexing distances between languages
+Calculate construction-based distances between languages
 }
 \section{Details}{
 
 The function ``glottodist_subdata'' returns a ``dist'' object,
 the input is a glottosubdata object,
-it computes the indexing between languages,
+it computes the construction-based distance between languages,
 we refer to the observations of each language as constructions.
 The distance \eqn{d(A_i, B_j)} between two constructions \eqn{A_i} in a language \eqn{A} and \eqn{B_j} in a language \eqn{B}
 is determined by the argument ``metric'',
-whose value is either "gower" or ``anderberg''.
+whose value is either ``gower'' or ``anderberg''.
 When ``index_type'' is ``mci'',
-it returns the ``matching constructions'':
+it returns the ``matching constructions index'':
 
 \eqn{MCI(A, B) := \frac{1}{2|A|}\sum\limits_{A_i\in A}\min\limits_{B_j\in B}d(A_i, B_j) +
 \frac{1}{2|B|}\sum\limits_{B_i\in B}\min\limits_{A_j\in A}d(A_j, B_i)}.
 When ``index_type'' is ``ri'',
-it returns the ``relative indexing'':
+it returns the ``relative index'':
 
 \eqn{RI(A, B) = \frac{1}{|M|}\sum\limits_{s\in M}\textrm{AVG}_{A_i(s) = 1 \textrm{ and } B_j(s) = 1}d(A_i^F, B_j^F)},
 here \eqn{M} is the indices of a subset of variables given by the argument ``avg_idx'' and \eqn{F} is the indices of a subset of variables given by the argument ``fixed_idx'',
 the restricted constructions \eqn{A_i^F} and \eqn{B_j^F} are defined as the constructions \eqn{A_i}, \eqn{B_j} restricted to ``fixed_idx'' \eqn{F}.
 When ``index_type'' is ``fmi'',
-it returns the ``form-meaning indexing'':
+it returns the ``form-meaning index'':
 
 \eqn{FMI(A, B) = \frac{1}{|M||F|} \sum\limits_{s\in M, p\in F} \Big(1 - SIM(\{(A_i^M(s)=1 \textrm{ and }A_i^F(p)=1)\},
 \{B_j^M(s) = 1 \textrm{ and }B_j^F(p) = 1\})\Big)},

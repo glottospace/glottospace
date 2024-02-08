@@ -619,8 +619,7 @@ linguistic/cultural features.
 The `glottodist` can compute two types of distance/dissimilarity by
 setting the argument `metric`. When `metric="gower"`, it returns the
 Gower distance, when `metric="anderberg"`, it returns the Anderberg
-dissimarity (Boriah, Chandola, and Kumar, n.d.). The default value is
-`metric="gower"`.
+dissimarity. The default value is `metric="gower"`.
 
 ``` r
 # In order to be able to calculate linguistic distances a structure table is required, that's why we specify meta = TRUE. In case you have glottodata without a structure table, you can add it (see examples in the  glottocreate() section).
@@ -810,16 +809,3 @@ glottomap <- glottomap(glottodata)
 #> all geometries
 # glottosave(glottomap, filename = "glottomap") 
 ```
-
-<div id="refs" class="references csl-bib-body hanging-indent">
-
-<div id="ref-similarity" class="csl-entry">
-
-Boriah, Shyam, Varun Chandola, and Vipin Kumar. n.d. “Similarity
-Measures for Categorical Data: A Comparative Evaluation.” In
-*Proceedings of the 2008 SIAM International Conference on Data Mining
-(SDM)*, 243–54. <https://doi.org/10.1137/1.9781611972788.22>.
-
-</div>
-
-</div>
