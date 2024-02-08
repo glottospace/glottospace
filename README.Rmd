@@ -261,8 +261,8 @@ Quantify differences or disimilarities between languages
 glottodistances: calculating disimilarities between languages based on linguistic/cultural features.
 
 The `glottodist` can compute two types of distance/dissimilarity by setting the argument `metric`.
-When `metric="gower"`, it returns the "Gower distance",
-when `metric="anderberg"`, it returns the "Anderberg dissimarity" [@similarity].
+When `metric="gower"`, it returns the Gower distance,
+when `metric="anderberg"`, it returns the Anderberg dissimarity [@similarity].
 The default value is `metric="gower"`.
 
 ```{r glottodist}
@@ -278,10 +278,10 @@ The function `glottodist_subdata` contains three types of disimilarities,
 i.e., 
 "matching constructions index (MCI)", "relative index (RI)", and "form-meaning index (FMI)" based on either gower distance or Anderberg distance.
 
-If two languages $A$ and $B$ contain constructions $\{A_i\}_{i\in I}$ and $\{B_j\}_{j\in J}$ respectively.
+Suppose $A$ and $B$ are two languages containing constructions $\{A_i\}_{i\in I}$ and $\{B_j\}_{j\in J}$ respectively.
 
-The distance $d(A_i, B_j)$ between two constructions $A_i$ and $B_j$ is determined by the argument "metric",
-whose value is either "gower" or "anderberg".
+The distance $d(A_i, B_j)$ between two constructions $A_i$ and $B_j$ is determined by the argument `metric`,
+whose value is either `gower` or `anderberg`.
 The "matching constructions" is defined as:
 $$
 MCI(A, B) := \frac{1}{2|A|}\sum\limits_{A_i\in A}\min\limits_{B_j\in B}d(A_i, B_j) +

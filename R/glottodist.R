@@ -55,7 +55,8 @@
 #'
 glottodist <- function(glottodata, metric="gower"){
   # Calaulate the dist
-  params <- glottodist_cleaned(glottodata = glottodata)
+  params <- glottodist_cleaned(glottodata = glottodata) |>
+    suppressMessages()
 
   glottodata <- params$glottodata
   weights <- params$weights

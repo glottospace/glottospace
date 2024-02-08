@@ -618,31 +618,15 @@ linguistic/cultural features.
 
 The `glottodist` can compute two types of distance/dissimilarity by
 setting the argument `metric`. When `metric="gower"`, it returns the
-“Gower distance”, when `metric="anderberg"`, it returns the “Anderberg
-dissimarity” (Boriah, Chandola, and Kumar, n.d.). The default value is
+Gower distance, when `metric="anderberg"`, it returns the Anderberg
+dissimarity (Boriah, Chandola, and Kumar, n.d.). The default value is
 `metric="gower"`.
 
 ``` r
 # In order to be able to calculate linguistic distances a structure table is required, that's why we specify meta = TRUE. In case you have glottodata without a structure table, you can add it (see examples in the  glottocreate() section).
 glottodata <- glottoget("demodata", meta = TRUE)
 glottodist_gower <- glottodist(glottodata = glottodata, metric = "gower")
-#> Values in binary columns (symm/asymm) recoded to TRUE/FALSE
-#> Missing values recoded to NA
-#> All variables have two or more levels (excluding NA)
-#> 
-#>  glottodata has been cleaned.
-#> 
-#>  3 variables remaining
-#> All variables have two or more levels (excluding NA)
 glottodist_anderberg <- glottodist(glottodata = glottodata, metric = "anderberg")
-#> Values in binary columns (symm/asymm) recoded to TRUE/FALSE
-#> Missing values recoded to NA
-#> All variables have two or more levels (excluding NA)
-#> 
-#>  glottodata has been cleaned.
-#> 
-#>  3 variables remaining
-#> All variables have two or more levels (excluding NA)
 ```
 
 ## glottodist_subdata
@@ -653,12 +637,12 @@ types of disimilarities, i.e., “matching constructions index (MCI)”,
 “relative index (RI)”, and “form-meaning index (FMI)” based on either
 gower distance or Anderberg distance.
 
-If two languages $A$ and $B$ contain constructions $\{A_i\}_{i\in I}$
-and $\{B_j\}_{j\in J}$ respectively.
+Suppose $A$ and $B$ are two languages containing constructions
+$\{A_i\}_{i\in I}$ and $\{B_j\}_{j\in J}$ respectively.
 
 The distance $d(A_i, B_j)$ between two constructions $A_i$ and $B_j$ is
-determined by the argument “metric”, whose value is either “gower” or
-“anderberg”. The “matching constructions” is defined as: $$
+determined by the argument `metric`, whose value is either `gower` or
+`anderberg`. The “matching constructions” is defined as: $$
 MCI(A, B) := \frac{1}{2|A|}\sum\limits_{A_i\in A}\min\limits_{B_j\in B}d(A_i, B_j) +
 \frac{1}{2|B|}\sum\limits_{B_i\in B}\min\limits_{A_j\in A}d(A_j, B_i).
 $$
@@ -735,14 +719,6 @@ linguistic, cultural, and environmental features.
 ``` r
 glottodata <- glottoget("demodata", meta = TRUE)
 glottodist <- glottodist(glottodata = glottodata)
-#> Values in binary columns (symm/asymm) recoded to TRUE/FALSE
-#> Missing values recoded to NA
-#> All variables have two or more levels (excluding NA)
-#> 
-#>  glottodata has been cleaned.
-#> 
-#>  3 variables remaining
-#> All variables have two or more levels (excluding NA)
 glottoplot(glottodist = glottodist)
 ```
 
