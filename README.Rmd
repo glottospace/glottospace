@@ -276,33 +276,7 @@ glottodist_anderberg <- glottodist(glottodata = glottodata, metric = "anderberg"
 You can also compute the differences or disimilarities between languages based on constructions.
 The function `glottodist_subdata` contains three types of disimilarities,
 i.e., 
-"matching constructions index (MCI)", "relative index (RI)", and "form-meaning index (FMI)" based on either gower distance or Anderberg distance.
-
-Suppose $A$ and $B$ are two languages containing constructions $\{A_i\}_{i\in I}$ and $\{B_j\}_{j\in J}$ respectively.
-
-The distance $d(A_i, B_j)$ between two constructions $A_i$ and $B_j$ is determined by the argument `metric`,
-whose value is either `gower` or `anderberg`.
-The "matching constructions" is defined as:
-$$
-MCI(A, B) := \frac{1}{2|A|}\sum\limits_{A_i\in A}\min\limits_{B_j\in B}d(A_i, B_j) +
-\frac{1}{2|B|}\sum\limits_{B_i\in B}\min\limits_{A_j\in A}d(A_j, B_i).
-$$
-
-The "relative constructions" is defined as:
-$$
-RI(A, B) = \frac{1}{|M|}\sum\limits_{s\in M}\textrm{AVG}_{A_i(s) = 1 \textrm{ and } B_j(s) = 1}d(A_i^F, B_j^F),
-$$
-here $M$ is the indices of a subset of variables given by the argument `avg_idx` and $F$ is the indices of a subset of variables given by the argument `fixed_idx`,
-the restricted constructions $A_i^F$ and $B_j^F$ are defined as the constructions $A_i$, $B_j$ restricted to `fixed_idx` $F$.
-
-The "form-meaning index" is defined as:
-$$
-FMI(A, B) = \frac{1}{|M||F|} \sum\limits_{s\in M, p\in F} \Big(1 - SIM(\{(A_i^M(s)=1 \textrm{ and }A_i^F(p)=1)\},
-\{B_j^M(s) = 1 \textrm{ and }B_j^F(p) = 1\})\Big),
-$$
-here $SIM(X, Y)=\min(|X|/|Y|, |Y|/|X|)$, if both $X$ and $Y$ are empty,
-$SIM(X, Y)=1$.
-
+"Matching Constructions Index (MCI)", "Relative Index (RI)", and "Form-Meaning Index (FMI)" based on either gower distance or Anderberg distance.
 
 For example, suppose if the language "tani1257" contains three constructions "tani1257_0001", "tani1257_0002", "tani1257_0003", 
 and the language "yucu1253" contains two constructions "yucu1253_0001", "yucu1253_0002".
@@ -314,21 +288,27 @@ knitr::kable(glottospace::glottoget("demosubdata_cnstn")[["tani1257"]])
 knitr::kable(glottospace::glottoget("demosubdata_cnstn")[["yucu1253"]])
 ```
 
-The matching constructions index of tani1257 and yucu1253 w.r.t. gower distance is given by 
+The Matching Constructions Index of tani1257 and yucu1253 w.r.t. gower distance is given by 
 ```{r glottodist_subdata_mci}
 glottoget(glottodata = "demosubdata_cnstn") |>
   glottodist_subdata(metric = "gower", index_type = "mci") 
 ```
 
-If we restrict the constructions to variables "var005", "var006" and "var007",
-and take the sum of averaging gower distances of the restricted constructions over variables "var001", "var002", "var003", "var004",
-the relative index of tani1257 and yucu1253 w.r.t. gower distance is given by 
-```{r glottodist_subdata_ri}
+If the meaning features are "var001", "var002", "var003", "var004",
+and the form features are "var005", "var006", "var007",
+the Atomic Meaning Index of tani1257 and yucu1253 w.r.t. gower distance is given by 
+```{r glottodist_subdata_si}
 glottoget(glottodata = "demosubdata_cnstn") |>
   glottodist_subdata(metric = "gower", index_type = "ri",
                      avg_idx = 1:4, fixed_idx = 5:7)
 ```
-and the "form-meaning index" is given by
+and the Atomic Form Index of tani1257 and yucu1253 w.r.t. gower distance is given by 
+```{r glottodist_subdata_fi}
+glottoget(glottodata = "demosubdata_cnstn") |>
+  glottodist_subdata(metric = "gower", index_type = "ri",
+                     avg_idx = 5:7, fixed_idx = 1:4)
+```
+and the Form-Meaning Index is given by
 ```{r glottodist_subdata_fmi}
 glottoget(glottodata = "demosubdata_cnstn") |>
   glottodist_subdata(index_type = "fmi",
