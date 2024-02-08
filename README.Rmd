@@ -3,6 +3,7 @@ output:
   github_document: 
     toc: no
     toc_depth: 2
+bibliography: bibliography.bib
 always_allow_html: true
 ---
 
@@ -261,40 +262,14 @@ glottodistances: calculating disimilarities between languages based on linguisti
 
 The `glottodist` can compute two types of distance/dissimilarity by setting the argument `metric`.
 When `metric="gower"`, it returns the "Gower distance",
-when `metric="anderberg"`, it returns the "Anderberg dissimarity".
+when `metric="anderberg"`, it returns the "Anderberg dissimarity" [@similarity].
 The default value is `metric="gower"`.
-
-Regarding to the "Anderberg dissimarity",
-it is defined as follows.
-Consider a categorical dataset $L$ containing $N$ objects $X_1, \cdots, X_N$ defined over a set of $d$ categorical features where $A_k$ denotes the $k$-th feature.
-The feature $A_k$ take $n_k$ values in the given dataset which are denoted by $\mathcal{A}_k$. We regard `NA` as a new value.
-We also use the following notations:
-
-1. $f_k(x)$: The number of times feature $A_k$ takes the value $x$ in the dataset $L$.
-If $x\notin\mathcal{A}_k$, $f_k(x)=0$.
-1. $\hat{p}_k(x)$: The sample frequency of feature $A_k$ to take the value $x$ in the dataset $L$. $\hat{p}_k(x)=\frac{f_k(x)}{N}$.
-
-The Anderberg dissimilarity of $X$ and $Y$ is defined in the form of:
-$d(X_i, X_j)=\frac{D}{D+S}$,
-where 
-$$D = \sum_{k\in \{1\leq k \leq d: X_k \neq Y_k\}} w_k * \delta^{(k)}_{ij} * \tau_{ij}^{(k)}\left(\frac{1}{2\hat{p}_k(X_k)\hat{p}_k(Y_k)}\right)\frac{2}{n_k(n_k+1)},$$
-and
-$$S = \sum_{k\in \{1\leq k \leq d: X_k = Y_k\}} w_k * \delta^{(k)}_{ij}\left(\frac{1}{\hat{p}_k(X_k)}\right)^2\frac{2}{n_k(n_k+1)}.$$
-
-The numeber $w_k$ gives the weight of the $k$-th feature,
-and the numebr $\delta^{(k)}_{ij}$ is equal to either $0$ or $1$.
-It is equal to $0$ when the type of the $k$-th feature is asymmetric binary and both values of $X_i$ and $X_j$ are $0$,
-or when either value of the $k$-th feature is missing,
-otherwise, it is equal to $1$.
-When $X_k \neq Y_k$ and the type of $A_k$ is "ordered",
-$\tau_{ij}^{(k)}$ is equal to the normalized difference of $X_k$ and $Y_k$,
-otherwise $\tau_{ij}^{(k)}$ is equal to $1$.
 
 ```{r glottodist}
 # In order to be able to calculate linguistic distances a structure table is required, that's why we specify meta = TRUE. In case you have glottodata without a structure table, you can add it (see examples in the  glottocreate() section).
 glottodata <- glottoget("demodata", meta = TRUE)
-glottodist <- glottodist(glottodata = glottodata, metric = "gower")
-
+glottodist_gower <- glottodist(glottodata = glottodata, metric = "gower")
+glottodist_anderberg <- glottodist(glottodata = glottodata, metric = "anderberg")
 ```
 
 ## glottodist_subdata
