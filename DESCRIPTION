@@ -29,7 +29,8 @@ Imports:
     units,
     writexl,
     rvest,
-    tmap (>= 3.99.9000)
+    tmap (>= 3.99.9000),
+    TDA
 Suggests: 
     cluster,
     grDevices,
@@ -49,5 +50,5 @@ Language: en-US
 LazyData: true
 RoxygenNote: 7.2.3
 Config/testthat/edition: 3
-Remotes:  
+Remotes: 
     https://github.com/r-tmap/tmap

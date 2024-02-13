@@ -531,3 +531,117 @@ glottomap_glottocode <- function(glottocode){
   plot(sf::st_transform(sf::st_as_sfc(continents), paste0("+proj=ortho +lat_0=",lat0, " +lon_0=",lon0) ), col = "lightgrey", add = TRUE)
   plot(sf::st_transform(sf::st_as_sfc(language), paste0("+proj=ortho +lat_0=",lat0, " +lon_0=",lon0) ), col = "darkred", pch = 1, cex = 3, lwd = 2, add = TRUE)
 }
+
+
+#' Title
+#'
+#' @param glottodata a glottodata with geometry type of `POINT`.
+#' @param filt an object of Vietoris-Rips filtration, if it is `NULL`, it will be computed from glottodata.
+#' @param dist_mtx a distance matrix corresponding to geographic distances of `glottodata`, if it is `NULL`, it will be computed from glottodata.
+#' @param r the radius of buffers of all the points in glottodata, the unit of `r` is "100km".
+#' @param maxscale a numeric number, maximum value of the rips filtration.
+#'
+#' @return
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' awk <- glottopoints[glottopoints$family == "Arawakan", ]
+#' glottomap_rips_filt(glottodata = awk, r = 6, maxscale = 8)
+#' }
+glottomap_rips_filt <- function(glottodata, filt=NULL, dist_mtx=NULL, r=0, maxscale){
+  if (all(sf::st_is(glottodata, "POINT")) != TRUE){
+    stop("The geometry types of glottodata must be 'POINT'.")
+  } else{
+    glottogmtry <- sf::st_geometry(glottodata)
+    if (is.null(dist_mtx)){
+      dist_mtx <- units::set_units(sf::st_distance(glottogmtry), "100km")
+    }
+
+    if (is.null(filt)){
+      filt <- TDA::ripsFiltration(dist_mtx, maxdimension = 1,
+                                  maxscale = maxscale, dist = "arbitrary")
+    }
+
+    r <- units::set_units(r, "100km")
+    buffers <- sf::st_buffer(glottogmtry, dist = r / 2)
+
+    polygons_r <- filt[["cmplx"]][units::set_units(filt$values, "100km") < r]
+
+    mult_plg <- polygons_r |>
+      lapply(
+        FUN = function(x){
+          if (length(x) == 2){
+            glottogmtry[x] |>
+              sf::st_combine() |>
+              sf::st_cast("LINESTRING")
+          } else if (length(x) == 3){
+            glottogmtry[x] |>
+              sf::st_combine() |>
+              sf::st_cast("POLYGON")
+          }
+        }
+      )
+    mult_plg <- Filter(Negate(is.null), mult_plg)
+
+    bbox <- sf::st_bbox(glottogmtry)
+    bboxe <- bbox_expand(bbox, f = 0.1)
+    wrld_projbb <- sf::st_crop(sf::st_geometry(glottospace::worldpol), bboxe)
+
+    plg <- tmap::tm_shape(wrld_projbb) +
+      tmap::tm_polygons(fill_alpha=.2)
+
+    if (length(mult_plg) > 0) {
+      for (idx in 1:length(mult_plg)){
+        if (sf::st_is(mult_plg[[idx]], "LINESTRING")) {
+          plg <- plg +
+            tmap::tm_shape(mult_plg[[idx]]) +
+            tmap::tm_lines(fill_alpha=0.5, col = "red")
+        } else if (sf::st_is(mult_plg[[idx]], "POLYGON")) {
+          plg <- plg +
+            tmap::tm_shape(mult_plg[[idx]]) +
+            tmap::tm_polygons(fill_alpha=0.5, fill = "red")
+        }
+      }
+    }
+
+    plg <- plg +
+      tmap::tm_shape(buffers) +
+      tmap::tm_polygons(fill_alpha = 0.05, fill = "green") +
+      tmap::tm_shape(glottogmtry) +
+      tmap::tm_dots()
+
+    return(plg)
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
