@@ -17,12 +17,15 @@ glottomap_rips_filt(glottodata, filt = NULL, dist_mtx = NULL, r = 0, maxscale)
 
 \item{maxscale}{a numeric number, maximum value of the rips filtration.}
 }
+\value{
+a tmap
+}
 \description{
 Title
 }
 \examples{
-\dontrun{
+glottopoints <- glottofilter(continent = "South America")
 awk <- glottopoints[glottopoints$family == "Arawakan", ]
 glottomap_rips_filt(glottodata = awk, r = 6, maxscale = 8)
-}
+
 }

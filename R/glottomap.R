@@ -541,14 +541,14 @@ glottomap_glottocode <- function(glottocode){
 #' @param r the radius of buffers of all the points in glottodata, the unit of `r` is "100km".
 #' @param maxscale a numeric number, maximum value of the rips filtration.
 #'
-#' @return
+#' @return a tmap
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' glottopoints <- glottofilter(continent = "South America")
 #' awk <- glottopoints[glottopoints$family == "Arawakan", ]
 #' glottomap_rips_filt(glottodata = awk, r = 6, maxscale = 8)
-#' }
+#'
 glottomap_rips_filt <- function(glottodata, filt=NULL, dist_mtx=NULL, r=0, maxscale){
   if (all(sf::st_is(glottodata, "POINT")) != TRUE){
     stop("The geometry types of glottodata must be 'POINT'.")
@@ -582,39 +582,43 @@ glottomap_rips_filt <- function(glottodata, filt=NULL, dist_mtx=NULL, r=0, maxsc
           }
         }
       )
+
     mult_plg <- Filter(Negate(is.null), mult_plg)
+
+    is_plg <- mult_plg |>
+      sapply(FUN = function(x){
+        sf::st_is(x, "POLYGON")
+      }) |>
+      which()
+    plg_lst <- mult_plg[is_plg]
+    mult_plg_sfc <- sf::st_union(do.call("c", plg_lst))
+
+    is_line <- mult_plg |>
+      sapply(FUN = function(x){
+        sf::st_is(x, "LINESTRING")
+      }) |>
+      which()
+    line_lst <- mult_plg[is_line]
+    mult_line_sfc <- sf::st_combine(do.call("c", line_lst))
+
+
 
     bbox <- sf::st_bbox(glottogmtry)
     bboxe <- bbox_expand(bbox, f = 0.1)
     wrld_projbb <- sf::st_crop(sf::st_geometry(glottospace::worldpol), bboxe)
 
-    plg <- tmap::tm_shape(wrld_projbb) +
-      tmap::tm_polygons(fill_alpha=.2)
-
-    if (length(mult_plg) > 0) {
-      for (idx in 1:length(mult_plg)){
-        if (sf::st_is(mult_plg[[idx]], "LINESTRING")) {
-          plg <- plg +
-            tmap::tm_shape(mult_plg[[idx]]) +
-            tmap::tm_lines(fill_alpha=0.5, col = "red")
-        } else if (sf::st_is(mult_plg[[idx]], "POLYGON")) {
-          plg <- plg +
-            tmap::tm_shape(mult_plg[[idx]]) +
-            tmap::tm_polygons(fill_alpha=0.5, fill = "red")
-        }
-      }
-    }
-
-    plg <- plg +
+    plt <- tmap::tm_shape(wrld_projbb) +
+      tmap::tm_polygons(fill_alpha=.5, fill="lightgrey") +
       tmap::tm_shape(buffers) +
-      tmap::tm_polygons(fill_alpha = 0.05, fill = "green") +
-      tmap::tm_shape(glottogmtry) +
-      tmap::tm_dots()
+      tmap::tm_polygons(fill_alpha = 0.05, fill = "blue") +
+      tmap::tm_shape(mult_plg_sfc) +
+      tmap::tm_polygons(fill = "pink") +
+      tmap::tm_shape(mult_line_sfc) +
+      tmap::tm_lines(col = "red")
 
-    return(plg)
+    return(plt)
   }
 }
-
 
 
 
