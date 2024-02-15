@@ -38,5 +38,7 @@ Title
 glottopoints <- glottofilter(continent = "South America")
 awk <- glottopoints[glottopoints$family == "Arawakan", ]
 glottomap_rips_filt(glottodata = awk, r = 6, maxscale = 8)
+\dontrun{
 glottomap_rips_filt(glottodata = awk, r = 6, maxscale = 8, is_animate=TRUE)
+}
 }

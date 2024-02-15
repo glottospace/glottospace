@@ -552,7 +552,9 @@ glottomap_glottocode <- function(glottocode){
 #' glottopoints <- glottofilter(continent = "South America")
 #' awk <- glottopoints[glottopoints$family == "Arawakan", ]
 #' glottomap_rips_filt(glottodata = awk, r = 6, maxscale = 8)
+#' \dontrun{
 #' glottomap_rips_filt(glottodata = awk, r = 6, maxscale = 8, is_animate=TRUE)
+#' }
 glottomap_rips_filt <- function(glottodata, r=0, maxscale, is_animate=FALSE, length.out = 20,
                                 movie.name="filtration.gif"){
   if (is_animate){

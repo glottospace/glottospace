@@ -377,10 +377,34 @@ glottomap(glottopoints[glottopoints$family %in% families$family[1:5], ], basemap
           color = "family", palette = "paired", alpha = .9)
 ```
 
-## Rips filtration visualization
+## Vietoris-Rips filtration visualization
 
+You can visualize the topological pattern of spatial distribution of languages using function `glottomap_rips_filt()`.
+More technically, 
+this method of visualization is referred to as ["Vietoris-Rips filtration"](https://en.wikipedia.org/wiki/Vietoris%E2%80%93Rips_filtration).
+In the function `glottomap_rips_filt()`, the default units of `r` and `maxscale` are both 100km, corresponding to the buffer radius of each language and the maximum value of the Vietoris-Rips filtration.
+
+For example, 
+if we pick up the languages of Arawakan family, and set the buffer radius of each language as 600 km, the maximum value of the Vietoris-Rips filtration as 700 km, we can see that there is a circluar structure near the border around Colombia, Peru and Brazil:
+```{r glottomap_rips_filt_static}
+glottopoints <- glottofilter(continent = "South America")
+# Pick up all the Arawakan languages
+awk <- glottopoints[glottopoints$family == "Arawakan", ] 
+# Create a static Vietoris-Rips filtration map 
+glottomap_rips_filt(glottodata = awk, r = 6, maxscale = 7, is_animate = FALSE) 
+```
+
+If you set the the argument `is_animate = TRUE`, you can then generate a GIF file:
+```{r glottomap_rips_filt_animate, eval = FALSE}
+glottopoints <- glottofilter(continent = "South America")
+# Pick up all the Arawakan languages
+awk <- glottopoints[glottopoints$family == "Arawakan", ] 
+# Create a GIF file of Vietoris-Rips filtration map 
+glottomap_rips_filt(glottodata = awk, r = 8, maxscale = 10, is_animate = TRUE, 
+                    length.out = 30, movie.name = "filtration.gif") 
+```
 <center>
-<img width="50%" src="man/figures/awk_filt.gif"/>
+<img width="75%" src="man/figures/awk_filt.gif"/>
 </center>
 
 
@@ -402,8 +426,6 @@ glottospacedata <- glottospace(glottodata)
 glottomap <- glottomap(glottodata)
 # glottosave(glottomap, filename = "glottomap") 
 ```
-
-
 
 
 
