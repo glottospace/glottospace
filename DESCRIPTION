@@ -30,7 +30,8 @@ Imports:
     writexl,
     rvest,
     tmap (>= 3.99.9000),
-    TDA
+    TDA,
+    animation
 Suggests: 
     cluster,
     grDevices,

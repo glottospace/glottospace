@@ -532,7 +532,6 @@ glottomap_glottocode <- function(glottocode){
   plot(sf::st_transform(sf::st_as_sfc(language), paste0("+proj=ortho +lat_0=",lat0, " +lon_0=",lon0) ), col = "darkred", pch = 1, cex = 3, lwd = 2, add = TRUE)
 }
 
-
 #' Title
 #'
 #' @param glottodata a glottodata with geometry type of `POINT`.
@@ -542,31 +541,48 @@ glottomap_glottocode <- function(glottocode){
 #' @param maxscale a numeric number, maximum value of the rips filtration.
 #'
 #' @return a tmap
-#' @export
 #'
 #' @examples
 #' glottopoints <- glottofilter(continent = "South America")
 #' awk <- glottopoints[glottopoints$family == "Arawakan", ]
 #' glottomap_rips_filt(glottodata = awk, r = 6, maxscale = 8)
-#'
-glottomap_rips_filt <- function(glottodata, filt=NULL, dist_mtx=NULL, r=0, maxscale){
+
+glottomap_rips_filt <- function(glottodata, r=0, maxscale, is_animate=FALSE, length.out = 20,
+                                movie.name="filtration.gif"){
+  if (is_animate){
+    output <- glottomap_rips_filt_animate(glottodata = glottodata, r = r, maxscale = maxscale,
+                                          length.out = length.out, movie.name = movie.name)
+  } else if (!is_animate){
+    output <- glottomap_rips_filt_static(glottodata = glottodata, r = r, maxscale = maxscale)
+  }
+  return(output)
+}
+
+
+glottomap_rips_filt_static <- function(glottodata, r=0, maxscale){
   if (all(sf::st_is(glottodata, "POINT")) != TRUE){
     stop("The geometry types of glottodata must be 'POINT'.")
   } else{
     glottogmtry <- sf::st_geometry(glottodata)
-    if (is.null(dist_mtx)){
-      dist_mtx <- units::set_units(sf::st_distance(glottogmtry), "100km")
-    }
 
-    if (is.null(filt)){
-      filt <- TDA::ripsFiltration(dist_mtx, maxdimension = 1,
-                                  maxscale = maxscale, dist = "arbitrary")
-    }
+    buffers <- sf::st_buffer(glottogmtry, dist =  units::set_units(r, "100km") / 2)
 
-    r <- units::set_units(r, "100km")
-    buffers <- sf::st_buffer(glottogmtry, dist = r / 2)
 
-    polygons_r <- filt[["cmplx"]][units::set_units(filt$values, "100km") < r]
+    bbox <- sf::st_bbox(glottogmtry)
+    bboxe <- bbox_expand(bbox, f = 0.1)
+    wrld_projbb <- sf::st_crop(sf::st_geometry(glottospace::worldpol), bboxe)
+
+    plt <- tmap::tm_shape(wrld_projbb) +
+      tmap::tm_polygons(fill_alpha=.5, fill="lightgrey") +
+      tmap::tm_shape(buffers) +
+      tmap::tm_polygons(fill_alpha = 0.1, col = "blue", col_alpha = 0.3, fill = "blue")
+
+    dist_mtx <- units::set_units(sf::st_distance(glottogmtry), "100km")
+    filt <- TDA::ripsFiltration(dist_mtx, maxdimension = 1,
+                                maxscale = maxscale, dist = "arbitrary")
+
+
+    polygons_r <- filt[["cmplx"]][filt$values <= r]
 
     mult_plg <- polygons_r |>
       lapply(
@@ -585,41 +601,201 @@ glottomap_rips_filt <- function(glottodata, filt=NULL, dist_mtx=NULL, r=0, maxsc
 
     mult_plg <- Filter(Negate(is.null), mult_plg)
 
-    is_plg <- mult_plg |>
-      sapply(FUN = function(x){
-        sf::st_is(x, "POLYGON")
-      }) |>
-      which()
-    plg_lst <- mult_plg[is_plg]
-    mult_plg_sfc <- sf::st_union(do.call("c", plg_lst))
+    if (length(mult_plg) > 0){
+      is_plg <- mult_plg |>
+        sapply(FUN = function(x){
+          sf::st_is(x, "POLYGON")
+        })
 
-    is_line <- mult_plg |>
-      sapply(FUN = function(x){
-        sf::st_is(x, "LINESTRING")
-      }) |>
-      which()
-    line_lst <- mult_plg[is_line]
-    mult_line_sfc <- sf::st_combine(do.call("c", line_lst))
+      if (any(is_plg)){
+        is_plg <- which(is_plg)
+        plg_lst <- mult_plg[is_plg]
+        mult_plg_sfc <- sf::st_union(do.call("c", plg_lst)) |>
+          sf::st_make_valid()
+      } else {
+        mult_plg_sfc <- NULL
+      }
 
+      is_line <- mult_plg |>
+        sapply(FUN = function(x){
+          sf::st_is(x, "LINESTRING")
+        })
 
+      if (any(is_line)){
+        is_line <- which(is_line)
+        line_lst <- mult_plg[is_line]
+        mult_line_sfc <- sf::st_combine(do.call("c", line_lst))
+      } else {
+        mult_line_sfc <- NULL
+      }
+    } else {
+      mult_plg_sfc <- NULL
+      mult_line_sfc <- NULL
+    }
+
+    plt <- plt +
+      {if (!is.null(mult_plg_sfc)){
+        tmap::tm_shape(mult_plg_sfc) +
+          tmap::tm_polygons(fill = "pink")
+      }} +
+      {if (!is.null(mult_line_sfc)){
+        tmap::tm_shape(mult_line_sfc) +
+          tmap::tm_lines(col = "red")
+      }} +
+      tmap::tm_shape(glottogmtry) +
+      tmap::tm_dots(size = .2)
+
+    return(plt)
+  }
+}
+
+cmplx_filt <- function(mult_plg=NULL, r_filt=NULL, r_seq=NULL, idx_1=NULL, idx_2=NULL){
+  cmplxes <- list()
+  cmplxes[[1]] <- NA
+  cmplxes[[2]] <- NA
+
+  if (length(mult_plg) > 0){
+    filt_idx <- which((r_filt < r_seq[idx_2]) & (r_filt >= r_seq[idx_1]))
+
+    if(length(filt_idx) > 0){
+      gmtry <- mult_plg[filt_idx]
+
+      is_plg <- gmtry |>
+        sapply(FUN = function(x){
+          sf::st_is(x, "POLYGON")
+        })
+
+      if (any(is_plg) != FALSE){
+        is_plg <- which(is_plg)
+        plg_lst <- gmtry[is_plg]
+        mult_plg_sfc <- sf::st_union(do.call("c", plg_lst)) |>
+          sf::st_make_valid()
+      } else{
+        mult_plg_sfc <- NA
+      }
+
+      is_line <- gmtry |>
+        sapply(FUN = function(x){
+          sf::st_is(x, "LINESTRING")
+        })
+
+      if (any(is_line) != FALSE){
+        is_line <- which(is_line)
+        line_lst <- gmtry[is_line]
+        mult_line_sfc <- sf::st_combine(do.call("c", line_lst))
+      } else{
+        mult_line_sfc <- NA
+      }
+
+      cmplxes[[1]] <- mult_plg_sfc
+      cmplxes[[2]] <- mult_line_sfc
+
+    }
+  }
+  return(cmplxes)
+}
+
+glottomap_rips_filt_animate <- function(glottodata, r=0, maxscale, length.out = 20,
+                                           movie.name="filtration.gif"){
+  if (all(sf::st_is(glottodata, "POINT")) != TRUE){
+    stop("The geometry types of glottodata must be 'POINT'.")
+  } else{
+    glottogmtry <- sf::st_geometry(glottodata)
+    dist_mtx <- units::set_units(sf::st_distance(glottogmtry), "100km")
+    filt <- TDA::ripsFiltration(dist_mtx, maxdimension = 1,
+                                maxscale = maxscale, dist = "arbitrary")
+
+    polygons_r <- filt[["cmplx"]][filt$values <= r]
+
+    mult_plg <- polygons_r |>
+      lapply(
+        FUN = function(x){
+          if (length(x) == 2){
+            glottogmtry[x] |>
+              sf::st_combine() |>
+              sf::st_cast("LINESTRING")
+          } else if (length(x) == 3){
+            glottogmtry[x] |>
+              sf::st_combine() |>
+              sf::st_cast("POLYGON")
+          }
+        }
+      )
+
+    mult_plg <- Filter(Negate(is.null), mult_plg)
+    if (length(mult_plg) > 0){
+      r_filt <- filt[["values"]][filt$values < r][which(
+        mult_plg |>
+          sapply(
+            FUN = function(x){
+              !is.null(x)
+            }))]
+    } else{
+      r_filt <- NULL
+    }
+    r_seq <- seq(0, r, length.out = length.out)
 
     bbox <- sf::st_bbox(glottogmtry)
     bboxe <- bbox_expand(bbox, f = 0.1)
     wrld_projbb <- sf::st_crop(sf::st_geometry(glottospace::worldpol), bboxe)
 
     plt <- tmap::tm_shape(wrld_projbb) +
-      tmap::tm_polygons(fill_alpha=.5, fill="lightgrey") +
-      tmap::tm_shape(buffers) +
-      tmap::tm_polygons(fill_alpha = 0.05, fill = "blue") +
-      tmap::tm_shape(mult_plg_sfc) +
-      tmap::tm_polygons(fill = "pink") +
-      tmap::tm_shape(mult_line_sfc) +
-      tmap::tm_lines(col = "red")
+      tmap::tm_polygons(fill_alpha=.5, fill="lightgrey")
 
-    return(plt)
+    rips_cmplx <- list()
+    rips_cmplx[[1]] <- NA
+    rips_cmplx[[2]] <- NA
+
+    buffers_0 <- sf::st_buffer(glottogmtry, dist = units::set_units(r_seq[1], "100km") / 2)
+
+    plt_0 <- plt +
+      tmap::tm_shape(buffers_0) +
+      tmap::tm_polygons(fill_alpha = 0.1, col = "blue", col_alpha = 0.3, fill = "blue") +
+      tmap::tm_shape(glottogmtry) +
+      tmap::tm_dots(size = .1)
+
+    animation::saveGIF({
+      print(plt_0)
+      pb <- txtProgressBar(min = 0, max = length(r_seq)-1, initial = 0, style = 3)
+      for (i in 1:(length(r_seq)-1)){
+        rips_cmplx_update <- cmplx_filt(mult_plg = mult_plg, r_filt = r_filt, r_seq = r_seq, idx_1 = i, idx_2 = i+1)
+        if (!is.na(rips_cmplx[[1]]) && !is.na(rips_cmplx_update[[1]])){
+          rips_cmplx[[1]] <- sf::st_union(rips_cmplx[[1]], rips_cmplx_update[[1]]) |>
+            sf::st_make_valid()
+        } else if (is.na(rips_cmplx[[1]]) && !is.na(rips_cmplx_update[[1]])){
+          rips_cmplx[[1]] <- rips_cmplx_update[[1]]
+        }
+
+        if (!is.na(rips_cmplx[[2]]) && !is.na(rips_cmplx_update[[2]])){
+          rips_cmplx[[2]] <- sf::st_union(rips_cmplx[[2]], rips_cmplx_update[[2]]) |>
+            sf::st_make_valid()
+        } else if (is.na(rips_cmplx[[2]]) && !is.na(rips_cmplx_update[[2]])){
+          rips_cmplx[[2]] <- rips_cmplx_update[[2]]
+        }
+
+        buffers <- sf::st_buffer(glottogmtry, dist = units::set_units(r_seq[i+1], "100km") / 2)
+
+        output <- plt +
+          tmap::tm_shape(buffers) +
+          tmap::tm_polygons(fill_alpha = 0.1, col = "blue", col_alpha = 0.3, fill = "blue") +
+          {if(!is.na(rips_cmplx[[1]])){
+            tmap::tm_shape(rips_cmplx[[1]]) +
+              tmap::tm_polygons(fill = "pink")
+          }} +
+          {if(!is.na(rips_cmplx[[2]])){
+            tmap::tm_shape(rips_cmplx[[2]]) +
+              tmap::tm_lines(col = "red")
+          }} +
+          tmap::tm_shape(glottogmtry) +
+          tmap::tm_dots(size = .1)
+
+        print(output)
+        setTxtProgressBar(pb = pb, i)
+      }
+      close(pb)
+    },  movie.name = movie.name)
   }
 }
-
 
 
 
