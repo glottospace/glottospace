@@ -532,33 +532,48 @@ glottomap_glottocode <- function(glottocode){
   plot(sf::st_transform(sf::st_as_sfc(language), paste0("+proj=ortho +lat_0=",lat0, " +lon_0=",lon0) ), col = "darkred", pch = 1, cex = 3, lwd = 2, add = TRUE)
 }
 
+
+
 #' Title
 #'
-#' @param glottodata a glottodata with geometry type of `POINT`.
-#' @param filt an object of Vietoris-Rips filtration, if it is `NULL`, it will be computed from glottodata.
-#' @param dist_mtx a distance matrix corresponding to geographic distances of `glottodata`, if it is `NULL`, it will be computed from glottodata.
-#' @param r the radius of buffers of all the points in glottodata, the unit of `r` is "100km".
-#' @param maxscale a numeric number, maximum value of the rips filtration.
+#' @param glottodata a glottodata with geometry type of `POINT`
+#' @param r the radius of buffers of all the points in glottodata, the unit of `r` is "100km"
+#' @param maxscale a numeric number, maximum value of the rips filtration
+#' @param is_animate if TRUE, it will generate a GIF file, if FALSE, it will generate a tmap plot,
+#' the default value is FALSE
+#' @param length.out the amount of images to be generated in GIF file when `is_animate = TRUE`,
+#' the default value is `20`
+#' @param movie.name name of the GIF file, the default value is "filtration.gif"
 #'
-#' @return a tmap
+#' @return if `is_animate = FALSE` return a tmap, if `is_animate = TRUE` return a GIF file
+#' @export
 #'
 #' @examples
 #' glottopoints <- glottofilter(continent = "South America")
 #' awk <- glottopoints[glottopoints$family == "Arawakan", ]
 #' glottomap_rips_filt(glottodata = awk, r = 6, maxscale = 8)
-
+#' glottomap_rips_filt(glottodata = awk, r = 6, maxscale = 8, is_animate=TRUE)
 glottomap_rips_filt <- function(glottodata, r=0, maxscale, is_animate=FALSE, length.out = 20,
                                 movie.name="filtration.gif"){
   if (is_animate){
-    output <- glottomap_rips_filt_animate(glottodata = glottodata, r = r, maxscale = maxscale,
+    glottomap_rips_filt_animate(glottodata = glottodata, r = r, maxscale = maxscale,
                                           length.out = length.out, movie.name = movie.name)
   } else if (!is_animate){
-    output <- glottomap_rips_filt_static(glottodata = glottodata, r = r, maxscale = maxscale)
+    glottomap_rips_filt_static(glottodata = glottodata, r = r, maxscale = maxscale)
   }
-  return(output)
 }
 
 
+
+#' Title
+#'
+#' @param glottodata a glottodata with geometry type of `POINT`
+#' @param r the radius of buffers of all the points in glottodata, the unit of `r` is "100km"
+#' @param maxscale a numeric number, maximum value of the rips filtration
+#'
+#' @return a tmap
+#' @noRd
+#'
 glottomap_rips_filt_static <- function(glottodata, r=0, maxscale){
   if (all(sf::st_is(glottodata, "POINT")) != TRUE){
     stop("The geometry types of glottodata must be 'POINT'.")
@@ -649,6 +664,17 @@ glottomap_rips_filt_static <- function(glottodata, r=0, maxscale){
   }
 }
 
+#' Title
+#'
+#' @param mult_plg a list of POLYGON and LINESTRING
+#' @param r_filt a vector of length of persistent radius
+#' @param r_seq a vector of truncated radius
+#' @param idx_1 the first index of radius in `r_seq`
+#' @param idx_2 the second index of radius in `r_seq`
+#'
+#' @return a list of two elements
+#' @noRd
+#'
 cmplx_filt <- function(mult_plg=NULL, r_filt=NULL, r_seq=NULL, idx_1=NULL, idx_2=NULL){
   cmplxes <- list()
   cmplxes[[1]] <- NA
@@ -695,6 +721,17 @@ cmplx_filt <- function(mult_plg=NULL, r_filt=NULL, r_seq=NULL, idx_1=NULL, idx_2
   return(cmplxes)
 }
 
+#' Title
+#'
+#' @param glottodata a glottodata with geometry type of `POINT`
+#' @param r the radius of buffers of all the points in glottodata, the unit of `r` is "100km"
+#' @param maxscale a numeric number, maximum value of the rips filtration
+#' @param length.out the amount of images to be generated in GIF file when `is_animate = TRUE`, the default value is `20`
+#' @param movie.name name of the GIF file, the default value is "filtration.gif"
+#'
+#' @return a GIF file
+#' @noRd
+#'
 glottomap_rips_filt_animate <- function(glottodata, r=0, maxscale, length.out = 20,
                                            movie.name="filtration.gif"){
   if (all(sf::st_is(glottodata, "POINT")) != TRUE){
@@ -756,7 +793,7 @@ glottomap_rips_filt_animate <- function(glottodata, r=0, maxscale, length.out = 
 
     animation::saveGIF({
       print(plt_0)
-      pb <- txtProgressBar(min = 0, max = length(r_seq)-1, initial = 0, style = 3)
+      pb <- utils::txtProgressBar(min = 0, max = length(r_seq)-1, initial = 0, style = 3)
       for (i in 1:(length(r_seq)-1)){
         rips_cmplx_update <- cmplx_filt(mult_plg = mult_plg, r_filt = r_filt, r_seq = r_seq, idx_1 = i, idx_2 = i+1)
         if (!is.na(rips_cmplx[[1]]) && !is.na(rips_cmplx_update[[1]])){
@@ -790,7 +827,7 @@ glottomap_rips_filt_animate <- function(glottodata, r=0, maxscale, length.out = 
           tmap::tm_dots(size = .1)
 
         print(output)
-        setTxtProgressBar(pb = pb, i)
+        utils::setTxtProgressBar(pb = pb, i)
       }
       close(pb)
     },  movie.name = movie.name)

@@ -31,7 +31,8 @@ Imports:
     rvest,
     tmap (>= 3.99.9000),
     TDA,
-    animation
+    animation,
+    utils
 Suggests: 
     cluster,
     grDevices,

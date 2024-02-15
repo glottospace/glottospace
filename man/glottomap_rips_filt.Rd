@@ -4,21 +4,32 @@
 \alias{glottomap_rips_filt}
 \title{Title}
 \usage{
-glottomap_rips_filt(glottodata, filt = NULL, dist_mtx = NULL, r = 0, maxscale)
+glottomap_rips_filt(
+  glottodata,
+  r = 0,
+  maxscale,
+  is_animate = FALSE,
+  length.out = 20,
+  movie.name = "filtration.gif"
+)
 }
 \arguments{
-\item{glottodata}{a glottodata with geometry type of `POINT`.}
+\item{glottodata}{a glottodata with geometry type of `POINT`}
 
-\item{filt}{an object of Vietoris-Rips filtration, if it is `NULL`, it will be computed from glottodata.}
+\item{r}{the radius of buffers of all the points in glottodata, the unit of `r` is "100km"}
 
-\item{dist_mtx}{a distance matrix corresponding to geographic distances of `glottodata`, if it is `NULL`, it will be computed from glottodata.}
+\item{maxscale}{a numeric number, maximum value of the rips filtration}
 
-\item{r}{the radius of buffers of all the points in glottodata, the unit of `r` is "100km".}
+\item{is_animate}{if TRUE, it will generate a GIF file, if FALSE, it will generate a tmap plot,
+the default value is FALSE}
 
-\item{maxscale}{a numeric number, maximum value of the rips filtration.}
+\item{length.out}{the amount of images to be generated in GIF file when `is_animate = TRUE`,
+the default value is `20`}
+
+\item{movie.name}{name of the GIF file, the default value is "filtration.gif"}
 }
 \value{
-a tmap
+if `is_animate = FALSE` return a tmap, if `is_animate = TRUE` return a GIF file
 }
 \description{
 Title
@@ -27,5 +38,5 @@ Title
 glottopoints <- glottofilter(continent = "South America")
 awk <- glottopoints[glottopoints$family == "Arawakan", ]
 glottomap_rips_filt(glottodata = awk, r = 6, maxscale = 8)
-
+glottomap_rips_filt(glottodata = awk, r = 6, maxscale = 8, is_animate=TRUE)
 }
