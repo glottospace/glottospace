@@ -789,6 +789,12 @@ glottomap(glottopoints[glottopoints$family %in% families$family[1:5], ], basemap
 
 <img src="man/figures/README-figures-side-1.png" width="50%" /><img src="man/figures/README-figures-side-2.png" width="50%" />
 
+## Rips filtration visualization
+
+<center>
+<img width="50%" src="man/figures/awk_filt.gif"/>
+</center>
+
 ## glottosave
 
 All output generated with the glottospace package (data, figures, maps,
