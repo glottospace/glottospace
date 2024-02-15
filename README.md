@@ -797,12 +797,13 @@ method of visualization is referred to as [“Vietoris-Rips
 filtration”](https://en.wikipedia.org/wiki/Vietoris%E2%80%93Rips_filtration).
 In the function `glottomap_rips_filt()`, the default units of `r` and
 `maxscale` are both 100km, corresponding to the buffer radius of each
-language and the maximum value of the Vietoris-Rips filtration.
+language and the maximum value of the Vietoris-Rips filtration
+respectively.
 
-For example, if we pick up the languages of Arawakan family, and set the
-buffer radius of each language as 600 km, the maximum value of the
+For example, if we filter out the languages of Arawakan family, and set
+the buffer radius of each language as 600 km, the maximum value of the
 Vietoris-Rips filtration as 700 km, we can see that there is a circluar
-structure near the border around Colombia, Peru and Brazil:
+structure around the borders of Colombia, Peru and Brazil:
 
 ``` r
 glottopoints <- glottofilter(continent = "South America")
