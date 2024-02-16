@@ -14,11 +14,11 @@ glottomap_rips_filt(
 )
 }
 \arguments{
-\item{glottodata}{a glottodata with geometry type of `POINT`}
+\item{glottodata}{a glottodata is an object of sf with geometry type as `POINT`}
 
-\item{r}{the radius of buffers of all the points in glottodata, the unit of `r` is "100km"}
+\item{r}{a numerica number, the radius of buffers of all the points in glottodata, the default unit is "100km"}
 
-\item{maxscale}{a numeric number, maximum value of the rips filtration}
+\item{maxscale}{a numeric number, maximum value of the rips filtration, the default unit is "100km"}
 
 \item{is_animate}{if TRUE, it will generate a GIF file, if FALSE, it will generate a tmap plot,
 the default value is FALSE}

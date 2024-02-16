@@ -536,9 +536,9 @@ glottomap_glottocode <- function(glottocode){
 
 #' Title
 #'
-#' @param glottodata a glottodata with geometry type of `POINT`
-#' @param r the radius of buffers of all the points in glottodata, the unit of `r` is "100km"
-#' @param maxscale a numeric number, maximum value of the rips filtration
+#' @param glottodata a glottodata is an object of sf with geometry type as `POINT`
+#' @param r a numerica number, the radius of buffers of all the points in glottodata, the default unit is "100km"
+#' @param maxscale a numeric number, maximum value of the rips filtration, the default unit is "100km"
 #' @param is_animate if TRUE, it will generate a GIF file, if FALSE, it will generate a tmap plot,
 #' the default value is FALSE
 #' @param length.out the amount of images to be generated in GIF file when `is_animate = TRUE`,
@@ -836,7 +836,51 @@ glottomap_rips_filt_animate <- function(glottodata, r=0, maxscale, length.out = 
   }
 }
 
+#' Title
+#'
+#' @param glottodata a glottodata is an object of sf with geometry type as `POINT`
+#' @param maxscale a numeric number, maximum value of the rips filtration, the default unit is "100km"
+#'
+#' @return a ggplot2 map
+#' @export
+#'
+#' @examples
+#' glottopoints <- glottofilter(continent = "South America")
+#' awk <- glottopoints[glottopoints$family == "Arawakan", ]
+#' glottomap_pd(awk, maxscale = 15)
+glottomap_persist_diagram <- function(glottodata, maxscale){
+  if (all(sf::st_is(glottodata, "POINT")) != TRUE){
+    stop("The geometry types of glottodata must be 'POINT'.")
+  } else{
+    glottogmtry <- sf::st_geometry(glottodata)
 
+    dist_mtx <- units::set_units(sf::st_distance(glottogmtry), value="100km")
+    rips <- TDA::ripsDiag(dist_mtx, maxdimension = 1,
+                          maxscale = maxscale, dist = "arbitrary")
+    rips_hom <- rips$diagram
+    class(rips_hom) <- "matrix"
+    rips_hom_df <- data.frame(rips_hom)
+    rips_hom_df$dimension <- as.factor( rips_hom_df$dimension)
+
+    scale_lim <- max(rips_hom) * 1.01
+    p <- ggplot2::ggplot(data = rips_hom_df, ggplot2::aes(Birth, Death, col=dimension, shape=dimension)) +
+      ggplot2::xlim(0, scale_lim) +
+      ggplot2::ylim(0, scale_lim) +
+      ggplot2::geom_abline(slope = 1, intercept = 0) +
+      ggplot2::xlab("Birth (100 km)") +
+      ggplot2::ylab("Death (100 km)") +
+      ggplot2::theme(axis.line = ggplot2::element_line(colour = "black"),
+                     panel.grid.major = ggplot2::element_blank(), panel.grid.minor = ggplot2::element_blank(),
+                     panel.background = ggplot2::element_blank()) +
+      ggplot2::geom_point(ggplot2::aes_string(x = "Birth",
+                                              y = "Death")) +
+      ggplot2::coord_fixed(ratio = 1)
+      # ggplot2::ggtitle(title_text) +
+      # ggplot2::theme(plot.title = ggplot2::element_text(color = "black", hjust = title_hjust, vjust = title_vjust, size=title_size))
+    p
+
+  }
+}
 
 
 
