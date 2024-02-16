@@ -807,7 +807,7 @@ respectively.
 
 For example, if we filter out the languages of Arawakan family, and set
 the buffer radius of each language as 600 km, the maximum value of the
-Vietoris-Rips filtration as 700 km, we can see that there is a circluar
+Vietoris-Rips filtration as 1500 km, we can see that there is a circluar
 structure around the borders of Colombia, Peru and Brazil:
 
 ``` r
@@ -822,7 +822,7 @@ glottomap_rips_filt(glottodata = awk, r = 6, maxscale = 15, is_animate = FALSE)
 <img src="man/figures/README-glottomap_rips_filt_static-1.png" width="100%" />
 
 If you set the the argument `is_animate = TRUE`, you can then generate a
-GIF file:
+GIF file, here the buffer radius ranges from 0 km to 800 km:
 
 ``` r
 glottopoints <- glottofilter(continent = "South America")
