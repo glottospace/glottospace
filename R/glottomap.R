@@ -847,7 +847,7 @@ glottomap_rips_filt_animate <- function(glottodata, r=0, maxscale, length.out = 
 #' @examples
 #' glottopoints <- glottofilter(continent = "South America")
 #' awk <- glottopoints[glottopoints$family == "Arawakan", ]
-#' glottomap_pd(awk, maxscale = 15)
+#' glottomap_persist_diagram(awk, maxscale = 15)
 glottomap_persist_diagram <- function(glottodata, maxscale){
   if (all(sf::st_is(glottodata, "POINT")) != TRUE){
     stop("The geometry types of glottodata must be 'POINT'.")

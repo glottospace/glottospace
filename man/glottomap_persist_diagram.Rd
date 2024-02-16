@@ -20,5 +20,5 @@ Title
 \examples{
 glottopoints <- glottofilter(continent = "South America")
 awk <- glottopoints[glottopoints$family == "Arawakan", ]
-glottomap_pd(awk, maxscale = 15)
+glottomap_persist_diagram(awk, maxscale = 15)
 }
