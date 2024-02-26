@@ -16,6 +16,8 @@
 #' spatial coordinates.
 #' \item "grambank" - This is a restructured (non-spatial) version of \href{https://grambank.clld.org/}{Grambank}.
 #' \item "grambankspace" - This is a spatially enhanced version of \href{https://grambank.clld.org/}{Grambank}.
+#' \item "phoible" - This is a restructured (non-spatial) version of \href{https://phoible.org/}{PHOIBLE}.
+#' \item "phoiblespace" - This is a spatially enhanced version of \href{https://phoible.org/}{PHOIBLE}.
 #' \item "demodata" - Built-in artificial glottodata (included for demonstration and testing).
 #' \item "demosubdata" - Built-in artificial glottosubdata (included for demonstration and testing)
 #' \item "demosubdata_cnstn" - Built-in artificial glottosubdata (included for demonstration and testing)
@@ -45,26 +47,31 @@ glottoget <- function(glottodata = NULL, meta = FALSE, download = FALSE, dirpath
     message(paste0("The data is downloaded to ", dirpath))
   } else if(is.null(glottodata)){
     glottodata <- glottoget_glottobase(download = download, dirpath = dirpath)
-  } else if(glottodata == "glottobase"){
+  } else if(tolower(glottodata) == "glottobase"){
     glottodata <- glottoget_glottobase(download = download, dirpath = dirpath)
-  } else if(glottodata == "glottolog"){
+  } else if(tolower(glottodata) == "glottolog"){
     glottodata <- glottoget_glottolog(download = download, dirpath = dirpath)
-  } else if (glottodata == "glottospace"){
+  } else if (tolower(glottodata) == "glottospace"){
     glottodata <- glottoget_glottospace(download = download, dirpath = dirpath)
-  } else if(glottodata == "demodata"){
+  } else if(tolower(glottodata) == "demodata"){
     glottodata <- glottocreate_demodata(meta = meta)
-  } else if(glottodata == "demosubdata"){
+  } else if(tolower(glottodata) == "demosubdata"){
     glottodata <- glottocreate_demosubdata(meta = meta)
-  } else if(glottodata == "demosubdata_cnstn"){
+  } else if(tolower(glottodata) == "demosubdata_cnstn"){
     glottodata <- glottocreate_cnstn_toy()
-  } else if(glottodata == "wals"){
+  } else if(tolower(glottodata) == "wals"){
     glottodata <- glottoget_wals(download = download, dirpath = dirpath)
-  } else if(glottodata == "dplace"){
+  } else if(tolower(glottodata) == "dplace"){
     glottodata <- glottoget_dplace(download = download, dirpath = dirpath)
-  } else if(glottodata == "grambank"){
+  } else if(tolower(glottodata) == "grambank"){
     glottodata <- glottoget_grambank(download = download, dirpath = dirpath)
-  } else if(glottodata == "grambankspace"){
+  } else if(tolower(glottodata) == "grambankspace"){
     glottodata <- glottoget_grambank(download = download, dirpath = dirpath) %>%
+      glottospace_coords2sf()
+  } else if(tolower(glottodata) == "phoible"){
+    glottodata <- glottoget_phoible(download = download, dirpath = dirpath)
+  } else if(tolower(glottodata) == "phoiblespace") {
+    glottodata <- glottoget_phoible(download = download, dirpath = dirpath) %>%
       glottospace_coords2sf()
   } else if(tools::file_ext(glottodata) != ""){
     glottodata <- glottoget_path(filepath = glottodata)
@@ -256,6 +263,8 @@ glottoget_zenodo <- function(name = NULL, url = NULL, dirpath = NULL){
     base_url <- "https://zenodo.org/doi/10.5281/zenodo.3935419"
   } else if(tolower(name) == "grambank"){
     base_url <- "https://zenodo.org/doi/10.5281/zenodo.7740139"
+  } else if(tolower(name) == "phoible"){
+    base_url <- "https://zenodo.org/doi/10.5281/zenodo.2562766"
   } else if(!is.null(name) ){
     stop("Unable to download data from Zenodo. Unrecognized name argument. ")
   }

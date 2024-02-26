@@ -1,47 +1,47 @@
-#' Get grambank data
+#' Get phoible data
 #'
-#' This function loads the Grambank data that is distributed with grambank or optionally downloads it.
-#' type ?grambank for more information about the version, and how to cite the data.
+#' This function loads the PHOIBLE data that is distributed with PHOIBLE or optionally downloads it.
+#' type ?phoible for more information about the version, and how to cite the data.
 #'
 #' @noRd
 #'
 #' @examples
 #' \donttest{
-#' glottoget_grambank()
+#' glottoget_phoible()
 #' }
-glottoget_grambank <- function(download = NULL, dirpath = NULL){
+glottoget_phoible <- function(download = NULL, dirpath = NULL){
   if(is.null(download)){
     download <- FALSE
   }
   if(download == FALSE & is.null(dirpath) ){
-    out <- glottospace::grambank
+    out <- glottospace::phoible
     } else if(download == FALSE & !is.null(dirpath)){
-    out <- glottoget_grambankloadlocal(dirpath = dirpath)
+    out <- glottoget_phoibleloadlocal(dirpath = dirpath)
   } else if(download == TRUE){
-    out <- glottoget_grambankdownload(dirpath = dirpath)
+    out <- glottoget_phoibledownload(dirpath = dirpath)
   }
   return(out)
 }
 
 
-#' Download grambank data
+#' Download phoible data
 #'
 #' @noRd
 #'
-glottoget_grambankdownload <- function(dirpath = NULL){
-  invisible(readline(prompt="Are you sure you want to download Grambank data? \n Press [enter] to continue"))
-  dirpath <- glottoget_zenodo(name = "grambank", dirpath = dirpath)
-  glottoget_grambankloadlocal(dirpath = dirpath)
+glottoget_phoibledownload <- function(dirpath = NULL){
+  invisible(readline(prompt="Are you sure you want to download PHOIBLE data? \n Press [enter] to continue"))
+  dirpath <- glottoget_zenodo(name = "phoible", dirpath = dirpath)
+  glottoget_phoibleloadlocal(dirpath = dirpath)
 }
 
 
-#' Load locally stored grambank data
+#' Load locally stored phoible data
 #'
-#' @param dirpath Path to directory where grambank cldf data is stored
+#' @param dirpath Path to directory where phoible cldf data is stored
 #'
 #' @importFrom rlang .data
 #' @noRd
-glottoget_grambankloadlocal <- function(dirpath){
+glottoget_phoibleloadlocal <- function(dirpath){
   if(!dir.exists(dirpath)){stop("Directory not found.")}
   cldf_metadata <- base::list.files(dirpath, pattern = "-metadata.json", recursive = TRUE)
   mdpath <- normalizePath(file.path(dirpath, cldf_metadata))
@@ -68,12 +68,12 @@ glottoget_grambankloadlocal <- function(dirpath){
   values <- dplyr::distinct(values)
   values <- tidyr::pivot_wider(data = values, names_from = "parameter_id", values_from = "value")
 
-  grambankdata <- languoids %>% dplyr::left_join(values, by = "lang_id") %>%
+  phoibledata <- languoids %>% dplyr::left_join(values, by = "lang_id") %>%
     # dplyr::left_join(category, by = "lang_id") %>%
     # dplyr::left_join(classification, by = "lang_id") %>%
     dplyr::arrange(.data$lang_id)
 
-  colnames(grambankdata)[which(colnames(grambankdata) == "lang_id")] <- "id"
-  grambankdata <- grambankdata %>% dplyr::select(-.data$glottocode)
-  invisible(grambankdata)
+  colnames(phoibledata)[which(colnames(phoibledata) == "lang_id")] <- "id"
+  phoibledata <- phoibledata %>% dplyr::select(-.data$glottocode)
+  invisible(phoibledata)
 }
