@@ -68,6 +68,10 @@ glottoget_phoibleloadlocal <- function(dirpath){
   values <- dplyr::distinct(values)
   values <- tidyr::pivot_wider(data = values, names_from = "parameter_id", values_from = "value")
 
+  for (idx in 1:ncol(values)){
+    values[, idx] <- tidyr::replace_na(values[, idx, drop = T], "absent")
+  }
+
   phoibledata <- languoids %>% dplyr::left_join(values, by = "lang_id") %>%
     # dplyr::left_join(category, by = "lang_id") %>%
     # dplyr::left_join(classification, by = "lang_id") %>%
