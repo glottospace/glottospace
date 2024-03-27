@@ -65,7 +65,7 @@ glottoget_glottologloadlocal <- function(dirpath){
   classification <- values[!is.na(values$classification), c("lang_id", "classification")]
   classification$parent_id <- base::apply(classification[,"classification"], 1, function(x){sub(".*/", "", x)})
 
-  glottologdata <- languoids %>% dplyr::left_join(levels, by = "lang_id") %>%
+  glottologdata <- {if("level" %nin% colnames(languoids)){dplyr::left_join(languoids, levels, by = "lang_id")}else{languoids}} %>%
     dplyr::left_join(category, by = "lang_id") %>%
     dplyr::left_join(classification, by = "lang_id") %>%
     dplyr::arrange(.data$lang_id)
