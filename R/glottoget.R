@@ -107,6 +107,21 @@ glottoget_path <- function(filepath = NULL){
       glottodata <- sf::st_read(dsn = filepath)
     }
 
+  # Remove all the NA rows in each language sheets
+  if (is.list(glottodata)) {
+    glottodata <- glottodata |>
+      lapply(
+        FUN = function(x){
+          if ("glottocode" %in% colnames(x)){
+            x <- x[which(!is.na(x[, "glottocode"])), ]
+          } else if ("glottosubcode" %in% colnames(x)){
+            x <- x[which(!is.na(x[, "glottosubcode"])), ]
+          }
+          return(x)
+        }
+      )
+  }
+
   return(glottodata)
 }
 
