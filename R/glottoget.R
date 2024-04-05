@@ -16,7 +16,7 @@
 #' spatial coordinates.
 #' \item "grambank" - This is a restructured (non-spatial) version of \href{https://grambank.clld.org/}{Grambank}.
 #' \item "grambankspace" - This is a spatially enhanced version of \href{https://grambank.clld.org/}{Grambank}.
-#' \item "phoible" - This is a restructured (non-spatial) version of \href{https://phoible.org/}{PHOIBLE}.
+#' \item "phoible_raw" - This is a restructured (non-spatial) raw version of \href{https://phoible.org/}{PHOIBLE}.
 #' \item "phoiblespace" - This is a spatially enhanced version of \href{https://phoible.org/}{PHOIBLE}.
 #' \item "demodata" - Built-in artificial glottodata (included for demonstration and testing).
 #' \item "demosubdata" - Built-in artificial glottosubdata (included for demonstration and testing)
@@ -68,7 +68,7 @@ glottoget <- function(glottodata = NULL, meta = FALSE, download = FALSE, dirpath
   } else if(tolower(glottodata) == "grambankspace"){
     glottodata <- glottoget_grambank(download = download, dirpath = dirpath) %>%
       glottospace_coords2sf()
-  } else if(tolower(glottodata) == "phoible"){
+  } else if(tolower(glottodata) == "phoible_raw"){
     glottodata <- glottoget_phoible(download = download, dirpath = dirpath)
   } else if(tolower(glottodata) == "phoiblespace") {
     glottodata <- glottoget_phoible(download = download, dirpath = dirpath) %>%

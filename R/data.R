@@ -45,13 +45,13 @@
 "grambank"
 
 #'
-#' This is an internally stored version of PHOIBLE data. Use glottoget("phoible", download = TRUE) to download the latest version
+#' This is an internally stored version of raw PHOIBLE data. Use glottoget("phoible_raw", download = TRUE) to download the latest version
 #' @keywords internal
 #' @format A data frame based on PHOIBLE
 #' @source \url{https://phoible.org/
 #' }
 #' @evalRd glottoget_remotemeta(url = "https://zenodo.org/records/2677911")
-"phoible"
+"phoible_raw"
 
 
 

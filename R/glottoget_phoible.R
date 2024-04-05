@@ -14,7 +14,7 @@ glottoget_phoible <- function(download = NULL, dirpath = NULL){
     download <- FALSE
   }
   if(download == FALSE & is.null(dirpath) ){
-    out <- glottospace::phoible
+    out <- glottospace::phoible_raw
     } else if(download == FALSE & !is.null(dirpath)){
     out <- glottoget_phoibleloadlocal(dirpath = dirpath)
   } else if(download == TRUE){
@@ -64,7 +64,7 @@ glottoget_phoibleloadlocal <- function(dirpath){
   parameter_id <- NULL
   value <- NULL
 
-  values <- subset(values, select=c(lang_id, parameter_id, value))
+  values <- subset(values, select=c(lang_id, parameter_id, value, contribution_id))
   values <- dplyr::distinct(values)
   values <- tidyr::pivot_wider(data = values, names_from = "parameter_id", values_from = "value")
 
@@ -72,7 +72,7 @@ glottoget_phoibleloadlocal <- function(dirpath){
     values[, idx] <- tidyr::replace_na(values[, idx, drop = T], "absent")
   }
 
-  phoibledata <- languoids %>% dplyr::left_join(values, by = "lang_id") %>%
+  phoibledata <- languoids %>% dplyr::full_join(values, by = "lang_id") %>%
     # dplyr::left_join(category, by = "lang_id") %>%
     # dplyr::left_join(classification, by = "lang_id") %>%
     dplyr::arrange(.data$lang_id)
