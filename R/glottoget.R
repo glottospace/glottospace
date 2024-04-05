@@ -15,10 +15,11 @@
 #' is a subset of all languages in \href{https://glottolog.org/}{glottolog} with
 #' spatial coordinates.
 #' \item "grambank" - This is a restructured (non-spatial) version of \href{https://grambank.clld.org/}{Grambank}.
-#' \item "grambankspace" - This is a spatially enhanced version of \href{https://grambank.clld.org/}{Grambank}.
+#' \item "grambankspace" - This is a restructured (spatially enhanced) version of \href{https://grambank.clld.org/}{Grambank}.
 #' \item "phoible_raw" - This is a restructured (non-spatial) raw version of \href{https://phoible.org/}{PHOIBLE}.
+#' \item "phoiblespace_raw" - This is a restructured (spatially enhanced) raw version of \href{https://phoible.org/}{PHOIBLE}.
 #' \item "phoible" - This is a restructured (non-spatial) sampled version of \href{https://phoible.org/}{PHOIBLE}.
-#' \item "phoiblespace" - This is a spatially enhanced version of \href{https://phoible.org/}{PHOIBLE}.
+#' \item "phoiblespace" - This is a (spatially enhanced) sampled version of \href{https://phoible.org/}{PHOIBLE}.
 #' \item "demodata" - Built-in artificial glottodata (included for demonstration and testing).
 #' \item "demosubdata" - Built-in artificial glottosubdata (included for demonstration and testing)
 #' \item "demosubdata_cnstn" - Built-in artificial glottosubdata (included for demonstration and testing)
@@ -71,15 +72,19 @@ glottoget <- function(glottodata = NULL, meta = FALSE, download = FALSE, dirpath
       glottospace_coords2sf()
   } else if(tolower(glottodata) == "phoible_raw"){
     glottodata <- glottoget_phoible(download = download, dirpath = dirpath)
+  } else if(tolower(glottodata) == "phoiblespace_raw"){
+    glottodata <- glottoget_phoible(download = download, dirpath = dirpath) |>
+      glottospace_coords2sf()
   } else if(tolower(glottodata) == "phoible"){
     glottodata <- glottoget_phoible(download = download, dirpath = dirpath) |>
       dplyr::group_by(id) |>
       dplyr::sample_n(1) |>
       dplyr::ungroup()
-  }
-
-  else if(tolower(glottodata) == "phoiblespace") {
-    glottodata <- glottoget_phoible(download = download, dirpath = dirpath) %>%
+  } else if(tolower(glottodata) == "phoiblespace") {
+    glottodata <- glottoget_phoible(download = download, dirpath = dirpath) |>
+      dplyr::group_by(id) |>
+      dplyr::sample_n(1) |>
+      dplyr::ungroup() |>
       glottospace_coords2sf()
   } else if(tools::file_ext(glottodata) != ""){
     glottodata <- glottoget_path(filepath = glottodata)
