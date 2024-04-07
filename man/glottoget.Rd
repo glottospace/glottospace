@@ -10,7 +10,7 @@ glottoget(
   download = FALSE,
   dirpath = NULL,
   url = NULL,
-  seed = 42
+  seed = NULL
 )
 }
 \arguments{
@@ -31,7 +31,12 @@ spatial coordinates.
 \item "phoible_raw" - This is a restructured (non-spatial) raw version of \href{https://phoible.org/}{PHOIBLE}.
 \item "phoiblespace_raw" - This is a restructured (spatially enhanced) raw version of \href{https://phoible.org/}{PHOIBLE}.
 \item "phoible" - This is a restructured (non-spatial) randomly sampled version of \href{https://phoible.org/}{PHOIBLE}.
+When seed is not provided, it will randomly choose a sample for each duplicated glottocode.
 \item "phoiblespace" - This is a (spatially enhanced) randomly sampled version of \href{https://phoible.org/}{PHOIBLE}.
+When seed is not provided, it will randomly choose a sample for each duplicated glottocode.
+\item "phoible_raw_param_sf" - This returns an sf object of the geographical distribution for all parameter IDs with respect to the raw \href{https://phoible.org/}{PHOIBLE}.
+\item "phoible_param_sf" - This returns an sf object of the geographical distribution for all parameter IDs with respect to a sampled version of \href{https://phoible.org/}{PHOIBLE}.
+When seed is not provided, it will randomly choose a sample for each duplicated glottocode.
 \item "demodata" - Built-in artificial glottodata (included for demonstration and testing).
 \item "demosubdata" - Built-in artificial glottosubdata (included for demonstration and testing)
 \item "demosubdata_cnstn" - Built-in artificial glottosubdata (included for demonstration and testing)
@@ -45,7 +50,7 @@ spatial coordinates.
 
 \item{url}{Zenodo url, something like this: "https://zenodo.org/api/records/3260727"}
 
-\item{seed}{the seed number when get phoible dataset, the default value is 42}
+\item{seed}{the seed number when glottoget phoible dataset, if not provided, the glottoget function will randomly choose one language for each duplicated glottocode.}
 }
 \value{
 A glottodata or glottosubdata object (a data.frame or list, depending on which glottodata is requested)

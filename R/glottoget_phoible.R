@@ -93,8 +93,8 @@ glottoget_phoibleloadlocal <- function(dirpath){
 #' @export
 #'
 #' @examples
-#' phoible_sf <- phoible_transpose(glottospace::phoible_raw)
-phoible_transpose <- function(phoible_data){
+#' phoible_sf <- phoible_param_sf(glottospace::phoible_raw)
+phoible_param_sf <- function(phoible_data){
   param_idx <- colnames(phoible_data) |>
     sapply(
       FUN = function(x){
@@ -111,9 +111,9 @@ phoible_transpose <- function(phoible_data){
           FUN = function(x){
             !all(x == "absent")
           }) |>
-    unlist()
-
-  data_non_na_id <- names(which(data_non_na_id))
+    unlist() |>
+    which() |>
+    names()
 
   data <- data[, c("longitude", "latitude", data_non_na_id)]
 

@@ -19,7 +19,12 @@
 #' \item "phoible_raw" - This is a restructured (non-spatial) raw version of \href{https://phoible.org/}{PHOIBLE}.
 #' \item "phoiblespace_raw" - This is a restructured (spatially enhanced) raw version of \href{https://phoible.org/}{PHOIBLE}.
 #' \item "phoible" - This is a restructured (non-spatial) randomly sampled version of \href{https://phoible.org/}{PHOIBLE}.
+#' When seed is not provided, it will randomly choose a sample for each duplicated glottocode.
 #' \item "phoiblespace" - This is a (spatially enhanced) randomly sampled version of \href{https://phoible.org/}{PHOIBLE}.
+#' When seed is not provided, it will randomly choose a sample for each duplicated glottocode.
+#' \item "phoible_raw_param_sf" - This returns an sf object of the geographical distribution for all parameter IDs with respect to the raw \href{https://phoible.org/}{PHOIBLE}.
+#' \item "phoible_param_sf" - This returns an sf object of the geographical distribution for all parameter IDs with respect to a sampled version of \href{https://phoible.org/}{PHOIBLE}.
+#' When seed is not provided, it will randomly choose a sample for each duplicated glottocode.
 #' \item "demodata" - Built-in artificial glottodata (included for demonstration and testing).
 #' \item "demosubdata" - Built-in artificial glottosubdata (included for demonstration and testing)
 #' \item "demosubdata_cnstn" - Built-in artificial glottosubdata (included for demonstration and testing)
@@ -28,7 +33,7 @@
 #' @param download By default internally stored versions of global databases are used. Specify download = TRUE in case you want to download the latest version from a remote server.
 #' @param dirpath Optional, if you want to store a global CLDF dataset in a specific directory, or load it from a specific directory.
 #' @param url Zenodo url, something like this: "https://zenodo.org/api/records/3260727"
-#' @param seed the seed number when get phoible dataset, the default value is 42
+#' @param seed the seed number when glottoget phoible dataset, if not provided, the glottoget function will randomly choose one language for each duplicated glottocode.
 #'
 #' @family <glottodata>
 #' @return A glottodata or glottosubdata object (a data.frame or list, depending on which glottodata is requested)
@@ -37,7 +42,7 @@
 #' \donttest{
 #' glottoget("glottolog")
 #' }
-glottoget <- function(glottodata = NULL, meta = FALSE, download = FALSE, dirpath = NULL, url = NULL, seed = 42){
+glottoget <- function(glottodata = NULL, meta = FALSE, download = FALSE, dirpath = NULL, url = NULL, seed = NULL){
   if(!is.null(url)){
     if(is.null(dirpath)){
       url_href <- url |>
@@ -77,18 +82,44 @@ glottoget <- function(glottodata = NULL, meta = FALSE, download = FALSE, dirpath
     glottodata <- glottoget_phoible(download = download, dirpath = dirpath) |>
       glottospace_coords2sf()
   } else if(tolower(glottodata) == "phoible"){
-    set.seed(seed)
+    if (!is.null(seed)){
+      set.seed(seed)
+    }
     glottodata <- glottoget_phoible(download = download, dirpath = dirpath) |>
       dplyr::group_by(id) |>
       dplyr::sample_n(1) |>
       dplyr::ungroup()
   } else if(tolower(glottodata) == "phoiblespace") {
-    set.seed(seed)
+    if (!is.null(seed)){
+      set.seed(seed)
+    }
     glottodata <- glottoget_phoible(download = download, dirpath = dirpath) |>
       dplyr::group_by(id) |>
       dplyr::sample_n(1) |>
       dplyr::ungroup() |>
       glottospace_coords2sf()
+
+    no_absent_idx <- 1:ncol(sf::st_drop_geometry(glottodata)) |>
+      sapply(
+        FUN = function(x){
+          !all(sf::st_drop_geometry(glottodata)[, x] == "absent")
+        }
+      ) |>
+      which()
+
+    glottodata <- glottodata[, no_absent_idx]
+    } else if(tolower(glottodata) == "phoible_param_sf"){
+    if (!is.null(seed)){
+      set.seed(seed)
+    }
+    glottodata <- glottoget_phoible(download = download, dirpath = dirpath) |>
+      dplyr::group_by(id) |>
+      dplyr::sample_n(1) |>
+      dplyr::ungroup() |>
+      phoible_param_sf()
+  } else if(tolower(glottodata) == "phoible_raw_param_sf"){
+    glottodata <- glottoget_phoible(download = download, dirpath = dirpath) |>
+      phoible_param_sf()
   } else if(tools::file_ext(glottodata) != ""){
     glottodata <- glottoget_path(filepath = glottodata)
   } else if(tools::file_ext(glottodata) != ".Rds"){
