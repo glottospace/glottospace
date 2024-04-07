@@ -4,6 +4,9 @@ output:
     toc: no
     toc_depth: 2
 always_allow_html: true
+editor_options: 
+  markdown: 
+    wrap: 72
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
@@ -17,40 +20,73 @@ knitr::opts_chunk$set(
 )
 ```
 
-# glottospace: Language Mapping and Geospatial Analysis of Linguistic and Cultural Data <img src='man/figures/logo.png' align="right" height="139" />
-
-
+# glottospace: Language Mapping and Geospatial Analysis of Linguistic and Cultural Data <img src="man/figures/logo.png" align="right" height="139"/>
 
 <!-- badges: start -->
-[![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+
+[![Lifecycle:
+stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
+[![License: GPL
+v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![R-CMD-check](https://github.com/glottospace/glottospace/workflows/R-CMD-check/badge.svg)](https://github.com/glottospace/glottospace/actions)
 [![status](https://joss.theoj.org/papers/c93a1ccb6835a15c6026ea1ddc28b50c/status.svg)](https://joss.theoj.org/papers/c93a1ccb6835a15c6026ea1ddc28b50c)
-[![CRAN RStudio mirror downloads](https://cranlogs.r-pkg.org/badges/grand-total/glottospace?color=orange)](https://r-pkg.org/pkg/glottospace)
+[![CRAN RStudio mirror
+downloads](https://cranlogs.r-pkg.org/badges/grand-total/glottospace?color=orange)](https://r-pkg.org/pkg/glottospace)
+
 <!-- badges: end -->
 
 # Introduction
-The **glottospace** package facilitates the geospatial analysis of linguistic and cultural data. The aim of this package is to provide a streamlined workflow for working with spatio-linguistic data, including data import, cleaning, exploration, visualization and export. For example, with **glottospace** you can quickly match your own linguistic data to a location and plot it on a map. You can also calculate distances between languages based on their location or linguistic features and visualize those distances. In addition, with **glottospace** you can easily access global databases such as [glottolog](https://glottolog.org/), [WALS](https://wals.info/), [Grambank](https://grambank.clld.org/) and [D-PLACE](https://d-place.org/) from R and integrate them with your own data. 
+
+The **glottospace** package facilitates the geospatial analysis of
+linguistic and cultural data. The aim of this package is to provide a
+streamlined workflow for working with spatio-linguistic data, including
+data import, cleaning, exploration, visualization and export. For
+example, with **glottospace** you can quickly match your own linguistic
+data to a location and plot it on a map. You can also calculate
+distances between languages based on their location or linguistic
+features and visualize those distances. In addition, with
+**glottospace** you can easily access global databases such as
+[glottolog](https://glottolog.org/), [WALS](https://wals.info/),
+[Grambank](https://grambank.clld.org/), [D-PLACE](https://d-place.org/)
+and [Phoible](https://phoible.org/) from R and integrate them with your
+own data.
 
 # Development
-We're still actively developing the **glottospace** package by adding new functions and improving existing ones. Although the package is stable, you might find bugs or encounter things you might find confusing. You can help us to improve the package by:
 
-- Sending an email to [Rui Dong](mailto:r.dong@hum.leidenuniv.nl) with a clear description of the issue or error message.  
-- Opening a new issue in the [glottospace issues page on GitHub](https://github.com/glottospace/glottospace/issues)
-- Fixing a bug or adding functionality and submit a [pull request on GitHub](https://github.com/glottospace/glottospace/pulls).
+We're still actively developing the **glottospace** package by adding
+new functions and improving existing ones. Although the package is
+stable, you might find bugs or encounter things you might find
+confusing. You can help us to improve the package by:
+
+-   Sending an email to [Rui Dong](mailto:r.dong@hum.leidenuniv.nl) with
+    a clear description of the issue or error message.\
+-   Opening a new issue in the [glottospace issues page on
+    GitHub](https://github.com/glottospace/glottospace/issues)
+-   Fixing a bug or adding functionality and submit a [pull request on
+    GitHub](https://github.com/glottospace/glottospace/pulls).
 
 # Citation
+
 If you find **glottospace** useful, please cite it in your work:
 
 ```{r, echo = FALSE}
 citation("glottospace")
 ```
 
-The package uses four global databases: [glottolog](https://glottolog.org/), [WALS](https://wals.info/),  [Grambank](https://grambank.clld.org/) and [Phoible](https://phoible.org/). In addition, **glottospace** builds on a combination of [spatial](https://www.r-pkg.org/ctv/Spatial) and non-spatial packages, including **sf**, **terra**, **tmap**, **mapview**, **rnaturalearth**, and **dplyr**. If you use **glottospace** in one of your publications, please cite these data sources and packages as well. 
+The package uses four global databases:
+[glottolog](https://glottolog.org/), [WALS](https://wals.info/),
+[Grambank](https://grambank.clld.org/) and
+[Phoible](https://phoible.org/). In addition, **glottospace** builds on
+a combination of [spatial](https://www.r-pkg.org/ctv/Spatial) and
+non-spatial packages, including **sf**, **terra**, **tmap**,
+**mapview**, **rnaturalearth**, and **dplyr**. If you use
+**glottospace** in one of your publications, please cite these data
+sources and packages as well.
 
 # Installation
 
-You can install the latest release of glottospace from [CRAN](https://CRAN.R-project.org/package=glottospace) with:
+You can install the latest release of glottospace from
+[CRAN](https://CRAN.R-project.org/package=glottospace) with:
 
 ``` r
 # install.packages("glottospace")
@@ -58,17 +94,25 @@ You can install the latest release of glottospace from [CRAN](https://CRAN.R-pro
 # install.packages("glottospace", INSTALL_opts = "--no-multiarch")
 ```
 
-You can install the development version of glottospace from [GitHub](https://github.com/) with:
+You can install the development version of glottospace from
+[GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
 # devtools::install_github("glottospace/glottospace", INSTALL_opts=c("--no-multiarch"))
 ```
+
 # Example
-Before describing the functionality of **glottospace**, we give a quick demonstration of a typical workflow. 
+
+Before describing the functionality of **glottospace**, we give a quick
+demonstration of a typical workflow.
 
 ## Plotting language locations on a map
-Imagine you're working with languages in a particular region, and want to visualize them on a map. With glottospace this is easy! You could for example filter all languages in South America, and show which ones of them are isolate languages:
+
+Imagine you're working with languages in a particular region, and want
+to visualize them on a map. With glottospace this is easy! You could for
+example filter all languages in South America, and show which ones of
+them are isolate languages:
 
 ```{r example_glottomap}
 library(glottospace)
@@ -77,7 +121,10 @@ library(glottospace)
 glottomap(continent = "South America", color = "isolate")
 ```
 
-Languages are often represented with points, while in reality the speakers of a language can inhabit vast areas. glottospace works with point and polygon data. When polygon data is not available, you can interpolate the points and plot those. 
+Languages are often represented with points, while in reality the
+speakers of a language can inhabit vast areas. glottospace works with
+point and polygon data. When polygon data is not available, you can
+interpolate the points and plot those.
 
 ```{r example_glottopols}
 ## Filter by continent
@@ -91,57 +138,143 @@ glottomap(glottodata = glottopols, color = "family_size_rank", palette = "tol.yl
 
 # Workflow of glottospace
 
-The glottospace package offers a wide range of functions to work with spatio-linguistic data. The functions are organized into the following function families, of which the core function generally has the same name as the family to which it belongs: 
+The glottospace package offers a wide range of functions to work with
+spatio-linguistic data. The functions are organized into the following
+function families, of which the core function generally has the same
+name as the family to which it belongs:
 
-1. glottoget: download glottodata from remote server, or load locally stored glottodata.
-1. glottocreate: create empty glottodata structure, to add data manually. 
-1. glottocheck: run interactive quality checks of user-provided glottodata.
-1. glottoclean: clean-up glottodata.
-1. glottojoin: join user-provided glottodata with other (often online) datasets. 
-1. glottosearch: search [glottolog](https://glottolog.org/) database for languages, language families, glottocodes, etc. 
-1. glottofilter: filter/subset glottodata based on linguistic and geographic features/variables.
-1. glottodist: calculate differences/similarities between languages based on their features (linguistic, cultural, environmental, geographic, etc.).
-1. glottodist_subdata: calculate differences/similarities between languages based on their constructions.
-1. glottoplot: visualize differences/similarities between languages.
+1.  glottoget: download glottodata from remote server, or load locally
+    stored glottodata.
 
-1. glottospace: make glottodata spatial, add coordinates, add spatial points or polygons to languages.
-1. glottomap: visualize linguistic and cultural data on a map.
-1. glottomap_rips_filt: visualize the Vietoris-Rips filtration.
-1. glottomap_persist_diagram: create the persistence diagram with respect to geospatial points.
-1. glottosave: save output generated by glottospace (data, figures, maps, etc.).
+2.  glottocreate: create empty glottodata structure, to add data
+    manually.
+
+3.  glottocheck: run interactive quality checks of user-provided
+    glottodata.
+
+4.  glottoclean: clean-up glottodata.
+
+5.  glottojoin: join user-provided glottodata with other (often online)
+    datasets.
+
+6.  glottosearch: search [glottolog](https://glottolog.org/) database
+    for languages, language families, glottocodes, etc.
+
+7.  glottofilter: filter/subset glottodata based on linguistic and
+    geographic features/variables.
+
+8.  glottodist: calculate differences/similarities between languages
+    based on their features (linguistic, cultural, environmental,
+    geographic, etc.).
+
+9.  glottodist_subdata: calculate differences/similarities between
+    languages based on their constructions.
+
+10. glottoplot: visualize differences/similarities between languages.
+
+11. glottospace: make glottodata spatial, add coordinates, add spatial
+    points or polygons to languages.
+
+12. glottomap: visualize linguistic and cultural data on a map.
+
+13. glottomap_rips_filt: visualize the Vietoris-Rips filtration.
+
+14. glottomap_persist_diagram: create the persistence diagram with
+    respect to geospatial points.
+
+15. glottosave: save output generated by glottospace (data, figures,
+    maps, etc.).
 
 ## glottoget
-You can load locally stored glottodata (for example from an excel file or shapefile). The glottospace package has two built-in artificial demo datasets ("demodata" and "demosubdata"). 
 
-``` {r glottoget}
+You can load locally stored glottodata (for example from an excel file
+or shapefile). The glottospace package has two built-in artificial demo
+datasets ("demodata" and "demosubdata").
+
+```{r glottoget}
 glottodata <- glottoget("demodata")
 head(glottodata)
 ```
 
-You can also load glottodata from online databases such as [glottolog](https://glottolog.org/). You can download a raw version of the data ('glottolog'), or an enriched/boosted version ('glottobase'):
-``` {r glottogetbase, message = FALSE}
+You can also load glottodata from online databases such as
+[glottolog](https://glottolog.org/). You can download a raw version of
+the data ('glottolog'), or an enriched/boosted version ('glottobase'):
+
+```{r glottogetbase, message = FALSE}
 # To load glottobase:
 glottobase <- glottoget("glottobase")
 colnames(glottobase)
 ```
 
-## glottocreate
-You can generate empty data structures that help you to add your own data in a structured way. These data structures can be saved to your local folder by specifying a filename (not demonstrated here). 
+In the case of [Phoible](https://phoible.org/), you can load it in
+multiple different ways. When you set glottodata to be "phoible_raw" or
+"phoiblespace_raw", you can load the non-spatial/spatial-enhanced
+version of raw data of [Phoible](https://phoible.org/).
 
-``` {r glottocreate}
+```{r glottogetphoible_raw, message = FALSE}
+# To load phoible_raw:
+phoible_raw <- glottoget(glottodata = "phoible_raw", download = F)
+
+# To load phoiblespace_raw:
+phoiblespace_raw <- glottoget(glottodata = "phoiblespace_raw", download = F)
+```
+
+When glottodata = "phoible" or "phoiblespace",
+you randomly choose only one sample for all the duplicated glottocodes,
+and you can load the non-spatial/spatial-enhanced version of [Phoible](https://phoible.org/).
+If you fix the value of seed, 
+you can make a reproducible output.
+
+```{r, glottogetphoible, message = FALSE}
+phoible <- glottoget(glottodata = "phoible", seed = 42)
+
+phoiblespace <- glottoget(glottodata = "phoiblespace", seed = 42)
+```
+
+When glottodata = "phoible_raw_param_sf",
+you can load an sf object of the geographical distribution for all parameter IDs in raw [Phoible](https://phoible.org/).
+
+```{r, glottogetphoible_raw_param_sf, message = FALSE}
+phoible_raw_param_sf <- glottoget(glottodata = "phoible_raw_param_sf")
+head(phoible_raw_param_sf)
+```
+
+When glottodata = "phoible_param_sf",
+the function first randomly choose only one sample for all the duplicated glottocodes,
+and then load the geographical distribution for all parameter IDs as an sf object.
+If you set the value of seed, 
+you can then create a reproducible dataset.
+
+```{r, glottogetphoible_param_sf, message = FALSE}
+phoible_param_sf <- glottoget(glottodata = "phoible_param_sf", seed = 42)
+head(phoible_param_sf)
+```
+
+## glottocreate
+
+You can generate empty data structures that help you to add your own
+data in a structured way. These data structures can be saved to your
+local folder by specifying a filename (not demonstrated here).
+
+```{r glottocreate}
 glottocreate(glottocodes = c("yucu1253", "tani1257"), variables = 3, meta = FALSE)
 ```
 
-We've specified meta = FALSE, to indicate that we want to generate a 'flat' glottodata table. However, when creating glottodata, by default, several meta tables are included:
+We've specified meta = FALSE, to indicate that we want to generate a
+'flat' glottodata table. However, when creating glottodata, by default,
+several meta tables are included:
 
-``` {r glottocreate_meta}
+```{r glottocreate_meta}
 glottodata_meta <- glottocreate(glottocodes = c("yucu1253", "tani1257"), variables = 3)
 summary(glottodata_meta)
 ```
 
-The majority of these meta tables are added for the convenience of the user. The 'structure' and 'sample' tables are the only ones that are required for some of the functions in the glottospace package. A structure table can also be added later:
+The majority of these meta tables are added for the convenience of the
+user. The 'structure' and 'sample' tables are the only ones that are
+required for some of the functions in the glottospace package. A
+structure table can also be added later:
 
-``` {r glottocreate_structuretable}
+```{r glottocreate_structuretable}
 
 glottodata <- glottoget("demodata", meta = FALSE)
 structure <- glottocreate_structuretable(varnames = c("var001", "var002", "var003"))
@@ -150,33 +283,43 @@ glottodata <- glottocreate_addtable(glottodata, structure, name = "structure")
 
 ```
 
-More complex glottodata structures can also be generated. For example, in cases where you want to distinguish between groups within each language. 
-``` {r glottocreate_subdata}
+More complex glottodata structures can also be generated. For example,
+in cases where you want to distinguish between groups within each
+language.
+
+```{r glottocreate_subdata}
 # Instead of creating a single table for all languages, you might want to create a list of tables (one table for each language)
 glottocreate(glottocodes = c("yucu1253", "tani1257"), 
                      variables = 3, groups = c("a", "b"), n = 2, meta = FALSE)
 ```
 
 ## glottocheck
-If you have your own data, you might want to do some interactive quality checks:
 
-``` {r glottocheck}
+If you have your own data, you might want to do some interactive quality
+checks:
+
+```{r glottocheck}
 glottodata <- glottoget("demodata")
 glottocheck(glottodata, diagnostic = FALSE)
 ```
-We've now specified diagnostic = FALSE, but the default is to show some more extensive diagnostics (like a data coverage plot). 
+
+We've now specified diagnostic = FALSE, but the default is to show some
+more extensive diagnostics (like a data coverage plot).
 
 You can also check the metadata:
 
-``` {r glottocheckmeta}
+```{r glottocheckmeta}
 glottodata <- glottoget(glottodata = "demodata", meta = TRUE)
 glottocheck(glottodata, checkmeta = TRUE)
 ```
 
-## glottoclean 
-Once you've loaded glottodata, you might encounter some inconsistencies. For example, data-contributors might not have used a standardized way of coding missing values.
+## glottoclean
 
-``` {r glottoclean}
+Once you've loaded glottodata, you might encounter some inconsistencies.
+For example, data-contributors might not have used a standardized way of
+coding missing values.
+
+```{r glottoclean}
 glottodata <- glottoget(glottodata = "demodata", meta = TRUE)
 glottodata_clean <- glottoclean(glottodata)
 
@@ -185,8 +328,11 @@ glottodata_clean$glottodata
 ```
 
 ## glottojoin and glottosimplify
-Join user-provided glottodata with other datasets, or with online databases.
-``` {r glottojoin}
+
+Join user-provided glottodata with other datasets, or with online
+databases.
+
+```{r glottojoin}
 # Join with glottospace
 glottodata <- glottoget("demodata")
 
@@ -200,8 +346,10 @@ glottosimplify(glottodata = glottosubdata)
 
 ```
 
-## glottosearch 
-As demonstrated in the example above, you can search glottodata for a specific search term
+## glottosearch
+
+As demonstrated in the example above, you can search glottodata for a
+specific search term
 
 You can search for a match in all columns:
 
@@ -211,30 +359,32 @@ glottosearch(search = "yurakar")
 
 Or limit the search to specific columns:
 
-``` {r glottosearch2}
+```{r glottosearch2}
 glottosearch(search = "Yucuni", columns = c("name", "family"))
 
 ```
 
 Sometimes you don't find a match:
+
 ```{r glottosearch3}
 glottosearch(search = "matsigenka")[,"name"]
 ```
 
-If you can't find what you're looking for, you can increase the tolerance:
+If you can't find what you're looking for, you can increase the
+tolerance:
+
 ```{r glottosearch4}
 glottosearch(search = "matsigenka", tolerance = 0.2)[,"name"]
 ```
 
 Aha! There it is: 'Machiguenga'
+
 ```{r glottosearch5}
 glottosearch(search = "matsigenka", tolerance = 0.4)[,"name"]
 ```
 
-
-
-
 ## glottofilter
+
 filter, select, query
 
 ```{r glottofilter}
@@ -250,7 +400,9 @@ arawtuca <- glottofilter(expression = family %in% c("Arawakan", "Tucanoan"))
 
 ```
 
-You can also interactively filter languages by drawing or clicking on a map:
+You can also interactively filter languages by drawing or clicking on a
+map:
+
 ```{r glottofiltermap}
 # selected <- glottofiltermap(continent = "South America")
 # glottomap(selected)
@@ -258,13 +410,15 @@ You can also interactively filter languages by drawing or clicking on a map:
 ```
 
 ## glottodist
-Quantify differences or disimilarities between languages
-glottodistances: calculating disimilarities between languages based on linguistic/cultural features.
 
-The `glottodist` can compute two types of distance/dissimilarity by setting the argument `metric`.
-When `metric="gower"`, it returns the Gower distance,
-when `metric="anderberg"`, it returns the Anderberg dissimarity.
-The default value is `metric="gower"`.
+Quantify differences or disimilarities between languages
+glottodistances: calculating disimilarities between languages based on
+linguistic/cultural features.
+
+The `glottodist` can compute two types of distance/dissimilarity by
+setting the argument `metric`. When `metric="gower"`, it returns the
+Gower distance, when `metric="anderberg"`, it returns the Anderberg
+dissimarity. The default value is `metric="gower"`.
 
 ```{r glottodist}
 # In order to be able to calculate linguistic distances a structure table is required, that's why we specify meta = TRUE. In case you have glottodata without a structure table, you can add it (see examples in the  glottocreate() section).
@@ -274,13 +428,18 @@ glottodist_anderberg <- glottodist(glottodata = glottodata, metric = "anderberg"
 ```
 
 ## glottodist_subdata
-You can also compute the differences or disimilarities between languages based on constructions.
-The function `glottodist_subdata` contains three types of disimilarities,
-i.e., 
-"Matching Constructions Index (MCI)", "Relative Index (RI)", and "Form-Meaning Index (FMI)" based on either gower distance or Anderberg distance.
 
-For example, suppose if the language "tani1257" contains three constructions "tani1257_0001", "tani1257_0002", "tani1257_0003", 
-and the language "yucu1253" contains two constructions "yucu1253_0001", "yucu1253_0002".
+You can also compute the differences or disimilarities between languages
+based on constructions. The function `glottodist_subdata` contains three
+types of disimilarities, i.e., "Matching Constructions Index (MCI)",
+"Relative Index (RI)", and "Form-Meaning Index (FMI)" based on either
+gower distance or Anderberg distance.
+
+For example, suppose if the language "tani1257" contains three
+constructions "tani1257_0001", "tani1257_0002", "tani1257_0003", and the
+language "yucu1253" contains two constructions "yucu1253_0001",
+"yucu1253_0002".
+
 ```{r, echo=FALSE}
 knitr::kable(glottospace::glottoget("demosubdata_cnstn")[["tani1257"]])
 ```
@@ -289,27 +448,35 @@ knitr::kable(glottospace::glottoget("demosubdata_cnstn")[["tani1257"]])
 knitr::kable(glottospace::glottoget("demosubdata_cnstn")[["yucu1253"]])
 ```
 
-The Matching Constructions Index of tani1257 and yucu1253 w.r.t. gower distance is given by 
+The Matching Constructions Index of tani1257 and yucu1253 w.r.t. gower
+distance is given by
+
 ```{r glottodist_subdata_mci}
 glottoget(glottodata = "demosubdata_cnstn") |>
   glottodist_subdata(metric = "gower", index_type = "mci") 
 ```
 
-If the meaning features are "var001", "var002", "var003", "var004",
-and the form features are "var005", "var006", "var007",
-the Atomic Meaning Index of tani1257 and yucu1253 w.r.t. gower distance is given by 
+If the meaning features are "var001", "var002", "var003", "var004", and
+the form features are "var005", "var006", "var007", the Atomic Meaning
+Index of tani1257 and yucu1253 w.r.t. gower distance is given by
+
 ```{r glottodist_subdata_si}
 glottoget(glottodata = "demosubdata_cnstn") |>
   glottodist_subdata(metric = "gower", index_type = "ri",
                      avg_idx = 1:4, fixed_idx = 5:7)
 ```
-and the Atomic Form Index of tani1257 and yucu1253 w.r.t. gower distance is given by 
+
+and the Atomic Form Index of tani1257 and yucu1253 w.r.t. gower distance
+is given by
+
 ```{r glottodist_subdata_fi}
 glottoget(glottodata = "demosubdata_cnstn") |>
   glottodist_subdata(metric = "gower", index_type = "ri",
                      avg_idx = 5:7, fixed_idx = 1:4)
 ```
+
 and the Form-Meaning Index is given by
+
 ```{r glottodist_subdata_fmi}
 glottoget(glottodata = "demosubdata_cnstn") |>
   glottodist_subdata(index_type = "fmi",
@@ -317,7 +484,9 @@ glottoget(glottodata = "demosubdata_cnstn") |>
 ```
 
 ## glottoplot
-Visualizing differences (distances) between languages based on linguistic, cultural, and environmental features. 
+
+Visualizing differences (distances) between languages based on
+linguistic, cultural, and environmental features.
 
 ```{r glottoplot}
 glottodata <- glottoget("demodata", meta = TRUE)
@@ -325,9 +494,10 @@ glottodist <- glottodist(glottodata = glottodata)
 glottoplot(glottodist = glottodist)
 ```
 
-
 ## glottospace
-This family of functions turns glottodata into a spatial object. As we've illustrated above, these can be either glottopoints or glottopols
+
+This family of functions turns glottodata into a spatial object. As
+we've illustrated above, these can be either glottopoints or glottopols
 
 ```{r glottospace}
 glottodata <- glottoget("demodata")
@@ -336,18 +506,23 @@ glottospacedata <- glottospace(glottodata, method = "buffer", radius = 5)
 glottomap(glottospacedata)
 ```
 
+## glottomap
 
-## glottomap 
+With glottomap you can quickly visualize the location of languages.
+Below we show simple static maps, but you can also create dynamic maps
+by specifying type = "dynamic".
 
-With glottomap you can quickly visualize the location of languages. Below we show simple static maps, but you can also create dynamic maps by specifying type = "dynamic".
-
-To select languages, you don't need to call glottofilter() first, but you can use glottomap() directly. Behind the scenes glottomap() passes those arguments on to glottofilter().
+To select languages, you don't need to call glottofilter() first, but
+you can use glottomap() directly. Behind the scenes glottomap() passes
+those arguments on to glottofilter().
 
 ```{r glottomap}
 glottomap(country = "Colombia")
 ```
 
-However, you can also create maps with other glottodata. For example, we might want to create a world map highlighting the largest language families
+However, you can also create maps with other glottodata. For example, we
+might want to create a world map highlighting the largest language
+families
 
 ```{r glottomap_family_size}
 glottodata <- glottoget()
@@ -361,7 +536,9 @@ glottomap(glottodata, color = "legend", glotto_title = "Top 5 largest languages 
           palette = "Set 1", alpha = .8)
 ```
 
-You can also produce maps based on either countries or hydro-basins. The hydro-basin basemap is cited from [HydroSHEDS](https://www.hydrosheds.org/) of Level 03.
+You can also produce maps based on either countries or hydro-basins. The
+hydro-basin basemap is cited from
+[HydroSHEDS](https://www.hydrosheds.org/) of Level 03.
 
 ```{r, figures-side, fig.show="hold", out.width="50%"}
 par(mar = c(2, 2, .1, .1))
@@ -381,13 +558,20 @@ glottomap(glottopoints[glottopoints$family %in% families$family[1:5], ], basemap
 
 ## glottomap_rips_filt
 
-You can visualize the topological pattern of spatial distribution of languages using function `glottomap_rips_filt()`.
-More technically, 
-this method of visualization is referred to as ["Vietoris-Rips filtration"](https://en.wikipedia.org/wiki/Vietoris%E2%80%93Rips_filtration).
-In the function `glottomap_rips_filt()`, the default units of `r` and `maxscale` are both 100km, corresponding to the buffer radius of each language and the maximum value of the Vietoris-Rips filtration respectively.
+You can visualize the topological pattern of spatial distribution of
+languages using function `glottomap_rips_filt()`. More technically, this
+method of visualization is referred to as ["Vietoris-Rips
+filtration"](https://en.wikipedia.org/wiki/Vietoris%E2%80%93Rips_filtration).
+In the function `glottomap_rips_filt()`, the default units of `r` and
+`maxscale` are both 100km, corresponding to the buffer radius of each
+language and the maximum value of the Vietoris-Rips filtration
+respectively.
 
-For example, 
-if we filter out the languages of Arawakan family, and set the buffer radius of each language as 600 km, the maximum value of the Vietoris-Rips filtration as 1500 km, we can see that there is a circluar structure around the borders of Colombia, Peru and Brazil:
+For example, if we filter out the languages of Arawakan family, and set
+the buffer radius of each language as 600 km, the maximum value of the
+Vietoris-Rips filtration as 1500 km, we can see that there is a circluar
+structure around the borders of Colombia, Peru and Brazil:
+
 ```{r glottomap_rips_filt_static}
 # Pick up all the Arawakan languages
 glottopoints <- glottofilter(continent = "South America")
@@ -397,7 +581,9 @@ awk <- glottopoints[glottopoints$family == "Arawakan", ]
 glottomap_rips_filt(glottodata = awk, r = 6, maxscale = 15, is_animate = FALSE) 
 ```
 
-If you set the the argument `is_animate = TRUE`, you can then generate a GIF file, here the buffer radius ranges from 0 km to 800 km: 
+If you set the the argument `is_animate = TRUE`, you can then generate a
+GIF file, here the buffer radius ranges from 0 km to 800 km:
+
 ```{r glottomap_rips_filt_animate, eval = FALSE}
 glottopoints <- glottofilter(continent = "South America")
 # Pick up all the Arawakan languages
@@ -406,12 +592,19 @@ awk <- glottopoints[glottopoints$family == "Arawakan", ]
 glottomap_rips_filt(glottodata = awk, r = 8, maxscale = 15, is_animate = TRUE, 
                     length.out = 30, movie.name = "filtration.gif") 
 ```
-<center>
-<img width="75%" src="man/figures/awk_filt.gif"/>
-</center>
+
+<center><img src="man/figures/awk_filt.gif" width="75%"/></center>
 
 ## glottomap_persist_diagram
-The persistent topological structure (clusters and circular structures) can be described by the so-call ["persistence diagram"](https://ncatlab.org/nlab/show/persistence+diagram#:~:text=Idea,b%20and%20then%20%E2%80%9Cdisappear%E2%80%9D.), you can see that there is a unique point of dimension 1 standing out of the diagonal line when "Birth" is around 600 km and "Death" is around 800 km, this is consistent with the precious visualization of Vietoris-Rips filtration:
+
+The persistent topological structure (clusters and circular structures)
+can be described by the so-call ["persistence
+diagram"](https://ncatlab.org/nlab/show/persistence+diagram#:~:text=Idea,b%20and%20then%20%E2%80%9Cdisappear%E2%80%9D.),
+you can see that there is a unique point of dimension 1 standing out of
+the diagonal line when "Birth" is around 600 km and "Death" is around
+800 km, this is consistent with the precious visualization of
+Vietoris-Rips filtration:
+
 ```{r glottomap_persist_diagram}
 # Pick up all the Arawakan languages
 glottopoints <- glottofilter(continent = "South America")
@@ -421,9 +614,10 @@ awk <- glottopoints[glottopoints$family == "Arawakan", ]
 glottomap_persist_diagram(awk, maxscale = 15)
 ```
 
+## glottosave
 
-## glottosave 
-All output generated with the glottospace package (data, figures, maps, etc.) can be saved with a single command. 
+All output generated with the glottospace package (data, figures, maps,
+etc.) can be saved with a single command.
 
 ```{r glottoworldmap}
 glottodata <- glottoget("demodata", meta = FALSE)
@@ -438,8 +632,3 @@ glottospacedata <- glottospace(glottodata)
 glottomap <- glottomap(glottodata)
 # glottosave(glottomap, filename = "glottomap") 
 ```
-
-
-
-
-

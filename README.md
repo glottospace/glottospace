@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# glottospace: Language Mapping and Geospatial Analysis of Linguistic and Cultural Data <img src='man/figures/logo.png' align="right" height="139" />
+# glottospace: Language Mapping and Geospatial Analysis of Linguistic and Cultural Data <img src="man/figures/logo.png" align="right" height="139"/>
 
 <!-- badges: start -->
 
@@ -13,6 +13,7 @@ v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/li
 [![status](https://joss.theoj.org/papers/c93a1ccb6835a15c6026ea1ddc28b50c/status.svg)](https://joss.theoj.org/papers/c93a1ccb6835a15c6026ea1ddc28b50c)
 [![CRAN RStudio mirror
 downloads](https://cranlogs.r-pkg.org/badges/grand-total/glottospace?color=orange)](https://r-pkg.org/pkg/glottospace)
+
 <!-- badges: end -->
 
 # Introduction
@@ -27,9 +28,9 @@ distances between languages based on their location or linguistic
 features and visualize those distances. In addition, with
 **glottospace** you can easily access global databases such as
 [glottolog](https://glottolog.org/), [WALS](https://wals.info/),
-[Grambank](https://grambank.clld.org/) and
-[D-PLACE](https://d-place.org/) from R and integrate them with your own
-data.
+[Grambank](https://grambank.clld.org/), [D-PLACE](https://d-place.org/)
+and [Phoible](https://phoible.org/) from R and integrate them with your
+own data.
 
 # Development
 
@@ -222,6 +223,73 @@ colnames(glottobase)
 #>  [9] "family"           "isolate"          "family_size"      "family_size_rank"
 #> [13] "country"          "sovereignty"      "type"             "geounit"         
 #> [17] "continent"        "adm0_a3"          "geometry"
+```
+
+In the case of [Phoible](https://phoible.org/), you can load it in
+multiple different ways. When you set glottodata to be “phoible_raw” or
+“phoiblespace_raw”, you can load the non-spatial/spatial-enhanced
+version of raw data of [Phoible](https://phoible.org/).
+
+``` r
+# To load phoible_raw:
+phoible_raw <- glottoget(glottodata = "phoible_raw", download = F)
+
+# To load phoiblespace_raw:
+phoiblespace_raw <- glottoget(glottodata = "phoiblespace_raw", download = F)
+```
+
+When glottodata = “phoible” or “phoiblespace”, you randomly choose only
+one sample for all the duplicated glottocodes, and you can load the
+non-spatial/spatial-enhanced version of [Phoible](https://phoible.org/).
+If you fix the value of seed, you can make a reproducible output.
+
+``` r
+phoible <- glottoget(glottodata = "phoible", seed = 42)
+
+phoiblespace <- glottoget(glottodata = "phoiblespace", seed = 42)
+```
+
+When glottodata = “phoible_raw_param_sf”, you can load an sf object of
+the geographical distribution for all parameter IDs in raw
+[Phoible](https://phoible.org/).
+
+``` r
+phoible_raw_param_sf <- glottoget(glottodata = "phoible_raw_param_sf")
+head(phoible_raw_param_sf)
+#> Simple feature collection with 6 features and 1 field
+#> Geometry type: MULTIPOINT
+#> Dimension:     XY
+#> Bounding box:  xmin: -175.25 ymin: -55.2748 xmax: 178.33 ymax: 73.1354
+#> Geodetic CRS:  WGS 84
+#>                       Parameter ID                       geometry
+#> 1 72FB536ACFF408163656BBCDAFCAC6F6 MULTIPOINT ((36.5721 5.9503...
+#> 2 2F272C9C5FA2DA70706B565B2DC46DE8 MULTIPOINT ((36.5721 5.9503...
+#> 3 B6D180EA250E6FBDE82C3D1F1BB4A39C MULTIPOINT ((-1.33254 6.347...
+#> 4 CB37024CEAE9409F30FC756C0578E93C MULTIPOINT ((-1.33254 6.347...
+#> 5 199408E3D0668F10F475143F0E8CC0CB MULTIPOINT ((10.2267 6.5805...
+#> 6 6DD56E3A80E90C3B1F5AC7AC45CE8180 MULTIPOINT ((-61 -29), (-72...
+```
+
+When glottodata = “phoible_param_sf”, the function first randomly choose
+only one sample for all the duplicated glottocodes, and then load the
+geographical distribution for all parameter IDs as an sf object. If you
+set the value of seed, you can then create a reproducible dataset.
+
+``` r
+phoible_param_sf <- glottoget(glottodata = "phoible_param_sf", seed = 42)
+head(phoible_param_sf)
+#> Simple feature collection with 6 features and 1 field
+#> Geometry type: MULTIPOINT
+#> Dimension:     XY
+#> Bounding box:  xmin: -175.25 ymin: -55.2748 xmax: 178.33 ymax: 73.1354
+#> Geodetic CRS:  WGS 84
+#>                       Parameter ID                       geometry
+#> 1 72FB536ACFF408163656BBCDAFCAC6F6 MULTIPOINT ((36.5721 5.9503...
+#> 2 2F272C9C5FA2DA70706B565B2DC46DE8 MULTIPOINT ((36.5721 5.9503...
+#> 3 B6D180EA250E6FBDE82C3D1F1BB4A39C MULTIPOINT ((1.37035 8.8858...
+#> 4 CB37024CEAE9409F30FC756C0578E93C MULTIPOINT ((141.755 -12.39...
+#> 5 199408E3D0668F10F475143F0E8CC0CB MULTIPOINT ((10.2267 6.5805...
+#> 6 6DD56E3A80E90C3B1F5AC7AC45CE8180 MULTIPOINT ((-61 -29), (-72...
 ```
 
 ## glottocreate
@@ -835,7 +903,7 @@ glottomap_rips_filt(glottodata = awk, r = 8, maxscale = 15, is_animate = TRUE,
 ```
 
 <center>
-<img width="75%" src="man/figures/awk_filt.gif"/>
+<img src="man/figures/awk_filt.gif" width="75%"/>
 </center>
 
 ## glottomap_persist_diagram

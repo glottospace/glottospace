@@ -117,7 +117,7 @@ phoible_param_sf <- function(phoible_data){
 
   data <- data[, c("longitude", "latitude", data_non_na_id)]
 
-  data_sfc <- data[, 3:ncol(data)] |>
+  geometry <- data[, 3:ncol(data)] |>
     apply(
       MARGIN = 2,
       FUN = function(x){
@@ -132,7 +132,9 @@ phoible_param_sf <- function(phoible_data){
 
   colnames(data_param_id) <- "Parameter ID"
 
-  sf::st_sf(data_param_id, data_sfc)
+  data_sf <- sf::st_sf(data_param_id, geometry)
+
+  data_sf
 }
 
 
