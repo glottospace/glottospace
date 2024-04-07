@@ -9,7 +9,8 @@ glottoget(
   meta = FALSE,
   download = FALSE,
   dirpath = NULL,
-  url = NULL
+  url = NULL,
+  seed = 42
 )
 }
 \arguments{
@@ -43,6 +44,8 @@ spatial coordinates.
 \item{dirpath}{Optional, if you want to store a global CLDF dataset in a specific directory, or load it from a specific directory.}
 
 \item{url}{Zenodo url, something like this: "https://zenodo.org/api/records/3260727"}
+
+\item{seed}{the seed number when get phoible dataset, the default value is 42}
 }
 \value{
 A glottodata or glottosubdata object (a data.frame or list, depending on which glottodata is requested)

@@ -28,6 +28,7 @@
 #' @param download By default internally stored versions of global databases are used. Specify download = TRUE in case you want to download the latest version from a remote server.
 #' @param dirpath Optional, if you want to store a global CLDF dataset in a specific directory, or load it from a specific directory.
 #' @param url Zenodo url, something like this: "https://zenodo.org/api/records/3260727"
+#' @param seed the seed number when get phoible dataset, the default value is 42
 #'
 #' @family <glottodata>
 #' @return A glottodata or glottosubdata object (a data.frame or list, depending on which glottodata is requested)
@@ -36,7 +37,7 @@
 #' \donttest{
 #' glottoget("glottolog")
 #' }
-glottoget <- function(glottodata = NULL, meta = FALSE, download = FALSE, dirpath = NULL, url = NULL){
+glottoget <- function(glottodata = NULL, meta = FALSE, download = FALSE, dirpath = NULL, url = NULL, seed = 42){
   if(!is.null(url)){
     if(is.null(dirpath)){
       url_href <- url |>
@@ -76,11 +77,13 @@ glottoget <- function(glottodata = NULL, meta = FALSE, download = FALSE, dirpath
     glottodata <- glottoget_phoible(download = download, dirpath = dirpath) |>
       glottospace_coords2sf()
   } else if(tolower(glottodata) == "phoible"){
+    set.seed(seed)
     glottodata <- glottoget_phoible(download = download, dirpath = dirpath) |>
       dplyr::group_by(id) |>
       dplyr::sample_n(1) |>
       dplyr::ungroup()
   } else if(tolower(glottodata) == "phoiblespace") {
+    set.seed(seed)
     glottodata <- glottoget_phoible(download = download, dirpath = dirpath) |>
       dplyr::group_by(id) |>
       dplyr::sample_n(1) |>

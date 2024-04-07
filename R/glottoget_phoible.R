@@ -81,3 +81,69 @@ glottoget_phoibleloadlocal <- function(dirpath){
   phoibledata <- phoibledata %>% dplyr::select(-.data$glottocode)
   invisible(phoibledata)
 }
+
+
+
+
+#' Title
+#'
+#' @param phoible_data A non-spatial phoible dataset
+#'
+#' @return an sf object
+#' @export
+#'
+#' @examples
+#' phoible_sf <- phoible_transpose(glottospace::phoible_raw)
+phoible_transpose <- function(phoible_data){
+  param_idx <- colnames(phoible_data) |>
+    sapply(
+      FUN = function(x){
+        nchar(x) == 32
+      }
+    )
+  param_ids <- colnames(phoible_data)[param_idx]
+
+  data <- phoible_data[, c("longitude", "latitude", param_ids)] |>
+    na.omit()
+
+  data_non_na_id <- data[, 3:ncol(data)] |>
+    apply(MARGIN = 2,
+          FUN = function(x){
+            !all(x == "absent")
+          }) |>
+    unlist()
+
+  data_non_na_id <- names(which(data_non_na_id))
+
+  data <- data[, c("longitude", "latitude", data_non_na_id)]
+
+  data_sfc <- data[, 3:ncol(data)] |>
+    apply(
+      MARGIN = 2,
+      FUN = function(x){
+        data[which(x != "absent"), 1:2] |>
+          as.matrix() |>
+          sf::st_multipoint()
+      }
+    ) |>
+    sf::st_sfc(crs = 4326)
+
+  data_param_id <- as.matrix(colnames(data)[3:ncol(data)])
+
+  colnames(data_param_id) <- "Parameter ID"
+
+  sf::st_sf(data_param_id, data_sfc)
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
