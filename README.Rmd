@@ -32,7 +32,7 @@ v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/li
 [![status](https://joss.theoj.org/papers/c93a1ccb6835a15c6026ea1ddc28b50c/status.svg)](https://joss.theoj.org/papers/c93a1ccb6835a15c6026ea1ddc28b50c)
 [![CRAN RStudio mirror
 downloads](https://cranlogs.r-pkg.org/badges/grand-total/glottospace?color=orange)](https://r-pkg.org/pkg/glottospace)
-
+[![R-CMD-check](https://github.com/glottospace/glottospace/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/glottospace/glottospace/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 # Introduction
@@ -219,11 +219,10 @@ phoible_raw <- glottoget(glottodata = "phoible_raw", download = F)
 phoiblespace_raw <- glottoget(glottodata = "phoiblespace_raw", download = F)
 ```
 
-When glottodata = "phoible" or "phoiblespace",
-you randomly choose only one sample for all the duplicated glottocodes,
-and you can load the non-spatial/spatial-enhanced version of [Phoible](https://phoible.org/).
-If you fix the value of seed, 
-you can make a reproducible output.
+When glottodata = "phoible" or "phoiblespace", you randomly choose only
+one sample for all the duplicated glottocodes, and you can load the
+non-spatial/spatial-enhanced version of [Phoible](https://phoible.org/).
+If you fix the value of seed, you can make a reproducible output.
 
 ```{r, glottogetphoible, message = FALSE}
 phoible <- glottoget(glottodata = "phoible", seed = 42)
@@ -231,19 +230,19 @@ phoible <- glottoget(glottodata = "phoible", seed = 42)
 phoiblespace <- glottoget(glottodata = "phoiblespace", seed = 42)
 ```
 
-When glottodata = "phoible_raw_param_sf",
-you can load an sf object of the geographical distribution for all parameter IDs in raw [Phoible](https://phoible.org/).
+When glottodata = "phoible_raw_param_sf", you can load an sf object of
+the geographical distribution for all parameter IDs in raw
+[Phoible](https://phoible.org/).
 
 ```{r, glottogetphoible_raw_param_sf, message = FALSE}
 phoible_raw_param_sf <- glottoget(glottodata = "phoible_raw_param_sf")
 head(phoible_raw_param_sf)
 ```
 
-When glottodata = "phoible_param_sf",
-the function first randomly choose only one sample for all the duplicated glottocodes,
-and then load the geographical distribution for all parameter IDs as an sf object.
-If you set the value of seed, 
-you can then create a reproducible dataset.
+When glottodata = "phoible_param_sf", the function first randomly choose
+only one sample for all the duplicated glottocodes, and then load the
+geographical distribution for all parameter IDs as an sf object. If you
+set the value of seed, you can then create a reproducible dataset.
 
 ```{r, glottogetphoible_param_sf, message = FALSE}
 phoible_param_sf <- glottoget(glottodata = "phoible_param_sf", seed = 42)
