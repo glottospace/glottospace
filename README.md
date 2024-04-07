@@ -69,11 +69,12 @@ If you find **glottospace** useful, please cite it in your work:
     #>     url = {glottospace: R package for language mapping and geospatial analysis of linguistic and cultural data},
     #>   }
 
-The package uses three global databases:
-[glottolog](https://glottolog.org/), [WALS](https://wals.info/) and
-[Grambank](https://grambank.clld.org/). In addition, **glottospace**
-builds on a combination of [spatial](https://www.r-pkg.org/ctv/Spatial)
-and non-spatial packages, including **sf**, **terra**, **tmap**,
+The package uses four global databases:
+[glottolog](https://glottolog.org/), [WALS](https://wals.info/),
+[Grambank](https://grambank.clld.org/) and
+[Phoible](https://phoible.org/). In addition, **glottospace** builds on
+a combination of [spatial](https://www.r-pkg.org/ctv/Spatial) and
+non-spatial packages, including **sf**, **terra**, **tmap**,
 **mapview**, **rnaturalearth**, and **dplyr**. If you use
 **glottospace** in one of your publications, please cite these data
 sources and packages as well.
