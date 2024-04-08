@@ -81,6 +81,19 @@ glottoget <- function(glottodata = NULL, meta = FALSE, download = FALSE, dirpath
   } else if(tolower(glottodata) == "phoiblespace_raw"){
     glottodata <- glottoget_phoible(download = download, dirpath = dirpath) |>
       glottospace_coords2sf()
+
+    na_params <- sf::st_drop_geometry(glottodata) |> # return parameter id with all "absent" values
+      apply(
+        MARGIN = 2,
+        FUN = function(x){
+          all(x == "absent")
+        }
+      ) |>
+      unlist() |>
+      which() |>
+      names()
+
+    glottodata <- dplyr::select(glottodata, -dplyr::all_of(na_params)) # remove columns with all "absent"
   } else if(tolower(glottodata) == "phoible"){
     if (!is.null(seed)){
       set.seed(seed)
@@ -99,15 +112,18 @@ glottoget <- function(glottodata = NULL, meta = FALSE, download = FALSE, dirpath
       dplyr::ungroup() |>
       glottospace_coords2sf()
 
-    no_absent_idx <- 1:ncol(sf::st_drop_geometry(glottodata)) |>
-      sapply(
+    na_params <- sf::st_drop_geometry(glottodata) |> # return parameter id with all "absent" values
+      apply(
+        MARGIN = 2,
         FUN = function(x){
-          !all(sf::st_drop_geometry(glottodata)[, x] == "absent")
+          all(x == "absent")
         }
       ) |>
-      which()
+      unlist() |>
+      which() |>
+      names()
 
-    glottodata <- glottodata[, no_absent_idx]
+    glottodata <- dplyr::select(glottodata, -dplyr::all_of(na_params)) # remove columns with all "absent"
     } else if(tolower(glottodata) == "phoible_param_sf"){
     if (!is.null(seed)){
       set.seed(seed)

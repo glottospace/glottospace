@@ -13,6 +13,7 @@ v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/li
 [![status](https://joss.theoj.org/papers/c93a1ccb6835a15c6026ea1ddc28b50c/status.svg)](https://joss.theoj.org/papers/c93a1ccb6835a15c6026ea1ddc28b50c)
 [![CRAN RStudio mirror
 downloads](https://cranlogs.r-pkg.org/badges/grand-total/glottospace?color=orange)](https://r-pkg.org/pkg/glottospace)
+[![R-CMD-check](https://github.com/glottospace/glottospace/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/glottospace/glottospace/actions/workflows/R-CMD-check.yaml)
 
 <!-- badges: end -->
 
@@ -228,7 +229,9 @@ colnames(glottobase)
 In the case of [Phoible](https://phoible.org/), you can load it in
 multiple different ways. When you set glottodata to be “phoible_raw” or
 “phoiblespace_raw”, you can load the non-spatial/spatial-enhanced
-version of raw data of [Phoible](https://phoible.org/).
+version of raw data of [Phoible](https://phoible.org/). In the case of
+spatial-enhanced version, the Parameter ID’s that all values are
+“absent” are removed.
 
 ``` r
 # To load phoible_raw:
@@ -241,7 +244,9 @@ phoiblespace_raw <- glottoget(glottodata = "phoiblespace_raw", download = F)
 When glottodata = “phoible” or “phoiblespace”, you randomly choose only
 one sample for all the duplicated glottocodes, and you can load the
 non-spatial/spatial-enhanced version of [Phoible](https://phoible.org/).
-If you fix the value of seed, you can make a reproducible output.
+If you fix the value of seed, you can make a reproducible output. In the
+case of spatial-enhanced version, the Parameter ID’s that all values are
+“absent” are removed.
 
 ``` r
 phoible <- glottoget(glottodata = "phoible", seed = 42)
