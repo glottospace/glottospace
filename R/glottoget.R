@@ -102,6 +102,20 @@ glottoget <- function(glottodata = NULL, meta = FALSE, download = FALSE, dirpath
       dplyr::group_by(id) |>
       dplyr::sample_n(1) |>
       dplyr::ungroup()
+
+    na_params <- glottodata |>
+      apply(
+        MARGIN = 2,
+        FUN = function(x){
+          all(x == "absent")
+        }
+      ) |>
+      unlist() |>
+      which() |>
+      names()
+
+    glottodata <- dplyr::select(glottodata, -dplyr::all_of(na_params)) # remove columns with all "absent"
+
   } else if(tolower(glottodata) == "phoiblespace") {
     if (!is.null(seed)){
       set.seed(seed)
