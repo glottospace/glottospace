@@ -214,14 +214,14 @@
 <span><span class="co">#&gt;  [9] "family"           "isolate"          "family_size"      "family_size_rank"</span></span>
 <span><span class="co">#&gt; [13] "country"          "sovereignty"      "type"             "geounit"         </span></span>
 <span><span class="co">#&gt; [17] "continent"        "adm0_a3"          "geometry"</span></span></code></pre></div>
-<p>In the case of <a href="https://phoible.org/" class="external-link">Phoible</a>, you can load it in multiple different ways. When you set glottodata to be “phoible_raw” or “phoiblespace_raw”, you can load the non-spatial/spatial-enhanced version of raw data of <a href="https://phoible.org/" class="external-link">Phoible</a>.</p>
+<p>In the case of <a href="https://phoible.org/" class="external-link">Phoible</a>, you can load it in multiple different ways. When you set glottodata to be “phoible_raw” or “phoiblespace_raw”, you can load the non-spatial/spatial-enhanced version of raw data of <a href="https://phoible.org/" class="external-link">Phoible</a>. In the case of spatial-enhanced version, the Parameter ID’s that all values are “absent” are removed.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># To load phoible_raw:</span></span>
 <span><span class="va">phoible_raw</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/glottoget.html">glottoget</a></span><span class="op">(</span>glottodata <span class="op">=</span> <span class="st">"phoible_raw"</span>, download <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># To load phoiblespace_raw:</span></span>
 <span><span class="va">phoiblespace_raw</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/glottoget.html">glottoget</a></span><span class="op">(</span>glottodata <span class="op">=</span> <span class="st">"phoiblespace_raw"</span>, download <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></span></code></pre></div>
-<p>When glottodata = “phoible” or “phoiblespace”, you randomly choose only one sample for all the duplicated glottocodes, and you can load the non-spatial/spatial-enhanced version of <a href="https://phoible.org/" class="external-link">Phoible</a>. If you fix the value of seed, you can make a reproducible output.</p>
+<p>When glottodata = “phoible” or “phoiblespace”, you randomly choose only one sample for all the duplicated glottocodes, and you can load the non-spatial/spatial-enhanced version of <a href="https://phoible.org/" class="external-link">Phoible</a>. If you fix the value of seed, you can make a reproducible output. In the case of spatial-enhanced version, the Parameter ID’s that all values are “absent” are removed.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">phoible</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/glottoget.html">glottoget</a></span><span class="op">(</span>glottodata <span class="op">=</span> <span class="st">"phoible"</span>, seed <span class="op">=</span> <span class="fl">42</span><span class="op">)</span></span>
 <span></span>
@@ -911,6 +911,7 @@
 <li><a href="https://github.com/glottospace/glottospace/actions" class="external-link"><img src="https://github.com/glottospace/glottospace/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></li>
 <li><a href="https://joss.theoj.org/papers/c93a1ccb6835a15c6026ea1ddc28b50c" class="external-link"><img src="https://joss.theoj.org/papers/c93a1ccb6835a15c6026ea1ddc28b50c/status.svg" alt="status"></a></li>
 <li><a href="https://r-pkg.org/pkg/glottospace" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/grand-total/glottospace?color=orange" alt="CRAN RStudio mirror downloads"></a></li>
+<li><a href="https://github.com/glottospace/glottospace/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/glottospace/glottospace/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
 </ul>
 </div>
 
