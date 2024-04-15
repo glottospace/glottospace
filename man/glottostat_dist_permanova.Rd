@@ -10,7 +10,7 @@ glottostat_dist_permanova(
   comparison = NULL,
   sample = NULL,
   permutations = NULL,
-  by = "group"
+  by = NULL
 )
 }
 \arguments{
@@ -44,9 +44,6 @@ The function calls \code{vegan::adonis2()}, type \code{?adonis2} for more detail
 glottodata <- glottoget("demodata", meta = TRUE)
 glottodist <- glottodist(glottodata, metric = "gower")
 glottostat_dist_permanova(glottodist = glottodist, glottodata = glottodata, comparison = "pairwise")
-
-glottostat_dist_permanova(glottodist = glottodist, comparison = "pairwise", sample = glottodata[["sample"]])
-
 
 
 }

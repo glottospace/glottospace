@@ -64,7 +64,8 @@ glottoget_phoibleloadlocal <- function(dirpath){
   parameter_id <- NULL
   value <- NULL
 
-  values <- subset(values, select=c(lang_id, parameter_id, value, contribution_id))
+  # values <- subset(values, select=c(lang_id, parameter_id, value, contribution_id))
+  values <- values[, c("lang_id", "parameter_id", "value", "contribution_id")]
   values <- dplyr::distinct(values)
   values <- tidyr::pivot_wider(data = values, names_from = "parameter_id", values_from = "value")
 
@@ -104,7 +105,7 @@ phoible_param_sf <- function(phoible_data){
   param_ids <- colnames(phoible_data)[param_idx]
 
   data <- phoible_data[, c("longitude", "latitude", param_ids)] |>
-    na.omit()
+    stats::na.omit()
 
   data_non_na_id <- data[, 3:ncol(data)] |>
     apply(MARGIN = 2,

@@ -863,7 +863,8 @@ glottomap_persist_diagram <- function(glottodata, maxscale){
     rips_hom_df$dimension <- as.factor( rips_hom_df$dimension)
 
     scale_lim <- max(rips_hom) * 1.01
-    p <- ggplot2::ggplot(data = rips_hom_df, ggplot2::aes(Birth, Death, col=dimension, shape=dimension)) +
+    p <- # ggplot2::ggplot(data = rips_hom_df, ggplot2::aes(Birth, Death, col=dimension, shape=dimension)) +
+      ggplot2::ggplot(data = rips_hom_df, ggplot2::aes_string(x = "Birth", y = "Death", col= "dimension", shape= "dimension")) +
       ggplot2::xlim(0, scale_lim) +
       ggplot2::ylim(0, scale_lim) +
       ggplot2::geom_abline(slope = 1, intercept = 0) +

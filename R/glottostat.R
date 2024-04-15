@@ -98,35 +98,38 @@ return(resultsdf)
 #' glottodist <- glottodist(glottodata, metric = "gower")
 #' glottostat_dist_permanova(glottodist = glottodist, glottodata = glottodata, comparison = "pairwise")
 #'
-#' glottostat_dist_permanova(glottodist = glottodist, comparison = "pairwise", sample = glottodata[["sample"]])
 #'
-#'
-#'
-glottostat_dist_permanova <- function(glottodist = NULL, glottodata = NULL, comparison = NULL, sample = NULL, permutations = NULL, by = "group"){
+glottostat_dist_permanova <- function(glottodist = NULL, glottodata = NULL, comparison = NULL, sample = NULL, permutations = NULL, by = NULL){
 
   if(is.null(permutations)){permutations <- 999}
   if(is.null(comparison)){comparison <- "overall"}
+  if(is.null(by)){by <- "group"}
 
-  if (!is.null(glottodata)){
-    if(glottocheck_hassample(glottodata) & is.null(sample)){
-      glottosample <- glottodata[["sample"]]
-    } else if(glottocheck_hassample(glottodata) & !is.null(sample)){
-      message("The glottodata has a sample sheet, but the Permanova is based on the given argument \"sample\".")
-      glottosample <- sample
-    } else if(!glottocheck_hassample(glottodata) & !is.null(sample)){
-      message("The glottodata has no sample sheet, so the Permanova is based on the given argument \"sample\".")
-      glottosample <- sample
-    } else if(!glottocheck_hassample(glottodata) & is.null(sample)){
-      stop("Please provide a sample table.")
-    }
-  } else if(is.null(glottodata) & !is.null(sample)){
+  if(glottocheck_hassample(glottodata) & is.null(sample)){
+    glottosample <- glottodata[["sample"]]
+  } else if(glottocheck_hassample(glottodata) & !is.null(sample)){
+    message("The glottodata has a sample sheet, but the Permanova is based on the given argument \"sample\".")
     glottosample <- sample
-  } else if (is.null(glottodata) & is.null(sample)){
-    stop("Please provide a glottodata with sample or a sample table.")
+  } else if(!glottocheck_hassample(glottodata) & !is.null(sample)){
+    message("The glottodata has no sample sheet, so the Permanova is based on the given argument \"sample\".")
+    glottosample <- sample
+  } else if(!glottocheck_hassample(glottodata) & is.null(sample)){
+    stop("Please provide a sample table.")
   }
 
-  metadist <- glottojoin_dist(glottodata = glottosample, glottodist = glottodist, na.rm = TRUE)
+  if("group" %nin% colnames(glottosample)){stop("There is no group column in the sample table. Use glottocreate_sampletable()")}
+  if(all(is.na(glottosample$group))){stop("Please add groups to the sample table. Use glottocreate_sampletable()")}
 
+  id <- glottocheck_id(glottodata)
+
+  metadist <- glottojoin_dist(glottodata = glottodata, glottodist = glottodist, na.rm = TRUE)
+
+  if(id == "glottosubcode"){
+    metadist$glottocode <- glottoconvert_subcodes(metadist$glottosubcode)
+    metadist <- glottojoin_data(glottodata = metadist, with = glottosample, type = "left", id = "glottocode")
+  } else{
+    metadist <- glottojoin(glottodata = metadist, with = glottosample, id = "glottocode")
+  }
 
   if(comparison == "overall"){
     message("Running overall permanova")
@@ -147,12 +150,15 @@ glottostat_dist_permanova <- function(glottodist = NULL, glottodata = NULL, comp
 #'
 #' @noRd
 #'
-glottostat_permanovall <- function(metadist, id, permutations, by = "group"){
+glottostat_permanovall <- function(metadist, id, permutations, by = NULL){
+  if (is.null(by)){
+    by <- "group"
+  }
 
 condist <- metadist %>%
   dplyr::select(dplyr::all_of(metadist[,id]))
 
-full <- vegan::adonis2(as.formula(paste("condist", by, sep = " ~ ")),
+full <- vegan::adonis2(stats::as.formula(paste("condist", by, sep = " ~ ")),
                        data = metadist, permutations = permutations)
 p <- round(full[["Pr(>F)"]][1],4)
 
@@ -178,10 +184,11 @@ resultsdf
 #'
 #' @noRd
 #'
-glottostat_permanovapairs <- function(metadist, id, permutations, adj = NULL, by = "group"){
+glottostat_permanovapairs <- function(metadist, id, permutations, adj = NULL, by = NULL){
 
   if(is.null(adj)){adj <- "bonferroni"}
    # Create empty data.frame to store results
+  if(is.null(by)){by <- "group"}
   groupnames <- unique(metadist[, by])
   groupnames <- groupnames[!is.na(groupnames)]
   resultsdf <- data.frame(matrix(nrow = choose(length(groupnames), 2), ncol = 4) )
@@ -197,12 +204,13 @@ glottostat_permanovapairs <- function(metadist, id, permutations, adj = NULL, by
 
   # Select distance matrix
   condist12 <- metadist12 %>%
-    dplyr::select(dplyr::all_of(.[[id]])) # don't replace dot (.) with .data!!!!!
+    # dplyr::select(dplyr::all_of(.[[id]])) # don't replace dot (.) with .data!!!!!
+    dplyr::select(dplyr::all_of(metadist12[, id])) # don't replace dot (.) with .data!!!!!
 
   # permutations <- permute::how(nperm = permutations)
   # permute::setBlocks(permutations) <- with(metadist12, glottocode)
 
-  pair <- vegan::adonis2(as.formula(paste("condist12", by, sep = " ~ ")), data = metadist12, permutations = permutations)
+  pair <- vegan::adonis2(stats::as.formula(paste("condist12", by, sep = " ~ ")), data = metadist12, permutations = permutations)
   p <- round(pair[["Pr(>F)"]][1],3)
 
   resultsdf[i, "p-value"] <- p

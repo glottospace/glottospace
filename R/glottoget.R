@@ -98,8 +98,11 @@ glottoget <- function(glottodata = NULL, meta = FALSE, download = FALSE, dirpath
     if (!is.null(seed)){
       set.seed(seed)
     }
-    glottodata <- glottoget_phoible(download = download, dirpath = dirpath) |>
-      dplyr::group_by(id) |>
+
+    data <- glottoget_phoible(download = download, dirpath = dirpath)
+
+    glottodata <- data |>
+      dplyr::group_by(.data$id) |>
       dplyr::sample_n(1) |>
       dplyr::ungroup()
 
@@ -120,8 +123,9 @@ glottoget <- function(glottodata = NULL, meta = FALSE, download = FALSE, dirpath
     if (!is.null(seed)){
       set.seed(seed)
     }
-    glottodata <- glottoget_phoible(download = download, dirpath = dirpath) |>
-      dplyr::group_by(id) |>
+    data <- glottoget_phoible(download = download, dirpath = dirpath)
+    glottodata <- data |>
+      dplyr::group_by(.data$id) |>
       dplyr::sample_n(1) |>
       dplyr::ungroup() |>
       glottospace_coords2sf()
@@ -142,8 +146,11 @@ glottoget <- function(glottodata = NULL, meta = FALSE, download = FALSE, dirpath
     if (!is.null(seed)){
       set.seed(seed)
     }
-    glottodata <- glottoget_phoible(download = download, dirpath = dirpath) |>
-      dplyr::group_by(id) |>
+
+    data <- glottoget_phoible(download = download, dirpath = dirpath)
+
+    glottodata <- data |>
+      dplyr::group_by(.data$id) |>
       dplyr::sample_n(1) |>
       dplyr::ungroup() |>
       phoible_param_sf()
