@@ -13,6 +13,7 @@
 #' @param sample sample table (optional). By default, searches for sample table in glottodata/glottosubdata.
 #' @param comparison Either "overall" or "pairwise"
 #' @param permutations Number of permutations (default is 999)
+#' @param metric Either "gower" or "anderberg"
 #'
 #' @keywords invisible
 #' @export
@@ -28,7 +29,7 @@
 #'
 #' glottosubdata <- glottoget("demosubdata", meta = TRUE)
 #' glottostat_permanova(glottodata = glottosubdata, comparison = "pairwise")
-glottostat_permanova <- function(glottodata, comparison = NULL, sample = NULL, permutations = NULL){
+glottostat_permanova <- function(glottodata, comparison = NULL, sample = NULL, permutations = NULL, metric = "gower"){
 
   if(is.null(permutations)){permutations <- 999}
   if(is.null(comparison)){comparison <- "overall"}
@@ -48,7 +49,7 @@ glottostat_permanova <- function(glottodata, comparison = NULL, sample = NULL, p
 
   id <- glottocheck_id(glottodata)
 
-  glottodist <- glottodist(glottodata)
+  glottodist <- glottodist(glottodata, metric = metric)
   metadist <- glottojoin_dist(glottodata = glottodata, glottodist = glottodist, na.rm = TRUE)
   if(id == "glottosubcode"){
     metadist$glottocode <- glottoconvert_subcodes(metadist$glottosubcode)

@@ -8,7 +8,8 @@ glottostat_permanova(
   glottodata,
   comparison = NULL,
   sample = NULL,
-  permutations = NULL
+  permutations = NULL,
+  metric = "gower"
 )
 }
 \arguments{
@@ -19,6 +20,8 @@ glottostat_permanova(
 \item{sample}{sample table (optional). By default, searches for sample table in glottodata/glottosubdata.}
 
 \item{permutations}{Number of permutations (default is 999)}
+
+\item{metric}{Either "gower" or "anderberg"}
 }
 \description{
 This function takes a glottodata or glottosubdata object and performs a

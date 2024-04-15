@@ -214,3 +214,60 @@ glottospace_addcoords <- function(glottodata){
 }
 
 
+
+# glotto_param_sf <- function(glottodata, param,  longitude = NULL, latitude = NULL){
+#   if (is(glottodata, "data.frame")){
+#     if (!is.null(latitude) && latitude %nin% colnames(glottodata)){
+#       stop(paste(paste(paste("The parameter \"", latitude, sep=""), "\"", sep=""), "is not founded.", sep = " " ))}
+#
+#     if (!is.null(longitude) && longitude %nin% colnames(glottodata)){
+#       stop(paste(paste(paste("The parameter \"", longitude, sep=""), "\"", sep=""), "is not founded.", sep = " " ))}
+#
+#     if (
+#       is.null(latitude) && is.null(longitude) &&
+#       "longitude" %in% tolower(colnames(glottodata)) && "latitude" %in% tolower(colnames(glottodata))
+#     ){longitude <- "longitude"
+#       latitude <- "latitude"} else {
+#         stop("Please specify the longitude and latitude variables.")
+#       }
+#
+#     if (param %in% colnames(glottodata)){
+#       param_table <- table(glottodata[, param])
+#       geometry <- param_table |>
+#         names() |>
+#         lapply(
+#           FUN = function(x){
+#             glottodata[which(grambank[, param] == x), c(longitude, latitude)] |>
+#               as.matrix() |>
+#               sf::st_multipoint()}) |>
+#         sf::st_as_sfc(crs = 4326)
+#
+#       param_val <- as.matrix(names(param_table))
+#       colnames(param_val) <- param
+#
+#       param_sf <- sf::st_sf(param_val, geometry)
+#
+#     }
+#     else{
+#       stop(paste(paste(paste(paste("The dataset ", substitute(glottodata)), " does not contain the parameter "), param, sep=""), ".", sep=""))
+#       # stop(paste(paste("The glottodata does not have the parameter", param, sep = " "), ".", sep=""))}
+#     }
+#
+#     }
+#   return(param_sf)
+# }
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+
+
+
+
