@@ -64,7 +64,7 @@ other (by specifying the <code>comparison</code> argument with either 'overall' 
 <span>  comparison <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  sample <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  permutations <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  by <span class="op">=</span> <span class="st">"group"</span></span>
+<span>  by <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -109,22 +109,14 @@ The function calls <code><a href="https://rdrr.io/pkg/vegan/man/adonis.html" cla
 <span class="r-in"><span><span class="va">glottodist</span> <span class="op">&lt;-</span> <span class="fu"><a href="glottodist.html">glottodist</a></span><span class="op">(</span><span class="va">glottodata</span>, metric <span class="op">=</span> <span class="st">"gower"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">glottostat_dist_permanova</span><span class="op">(</span>glottodist <span class="op">=</span> <span class="va">glottodist</span>, glottodata <span class="op">=</span> <span class="va">glottodata</span>, comparison <span class="op">=</span> <span class="st">"pairwise"</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> glottocode used as id</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Out of the initial 6 data points, 0 have been removed because of missing data. </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>  6 remaining data points.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Running pairwise permanova</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in dplyr::select(., dplyr::all_of(.[[id]])):</span> <span style="color: #00BBBB;">ℹ</span> In argument: `dplyr::all_of(.[[id]])`.</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Caused by error in `glottostat_dist_permanova()`:</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> object 'id' not found</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">glottostat_dist_permanova</span><span class="op">(</span>glottodist <span class="op">=</span> <span class="va">glottodist</span>, comparison <span class="op">=</span> <span class="st">"pairwise"</span>, sample <span class="op">=</span> <span class="va">glottodata</span><span class="op">[[</span><span class="st">"sample"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> glottocode used as id</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Out of the initial 6 data points, 0 have been removed because of missing data. </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>  6 remaining data points.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Running pairwise permanova</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in dplyr::select(., dplyr::all_of(.[[id]])):</span> <span style="color: #00BBBB;">ℹ</span> In argument: `dplyr::all_of(.[[id]])`.</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Caused by error in `glottostat_dist_permanova()`:</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> object 'id' not found</span>
-<span class="r-in"><span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 'nperm' &gt;= set of all permutations: complete enumeration.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Set of permutations &lt; 'minperm'. Generating entire set.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   group1 group2 p-value significance p-value (adj) sign (adj)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1      A      B     0.3         n.s.           0.3       n.s.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
