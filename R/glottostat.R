@@ -60,12 +60,82 @@ glottostat_permanova <- function(glottodata, comparison = NULL, sample = NULL, p
 
   if(comparison == "overall"){
     message("Running overall permanova")
-    resultsdf <- glottostat_permanovall(metadist = metadist, id = id, permutations = permutations)
+    resultsdf <- glottostat_permanovall(metadist = metadist, id = id, permutations = permutations, by = "group")
   } else if(comparison == "pairwise"){
     message("Running pairwise permanova")
-    resultsdf <- glottostat_permanovapairs(metadist = metadist, id = id, permutations = permutations)
+    resultsdf <- glottostat_permanovapairs(metadist = metadist, id = id, permutations = permutations, by = "group")
   } else{stop("Please specify the type of comparison ('overall' or 'pairwise') ")}
 return(resultsdf)
+}
+
+
+
+#' Permanova across all groups (overall or pairwise)
+#'
+#' This function takes a dist object and performs a
+#' Permutational Multivariate Analysis of Variance (PERMANOVA). It can be used
+#' to test whether two or more groups are significantly different from each
+#' other (by specifying the \code{comparison} argument with either 'overall' or
+#' 'pairwise').
+#'
+#' The argument \code{by} is the name of a column in the sample table,
+#' which can be either provided by a "sample" sheet in \code{glottodata} or given by the argument \code{sample}.
+#' The default value of \code{by} is "group".
+#' The function uses \code{by} to do the comparisons.
+#' The function calls \code{vegan::adonis2()}, type \code{?adonis2} for more details.
+#'
+#' @param glottodist a dist object
+#' @param glottodata glottodata contains sample
+#' @param comparison Either "overall" or "pairwise"
+#' @param sample sample table (optional). By default, searches for sample table in glottodata/glottosubdata.
+#' @param permutations Number of permutations (default is 999)
+#' @param by the column name of "sample", over which to compute the permanova.
+#'
+#' @export
+#'
+#' @examples
+#' glottodata <- glottoget("demodata", meta = TRUE)
+#' glottodist <- glottodist(glottodata, metric = "gower")
+#' glottostat_dist_permanova(glottodist = glottodist, glottodata = glottodata, comparison = "pairwise")
+#'
+#' glottostat_dist_permanova(glottodist = glottodist, comparison = "pairwise", sample = glottodata[["sample"]])
+#'
+#'
+#'
+glottostat_dist_permanova <- function(glottodist = NULL, glottodata = NULL, comparison = NULL, sample = NULL, permutations = NULL, by = "group"){
+
+  if(is.null(permutations)){permutations <- 999}
+  if(is.null(comparison)){comparison <- "overall"}
+
+  if (!is.null(glottodata)){
+    if(glottocheck_hassample(glottodata) & is.null(sample)){
+      glottosample <- glottodata[["sample"]]
+    } else if(glottocheck_hassample(glottodata) & !is.null(sample)){
+      message("The glottodata has a sample sheet, but the Permanova is based on the given argument \"sample\".")
+      glottosample <- sample
+    } else if(!glottocheck_hassample(glottodata) & !is.null(sample)){
+      message("The glottodata has no sample sheet, so the Permanova is based on the given argument \"sample\".")
+      glottosample <- sample
+    } else if(!glottocheck_hassample(glottodata) & is.null(sample)){
+      stop("Please provide a sample table.")
+    }
+  } else if(is.null(glottodata) & !is.null(sample)){
+    glottosample <- sample
+  } else if (is.null(glottodata) & is.null(sample)){
+    stop("Please provide a glottodata with sample or a sample table.")
+  }
+
+  metadist <- glottojoin_dist(glottodata = glottosample, glottodist = glottodist, na.rm = TRUE)
+
+
+  if(comparison == "overall"){
+    message("Running overall permanova")
+    resultsdf <- glottostat_permanovall(metadist = metadist, id = id, permutations = permutations, by = by)
+  } else if(comparison == "pairwise"){
+    message("Running pairwise permanova")
+    resultsdf <- glottostat_permanovapairs(metadist = metadist, id = id, permutations = permutations, by = by)
+  } else{stop("Please specify the type of comparison ('overall' or 'pairwise') ")}
+  return(resultsdf)
 }
 
 
@@ -77,17 +147,18 @@ return(resultsdf)
 #'
 #' @noRd
 #'
-glottostat_permanovall <- function(metadist, id, permutations){
+glottostat_permanovall <- function(metadist, id, permutations, by = "group"){
 
 condist <- metadist %>%
   dplyr::select(dplyr::all_of(metadist[,id]))
 
-full <- vegan::adonis2(condist ~ group, data = metadist, permutations = permutations)
+full <- vegan::adonis2(as.formula(paste("condist", by, sep = " ~ ")),
+                       data = metadist, permutations = permutations)
 p <- round(full[["Pr(>F)"]][1],4)
 
-groupnames <- unique(metadist$group)
+groupnames <- unique(metadist[, by])
 resultsdf <- data.frame(matrix(nrow = 1, ncol = length(groupnames)+2) )
-colnames(resultsdf) <- c(paste0("group", 1:length(groupnames)), "p-value", "significance")
+colnames(resultsdf) <- c(paste0(by, 1:length(groupnames)), "p-value", "significance")
 resultsdf[1,1:length(groupnames)] <- groupnames
 resultsdf[1,"p-value"] <- p
 resultsdf[1,"significance"] <- pvalstars(p)
@@ -107,22 +178,22 @@ resultsdf
 #'
 #' @noRd
 #'
-glottostat_permanovapairs <- function(metadist, id, permutations, adj = NULL){
+glottostat_permanovapairs <- function(metadist, id, permutations, adj = NULL, by = "group"){
 
   if(is.null(adj)){adj <- "bonferroni"}
    # Create empty data.frame to store results
-  groupnames <- unique(metadist$group)
+  groupnames <- unique(metadist[, by])
   groupnames <- groupnames[!is.na(groupnames)]
   resultsdf <- data.frame(matrix(nrow = choose(length(groupnames), 2), ncol = 4) )
-  colnames(resultsdf) <- c("group1", "group2", "p-value", "significance")
-  resultsdf[,c("group1", "group2")] <- t(utils::combn(groupnames, 2))
+  colnames(resultsdf) <- c(paste0(by, 1:2), "p-value", "significance")
+  resultsdf[ ,paste0(by, 1:2)] <- t(utils::combn(groupnames, 2))
 
   for(i in 1:nrow(resultsdf)){
-    group1 <- resultsdf[i, "group1"]
-    group2 <- resultsdf[i, "group2"]
+    group1 <- resultsdf[i, paste0(by, 1)]
+    group2 <- resultsdf[i, paste0(by, 2)]
 
   metadist12 <- metadist %>%
-    dplyr::filter(.data$group == group1 | .data$group == group2) #  alternative: metadist12 <- metadist[metadist$group %in% c(group1, group2),]
+    dplyr::filter(metadist[, by] == group1 | metadist[, by] == group2) #  alternative: metadist12 <- metadist[metadist$group %in% c(group1, group2),]
 
   # Select distance matrix
   condist12 <- metadist12 %>%
@@ -130,7 +201,8 @@ glottostat_permanovapairs <- function(metadist, id, permutations, adj = NULL){
 
   # permutations <- permute::how(nperm = permutations)
   # permute::setBlocks(permutations) <- with(metadist12, glottocode)
-  pair <- vegan::adonis2(condist12 ~ group, data = metadist12, permutations = permutations)
+
+  pair <- vegan::adonis2(as.formula(paste("condist12", by, sep = " ~ ")), data = metadist12, permutations = permutations)
   p <- round(pair[["Pr(>F)"]][1],3)
 
   resultsdf[i, "p-value"] <- p
