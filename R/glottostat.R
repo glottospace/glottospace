@@ -142,6 +142,19 @@ glottostat_dist_permanova <- function(glottodist = NULL, glottodata = NULL, comp
 }
 
 
+#' Title
+#'
+#' @param glottodist
+#' @param glottodata
+#' @param comparison
+#' @param sample
+#' @param permutations
+#' @param by
+#'
+#' @return
+#' @export
+#'
+#' @examples
 glottostat_dist_permanova_mci <- function(glottodist = NULL, glottodata = NULL, comparison = NULL, sample = NULL, permutations = NULL, by = NULL){
 
   if(is.null(permutations)){permutations <- 999}
