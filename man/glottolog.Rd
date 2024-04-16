@@ -23,4 +23,4 @@ This is an internally stored version of glottolog data. Use glottoget("glottolog
 
 Hammarström, Harald & Forkel, Robert & Haspelmath, Martin & Bank, Sebastian. 2021. Glottolog 4.5. Leipzig: Max Planck Institute for Evolutionary Anthropology. (Available online at https://glottolog.org)
 
-##------ Mon Apr 15 22:53:54 2024 ------##}
+##------ Tue Apr 16 15:02:50 2024 ------##}
