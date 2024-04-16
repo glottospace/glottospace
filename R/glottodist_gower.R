@@ -8,6 +8,10 @@
 #'
 #' @noRd
 gower.a.b <- function(a, b, weights){
+  non_na_idx <- intersect(which(!is.na(a)), which(!is.na(b)))
+  a <- a[non_na_idx]
+  b <- b[non_na_idx]
+  weights <- weights[non_na_idx]
   sum(as.numeric(a != b) * weights) / length(a)
 }
 
