@@ -2,7 +2,7 @@
 % Please edit documentation in R/glottostat.R
 \name{glottostat_dist_permanova_mci}
 \alias{glottostat_dist_permanova_mci}
-\title{Title}
+\title{A temporary version of glottostat_dist_permanova}
 \usage{
 glottostat_dist_permanova_mci(
   glottodist = NULL,
@@ -14,8 +14,18 @@ glottostat_dist_permanova_mci(
 )
 }
 \arguments{
-\item{by}{}
+\item{glottodist}{a dist object}
+
+\item{glottodata}{a glottodata}
+
+\item{comparison}{comparision}
+
+\item{sample}{sample}
+
+\item{permutations}{permutations}
+
+\item{by}{by}
 }
 \description{
-Title
+A temporary version of glottostat_dist_permanova
 }
