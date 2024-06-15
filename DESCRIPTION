@@ -52,5 +52,4 @@ Language: en-US
 LazyData: true
 RoxygenNote: 7.2.3
 Config/testthat/edition: 3
-Remotes: 
-    https://github.com/r-tmap/tmap
+Remotes: github::r-tmap/tmap
