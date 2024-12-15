@@ -30,11 +30,6 @@
 #' Key Outputs:
 #' - A structured dataframe containing the attributes from the selected polygon set, including geometry.
 #'
-#' Dependencies:
-#' - `sf`: For reading and processing GeoJSON files.
-#' - `utils`: For downloading files.
-#' - `dplyr`: For data manipulation.
-#'
 #' @param dirpath Path to the directory where Glottography data will be stored and processed.
 #' @param dataset The dataset (or project) name, e.g., "walker2011bayesian".
 #' @param polygon_set The polygon set to process: one of "features", "languages", or "families".
