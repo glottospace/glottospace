@@ -1,69 +1,78 @@
-#' Get glottography data test
+#' Download and process Glottography data
 #'
-#' This function loads the Glottography data that is distributed with glottospace or optionally downloads it.
-#' @noRd
+#' This function is designed to download and process Glottography data hosted on GitHub.
+#' It allows users to specify a dataset and a polygon set (features, languages, or families) to
+#' retrieve spatial information about languages and language families. The function downloads
+#' the data, processes the GeoJSON files locally, and returns the relevant data in a structured format.
 #'
-#' @examples
-#' \donttest{
-#' glottoget_glottography()
-#' }
-glottoget_glottography <- function(download = NULL, dirpath = NULL){
-  if(is.null(download)){
-    download <- FALSE
+#' Purpose:
+#'
+#' 1. **Download Glottography data**:
+#'    - The function downloads the specified dataset and polygon set from the GitHub repository.
+#'    - Users confirm the download process via a prompt.
+#'
+#' 2. **Process and Load Glottography Data**:
+#'    - Reads and processes the downloaded GeoJSON file.
+#'    - Extracts the relevant attributes and retains geometry for spatial analysis and visualization.
+#'
+#' 3. **Augment Data**:
+#'    - Ensures the resulting dataset is well-structured and ready for analysis.
+#'
+#' Result:
+#' - The returned dataset contains the attributes specified in the chosen polygon set, such as language IDs
+#'   or family-level polygons, depending on the selection.
+#'
+#' Files Processed:
+#' - `features.geojson`: The raw polygons representing linguistic data.
+#' - `languages.geojson`: Polygons aggregated at the language level.
+#' - `families.geojson`: Polygons aggregated at the top-level family level.
+#'
+#' Key Outputs:
+#' - A structured dataframe containing the attributes from the selected polygon set, including geometry.
+#'
+#' Dependencies:
+#' - `sf`: For reading and processing GeoJSON files.
+#' - `utils`: For downloading files.
+#' - `dplyr`: For data manipulation.
+#'
+#' @param dirpath Path to the directory where Glottography data will be stored and processed.
+#' @param dataset The dataset (or project) name, e.g., "walker2011bayesian".
+#' @param polygon_set The polygon set to process: one of "features", "languages", or "families".
+#' @return A dataframe containing the processed data for the specified polygon set.
+#' @importFrom sf st_read
+#' @importFrom utils download.file
+#' @importFrom dplyr select
+#' @export
+glottoget_glottography <- function(dirpath = NULL, dataset = "walker2011bayesian", polygon_set = c("features", "languages", "families")) {
+  # Match the polygon set argument
+  polygon_set <- match.arg(polygon_set)
+
+  # Prompt user confirmation
+  invisible(readline(prompt = sprintf("Are you sure you want to download Glottography data for '%s'? \nPress [enter] to continue", dataset)))
+
+  # Default directory path
+  if (is.null(dirpath)) {
+    dirpath <- tempfile("glottoget_glottography")
   }
-  if(download == FALSE & is.null(dirpath)){
-    out <- glottospace::glottography
-  } else if(download == FALSE & !is.null(dirpath)){
-    out <- glottoget_glottographyloadlocal(dirpath = dirpath)
-  } else if(download == TRUE){
-    out <- glottoget_glottographydownload(dirpath = dirpath)
+  if (!dir.exists(dirpath)) {
+    dir.create(dirpath, recursive = TRUE)
   }
-  return(out)
+
+  # GitHub base URL for Glottography data
+  base_url <- sprintf("https://raw.githubusercontent.com/Glottography/%s/main/cldf/", dataset)
+
+  # Define the file name and its full URL
+  file <- sprintf("%s.geojson", polygon_set)
+  file_url <- paste0(base_url, file)
+  file_path <- file.path(dirpath, file)
+
+  # Download the specified file
+  download.file(file_url, file_path, mode = "wb")
+
+  # Process the GeoJSON file
+  data <- sf::st_read(file_path, quiet = TRUE)
+
+  # Return processed data
+  data
 }
 
-#' Download glottography data
-#'
-#' @noRd
-#'
-glottoget_glottographydownload <- function(dirpath = NULL){
-  invisible(readline(prompt="Are you sure you want to download Glottography data? \n Press [enter] to continue"))
-  dirpath <- glottoget_zenodo(name = "glottography", dirpath = dirpath)
-  glottoget_glottographyloadlocal(dirpath = dirpath)
-}
-
-#' Load locally stored glottography data
-#'
-#' @param dirpath Path to directory where glottography cldf data is stored
-#'
-#' @importFrom rlang .data
-#' @noRd
-glottoget_glottographyloadlocal <- function(dirpath){
-  if(!dir.exists(dirpath)){stop("Directory not found.")}
-  cldf_metadata <- base::list.files(dirpath, pattern = "cldf-metadata.json", recursive = TRUE)
-  mdpath <- normalizePath(file.path(dirpath, cldf_metadata))
-  mddir <- normalizePath(base::dirname(mdpath))
-
-  # Load languages file
-  languoids <- normalizePath(file.path(mddir, "languages.csv"))
-  languoids <- utils::read.csv(languoids, header = TRUE, encoding = "UTF-8")
-  colnames(languoids) <- base::tolower(colnames(languoids))
-  colnames(languoids)[which(colnames(languoids) == "id")] <- "lang_id"
-
-  # Load glottography-specific data file
-  values <- normalizePath(file.path(mddir, "glottography_values.csv"))
-  values <- utils::read.csv(values, header = TRUE, encoding = "UTF-8")
-  colnames(values) <- base::tolower(colnames(values))
-  colnames(values)[colnames(values) == "language_id"] <- "lang_id"
-  values <- tidyr::pivot_wider(data = values, names_from = "parameter_id", values_from = "value")
-
-  # Example for potential levels or categories (modify as needed for glottography-specific fields)
-  levels <- values[!is.na(values$level), c("lang_id", "level")]
-  category <- values[!is.na(values$category), c("lang_id", "category")]
-
-  glottographydata <- dplyr::left_join(languoids, levels, by = "lang_id") %>%
-    dplyr::left_join(category, by = "lang_id") %>%
-    dplyr::arrange(.data$lang_id)
-
-  colnames(glottographydata)[which(colnames(glottographydata) == "lang_id")] <- "id"
-  invisible(glottographydata)
-}
