@@ -64,7 +64,12 @@ glottoget <- function(glottodata = NULL, meta = FALSE, download = FALSE, dirpath
   } else if(tolower(glottodata) == "dplace"){
     glottodata <- glottoget_dplace(download = download, dirpath = dirpath)
   } else if(tolower(glottodata) == "worldatlas"){
-    glottodata <- glottoget_worldatlas(download = download, dirpath = dirpath)
+    glottodata <- glottoget_worldatlas(
+      version = "contemporary",               # default, or "traditional"
+      polygon_set = "languages",              # default, or "features", "families"
+      download = download,
+      dirpath = dirpath
+    )
   } else if(tolower(glottodata) == "grambank"){
     glottodata <- glottoget_grambank(download = download, dirpath = dirpath)
   } else if(tolower(glottodata) == "grambankspace"){

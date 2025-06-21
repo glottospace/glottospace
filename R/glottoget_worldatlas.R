@@ -15,11 +15,10 @@
 #' \donttest{
 #' glottoget_worldatlas()
 #' }
-glottoget_worldatlas <- function(version = "contemporary",
-                                 polygon_set = "features",
-                                 download = NULL,
+glottoget_worldatlas <- function(version = c("contemporary", "traditional"),
+                                 polygon_set = c("features", "languages", "families"),
+                                 download = FALSE,
                                  dirpath = NULL) {
-
   version <- match.arg(version, choices = c("contemporary", "traditional"))
   polygon_set <- match.arg(polygon_set, choices = c("features", "languages", "families"))
 
