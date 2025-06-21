@@ -89,28 +89,28 @@ also possible.</p>
 <span class="r-in"><span><span class="va">glottodata</span> <span class="op">&lt;-</span> <span class="fu"><a href="glottoget.html">glottoget</a></span><span class="op">(</span><span class="st">"demodata"</span>, meta <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># Saves as .xlsx</span></span></span>
 <span class="r-in"><span><span class="fu">glottosave</span><span class="op">(</span><span class="va">glottodata</span>, filename <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"glottodata"</span><span class="op">)</span> <span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Glottodata (glottodata) saved as /tmp/RtmpA1yRY4/glottodata.xlsx</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Glottodata (glottodata) saved as /tmp/RtmpX7lqlO/glottodata.xlsx</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">glottospacedata</span> <span class="op">&lt;-</span> <span class="fu"><a href="glottospace.html">glottospace</a></span><span class="op">(</span><span class="va">glottodata</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># Saves as .GPKG</span></span></span>
 <span class="r-in"><span><span class="fu">glottosave</span><span class="op">(</span><span class="va">glottospacedata</span>, filename <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"glottodata"</span><span class="op">)</span> <span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Writing layer `glottodata' to data source </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   `/tmp/RtmpA1yRY4/glottodata.gpkg' using driver `GPKG'</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   `/tmp/RtmpX7lqlO/glottodata.gpkg' using driver `GPKG'</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Writing 6 features with 10 fields and geometry type Point.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Spatial object (sf) saved as /tmp/RtmpA1yRY4/glottodata.gpkg</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Spatial object (sf) saved as /tmp/RtmpX7lqlO/glottodata.gpkg</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">glottomap</span> <span class="op">&lt;-</span> <span class="fu"><a href="glottomap.html">glottomap</a></span><span class="op">(</span><span class="va">glottodata</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>attribute variables are assumed to be spatially constant throughout all geometries</span>
 <span class="r-in"><span><span class="co"># Saves as .png</span></span></span>
 <span class="r-in"><span><span class="fu">glottosave</span><span class="op">(</span><span class="va">glottomap</span>, filename <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"glottomap"</span><span class="op">)</span> <span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Map (tmap object) saved as /tmp/RtmpA1yRY4/glottomap.png</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Map (tmap object) saved as /tmp/RtmpX7lqlO/glottomap.png</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Saves as .html</span></span></span>
 <span class="r-in"><span><span class="va">glottomap</span> <span class="op">&lt;-</span> <span class="fu"><a href="glottomap.html">glottomap</a></span><span class="op">(</span><span class="va">glottodata</span>, type <span class="op">=</span> <span class="st">"dynamic"</span>,</span></span>
 <span class="r-in"><span>             filename <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"glottomap"</span><span class="op">)</span> <span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">tmap v3 code detected</span> <span style="color: #00BBBB;">───────────────────────────────────────────────────────</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Map (tmap object) saved as /tmp/RtmpA1yRY4/glottomap.html</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Map (tmap object) saved as /tmp/RtmpX7lqlO/glottomap.html</span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
