@@ -24,4 +24,3 @@ glottoget_worldatlas <- function(version = c("contemporary", "traditional"),
 
   return(out)
 }
-

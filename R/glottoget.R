@@ -344,22 +344,23 @@ glottoget_remotemeta <- function(name = NULL, url = NULL){
 #' @noRd
 glottoget_zenodo <- function(name = NULL, url = NULL, dirpath = NULL){
   rlang::check_installed(c("jsonlite", "xml2", "rvest"), reason = "to use `glottoget_zenodo()`")
-  if(is.null(name) & !is.null(url)){
+
+  if (is.null(name) & !is.null(url)) {
     base_url <- url
-  } else if(tolower(name) == "glottolog"){
-    # Newest version is always uploaded here!
+  } else if (tolower(name) == "glottolog") {
     base_url <- "https://zenodo.org/doi/10.5281/zenodo.3260727"
-  } else if(tolower(name) == "wals"){
-    # Newest version is always uploaded here!
+  } else if (tolower(name) == "wals") {
     base_url <- "https://zenodo.org/doi/10.5281/zenodo.3606197"
-  } else if(name == "dplace" | name == "d-place"){
+  } else if (tolower(name) == "dplace" | name == "d-place") {
     base_url <- "https://zenodo.org/doi/10.5281/zenodo.3935419"
-  } else if(tolower(name) == "grambank"){
+  } else if (tolower(name) == "grambank") {
     base_url <- "https://zenodo.org/doi/10.5281/zenodo.7740139"
-  } else if(tolower(name) == "phoible"){
+  } else if (tolower(name) == "phoible") {
     base_url <- "https://zenodo.org/doi/10.5281/zenodo.2562766"
-  } else if(!is.null(name) ){
-    stop("Unable to download data from Zenodo. Unrecognized name argument. ")
+  } else if (tolower(name) == "worldatlas") {
+    base_url <- "https://zenodo.org/doi/10.5281/zenodo.15287258"
+  } else if (!is.null(name)) {
+    stop("Unable to download data from Zenodo. Unrecognized name argument.")
   }
 
   raw_html <- xml2::read_html(base_url)
@@ -368,48 +369,43 @@ glottoget_zenodo <- function(name = NULL, url = NULL, dirpath = NULL){
     rvest::html_elements("a[class = 'ui compact mini button']") |>
     rvest::html_attr("href")
 
-  # filename <- gsub("\\?.*$", "", strsplit(record, "/")[[1]][6])
-
   zenodo_url <- "https://zenodo.org"
-
-  # paste0(zenodo_url, record) |>
-  #   download.file(destfile = filename,
-  #               mode = "wb")
-
   doi <- strsplit(record, "/")[[1]][3]
   base_url_2 <- paste0("https://zenodo.org/api/records/", doi)
   remote <- suppressWarnings(jsonlite::stream_in(url(base_url_2)))
 
-
-  if(is.null(dirpath)){
+  if (is.null(dirpath)) {
     dirpath <- tempdir(check = TRUE)
-    # if(dir.exists(dirpath)){unlink(x = dirpath, recursive = TRUE)}
   } else {
-    if(dir.exists(dirpath)){stop("Directory already exists, please choose a different location.")}
+    if (dir.exists(dirpath)) {
+      stop("Directory already exists, please choose a different location.")
+    }
   }
 
   download_url <- paste0(zenodo_url, record)
   filepath <- file.path(tempfile())
-
   utils::download.file(download_url, destfile = filepath, mode = "wb")
   utils::unzip(zipfile = filepath, exdir = dirpath)
 
   version <- remote$metadata$version
 
-  if(!is.null(name)){
-    if(tolower(name) == "glottolog"){
-      message(paste0("Glottolog data downloaded (glottolog ", version,"). This is the most recent version available from ", base_url) )
-    } else if(tolower(name) == "wals"){
-      message(paste0("WALS data downloaded (wals-", version,"). This is the most recent version available from ", base_url) )
-    } else if(tolower(name) == "dplace" | name == "d-place"){
-      message(paste0("D-PLACE data downloaded (", version,"). This is the most recent version available from ", base_url) )
-    } else if(tolower(name) == "grambank"){
-      message(paste0("Grambank data downloaded (grambank-", version,"). This is the most recent version available from ", base_url) )
-    }
+  if (!is.null(name)) {
+    msg <- switch(
+      tolower(name),
+      "glottolog" = paste0("Glottolog data downloaded (glottolog ", version, ")."),
+      "wals" = paste0("WALS data downloaded (wals-", version, ")."),
+      "dplace" = paste0("D-PLACE data downloaded (", version, ")."),
+      "grambank" = paste0("Grambank data downloaded (grambank-", version, ")."),
+      "phoible" = paste0("PHOIBLE data downloaded (phoible-", version, ")."),
+      "worldatlas" = paste0("World Atlas data downloaded (worldatlas-", version, ")."),
+      paste0("Data downloaded (", version, ").")
+    )
+    message(paste0(msg, " This is the most recent version available from ", base_url))
   }
-  invisible(dirpath)
 
+  invisible(dirpath)
 }
+
 
 # glottoget_zenodo <- function(name = NULL, url = NULL, dirpath = NULL){
 #   rlang::check_installed("jsonlite", reason = "to use `glottoget_zenodo()`")
