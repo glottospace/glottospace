@@ -255,22 +255,25 @@ glottoget_glottospace <- function(download = NULL, dirpath = NULL){
 #' @noRd
 glottoget_remotemeta <- function(name = NULL, url = NULL){
   rlang::check_installed(c("jsonlite", "xml2", "rvest"), reason = "to use `glottoget_remotemeta()`")
-  # rlang::check_installed("xml2", reason = "to use `glottoget_remotemeta()`")
+
   if(is.null(name) & !is.null(url)){
     base_url <- url
   } else if(tolower(name) == "glottolog"){
-    # Newest version is always uploaded here!
     base_url <- "https://zenodo.org/doi/10.5281/zenodo.3260727"
   } else if(tolower(name) == "wals"){
-    # Newest version is always uploaded here!
     base_url <- "https://zenodo.org/doi/10.5281/zenodo.3606197"
   } else if(name == "dplace" | name == "d-place"){
     base_url <- "https://zenodo.org/doi/10.5281/zenodo.3935419"
   } else if(tolower(name) == "grambank"){
     base_url <- "https://zenodo.org/doi/10.5281/zenodo.7740139"
-  } else if(!is.null(name) ){
-    stop("Unable to download data from Zenodo. Unrecognized name argument. ")
-    }
+  } else if(tolower(name) == "worldatlas"){
+    base_url <- "https://zenodo.org/doi/10.5281/zenodo.15287258"
+  } else if(!is.null(name)){
+    stop("Unable to download data from Zenodo. Unrecognized name argument.")
+  }
+
+  return(base_url)
+}
 
   raw_html <- xml2::read_html(base_url)
 
