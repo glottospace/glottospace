@@ -1,51 +1,22 @@
-#' Download and process Glottography data
+#' Download and process Glottography data from Zenodo
 #'
-#' This function is designed to download and process Glottography data hosted on GitHub.
-#' It allows users to specify a dataset and a polygon set (features, languages, or families) to
-#' retrieve spatial information about languages and language families. The function downloads
-#' the data, processes the GeoJSON files locally, and returns the relevant data in a structured format.
+#' This function downloads and loads GeoJSON spatial data for Glottography from Zenodo.
+#' It supports polygon sets: 'features', 'languages', and 'families'.
 #'
-#' Purpose:
+#' @param dirpath Directory where the data will be stored. If NULL, uses a temporary folder.
+#' @param polygon_set One of "features", "languages", or "families".
 #'
-#' 1. **Download Glottography data**:
-#'    - The function downloads the specified dataset and polygon set from the GitHub repository.
-#'    - Users confirm the download process via a prompt.
-#'
-#' 2. **Process and Load Glottography Data**:
-#'    - Reads and processes the downloaded GeoJSON file.
-#'    - Extracts the relevant attributes and retains geometry for spatial analysis and visualization.
-#'
-#' 3. **Augment Data**:
-#'    - Ensures the resulting dataset is well-structured and ready for analysis.
-#'
-#' Result:
-#' - The returned dataset contains the attributes specified in the chosen polygon set, such as language IDs
-#'   or family-level polygons, depending on the selection.
-#'
-#' Files Processed:
-#' - `features.geojson`: The raw polygons representing linguistic data.
-#' - `languages.geojson`: Polygons aggregated at the language level.
-#' - `families.geojson`: Polygons aggregated at the top-level family level.
-#'
-#' Key Outputs:
-#' - A structured dataframe containing the attributes from the selected polygon set, including geometry.
-#'
-#' @param dirpath Path to the directory where Glottography data will be stored and processed.
-#' @param dataset The dataset (or project) name, e.g., "walker2011bayesian".
-#' @param polygon_set The polygon set to process: one of "features", "languages", or "families".
-#' @return A dataframe containing the processed data for the specified polygon set.
-#' @importFrom sf st_read
-#' @importFrom utils download.file
-#' @importFrom dplyr select
+#' @return A `sf` object containing the polygon data.
 #' @export
-glottoget_glottography <- function(dirpath = NULL, dataset = "walker2011bayesian", polygon_set = c("features", "languages", "families")) {
-  # Match the polygon set argument
+glottoget_glottography <- function(dirpath = NULL, polygon_set = c("features", "languages", "families")) {
   polygon_set <- match.arg(polygon_set)
 
-  # Prompt user confirmation
-  invisible(readline(prompt = sprintf("Are you sure you want to download Glottography data for '%s'? \nPress [enter] to continue", dataset)))
+  # Zenodo base URL for Glottography v1.0.0
+  zenodo_base <- "https://zenodo.org/records/15287258/files"
 
-  # Default directory path
+  file_name <- paste0(polygon_set, ".geojson")
+  download_url <- file.path(zenodo_base, file_name)
+
   if (is.null(dirpath)) {
     dirpath <- tempfile("glottoget_glottography")
   }
@@ -53,21 +24,17 @@ glottoget_glottography <- function(dirpath = NULL, dataset = "walker2011bayesian
     dir.create(dirpath, recursive = TRUE)
   }
 
-  # GitHub base URL for Glottography data
-  base_url <- sprintf("https://raw.githubusercontent.com/Glottography/%s/main/cldf/", dataset)
+  file_path <- file.path(dirpath, file_name)
 
-  # Define the file name and its full URL
-  file <- sprintf("%s.geojson", polygon_set)
-  file_url <- paste0(base_url, file)
-  file_path <- file.path(dirpath, file)
+  # Inform user and download
+  message("Downloading Glottography data from Zenodo: ", file_name)
+  utils::download.file(download_url, destfile = file_path, mode = "wb")
 
-  # Download the specified file
-  download.file(file_url, file_path, mode = "wb")
-
-  # Process the GeoJSON file
+  # Load as sf
   data <- sf::st_read(file_path, quiet = TRUE)
 
-  # Return processed data
-  data
+  return(data)
 }
+
+source("R/glottoget_glottography.R")
 

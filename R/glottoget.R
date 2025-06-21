@@ -8,40 +8,32 @@
 #' .shp). See also: options meta and simplify.
 #' \item "glottobase" - Default option, an spatially enhanced version of \href{https://glottolog.org/}{glottolog}. See
 #' \link{glottobooster} for details. If glottodata = NULL, "glottobase" will be loaded.
-#' \item "wals" - This is a spatially enhanced version of \href{https://wals.info/}{WALS}.
-#' \item "dplace" - This is a spatially enhanced version of \href{https://d-place.org/}{D-PLACE}.
-#' \item "glottolog" - This is a restructured (non-spatial) version of \href{https://glottolog.org/}{glottolog}.
-#' \item "glottospace" - A simple dataset with glottocodes and a geometry column. This
-#' is a subset of all languages in \href{https://glottolog.org/}{glottolog} with
-#' spatial coordinates.
-#' \item "grambank" - This is a restructured (non-spatial) version of \href{https://grambank.clld.org/}{Grambank}.
-#' \item "grambankspace" - This is a restructured (spatially enhanced) version of \href{https://grambank.clld.org/}{Grambank}.
-#' \item "phoible_raw" - This is a restructured (non-spatial) raw version of \href{https://phoible.org/}{PHOIBLE}.
-#' \item "phoiblespace_raw" - This is a restructured (spatially enhanced) raw version of \href{https://phoible.org/}{PHOIBLE}.
-#' \item "phoible" - This is a restructured (non-spatial) randomly sampled version of \href{https://phoible.org/}{PHOIBLE}.
-#' When seed is not provided, it will randomly choose a sample for each duplicated glottocode.
-#' \item "phoiblespace" - This is a (spatially enhanced) randomly sampled version of \href{https://phoible.org/}{PHOIBLE}.
-#' When seed is not provided, it will randomly choose a sample for each duplicated glottocode.
-#' \item "phoible_raw_param_sf" - This returns an sf object of the geographical distribution for all parameter IDs with respect to the raw \href{https://phoible.org/}{PHOIBLE}.
-#' \item "phoible_param_sf" - This returns an sf object of the geographical distribution for all parameter IDs with respect to a sampled version of \href{https://phoible.org/}{PHOIBLE}.
-#' When seed is not provided, it will randomly choose a sample for each duplicated glottocode.
-#' \item "demodata" - Built-in artificial glottodata (included for demonstration and testing).
-#' \item "demosubdata" - Built-in artificial glottosubdata (included for demonstration and testing)
-#' \item "demosubdata_cnstn" - Built-in artificial glottosubdata (included for demonstration and testing)
+#' \item "wals" - A spatially enhanced version of \href{https://wals.info/}{WALS}.
+#' \item "dplace" - A spatially enhanced version of \href{https://d-place.org/}{D-PLACE}.
+#' \item "glottolog" - A restructured (non-spatial) version of \href{https://glottolog.org/}{glottolog}.
+#' \item "glottospace" - A simple dataset with glottocodes and a geometry column.
+#' \item "grambank" - A restructured (non-spatial) version of \href{https://grambank.clld.org/}{Grambank}.
+#' \item "grambankspace" - A spatially enhanced version of Grambank.
+#' \item "phoible_raw", "phoiblespace_raw", "phoible", "phoiblespace" - Variants of \href{https://phoible.org/}{PHOIBLE} (raw vs sampled, spatial vs non-spatial).
+#' \item "phoible_raw_param_sf", "phoible_param_sf" - Returns sf object with parameter-wise spatial distributions for PHOIBLE.
+#' \item "worldatlas" - Spatial data derived from Asher & Moseley (2007) via Zenodo \href{https://doi.org/10.5281/zenodo.15287258}{DOI}.
+#' \item "demodata", "demosubdata", "demosubdata_cnstn" - Built-in artificial glottodata.
 #' }
-#' @param meta In case 'glottodata' is demodata/demosubdata: by default, meta sheets are not loaded. Use meta=TRUE if you want to include them.
-#' @param download By default internally stored versions of global databases are used. Specify download = TRUE in case you want to download the latest version from a remote server.
-#' @param dirpath Optional, if you want to store a global CLDF dataset in a specific directory, or load it from a specific directory.
-#' @param url Zenodo url, something like this: "https://zenodo.org/api/records/3260727"
-#' @param seed the seed number when glottoget phoible dataset, if not provided, the glottoget function will randomly choose one language for each duplicated glottocode.
+#' @param meta If TRUE, includes meta sheets when loading demodata/demosubdata.
+#' @param download If TRUE, attempts to download latest data from Zenodo.
+#' @param dirpath Optional path for storing or reading downloaded files.
+#' @param url Zenodo URL (e.g., "https://zenodo.org/api/records/3260727").
+#' @param seed Used for sampling in phoible datasets.
 #'
 #' @family <glottodata>
-#' @return A glottodata or glottosubdata object (a data.frame or list, depending on which glottodata is requested)
+#' @return A glottodata or glottosubdata object (a data.frame or list)
 #' @export
 #' @examples
 #' \donttest{
 #' glottoget("glottolog")
+#' glottoget("worldatlas", download = TRUE)
 #' }
+
 glottoget <- function(glottodata = NULL, meta = FALSE, download = FALSE, dirpath = NULL, url = NULL, seed = NULL){
   if(!is.null(url)){
     if(is.null(dirpath)){
@@ -71,6 +63,8 @@ glottoget <- function(glottodata = NULL, meta = FALSE, download = FALSE, dirpath
     glottodata <- glottoget_wals(download = download, dirpath = dirpath)
   } else if(tolower(glottodata) == "dplace"){
     glottodata <- glottoget_dplace(download = download, dirpath = dirpath)
+  } else if(tolower(glottodata) == "worldatlas"){
+    glottodata <- glottoget_worldatlas(download = download, dirpath = dirpath)
   } else if(tolower(glottodata) == "grambank"){
     glottodata <- glottoget_grambank(download = download, dirpath = dirpath)
   } else if(tolower(glottodata) == "grambankspace"){

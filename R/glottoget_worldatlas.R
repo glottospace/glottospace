@@ -1,6 +1,3 @@
-# 1. NEW FILE: R/glottoget_worldatlas.R
-# Save this script as R/glottoget_worldatlas.R
-
 #' Get World Atlas data from Zenodo
 #'
 #' @param version One of "contemporary" or "traditional".
@@ -13,12 +10,9 @@ glottoget_worldatlas <- function(version = c("contemporary", "traditional"),
                                  polygon_set = c("features", "languages", "families"),
                                  download = FALSE,
                                  dirpath = NULL) {
+
   version <- match.arg(version)
   polygon_set <- match.arg(polygon_set)
-
-  if (!download && is.null(dirpath)) {
-    stop("Set download = TRUE or provide dirpath.")
-  }
 
   out <- glottoget_zenodo(
     name = "worldatlas",
@@ -30,3 +24,4 @@ glottoget_worldatlas <- function(version = c("contemporary", "traditional"),
 
   return(out)
 }
+
