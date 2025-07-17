@@ -261,24 +261,21 @@ glottoget_glottospace <- function(download = NULL, dirpath = NULL){
 glottoget_remotemeta <- function(name = NULL, url = NULL){
   rlang::check_installed(c("jsonlite", "xml2", "rvest"), reason = "to use `glottoget_remotemeta()`")
 
-  if(is.null(name) & !is.null(url)){
+  if (is.null(name) & !is.null(url)) {
     base_url <- url
-  } else if(tolower(name) == "glottolog"){
+  } else if (tolower(name) == "glottolog") {
     base_url <- "https://zenodo.org/doi/10.5281/zenodo.3260727"
-  } else if(tolower(name) == "wals"){
+  } else if (tolower(name) == "wals") {
     base_url <- "https://zenodo.org/doi/10.5281/zenodo.3606197"
-  } else if(name == "dplace" | name == "d-place"){
+  } else if (name == "dplace" | name == "d-place") {
     base_url <- "https://zenodo.org/doi/10.5281/zenodo.3935419"
-  } else if(tolower(name) == "grambank"){
+  } else if (tolower(name) == "grambank") {
     base_url <- "https://zenodo.org/doi/10.5281/zenodo.7740139"
-  } else if(tolower(name) == "worldatlas"){
+  } else if (tolower(name) == "worldatlas") {
     base_url <- "https://zenodo.org/doi/10.5281/zenodo.15287258"
-  } else if(!is.null(name)){
+  } else if (!is.null(name)) {
     stop("Unable to download data from Zenodo. Unrecognized name argument.")
   }
-
-  return(base_url)
-}
 
   raw_html <- xml2::read_html(base_url)
 
@@ -294,17 +291,11 @@ glottoget_remotemeta <- function(name = NULL, url = NULL){
   btime <- utils::timestamp()
   citation <- xml2::xml_text(xml2::read_html(charToRaw(remote$metadata$description), encoding = "UTF-8"))
 
-  # v <- paste0(c("Version: ", version), collapse = "" )
-  # c <- paste0(c("Citation: ", gsub(pattern = "\n", replacement = " ", x = citation)), collapse = "" )
-  # b <- paste0(c("Built time: ", btime), collapse = "" )
-  #
-  # paste(c(v,c,b),  sep = "\n")
-
   metainfo <- paste0(c("version: ", version, "\n\n\n", citation, "\n\n", btime),  collapse = "")
-
-  paste0("\\note{", metainfo, "}")
-
+  return(paste0("\\note{", metainfo, "}"))
 }
+
+
 
 # glottoget_remotemeta <- function(name = NULL, url = NULL){
 #   rlang::check_installed("jsonlite", reason = "to use `glottoget_remotemeta()`")
@@ -405,7 +396,7 @@ glottoget_zenodo <- function(name = NULL, url = NULL, dirpath = NULL){
       "dplace" = paste0("D-PLACE data downloaded (", version, ")."),
       "grambank" = paste0("Grambank data downloaded (grambank-", version, ")."),
       "phoible" = paste0("PHOIBLE data downloaded (phoible-", version, ")."),
-      "worldatlas" = paste0("World Atlas data downloaded (worldatlas-", version, ")."),
+      "worldatlas" = paste0("World Atlas data downloaded (", version, ")."),
       paste0("Data downloaded (", version, ").")
     )
     message(paste0(msg, " This is the most recent version available from ", base_url))
